@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/iv1_p"
+        android:title="课表" />
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/iv2_p"
+        android:title="成绩" />
+    <item
+        android:id="@+id/navigation_person"
+        android:icon="@drawable/iv4_p"
+        android:title="更多" />
+</menu>
