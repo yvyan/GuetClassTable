@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/iv1_p"
-        android:title="课表" />
+        android:icon="@drawable/tab_day_table"
+        android:title="日课表" />
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/iv2_p"
-        android:title="成绩" />
+        android:icon="@drawable/tab_class_table"
+        android:title="周课表" />
     <item
         android:id="@+id/navigation_func"
-        android:icon="@drawable/iv3_p"
+        android:icon="@drawable/tab_func"
         android:title="教务" />
     <item
         android:id="@+id/navigation_person"
-        android:icon="@drawable/iv4_p"
+        android:icon="@drawable/tab_user"
         android:title="用户" />
 </menu>
