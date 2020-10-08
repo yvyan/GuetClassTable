@@ -5,7 +5,7 @@
     android:background="@color/app_white">
 
     <LinearLayout
-        android:id="@+id/id_layout"
+        android:id="@+id/id_class_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
