@@ -9,7 +9,11 @@
         android:icon="@drawable/iv2_p"
         android:title="成绩" />
     <item
+        android:id="@+id/navigation_func"
+        android:icon="@drawable/iv3_p"
+        android:title="教务" />
+    <item
         android:id="@+id/navigation_person"
         android:icon="@drawable/iv4_p"
-        android:title="更多" />
+        android:title="用户" />
 </menu>

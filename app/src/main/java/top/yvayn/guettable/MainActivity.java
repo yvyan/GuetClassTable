@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import top.yvayn.guettable.fragment.CourseTableFragment;
+import top.yvayn.guettable.fragment.DayClassFragment;
 import top.yvayn.guettable.helper.BottomNavigationViewHelper;
 import top.yvayn.guettable.helper.ViewPagerAdapter;
 
@@ -41,10 +42,16 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
-
+            //用于页面滑动时底部Tab切换
             @Override
             public void onPageSelected(int position) {
-
+                if (menuItem != null) {
+                    menuItem.setChecked(false);
+                } else {
+                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                }
+                menuItem = bottomNavigationView.getMenu().getItem(position);
+                menuItem.setChecked(true);
             }
 
             @Override
@@ -56,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
         List<Fragment> list = new ArrayList<>();
         list.add(CourseTableFragment.newInstance());
+        list.add(DayClassFragment.newInstance());
         viewPagerAdapter.setList(list);
 
     }
@@ -73,8 +81,10 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     viewPager.setCurrentItem(1);
                     return true;
-                case R.id.navigation_person:
+                case R.id.navigation_func:
                     viewPager.setCurrentItem(2);
+                case R.id.navigation_person:
+                    viewPager.setCurrentItem(3);
                     return true;
             }
             return false;
