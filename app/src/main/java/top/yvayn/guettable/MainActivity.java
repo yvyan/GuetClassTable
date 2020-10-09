@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         List<Fragment> list = new ArrayList<>();
-        list.add(CourseTableFragment.newInstance());
         list.add(DayClassFragment.newInstance());
+        list.add(CourseTableFragment.newInstance());
         viewPagerAdapter.setList(list);
 
     }
