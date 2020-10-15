@@ -5,4 +5,9 @@
     <!--  数据库  -->
     <string name="data_General_table_name">tableGeneral</string>
 
+    <!-- 老版本教务系统 -->
+    <string name="url_login">http://bkjw2.guet.edu.cn/student/public/login.asp</string>
+    <string name="url_course">http://bkjw2.guet.edu.cn/student/coursetable.asp</string>
+    <string name="url_info">http://bkjw2.guet.edu.cn/student/info.asp</string>
+
 </resources>
