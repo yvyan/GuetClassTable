@@ -22,11 +22,13 @@ import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.view.WeekView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import top.yvayn.guettable.MySubject;
 import top.yvayn.guettable.R;
-import top.yvayn.guettable.SubjectRepertory;
+import top.yvayn.guettable.bean.CourseBean;
+import top.yvayn.guettable.data.UserData;
+import top.yvayn.guettable.helper.CourseTableHelper;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
 
@@ -39,9 +41,10 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private Button moreButton;
     private LinearLayout linearLayout;
     private TextView titleTextView;
-    private List<MySubject> mySubjects;
 
     private View view;
+
+    private UserData userData;
 
     //记录切换的周次，不一定是当前周
     int target = -1;
@@ -65,8 +68,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             }
         });
 
-        mySubjects = SubjectRepertory.loadDefaultSubjects2();
-        mySubjects.addAll(SubjectRepertory.loadDefaultSubjects());
+        userData = UserData.newInstance(getActivity());
         titleTextView = view.findViewById(R.id.id_title);
         linearLayout = view.findViewById(R.id.id_class_layout);
         linearLayout.setOnClickListener(this);
@@ -83,7 +85,13 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         mTimetableView = view.findViewById(R.id.id_timetableView);
 
         //设置周次选择属性
-        mWeekView.source(mySubjects)
+        List<CourseBean> courseBeans;
+        if (userData.isCourseSave()) {
+            courseBeans = CourseTableHelper.htmlStringToCourseBeanList(userData.getCourse());
+        } else {
+            courseBeans = new ArrayList<>();
+        }
+        mWeekView.source(courseBeans)
                 .curWeek(1)
                 .callback(new IWeekView.OnWeekItemClickedListener() {
                     @Override
@@ -104,7 +112,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .isShow(false)//设置隐藏，默认显示
                 .showView();
 
-        mTimetableView.source(mySubjects)
+        mTimetableView.source(courseBeans)
                 .curWeek(1)
                 .curTerm("大三下学期")
                 .maxSlideItem(10)
@@ -152,6 +160,10 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
+        if (userData.isCourseSave()) {
+            mWeekView.source(CourseTableHelper.htmlStringToCourseBeanList(userData.getCourse()));
+        }
+        Log.d("onStart:", "ss");
         mTimetableView.onDateBuildListener()
                 .onHighLight();
     }

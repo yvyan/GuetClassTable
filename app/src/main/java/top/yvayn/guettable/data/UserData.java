@@ -18,6 +18,10 @@ public class UserData {
     private String username;
     private String password;
 
+    //临时存储测试
+    private boolean isCourseSave;
+    private String course;
+
     private UserData(Activity activity) {
         sharedPreferences = activity.getApplication().getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         load();
@@ -89,4 +93,26 @@ public class UserData {
         editor.apply();
     }
 
+    public boolean isCourseSave() {
+        isCourseSave = sharedPreferences.getBoolean("isCourseSave", false);
+        return isCourseSave;
+    }
+
+    public String getCourse() {
+        isCourseSave = sharedPreferences.getBoolean("isCourseSave", false);
+        if (isCourseSave) {
+            course = sharedPreferences.getString("courseString", "");
+            return course;
+        }
+        return null;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+        isCourseSave = true;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("courseString", course);
+        editor.putBoolean("isCourseSave", isCourseSave);
+        editor.apply();
+    }
 }
