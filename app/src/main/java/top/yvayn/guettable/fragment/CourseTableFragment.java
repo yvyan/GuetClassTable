@@ -100,6 +100,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     @Override
                     public void onWeekClicked(int week) {
                         int cur = mTimetableView.curWeek();
+                        target = week;
                         //更新切换后的日期，从当前周cur->切换的周week
                         mTimetableView.onDateBuildListener()
                                 .onUpdateDate(cur, week);
@@ -109,7 +110,10 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .callback(new IWeekView.OnWeekLeftClickedListener() {
                     @Override
                     public void onWeekLeftClicked() {
-                        onWeekLeftLayoutClicked();
+                        generalData.setWeek(target);
+                        mWeekView.curWeek(target).updateView();
+                        mTimetableView.changeWeekForce(target);
+                        //onWeekLeftLayoutClicked();
                     }
                 })
                 .isShow(false)//设置隐藏，默认显示
