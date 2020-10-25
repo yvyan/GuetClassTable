@@ -27,6 +27,7 @@ import java.util.List;
 
 import top.yvayn.guettable.R;
 import top.yvayn.guettable.bean.CourseBean;
+import top.yvayn.guettable.data.GeneralData;
 import top.yvayn.guettable.data.UserData;
 import top.yvayn.guettable.helper.CourseTableHelper;
 
@@ -45,6 +46,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private View view;
 
     private UserData userData;
+    private GeneralData generalData;
 
     //记录切换的周次，不一定是当前周
     int target = -1;
@@ -69,6 +71,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         });
 
         userData = UserData.newInstance(getActivity());
+        generalData = GeneralData.newInstance(getActivity());
         titleTextView = view.findViewById(R.id.id_title);
         linearLayout = view.findViewById(R.id.id_class_layout);
         linearLayout.setOnClickListener(this);
@@ -92,7 +95,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             courseBeans = new ArrayList<>();
         }
         mWeekView.source(courseBeans)
-                .curWeek(1)
+                .curWeek(generalData.getWeek())
                 .callback(new IWeekView.OnWeekItemClickedListener() {
                     @Override
                     public void onWeekClicked(int week) {
@@ -113,10 +116,10 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .showView();
 
         mTimetableView.source(courseBeans)
-                .curWeek(1)
+                .curWeek(generalData.getWeek())
                 .curTerm("大三下学期")
                 .maxSlideItem(10)
-                .monthWidthDp(30)
+                .monthWidthDp(20)
                 //透明度
                 //日期栏0.1f、侧边栏0.1f，周次选择栏0.6f
                 //透明度范围为0->1，0为全透明，1为不透明
@@ -192,6 +195,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (target != -1) {
+                    generalData.setWeek(target + 1);
                     mWeekView.curWeek(target + 1).updateView();
                     mTimetableView.changeWeekForce(target + 1);
                 }
