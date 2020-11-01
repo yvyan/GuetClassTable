@@ -34,4 +34,4 @@
 > Android课程表视图控件: [TimetableView](https://github.com/zfman/TimetableView)
 > 部分代码参考: [CourseTable](https://github.com/Telephone2019/CourseTable)
 
-**对上诉项目作者表示感谢！**
+**对上述项目作者表示感谢！**
