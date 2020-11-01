@@ -15,6 +15,7 @@ import java.util.List;
 
 import top.yvayn.guettable.fragment.CourseTableFragment;
 import top.yvayn.guettable.fragment.DayClassFragment;
+import top.yvayn.guettable.fragment.PersonFragment;
 import top.yvayn.guettable.helper.BottomNavigationViewHelper;
 import top.yvayn.guettable.helper.ViewPagerAdapter;
 
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         List<Fragment> list = new ArrayList<>();
         list.add(DayClassFragment.newInstance());
         list.add(CourseTableFragment.newInstance());
+        list.add(PersonFragment.newInstance());
         viewPagerAdapter.setList(list);
 
     }

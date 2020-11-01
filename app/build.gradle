@@ -38,4 +38,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+/**fresco 图片加载**/
+    implementation 'com.facebook.fresco:fresco:2.1.0'
+/** TextView样式布局      **/
+    implementation 'com.github.lygttpod:SuperTextView:2.1.6'
 }
