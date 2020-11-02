@@ -15,8 +15,8 @@ import java.util.List;
 
 import top.yvayn.guettable.fragment.CourseTableFragment;
 import top.yvayn.guettable.fragment.DayClassFragment;
+import top.yvayn.guettable.fragment.MoreFragment;
 import top.yvayn.guettable.fragment.PersonFragment;
-import top.yvayn.guettable.helper.BottomNavigationViewHelper;
 import top.yvayn.guettable.helper.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemReselectedListener);
-        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         viewPager = findViewById(R.id.vp);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -65,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         List<Fragment> list = new ArrayList<>();
         list.add(DayClassFragment.newInstance());
         list.add(CourseTableFragment.newInstance());
+        list.add(MoreFragment.newInstance());
         list.add(PersonFragment.newInstance());
         viewPagerAdapter.setList(list);
 
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_func:
                     viewPager.setCurrentItem(2);
+                    return true;
                 case R.id.navigation_person:
                     viewPager.setCurrentItem(3);
                     return true;
