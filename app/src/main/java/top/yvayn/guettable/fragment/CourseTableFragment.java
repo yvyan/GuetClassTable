@@ -167,12 +167,13 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
-        if (userData.isCourseSave()) {
+        if (userData.isCourseSave() && userData.getUpdateCourse()) {
             List<CourseBean> courseBeans = CourseTableHelper.htmlStringToCourseBeanList(userData.getCourse());
             mWeekView.source(courseBeans)
-                    .updateView();
+                    .showView();
             mTimetableView.source(courseBeans)
                     .updateView();
+            userData.setUpdateCourse(false);
         }
         Log.d("onStart:", "start");
         mTimetableView.onDateBuildListener()

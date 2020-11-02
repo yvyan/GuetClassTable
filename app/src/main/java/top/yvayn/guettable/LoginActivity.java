@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        userData.saveUser(etAccount.getText().toString(), etPwd.getText().toString(), cbRememberPwd.isChecked());
+        userData.setUser(etAccount.getText().toString(), etPwd.getText().toString(), cbRememberPwd.isChecked());
         getCourseTable();
 
         button.setBackgroundColor(0x44444444);
