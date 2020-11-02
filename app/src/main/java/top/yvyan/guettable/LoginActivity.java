@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             final HttpConnectionAndCode res = LAN.checkCode(this);
             if (res.obj != null) {
                 //TODO "telephone"标识符含义待确认
-                final String ocr = OCR.getTextFromBitmap(this, (Bitmap) res.obj, "yvyan");
+                final String ocr = OCR.getTextFromBitmap(this, (Bitmap) res.obj, "telephone");
                 cookie_builder.append(res.cookie);
 
                 runOnUiThread(() -> {
