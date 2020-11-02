@@ -1,5 +1,6 @@
 package top.yvayn.guettable;
 
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Looper;
@@ -29,7 +30,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import top.yvayn.guettable.Http.HttpConnectionAndCode;
+import top.yvayn.guettable.OCR.OCR;
 import top.yvayn.guettable.data.UserData;
+import top.yvayn.guettable.fetch.LAN;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Boolean bPwdSwitch = false;
@@ -39,6 +43,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button button;
 
     private UserData userData;
+
+    private StringBuilder cookie_builder = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +80,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             etAccount.setText(userData.getUsername());
             etPwd.setText(userData.getPassword());
         }
+
+        changeCode();
     }
 
     @Override
@@ -85,6 +93,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         button.setText("正在登陆");
         button.setEnabled(false);
         //finish();
+    }
+
+    /**
+     * 刷新验证码
+     */
+    public void changeCode() {
+        final EditText editText = findViewById(R.id.checkcode_input);
+        final ImageView imageView = findViewById(R.id.imageView_checkcode);
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.network, getTheme()));
+        editText.setText("");
+
+        cookie_builder = new StringBuilder();
+        new Thread(() -> {
+            final HttpConnectionAndCode res = LAN.checkCode(this);
+            if (res.obj != null) {
+                //TODO "telephone"标识符含义待确认
+                final String ocr = OCR.getTextFromBitmap(this, (Bitmap) res.obj, "yvyan");
+                cookie_builder.append(res.cookie);
+
+                runOnUiThread(() -> {
+                    imageView.setImageBitmap((Bitmap)res.obj);
+                    editText.setText(ocr);
+                });
+            }
+        }).start();
     }
 
     private void getCourseTable() {

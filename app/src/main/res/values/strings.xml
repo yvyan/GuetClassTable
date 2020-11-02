@@ -10,4 +10,12 @@
     <string name="url_course">http://bkjw2.guet.edu.cn/student/coursetable.asp</string>
     <string name="url_info">http://bkjw2.guet.edu.cn/student/info.asp</string>
 
+    <!-- 新版教务系统 -->
+    <string name="lan_get_checkcode_url">http://172.16.13.22/login/GetValidateCode?id=0.7060164569272753</string>
+    <string name="lan_get_checkcode_referer">http://172.16.13.22/</string>
+
+
+    <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36</string>
+    <string name="cookie_delimiter">"; "</string>
+
 </resources>

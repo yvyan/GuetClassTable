@@ -88,6 +88,41 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="27dp"
+            android:text="验证码:"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="13dp"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/checkcode_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_alignParentBottom="true"
+            android:inputType="number"
+            android:textSize="15sp"
+            android:singleLine="true"
+            android:layout_marginStart="93dp"
+            android:layout_marginEnd="28dp" />
+
+
+
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/imageView_checkcode"
+        android:layout_width="match_parent"
+        android:layout_height="140px"
+        android:layout_marginStart="280dp"
+        android:layout_marginEnd="30dp"
+        app:srcCompat="@drawable/network" />
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="16dp">
 
