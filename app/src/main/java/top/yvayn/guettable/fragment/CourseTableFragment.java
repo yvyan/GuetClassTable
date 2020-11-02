@@ -168,9 +168,13 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     public void onStart() {
         super.onStart();
         if (userData.isCourseSave()) {
-            mWeekView.source(CourseTableHelper.htmlStringToCourseBeanList(userData.getCourse()));
+            List<CourseBean> courseBeans = CourseTableHelper.htmlStringToCourseBeanList(userData.getCourse());
+            mWeekView.source(courseBeans)
+                    .updateView();
+            mTimetableView.source(courseBeans)
+                    .updateView();
         }
-        Log.d("onStart:", "ss");
+        Log.d("onStart:", "start");
         mTimetableView.onDateBuildListener()
                 .onHighLight();
     }
