@@ -38,7 +38,7 @@ public class GeneralData {
     public void setWeek(int week) {
         this.time = System.currentTimeMillis();
         this.week = week;
-        save();
+        saveWeek();
     }
 
     private void load() {
@@ -46,7 +46,7 @@ public class GeneralData {
         time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
     }
 
-    private void save() {
+    private void saveWeek() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(TIME, time);
         editor.putInt(WEEK, week);

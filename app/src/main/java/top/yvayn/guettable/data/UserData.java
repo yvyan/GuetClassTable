@@ -11,6 +11,9 @@ public class UserData {
     private static final String IS_LOGIN = "isLogin";
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
+    private static final String IS_SAVE_COURSE = "isCourseSave";
+    private static final String COURSE = "course";
+    private static final String UPDATE_COURSE = "updateCourse";
     SharedPreferences sharedPreferences;
 
     private boolean isSave;
@@ -21,6 +24,7 @@ public class UserData {
     //临时存储测试
     private boolean isCourseSave;
     private String course;
+    private boolean updateCourse;
 
     private UserData(Activity activity) {
         sharedPreferences = activity.getApplication().getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -50,12 +54,12 @@ public class UserData {
         return password;
     }
 
-    public void saveUser(String username, String password, boolean isSave) {
+    public void setUser(String username, String password, boolean isSave) {
         this.username = username;
         this.password = password;
         this.isSave = isSave;
         this.isLogin = true;
-        save();
+        saveUser();
     }
 
     public void delUser() {
@@ -63,12 +67,12 @@ public class UserData {
         this.isSave = false;
         this.username = "";
         this.password = "";
-        clear();
+        clearUser();
     }
 
     public void logoff() {
         this.isLogin = false;
-        save();
+        saveUser();
     }
 
     private void load() {
@@ -76,9 +80,13 @@ public class UserData {
         isLogin = sharedPreferences.getBoolean(IS_LOGIN, false);
         username = sharedPreferences.getString(USERNAME, "");
         password = sharedPreferences.getString(PASSWORD, "");
+
+        isCourseSave = sharedPreferences.getBoolean(IS_SAVE_COURSE, false);
+        course = sharedPreferences.getString(COURSE, null);
+        updateCourse = sharedPreferences.getBoolean(UPDATE_COURSE, false);
     }
 
-    private void save() {
+    private void saveUser() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(IS_SAVE, isSave);
         editor.putBoolean(IS_LOGIN, isLogin);
@@ -87,21 +95,29 @@ public class UserData {
         editor.apply();
     }
 
-    private  void clear() {
+    private void clearUser() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
     }
 
+    public void setUpdateCourse(boolean bool) {
+        updateCourse = bool;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(UPDATE_COURSE, updateCourse);
+        editor.apply();
+    }
+
+    public boolean getUpdateCourse() {
+        return updateCourse;
+    }
+
     public boolean isCourseSave() {
-        isCourseSave = sharedPreferences.getBoolean("isCourseSave", false);
         return isCourseSave;
     }
 
     public String getCourse() {
-        isCourseSave = sharedPreferences.getBoolean("isCourseSave", false);
         if (isCourseSave) {
-            course = sharedPreferences.getString("courseString", "");
             return course;
         }
         return null;
@@ -109,10 +125,12 @@ public class UserData {
 
     public void setCourse(String course) {
         this.course = course;
+        updateCourse = true;
         isCourseSave = true;
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("courseString", course);
-        editor.putBoolean("isCourseSave", isCourseSave);
+        editor.putString(COURSE, course);
+        editor.putBoolean(IS_SAVE_COURSE, isCourseSave);
+        editor.putBoolean(UPDATE_COURSE, true);
         editor.apply();
     }
 }
