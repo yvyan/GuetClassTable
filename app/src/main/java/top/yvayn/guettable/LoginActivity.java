@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText etPwd;
     private EditText etAccount;
     private CheckBox cbRememberPwd;
+    private Button button;
 
     private UserData userData;
 
@@ -48,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         userData = UserData.newInstance(this);
         final ImageView ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
-        Button button = findViewById(R.id.login);
+        button = findViewById(R.id.login);
         button.setOnClickListener(this);
         etAccount = findViewById(R.id.et_account);
         etPwd = findViewById(R.id.et_pwd);
@@ -79,7 +80,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         userData.saveUser(etAccount.getText().toString(), etPwd.getText().toString(), cbRememberPwd.isChecked());
         getCourseTable();
-        finish();
+
+        button.setBackgroundColor(0x44444444);
+        button.setText("正在登陆");
+        button.setEnabled(false);
+        //finish();
     }
 
     private void getCourseTable() {
@@ -150,6 +155,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.d("CourseData:", string);
                         userData.setCourse(string);
                         response.body().close();
+                        finish();
                     }
                 });
             }
