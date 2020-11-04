@@ -13,12 +13,13 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginTop="68dp">
+
         <ImageView
             android:layout_width="208dp"
             android:layout_height="208dp"
             android:src="@drawable/ic_logo"
-            android:layout_centerInParent="true"
-            />
+            android:layout_centerInParent="true" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -106,12 +107,10 @@
             android:layout_marginBottom="4dp"
             android:layout_alignParentBottom="true"
             android:inputType="number"
-            android:textSize="15sp"
+            android:textSize="20dp"
             android:singleLine="true"
             android:layout_marginStart="93dp"
             android:layout_marginEnd="28dp" />
-
-
 
     </RelativeLayout>
     <ImageView

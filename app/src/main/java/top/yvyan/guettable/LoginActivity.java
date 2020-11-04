@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Boolean bPwdSwitch = false;
     private EditText etPwd;
     private EditText etAccount;
+    private EditText checkCodeInput;
     private CheckBox cbRememberPwd;
     private Button button;
 
@@ -59,6 +60,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         button.setOnClickListener(this);
         etAccount = findViewById(R.id.et_account);
         etPwd = findViewById(R.id.et_pwd);
+        checkCodeInput = findViewById(R.id.checkcode_input);
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
         cbRememberPwd.setChecked(true);
         ivPwdSwitch.setOnClickListener(new View.OnClickListener() {
@@ -86,23 +88,62 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        userData.setUser(etAccount.getText().toString(), etPwd.getText().toString(), cbRememberPwd.isChecked());
-        getCourseTable();
-
+        toLogin();
         button.setBackgroundColor(0x44444444);
         button.setText("正在登陆");
         button.setEnabled(false);
-        //finish();
     }
+
+    public void toLogin() {
+        String account = etAccount.getText().toString();
+        String pwd = etPwd.getText().toString();
+        String checkCode = checkCodeInput.getText().toString();
+
+        final String cookie_before_login = cookie_builder.toString();
+        new Thread(() -> {
+            HttpConnectionAndCode login_res = LAN.login(this, account, pwd, checkCode, cookie_before_login, cookie_builder);
+            if (login_res.code != 0) {
+                String msg;
+                if (login_res.comment != null && login_res.comment.contains("验证码")) {
+                    msg = getResources().getString(R.string.lan_login_fail_ck);
+                } else if (login_res.comment != null && login_res.comment.contains("密码")) {
+                    msg = getResources().getString(R.string.lan_login_fail_pwd);
+                } else {
+                    msg = getResources().getString(R.string.lan_login_fail);
+                }
+                Looper.prepare();
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                runOnUiThread(() -> {
+                    button.setText("登陆");
+                    button.setEnabled(true);
+                });
+                Looper.loop();
+            } else {
+                runOnUiThread(() -> {
+                    button.setText("登陆成功");
+                });
+            }
+        }).start();
+    }
+
+//    @Override
+//    public void onClick(View view) {
+//        userData.setUser(etAccount.getText().toString(), etPwd.getText().toString(), cbRememberPwd.isChecked());
+//        getCourseTable();
+//
+//        button.setBackgroundColor(0x44444444);
+//        button.setText("正在登陆");
+//        button.setEnabled(false);
+//        //finish();
+//    }
 
     /**
      * 刷新验证码
      */
     public void changeCode() {
-        final EditText editText = findViewById(R.id.checkcode_input);
         final ImageView imageView = findViewById(R.id.imageView_checkcode);
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.network, getTheme()));
-        editText.setText("");
+        checkCodeInput.setText("");
 
         cookie_builder = new StringBuilder();
         new Thread(() -> {
@@ -114,7 +155,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 runOnUiThread(() -> {
                     imageView.setImageBitmap((Bitmap)res.obj);
-                    editText.setText(ocr);
+                    checkCodeInput.setText(ocr);
                 });
             }
         }).start();
