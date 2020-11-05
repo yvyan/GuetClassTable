@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import com.google.gson.Gson;
 
 import top.yvyan.guettable.Gson.LoginResponse;
+import top.yvyan.guettable.Http.Get;
 import top.yvyan.guettable.Http.GetBitmap;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.Http.Post;
@@ -68,4 +69,70 @@ public class LAN {
         }
         return login_res;
     }
+
+    /**
+     * 获取学生个人信息
+     * @param context
+     * @param cookie
+     * @return
+     */
+    public static HttpConnectionAndCode studentInfo(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Post.post(
+                resources.getString(R.string.lan_get_student_url),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_student_referer),
+                null,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_get_student_success_contain_response_text),
+                null,
+                null
+        );
+    }
+
+    /**
+     *
+     * @param context
+     * @param cookie
+     * @return
+     */
+    public static HttpConnectionAndCode termInfo(Context context, String cookie){
+        Resources resources = context.getResources();
+        return Get.get(
+                resources.getString(R.string.lan_get_terms_url),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_terms_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_terms_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    public static HttpConnectionAndCode getClassTable(Context context, String cookie){
+        Resources r = context.getResources();
+        return Get.get(
+                r.getString(R.string.lan_get_table_url),
+                null,
+                r.getString(R.string.user_agent),
+                r.getString(R.string.lan_get_table_referer),
+                cookie,
+                "]}",
+                null,
+                r.getString(R.string.lan_get_table_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
 }
