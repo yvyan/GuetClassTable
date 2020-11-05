@@ -12,12 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginTop="68dp">
+        android:layout_marginTop="40dp">
 
         <ImageView
-            android:layout_width="208dp"
-            android:layout_height="208dp"
-            android:src="@drawable/ic_logo"
+            android:layout_width="290dp"
+            android:layout_height="290dp"
+            android:src="@drawable/logo"
             android:layout_centerInParent="true" />
 
     </RelativeLayout>
@@ -95,31 +95,25 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="27dp"
+            android:textSize="22dp"
             android:text="验证码:"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="13dp"/>
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="15dp" />
 
         <AutoCompleteTextView
             android:id="@+id/checkcode_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="1dp"
             android:layout_alignParentBottom="true"
             android:inputType="number"
             android:textSize="20dp"
             android:singleLine="true"
-            android:layout_marginStart="93dp"
+            android:layout_marginStart="86dp"
             android:layout_marginEnd="28dp" />
 
     </RelativeLayout>
-    <ImageView
-        android:id="@+id/imageView_checkcode"
-        android:layout_width="match_parent"
-        android:layout_height="140px"
-        android:layout_marginStart="280dp"
-        android:layout_marginEnd="30dp"
-        app:srcCompat="@drawable/network" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -136,18 +130,13 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"/>
 
-        <TextView
-            android:id="@+id/tv_sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/cb_remember_pwd"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="11dp"
-            android:text="Sign up"
-            android:textColor="@color/colorAccent" />
-
+        <ImageView
+            android:id="@+id/imageView_checkcode"
+            android:layout_width="match_parent"
+            android:layout_height="140px"
+            android:layout_marginStart="280dp"
+            android:layout_marginEnd="30dp"
+            app:srcCompat="@drawable/network" />
 
     </RelativeLayout>
 
