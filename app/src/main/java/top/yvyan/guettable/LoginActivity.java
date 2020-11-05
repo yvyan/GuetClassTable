@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final String cookie_before_login = cookie_builder.toString();
         new Thread(() -> {
             HttpConnectionAndCode login_res = LAN.login(this, account, pwd, checkCode, cookie_before_login, cookie_builder);
-            if (login_res.code != 0) {
+            if (login_res.code != 0) { //登陆失败
                 String msg;
                 if (login_res.comment != null && login_res.comment.contains("验证码")) {
                     msg = getResources().getString(R.string.lan_login_fail_ck);
@@ -114,15 +114,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Looper.prepare();
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                 runOnUiThread(() -> {
-                    button.setText("登陆");
+                    button.setText("登录");
+                    button.setBackgroundColor(0xFF03A9F4);
                     button.setEnabled(true);
                 });
                 Looper.loop();
-            } else {
-                runOnUiThread(() -> {
-                    button.setText("登陆成功");
-                });
             }
+            //登陆成功
+            runOnUiThread(() -> {
+                button.setText("登陆成功");
+            });
         }).start();
     }
 

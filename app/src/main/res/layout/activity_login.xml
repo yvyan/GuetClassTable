@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
             android:layout_marginLeft="16dp"
-            android:text="Remember Password"
+            android:text="记住密码"
             android:layout_marginBottom="4dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"/>
@@ -149,7 +149,7 @@
 
         <Button
             android:id="@+id/login"
-            android:text="Login"
+            android:text="登录"
             android:textColor="@android:color/white"
             android:background="@color/colorPrimary"
             android:layout_marginTop="32dp"
