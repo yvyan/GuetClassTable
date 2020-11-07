@@ -29,6 +29,7 @@
     <string name="lan_get_table_url">http://172.16.13.22/student/getstutable</string>
     <string name="lan_get_table_referer">http://172.16.13.22</string>
     <string name="lan_get_table_success_contain_response_text">\"success\":true</string>
+    <string name="lan_get_lab_table_url">http://172.16.13.22/student/getlabtable</string>
 
     <string name="lan_login_fail">登录失败, 检查校园网连接后重试</string>
     <string name="lan_login_fail_ck">验证码错误，登录失败</string>
