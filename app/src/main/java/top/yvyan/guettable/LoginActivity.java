@@ -119,11 +119,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     button.setEnabled(true);
                 });
                 Looper.loop();
+            } else {
+                //登陆成功
+                runOnUiThread(() -> {
+                    button.setText("登陆成功");
+                    button.setEnabled(true);
+                });
+                final String cookie_after_login = cookie_builder.toString();
+                HttpConnectionAndCode classTable = LAN.getClassTable(this, cookie_after_login, "2020-2021_1");
+                if (classTable.code == 0) {
+                    Looper.prepare();
+                    Toast.makeText(this, classTable.comment.substring(40, 600), Toast.LENGTH_LONG).show();
+                    Looper.loop();
+                }
             }
-            //登陆成功
-            runOnUiThread(() -> {
-                button.setText("登陆成功");
-            });
         }).start();
     }
 

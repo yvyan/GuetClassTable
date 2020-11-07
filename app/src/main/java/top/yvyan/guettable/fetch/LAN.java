@@ -94,40 +94,23 @@ public class LAN {
     }
 
     /**
-     *
+     * 获取课程安排
      * @param context
      * @param cookie
      * @return
      */
-    public static HttpConnectionAndCode termInfo(Context context, String cookie){
+    public static HttpConnectionAndCode getClassTable(Context context, String cookie, String term){
         Resources resources = context.getResources();
+        String[] param = {"term=" + term};
         return Get.get(
-                resources.getString(R.string.lan_get_terms_url),
-                null,
+                resources.getString(R.string.lan_get_table_url),
+                param,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_terms_referer),
+                resources.getString(R.string.lan_get_table_referer),
                 cookie,
                 "]}",
                 null,
-                resources.getString(R.string.lan_get_terms_success_contain_response_text),
-                null,
-                null,
-                null,
-                null
-        );
-    }
-
-    public static HttpConnectionAndCode getClassTable(Context context, String cookie){
-        Resources r = context.getResources();
-        return Get.get(
-                r.getString(R.string.lan_get_table_url),
-                null,
-                r.getString(R.string.user_agent),
-                r.getString(R.string.lan_get_table_referer),
-                cookie,
-                "]}",
-                null,
-                r.getString(R.string.lan_get_table_success_contain_response_text),
+                resources.getString(R.string.lan_get_table_success_contain_response_text),
                 null,
                 null,
                 null,
