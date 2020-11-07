@@ -34,6 +34,7 @@ import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.data.UserData;
 import top.yvyan.guettable.fetch.LAN;
+import top.yvyan.guettable.util.ToastUtils;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Boolean bPwdSwitch = false;
@@ -127,10 +128,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
                 final String cookie_after_login = cookie_builder.toString();
                 HttpConnectionAndCode classTable = LAN.getClassTable(this, cookie_after_login, "2020-2021_1");
+
                 if (classTable.code == 0) {
-                    Looper.prepare();
-                    Toast.makeText(this, classTable.comment.substring(40, 600), Toast.LENGTH_LONG).show();
-                    Looper.loop();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtils.showToast(getApplicationContext(), classTable.comment.substring(40, 1000));
+                        }
+                    });
+
+                }
+
+                HttpConnectionAndCode labTable = LAN.getLabTable(this, cookie_after_login, "2020-2021_1");
+                if (labTable.code == 0) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtils.showToast(getApplicationContext(), labTable.comment.substring(40, 1000));
+                        }
+                    });
                 }
             }
         }).start();

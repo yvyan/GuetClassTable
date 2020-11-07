@@ -80,7 +80,7 @@ public class Get {
                 cnt.setInstanceFollowRedirects(redirect);
             }
             if (read_timeout == null) {
-                cnt.setReadTimeout(4000);
+                cnt.setReadTimeout(9000);
             }else {
                 cnt.setReadTimeout(read_timeout);
             }

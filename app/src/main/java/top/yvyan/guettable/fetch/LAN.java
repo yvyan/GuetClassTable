@@ -118,4 +118,29 @@ public class LAN {
         );
     }
 
+    /**
+     * 获取课内实验安排
+     * @param context
+     * @param cookie
+     * @return
+     */
+    public static HttpConnectionAndCode getLabTable(Context context, String cookie, String term){
+        Resources resources = context.getResources();
+        String[] param = {"term=" + term};
+        return Get.get(
+                resources.getString(R.string.lan_get_lab_table_url),
+                param,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_table_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_table_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
 }
