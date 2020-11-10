@@ -17,6 +17,8 @@ import top.yvyan.guettable.data.UserData;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
+    private static DayClassFragment dayClassFragment;
+
     private View view;
     private TextView textView;
     private Button goToLogin;
@@ -27,8 +29,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     }
 
     public static DayClassFragment newInstance() {
-        DayClassFragment fragment = new DayClassFragment();
-        return fragment;
+        if (dayClassFragment == null) {
+            DayClassFragment fragment = new DayClassFragment();
+            dayClassFragment = fragment;
+        }
+        return dayClassFragment;
     }
 
     @Override
@@ -41,6 +46,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         goToLogin.setOnClickListener(this);
         userData = UserData.newInstance(getActivity());
         updateUser();
+        Log.d("test:", "create");
         return view;
     }
 
@@ -48,7 +54,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
         Log.d("test:", "start");
-        updateUser();
+        //updateUser();
     }
 
     @Override
@@ -70,5 +76,10 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             textView.setText("未登录");
             goToLogin.setText("登陆");
         }
+    }
+
+    public void updateText(String text) {
+        textView.setText(text);
+        Log.d("test:", "updateText");
     }
 }
