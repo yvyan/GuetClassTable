@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,7 @@ import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.data.UserData;
 import top.yvyan.guettable.fetch.LAN;
+import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.util.ToastUtils;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -43,6 +45,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText checkCodeInput;
     private CheckBox cbRememberPwd;
     private Button button;
+
+    //日课表页状态显示
+    private TextView show_test;
 
     private UserData userData;
 
@@ -63,6 +68,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         etPwd = findViewById(R.id.et_pwd);
         checkCodeInput = findViewById(R.id.checkcode_input);
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
+
+        show_test = findViewById(R.id.day_class_test);
+
         cbRememberPwd.setChecked(true);
         ivPwdSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +133,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 runOnUiThread(() -> {
                     button.setText("登陆成功");
                     button.setEnabled(true);
+
+
+                    finish();
                 });
+                DayClassFragment.newInstance().updateText("正在获取课表");
                 final String cookie_after_login = cookie_builder.toString();
                 HttpConnectionAndCode classTable = LAN.getClassTable(this, cookie_after_login, "2020-2021_1");
 
@@ -139,6 +151,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 }
 
+                DayClassFragment.newInstance().updateText("正在获取实验...");
                 HttpConnectionAndCode labTable = LAN.getLabTable(this, cookie_after_login, "2020-2021_1");
                 if (labTable.code == 0) {
                     runOnUiThread(new Runnable() {
@@ -148,6 +161,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     });
                 }
+                DayClassFragment.newInstance().updateText("数据更新成功");
             }
         }).start();
     }
