@@ -7,7 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import top.yvyan.guettable.bean.StudentInfo;
+import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.service.GetDataService;
 
@@ -18,9 +18,6 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
 
     private String cookie;
     private GeneralData generalData;
-
-    public SetTermActivity() {
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

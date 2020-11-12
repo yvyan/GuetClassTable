@@ -188,7 +188,7 @@ public class CourseTableHelper {
                 week = day + 1;
                 //endregion
                 CourseBean courseBean = new CourseBean();
-                courseBean.setCourse(number, name, room, weekList, week, time, teacher);
+                courseBean.setCourse(number, name, room, weekStart, weekEnd, week, time, teacher);
                 courseBeans.add(courseBean);
             }
         }

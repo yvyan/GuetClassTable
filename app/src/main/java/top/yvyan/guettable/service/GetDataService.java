@@ -5,9 +5,16 @@ import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import top.yvyan.guettable.Gson.ClassTable;
+import top.yvyan.guettable.Gson.ClassTableOuter;
+import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
-import top.yvyan.guettable.bean.StudentInfo;
+import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.service.fetch.LAN;
 import top.yvyan.guettable.util.ToastUtil;
@@ -64,6 +71,14 @@ public class GetDataService {
                     public void run() {
                         ToastUtil.showToast(activity, classTable.comment.substring(40, 1000));
                     }
+                });
+                ClassTableOuter classTableOuter = new Gson().fromJson(classTable.comment, ClassTableOuter.class);
+                List<CourseBean> courseBeans = new ArrayList<>();
+                for (ClassTable classTable1 : classTableOuter.getData()) {
+                    courseBeans.add(classTable1.toCourseBean());
+                }
+                activity.runOnUiThread(() -> {
+                    CourseTableFragment.newInstance().updateTable(courseBeans);
                 });
             }
 

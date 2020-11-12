@@ -5,7 +5,7 @@ import android.content.res.Resources;
 
 import com.google.gson.Gson;
 
-import top.yvyan.guettable.bean.LoginResponse;
+import top.yvyan.guettable.Gson.LoginResponse;
 import top.yvyan.guettable.Http.Get;
 import top.yvyan.guettable.Http.GetBitmap;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
