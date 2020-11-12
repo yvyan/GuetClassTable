@@ -36,7 +36,7 @@ import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.data.UserData;
 import top.yvyan.guettable.fetch.LAN;
 import top.yvyan.guettable.fragment.DayClassFragment;
-import top.yvyan.guettable.util.ToastUtils;
+import top.yvyan.guettable.util.ToastUtil;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Boolean bPwdSwitch = false;
@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ToastUtils.showToast(getApplicationContext(), classTable.comment.substring(40, 1000));
+                            ToastUtil.showToast(getApplicationContext(), classTable.comment.substring(40, 1000));
                         }
                     });
 
@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ToastUtils.showToast(getApplicationContext(), labTable.comment.substring(40, 1000));
+                            ToastUtil.showToast(getApplicationContext(), labTable.comment.substring(40, 1000));
                         }
                     });
                 }
