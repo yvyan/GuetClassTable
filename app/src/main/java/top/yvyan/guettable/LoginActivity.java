@@ -1,41 +1,25 @@
 package top.yvyan.guettable;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.FormBody;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.fetch.LAN;
-import top.yvyan.guettable.fragment.DayClassFragment;
+import top.yvyan.guettable.service.fetch.LAN;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -46,11 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CheckBox cbRememberPwd;
     private Button button;
 
-    //日课表页状态显示
-    private TextView show_test;
-
     private AccountData accountData;
-
     private StringBuilder cookie_builder = null;
 
     @Override
@@ -69,21 +49,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         checkCodeInput = findViewById(R.id.checkcode_input);
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
 
-        show_test = findViewById(R.id.day_class_test);
-
         cbRememberPwd.setChecked(true);
-        ivPwdSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bPwdSwitch = !bPwdSwitch;
-                if (bPwdSwitch) {
-                    ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_24);
-                    etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                } else {
-                    ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_off_24);
-                    etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
-                    etPwd.setTypeface(Typeface.DEFAULT);
-                }
+        ivPwdSwitch.setOnClickListener((View view) -> {
+            bPwdSwitch = !bPwdSwitch;
+            if (bPwdSwitch) {
+                ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_24);
+                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            } else {
+                ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_off_24);
+                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                etPwd.setTypeface(Typeface.DEFAULT);
             }
         });
 
@@ -97,27 +72,44 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        toLogin();
         button.setBackgroundColor(0x44444444);
-        button.setText("正在登陆");
+        button.setText("正在登录");
         button.setEnabled(false);
+        testAccount(
+                etAccount.getText().toString(),
+                etPwd.getText().toString(),
+                checkCodeInput.getText().toString()
+        );
     }
 
-    public void toLogin() {
-        String account = etAccount.getText().toString();
-        String pwd = etPwd.getText().toString();
-        String checkCode = checkCodeInput.getText().toString();
-
+    /**
+     * 尝试登陆
+     * 若密码正确，则存储密码
+     * @param account   学号
+     * @param pwd       密码
+     * @param checkCode 验证码
+     */
+    private void testAccount(String account, String pwd, String checkCode) {
         final String cookie_before_login = cookie_builder.toString();
+        if ("".equals(account) || "".equals(pwd)) {
+            runOnUiThread(() -> {
+                ToastUtil.showToast(this, "请输入学号/密码");
+                button.setText("登录");
+                button.setBackgroundColor(0xFF03A9F4);
+                button.setEnabled(true);
+            });
+            return;
+        }
         new Thread(() -> {
             HttpConnectionAndCode login_res = LAN.login(this, account, pwd, checkCode, cookie_before_login, cookie_builder);
-            if (login_res.code != 0) { //登陆失败
+            if (login_res.code != 0) { //登录失败
                 String msg;
                 if (login_res.comment != null && login_res.comment.contains("验证码")) {
                     msg = getResources().getString(R.string.lan_login_fail_ck);
                 } else if (login_res.comment != null && login_res.comment.contains("密码")) {
                     msg = getResources().getString(R.string.lan_login_fail_pwd);
                 } else {
+                    //TODO: 修改为ToastUtil
                     msg = getResources().getString(R.string.lan_login_fail);
                 }
                 Looper.prepare();
@@ -128,68 +120,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     button.setEnabled(true);
                 });
                 Looper.loop();
-            } else {
-                //登陆成功
-                runOnUiThread(() -> {
-                    button.setText("登陆成功");
-                    button.setEnabled(true);
+            } else { //登录成功
+                accountData.setUser(account, pwd, cbRememberPwd.isChecked());
 
-
-                    finish();
-                });
-                DayClassFragment.newInstance().updateText("正在获取课表");
-                final String cookie_after_login = cookie_builder.toString();
-                HttpConnectionAndCode classTable = LAN.getClassTable(this, cookie_after_login, "2020-2021_1");
-
-                if (classTable.code == 0) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ToastUtil.showToast(getApplicationContext(), classTable.comment.substring(40, 1000));
-                        }
-                    });
-
-                }
-
-                DayClassFragment.newInstance().updateText("正在获取实验...");
-                HttpConnectionAndCode labTable = LAN.getLabTable(this, cookie_after_login, "2020-2021_1");
-                if (labTable.code == 0) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ToastUtil.showToast(getApplicationContext(), labTable.comment.substring(40, 1000));
-                        }
-                    });
-                }
-                DayClassFragment.newInstance().updateText("数据更新成功");
+                //启动SetTerm活动
+                Intent intent = new Intent(this, SetTermActivity.class);
+                intent.putExtra("cookie", cookie_builder.toString());
+                startActivity(intent);
+                finish();
             }
         }).start();
     }
-
-//    @Override
-//    public void onClick(View view) {
-//        userData.setUser(etAccount.getText().toString(), etPwd.getText().toString(), cbRememberPwd.isChecked());
-//        getCourseTable();
-//
-//        button.setBackgroundColor(0x44444444);
-//        button.setText("正在登陆");
-//        button.setEnabled(false);
-//        //finish();
-//    }
 
     /**
      * 刷新验证码
      */
     public void changeCode() {
         final ImageView imageView = findViewById(R.id.imageView_checkcode);
-        imageView.setImageDrawable(getResources().getDrawable(R.drawable.network, getTheme()));
+        imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.network, getTheme()));
         checkCodeInput.setText("");
 
         cookie_builder = new StringBuilder();
         new Thread(() -> {
             final HttpConnectionAndCode res = LAN.checkCode(this);
             if (res.obj != null) {
-                //TODO "telephone"标识符含义待确认
                 final String ocr = OCR.getTextFromBitmap(this, (Bitmap) res.obj, "telephone");
                 cookie_builder.append(res.cookie);
 
@@ -201,79 +155,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }).start();
     }
 
-    private void getCourseTable() {
-        final OkHttpClient client;
-        client = new OkHttpClient.Builder().cookieJar(new CookieJar() {
-            private final HashMap<HttpUrl, List<Cookie>> cookieStore = new HashMap<>();
-
-            @Override
-            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                cookieStore.put(url, cookies);
-                cookieStore.put(HttpUrl.parse(getString(R.string.url_login)), cookies);
-            }
-
-            @Override
-            public List<Cookie> loadForRequest(HttpUrl url) {
-                List<Cookie> cookies = cookieStore.get(HttpUrl.parse(getString(R.string.url_login)));
-                return cookies != null ? cookies : new ArrayList<Cookie>();
-            }
-        }).build();
-
-        RequestBody requestBody = new FormBody.Builder()
-                .add("username", accountData.getUsername())
-                .add("passwd", accountData.getPassword())
-                .add("login","%B5%C7%A1%A1%C2%BC")
-                .add("mCode","000703")
-                .build();//创建网络请求表单
-
-        final Request request = new Request.Builder()
-                .url(this.getString(R.string.url_login))
-                .post(requestBody)
-                .build();
-        Call call = client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Looper.prepare();
-                Toast.makeText(getApplicationContext(), "网络请求错误！", Toast.LENGTH_SHORT).show();
-                Looper.loop();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //存储用户名密码
-
-                //获取课程表
-                RequestBody requestBody1 = new FormBody.Builder()
-                        .add("term", "2020-2021_1")
-                        .build();
-                Request request1 = new Request.Builder()
-                        .url(getString(R.string.url_course))
-                        .addHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8")
-                        .post(requestBody1)
-                        .build();
-                call = client.newCall(request1);
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Looper.prepare();
-                        Toast.makeText(getApplicationContext(), "网络请求错误！", Toast.LENGTH_SHORT).show();
-                        Looper.loop();
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        byte[] data = response.body().bytes();
-
-                        final String string = new String(data, "gb2312");
-                        Log.d("CourseData:", string);
-                        accountData.setCourse(string);
-                        response.body().close();
-                        finish();
-                    }
-                });
-            }
-        });
-
-    }
 }

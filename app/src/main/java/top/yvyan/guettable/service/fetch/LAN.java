@@ -1,4 +1,4 @@
-package top.yvyan.guettable.fetch;
+package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
 import android.content.res.Resources;
