@@ -1,4 +1,4 @@
-package top.yvyan.guettable.bean;
+package top.yvyan.guettable.Gson;
 
 /**
  * @clear

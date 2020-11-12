@@ -3,6 +3,7 @@ package top.yvyan.guettable.bean;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleEnable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseBean implements ScheduleEnable {
@@ -19,10 +20,14 @@ public class CourseBean implements ScheduleEnable {
     private String libName;
     //教室
     private String room;
+    //开始周次
+    private int weekStart;
+    //结束周次
+    private int weekEnd;
     //周次集合
     private List<Integer> weekList;
     //周几
-    private int week;
+    private int day;
     //第几节课
     private int time;
     //老师
@@ -37,25 +42,30 @@ public class CourseBean implements ScheduleEnable {
     }
 
     //设置为理论课
-    public void setCourse(String number, String name, String room, List<Integer> weekList, int week, int time, String teacher) {
+    public void setCourse(String number, String name, String room, int weekStart, int weekEnd, int day, int time, String teacher) {
         this.isLab = false;
         this.name = name;
         this.room = room;
-        this.weekList = weekList;
-        this.week = week;
+        this.weekList=new ArrayList<>();
+        for(int k = weekStart; k <= weekEnd; k++){
+            weekList.add(k);
+        }
+        this.day = day;
         this.time = time;
         this.teacher = teacher;
         this.number = number;
     }
 
     //设置为实验课
-    public void setLab(String name, String libName, String room, List<Integer> weekList, int week, int time, String remarks) {
+    public void setLab(String name, String libName, String room, List<Integer> weekList, int day, int time, String remarks) {
         this.isLab = true;
         this.name = name;
         this.libName = libName;
         this.room = room;
         this.weekList = weekList;
-        this.week = week;
+        this.weekStart = weekList.get(0);
+        this.weekEnd = weekStart;
+        this.day = day;
         this.time = time;
         this.remarks = remarks;
     }
@@ -63,7 +73,7 @@ public class CourseBean implements ScheduleEnable {
     @Override
     public Schedule getSchedule() {
         Schedule schedule=new Schedule();
-        schedule.setDay(getWeek());
+        schedule.setDay(getDay());
         schedule.setName(getName());
         schedule.setRoom(getRoom());
         schedule.setStart(getTime() * 2 - 1);
@@ -154,12 +164,12 @@ public class CourseBean implements ScheduleEnable {
         this.colorRandom = colorRandom;
     }
 
-    public int getWeek() {
-        return week;
+    public int getDay() {
+        return day;
     }
 
-    public void setWeek(int week) {
-        this.week = week;
+    public void setDay(int day) {
+        this.day = day;
     }
 
     public List<Integer> getWeekList() {
@@ -168,6 +178,22 @@ public class CourseBean implements ScheduleEnable {
 
     public void setWeekList(List<Integer> weekList) {
         this.weekList = weekList;
+    }
+
+    public int getWeekStart() {
+        return weekStart;
+    }
+
+    public void setWeekStart(int weekStart) {
+        this.weekStart = weekStart;
+    }
+
+    public int getWeekEnd() {
+        return weekEnd;
+    }
+
+    public void setWeekEnd(int weekEnd) {
+        this.weekEnd = weekEnd;
     }
 
     @Override
@@ -179,8 +205,10 @@ public class CourseBean implements ScheduleEnable {
                 ", name='" + name + '\'' +
                 ", libName='" + libName + '\'' +
                 ", room='" + room + '\'' +
+                ", weekStart=" + weekStart +
+                ", weekEnd=" + weekEnd +
                 ", weekList=" + weekList +
-                ", week=" + week +
+                ", day=" + day +
                 ", time=" + time +
                 ", teacher='" + teacher + '\'' +
                 ", remarks='" + remarks + '\'' +

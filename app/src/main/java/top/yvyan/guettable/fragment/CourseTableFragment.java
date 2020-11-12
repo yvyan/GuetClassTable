@@ -33,6 +33,7 @@ import top.yvyan.guettable.helper.CourseTableHelper;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
 
+    private static CourseTableFragment courseTableFragment;
     private static final String TAG = "CourseTableFragment";
 
     //控件
@@ -52,8 +53,11 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     int target = -1;
 
     public static CourseTableFragment newInstance() {
-        CourseTableFragment fragment = new CourseTableFragment();
-        return fragment;
+        if (courseTableFragment == null) {
+            CourseTableFragment fragment = new CourseTableFragment();
+            courseTableFragment = fragment;
+        }
+        return courseTableFragment;
     }
 
     @Override
@@ -178,6 +182,13 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         Log.d("onStart:", "start");
         mTimetableView.onDateBuildListener()
                 .onHighLight();
+    }
+
+    public void updateTable(List<CourseBean> courseBeans) {
+        mWeekView.source(courseBeans)
+                .showView();
+        mTimetableView.source(courseBeans)
+                .updateView();
     }
 
     /**
