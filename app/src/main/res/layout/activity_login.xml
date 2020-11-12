@@ -44,7 +44,7 @@
             android:layout_marginStart="56dp"
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="4dp"
-            android:hint="Email/Account"
+            android:hint="请输入学号"
             android:inputType="text"
             android:maxLines="1" />
 
@@ -70,7 +70,7 @@
             android:layout_marginBottom="4dp"
             android:layout_alignParentBottom="true"
             android:inputType="textPassword"
-            android:hint="Password"
+            android:hint="请输入教务系统密码"
             android:layout_marginStart="56dp"
             android:layout_marginEnd="28dp"
             android:maxLines="1"/>
