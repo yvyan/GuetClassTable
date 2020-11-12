@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".SetTermActivity">
 
+    <TextView
+        android:id="@+id/more_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="等待开发：用户设置/确认当前学期"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/back"
         android:layout_width="wrap_content"

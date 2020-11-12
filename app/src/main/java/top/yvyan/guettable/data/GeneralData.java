@@ -13,14 +13,25 @@ public class GeneralData {
     private static final String SHP_NAME = "GeneralData";
     private static final String WEEK = "week";
     private static final String TIME = "time";
+    private static final String GRADE = "grade";
+    private static final String TERM = "term";
     SharedPreferences sharedPreferences;
 
     private int week;
     private long time;
+    private String grade;
+    private String term;
 
     private GeneralData(Activity activity) {
         sharedPreferences = activity.getApplication().getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         load();
+    }
+
+    private void load() {
+        week = sharedPreferences.getInt(WEEK, 1);
+        time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
+        grade = sharedPreferences.getString(GRADE, null);
+        term = sharedPreferences.getString(TERM, null);
     }
 
     public static GeneralData newInstance(Activity activity) {
@@ -41,15 +52,41 @@ public class GeneralData {
         saveWeek();
     }
 
-    private void load() {
-        week = sharedPreferences.getInt(WEEK, 1);
-        time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
-    }
-
     private void saveWeek() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(TIME, time);
         editor.putInt(WEEK, week);
+        editor.apply();
+    }
+
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+        saveGrade();
+    }
+
+    private void saveGrade() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(GRADE, grade);
+        editor.apply();
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+        saveTerm();
+    }
+
+    private void saveTerm() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(TERM, term);
         editor.apply();
     }
 }
