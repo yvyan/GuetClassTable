@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class UserData {
-    private static UserData userData;
+public class AccountData {
+    private static AccountData accountData;
     private static final String SHP_NAME = "UserData";
     private static final String IS_SAVE = "isSave";
     private static final String IS_LOGIN = "isLogin";
@@ -26,16 +26,16 @@ public class UserData {
     private String course;
     private boolean updateCourse;
 
-    private UserData(Activity activity) {
+    private AccountData(Activity activity) {
         sharedPreferences = activity.getApplication().getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         load();
     }
 
-    public static UserData newInstance(Activity activity) {
-        if (userData == null) {
-            userData = new UserData(activity);
+    public static AccountData newInstance(Activity activity) {
+        if (accountData == null) {
+            accountData = new AccountData(activity);
         }
-        return userData;
+        return accountData;
     }
 
     public boolean getIsSave() {

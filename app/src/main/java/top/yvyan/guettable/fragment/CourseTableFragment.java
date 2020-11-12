@@ -28,7 +28,7 @@ import java.util.List;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.UserData;
+import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.helper.CourseTableHelper;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
@@ -45,7 +45,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
     private View view;
 
-    private UserData userData;
+    private AccountData accountData;
     private GeneralData generalData;
 
     //记录切换的周次，不一定是当前周
@@ -70,7 +70,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             }
         });
 
-        userData = UserData.newInstance(getActivity());
+        accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
         titleTextView = view.findViewById(R.id.id_title);
         linearLayout = view.findViewById(R.id.id_class_layout);
@@ -89,8 +89,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
         //设置周次选择属性
         List<CourseBean> courseBeans;
-        if (userData.isCourseSave()) {
-            courseBeans = CourseTableHelper.htmlStringToCourseBeanList(userData.getCourse());
+        if (accountData.isCourseSave()) {
+            courseBeans = CourseTableHelper.htmlStringToCourseBeanList(accountData.getCourse());
         } else {
             courseBeans = new ArrayList<>();
         }
@@ -167,13 +167,13 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
-        if (userData.isCourseSave() && userData.getUpdateCourse()) {
-            List<CourseBean> courseBeans = CourseTableHelper.htmlStringToCourseBeanList(userData.getCourse());
+        if (accountData.isCourseSave() && accountData.getUpdateCourse()) {
+            List<CourseBean> courseBeans = CourseTableHelper.htmlStringToCourseBeanList(accountData.getCourse());
             mWeekView.source(courseBeans)
                     .showView();
             mTimetableView.source(courseBeans)
                     .updateView();
-            userData.setUpdateCourse(false);
+            accountData.setUpdateCourse(false);
         }
         Log.d("onStart:", "start");
         mTimetableView.onDateBuildListener()

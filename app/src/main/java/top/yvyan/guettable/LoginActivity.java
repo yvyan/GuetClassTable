@@ -33,7 +33,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
-import top.yvyan.guettable.data.UserData;
+import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.fetch.LAN;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.util.ToastUtil;
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //日课表页状态显示
     private TextView show_test;
 
-    private UserData userData;
+    private AccountData accountData;
 
     private StringBuilder cookie_builder = null;
 
@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        userData = UserData.newInstance(this);
+        accountData = AccountData.newInstance(this);
         final ImageView ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
         button = findViewById(R.id.login);
         button.setOnClickListener(this);
@@ -87,9 +87,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        if (userData.getIsSave()) {
-            etAccount.setText(userData.getUsername());
-            etPwd.setText(userData.getPassword());
+        if (accountData.getIsSave()) {
+            etAccount.setText(accountData.getUsername());
+            etPwd.setText(accountData.getPassword());
         }
 
         changeCode();
@@ -220,8 +220,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }).build();
 
         RequestBody requestBody = new FormBody.Builder()
-                .add("username", userData.getUsername())
-                .add("passwd", userData.getPassword())
+                .add("username", accountData.getUsername())
+                .add("passwd", accountData.getPassword())
                 .add("login","%B5%C7%A1%A1%C2%BC")
                 .add("mCode","000703")
                 .build();//创建网络请求表单
@@ -267,7 +267,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         final String string = new String(data, "gb2312");
                         Log.d("CourseData:", string);
-                        userData.setCourse(string);
+                        accountData.setCourse(string);
                         response.body().close();
                         finish();
                     }
