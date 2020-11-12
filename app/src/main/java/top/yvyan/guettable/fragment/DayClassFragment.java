@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.data.UserData;
+import top.yvyan.guettable.data.AccountData;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
@@ -22,7 +22,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private View view;
     private TextView textView;
     private Button goToLogin;
-    private UserData userData;
+    private AccountData accountData;
 
     public DayClassFragment() {
         // Required empty public constructor
@@ -44,7 +44,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         textView = view.findViewById(R.id.day_class_test);
         goToLogin = view.findViewById(R.id.goToLogin);
         goToLogin.setOnClickListener(this);
-        userData = UserData.newInstance(getActivity());
+        accountData = AccountData.newInstance(getActivity());
         updateUser();
         Log.d("test:", "create");
         return view;
@@ -59,8 +59,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (userData.getIsLogin()) {
-            userData.logoff();
+        if (accountData.getIsLogin()) {
+            accountData.logoff();
             updateUser();
         } else {
             Intent intent = new Intent(getContext(), LoginActivity.class);
@@ -69,7 +69,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateUser() {
-        if (userData.getIsLogin()) {
+        if (accountData.getIsLogin()) {
             textView.setText("已登录");
             goToLogin.setText("退出");
         } else {
