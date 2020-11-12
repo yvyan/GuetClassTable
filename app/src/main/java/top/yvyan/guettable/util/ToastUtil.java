@@ -9,7 +9,7 @@ import android.widget.Toast;
  * Description: the utils for toast.
  */
 
-public class ToastUtils {
+public class ToastUtil {
 
     private static Toast mShortToast;
     private static Toast mLongToast;
