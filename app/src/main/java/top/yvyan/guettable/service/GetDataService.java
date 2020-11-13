@@ -14,6 +14,7 @@ import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.service.fetch.LAN;
@@ -61,22 +62,18 @@ public class GetDataService {
      * @param term     学期
      */
     public static void getClassTable(Activity activity, String cookie, String term) {
+        ClassData classData = ClassData.newInstance(activity);
         new Thread(() -> {
             DayClassFragment.newInstance().updateText("正在获取课表");
             HttpConnectionAndCode classTable = LAN.getClassTable(activity, cookie, term);
 
             if (classTable.code == 0) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.showToast(activity, classTable.comment.substring(40, 1000));
-                    }
-                });
                 ClassTableOuter classTableOuter = new Gson().fromJson(classTable.comment, ClassTableOuter.class);
                 List<CourseBean> courseBeans = new ArrayList<>();
                 for (ClassTable classTable1 : classTableOuter.getData()) {
                     courseBeans.add(classTable1.toCourseBean());
                 }
+                classData.setCourseBeans(courseBeans);
                 activity.runOnUiThread(() -> {
                     CourseTableFragment.newInstance().updateTable(courseBeans);
                 });

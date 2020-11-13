@@ -27,9 +27,9 @@ import java.util.List;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
-import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.helper.CourseTableHelper;
+import top.yvyan.guettable.data.ClassData;
+import top.yvyan.guettable.data.GeneralData;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
 
@@ -48,6 +48,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
     private AccountData accountData;
     private GeneralData generalData;
+    private ClassData classData;
 
     //记录切换的周次，不一定是当前周
     int target = -1;
@@ -76,6 +77,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
         accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
+        classData = ClassData.newInstance(getActivity());
         titleTextView = view.findViewById(R.id.id_title);
         linearLayout = view.findViewById(R.id.id_class_layout);
         linearLayout.setOnClickListener(this);
@@ -93,9 +95,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
         //设置周次选择属性
         List<CourseBean> courseBeans;
-        if (accountData.isCourseSave()) {
-            courseBeans = CourseTableHelper.htmlStringToCourseBeanList(accountData.getCourse());
-        } else {
+        courseBeans = classData.getCourseBeans();
+        if (courseBeans == null) {
             courseBeans = new ArrayList<>();
         }
         mWeekView.source(courseBeans)
@@ -171,16 +172,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
-        //TODO: 可以考虑去掉
-        if (accountData.isCourseSave() && accountData.getUpdateCourse()) {
-            List<CourseBean> courseBeans = CourseTableHelper.htmlStringToCourseBeanList(accountData.getCourse());
-            mWeekView.source(courseBeans)
-                    .showView();
-            mTimetableView.source(courseBeans)
-                    .updateView();
-            accountData.setUpdateCourse(false);
-        }
-        Log.d("onStart:", "start");
         mTimetableView.onDateBuildListener()
                 .onHighLight();
     }
