@@ -171,6 +171,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
+        //TODO: 可以考虑去掉
         if (accountData.isCourseSave() && accountData.getUpdateCourse()) {
             List<CourseBean> courseBeans = CourseTableHelper.htmlStringToCourseBeanList(accountData.getCourse());
             mWeekView.source(courseBeans)

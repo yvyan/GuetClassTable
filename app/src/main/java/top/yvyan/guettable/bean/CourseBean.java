@@ -50,6 +50,8 @@ public class CourseBean implements ScheduleEnable {
         for(int k = weekStart; k <= weekEnd; k++){
             weekList.add(k);
         }
+        this.weekStart = weekStart;
+        this.weekEnd = weekEnd;
         this.day = day;
         this.time = time;
         this.teacher = teacher;
