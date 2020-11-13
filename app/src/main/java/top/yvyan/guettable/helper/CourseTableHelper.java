@@ -270,7 +270,7 @@ public class CourseTableHelper {
             }
 
             CourseBean courseBean = new CourseBean();
-            courseBean.setLab(name, libName, room, weekList, week, time, "");
+            //courseBean.setLab(name, libName, room, weekList, week, time, "");
             courseBeans.add(courseBean);
         }
 
