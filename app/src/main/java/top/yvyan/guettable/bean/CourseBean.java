@@ -3,10 +3,11 @@ package top.yvyan.guettable.bean;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleEnable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseBean implements ScheduleEnable {
+public class CourseBean implements ScheduleEnable, Serializable {
 
     //id
     private int id;
