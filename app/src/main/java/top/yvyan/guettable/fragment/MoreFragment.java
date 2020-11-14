@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import top.yvyan.guettable.R;
 
 public class MoreFragment extends Fragment {
+    private static MoreFragment moreFragment;
 
     private View view;
     private TextView textView;
@@ -20,8 +21,10 @@ public class MoreFragment extends Fragment {
     }
 
     public static MoreFragment newInstance() {
-        MoreFragment fragment = new MoreFragment();
-        return fragment;
+        if (moreFragment == null) {
+            moreFragment = new MoreFragment();
+        }
+        return moreFragment;
     }
 
     @Override
