@@ -12,21 +12,14 @@
 
         <TextView
             android:id="@+id/day_class_test"
-            android:layout_width="200px"
+            android:layout_width="wrap_content"
+            android:textSize="50px"
             android:layout_height="0dp"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/goToLogin"
+            android:layout_marginTop="10px"
+            android:layout_marginLeft="70px"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/goToLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            app:layout_constraintStart_toEndOf="@+id/day_class_test"
-            app:layout_constraintTop_toTopOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

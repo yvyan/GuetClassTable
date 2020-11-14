@@ -23,21 +23,19 @@ import top.yvyan.guettable.service.fetch.LAN;
 
 public class GetDataService {
 
-    private StringBuilder cookie_builder = null;
-
     /**
      * 刷新验证码(后台)
      * @param activity 活动
+     * @return         cookie
      */
-    public void changeCode(Activity activity) {
-        cookie_builder = new StringBuilder();
-        new Thread(() -> {
-            final HttpConnectionAndCode res = LAN.checkCode(activity);
-            if (res.obj != null) {
-                final String ocr = OCR.getTextFromBitmap(activity, (Bitmap) res.obj, "telephone");
-                cookie_builder.append(res.cookie);
-            }
-        }).start();
+    public static String changeCode(Activity activity, StringBuilder cookie_builder) {
+        final HttpConnectionAndCode res = LAN.checkCode(activity);
+        if (res.obj != null) {
+            final String ocr = OCR.getTextFromBitmap(activity, (Bitmap) res.obj, "telephone");
+            cookie_builder.append(res.cookie);
+            return ocr;
+        }
+        return null;
     }
 
     /**
@@ -66,7 +64,9 @@ public class GetDataService {
         ClassData classData = ClassData.newInstance(activity);
         List<CourseBean> courseBeans = new ArrayList<>();
         new Thread(() -> {
-            DayClassFragment.newInstance().updateText("正在获取课表");
+            activity.runOnUiThread(() -> {
+                DayClassFragment.newInstance().updateText("正在获取课表...");
+            });
             HttpConnectionAndCode classTable = LAN.getClassTable(activity, cookie, term);
 
             if (classTable.code == 0) {
@@ -74,10 +74,15 @@ public class GetDataService {
                 for (ClassTable classTable1 : classTableOuter.getData()) {
                     courseBeans.add(classTable1.toCourseBean());
                 }
-                classData.setCourseBeans(courseBeans);
+            } else {
+                activity.runOnUiThread(() -> {
+                    DayClassFragment.newInstance().updateText("网络错误");
+                });
             }
 
-            DayClassFragment.newInstance().updateText("正在获取实验...");
+            activity.runOnUiThread(() -> {
+                DayClassFragment.newInstance().updateText("正在获取实验...");
+            });
             HttpConnectionAndCode labTable = LAN.getLabTable(activity, cookie, term);
             if (labTable.code == 0) {
                 LabTableOuter labTableOuter = new Gson().fromJson(labTable.comment, LabTableOuter.class);
@@ -88,8 +93,59 @@ public class GetDataService {
                 activity.runOnUiThread(() -> {
                     CourseTableFragment.newInstance().updateTable(courseBeans);
                 });
+            } else {
+                activity.runOnUiThread(() -> {
+                    DayClassFragment.newInstance().updateText("网络错误");
+                });
             }
-            DayClassFragment.newInstance().updateText("数据更新成功");
+            activity.runOnUiThread(() -> {
+                DayClassFragment.newInstance().updateText("更新成功");
+            });
+        }).start();
+    }
+
+    public static void autoUpdateThread(Activity activity, String account, String password, String term) {
+        new Thread(() -> {
+            StringBuilder cookie_builder = null;
+            /**
+             * state记录当前状态
+             * 0 : 登录成功
+             * 1 : 验证码错误
+             * 2 : 密码错误
+             * 3 : 网络错误/未知错误
+             */
+            int state = 1;
+            for (int i = 0; i < 3; i++) {
+                activity.runOnUiThread(() -> {
+                    DayClassFragment.newInstance().updateText("尝试登录");
+                });
+                cookie_builder = new StringBuilder();
+                String checkCode = changeCode(activity, cookie_builder);
+                HttpConnectionAndCode login_res = LAN.login(activity, account, password, checkCode, cookie_builder.toString(), cookie_builder);
+                if (login_res.code != 0) { //登录失败
+                    if (login_res.comment != null && login_res.comment.contains("验证码")) {
+                        continue;
+                    } else if (login_res.comment != null && login_res.comment.contains("密码")) {
+                        state = 2;
+                        activity.runOnUiThread(() -> {
+                            DayClassFragment.newInstance().updateText("密码错误");
+                        });
+                        break;
+                    } else { //请连接校园网
+                        state = 3;
+                        activity.runOnUiThread(() -> {
+                            DayClassFragment.newInstance().updateText("网络错误");
+                        });
+                        break;
+                    }
+                } else { //登录成功
+                    state = 0;
+                    break;
+                }
+            }
+            if (state == 0) {
+                getClassTable(activity, cookie_builder.toString(), term);
+            }
         }).start();
     }
 }

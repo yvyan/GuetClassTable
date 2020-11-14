@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
+import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.service.GetDataService;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
@@ -21,8 +22,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private View view;
     private TextView textView;
-    private Button goToLogin;
     private AccountData accountData;
+    private GeneralData generalData;
 
     public DayClassFragment() {
         // Required empty public constructor
@@ -42,10 +43,13 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_day_class, container, false);
 
         textView = view.findViewById(R.id.day_class_test);
-        goToLogin = view.findViewById(R.id.goToLogin);
-        goToLogin.setOnClickListener(this);
+        textView.setOnClickListener(this);
         accountData = AccountData.newInstance(getActivity());
+        generalData = GeneralData.newInstance(getActivity());
         updateUser();
+        if (accountData.getIsLogin()) {
+            GetDataService.autoUpdateThread(getActivity(), accountData.getUsername(), accountData.getPassword(), generalData.getTerm());
+        }
         Log.d("test:", "create");
         return view;
     }
@@ -57,24 +61,28 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         //updateUser();
     }
 
+    /**
+     * 用户点击状态文字时的响应
+     * @param view 视图
+     */
     @Override
     public void onClick(View view) {
-        if (accountData.getIsLogin()) {
-            accountData.logoff();
-            updateUser();
-        } else {
+        if ("请登录".equals(textView.getText()) || "密码错误".equals(textView.getText())) {
             Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
+        } else if ("更新成功".equals(textView.getText()) || "已登录".equals(textView.getText()) || "网络错误".equals(textView.getText())) {
+            //启动自动更新线程
+            if (accountData.getIsLogin()) {
+                GetDataService.autoUpdateThread(getActivity(), accountData.getUsername(), accountData.getPassword(), generalData.getTerm());
+            }
         }
     }
 
     private void updateUser() {
         if (accountData.getIsLogin()) {
             textView.setText("已登录");
-            goToLogin.setText("退出");
         } else {
-            textView.setText("未登录");
-            goToLogin.setText("登陆");
+            textView.setText("请登录");
         }
     }
 
