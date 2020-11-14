@@ -21,11 +21,6 @@ public class AccountData {
     private String username;
     private String password;
 
-    //临时存储测试
-    private boolean isCourseSave;
-    private String course;
-    private boolean updateCourse;
-
     private AccountData(Activity activity) {
         sharedPreferences = activity.getApplication().getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         load();
@@ -80,10 +75,6 @@ public class AccountData {
         isLogin = sharedPreferences.getBoolean(IS_LOGIN, false);
         username = sharedPreferences.getString(USERNAME, "");
         password = sharedPreferences.getString(PASSWORD, "");
-
-        isCourseSave = sharedPreferences.getBoolean(IS_SAVE_COURSE, false);
-        course = sharedPreferences.getString(COURSE, null);
-        updateCourse = sharedPreferences.getBoolean(UPDATE_COURSE, false);
     }
 
     private void saveUser() {
@@ -98,39 +89,6 @@ public class AccountData {
     private void clearUser() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.apply();
-    }
-
-    public void setUpdateCourse(boolean bool) {
-        updateCourse = bool;
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(UPDATE_COURSE, updateCourse);
-        editor.apply();
-    }
-
-    public boolean getUpdateCourse() {
-        return updateCourse;
-    }
-
-    public boolean isCourseSave() {
-        return isCourseSave;
-    }
-
-    public String getCourse() {
-        if (isCourseSave) {
-            return course;
-        }
-        return null;
-    }
-
-    public void setCourse(String course) {
-        this.course = course;
-        updateCourse = true;
-        isCourseSave = true;
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(COURSE, course);
-        editor.putBoolean(IS_SAVE_COURSE, isCourseSave);
-        editor.putBoolean(UPDATE_COURSE, true);
         editor.apply();
     }
 }
