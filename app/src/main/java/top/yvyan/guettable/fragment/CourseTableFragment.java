@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.ISchedule;
-import com.zhuangfei.timetable.listener.IWeekView;
 import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.view.WeekView;
@@ -71,12 +70,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         Log.d(TAG, "createCourseTableFragmentView");
         view = inflater.inflate(R.layout.fragment_base_func, container, false);
         moreButton = view.findViewById(R.id.id_more);
-        moreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopMenu();
-            }
-        });
+        moreButton.setOnClickListener(view -> showPopMenu());
 
         accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
@@ -105,25 +99,19 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         }
         mWeekView.source(courseBeans)
                 .curWeek(generalData.getWeek())
-                .callback(new IWeekView.OnWeekItemClickedListener() {
-                    @Override
-                    public void onWeekClicked(int week) {
-                        int cur = mTimetableView.curWeek();
-                        target = week;
-                        //更新切换后的日期，从当前周cur->切换的周week
-                        mTimetableView.onDateBuildListener()
-                                .onUpdateDate(cur, week);
-                        mTimetableView.changeWeekOnly(week);
-                    }
+                .callback(week -> {
+                    int cur = mTimetableView.curWeek();
+                    target = week;
+                    //更新切换后的日期，从当前周cur->切换的周week
+                    mTimetableView.onDateBuildListener()
+                            .onUpdateDate(cur, week);
+                    mTimetableView.changeWeekOnly(week);
                 })
-                .callback(new IWeekView.OnWeekLeftClickedListener() {
-                    @Override
-                    public void onWeekLeftClicked() {
-                        generalData.setWeek(target);
-                        mWeekView.curWeek(target).updateView();
-                        mTimetableView.changeWeekForce(target);
-                        //onWeekLeftLayoutClicked();
-                    }
+                .callback(() -> {
+                    generalData.setWeek(target);
+                    mWeekView.curWeek(target).updateView();
+                    mTimetableView.changeWeekForce(target);
+                    //onWeekLeftLayoutClicked();
                 })
                 .isShow(false)//设置隐藏，默认显示
                 .showView();
@@ -133,40 +121,15 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .curTerm("大三下学期")
                 .maxSlideItem(10)
                 .monthWidthDp(20)
-                //透明度
-                //日期栏0.1f、侧边栏0.1f，周次选择栏0.6f
-                //透明度范围为0->1，0为全透明，1为不透明
-//                .alpha(0.1f, 0.1f, 0.6f)
-                .callback(new ISchedule.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, List<Schedule> scheduleList) {
-                        display(scheduleList);
-                    }
+                .callback((ISchedule.OnItemClickListener) (v, scheduleList) -> display(scheduleList))
+                .callback((ISchedule.OnItemLongClickListener) (v, day, start) -> Toast.makeText(getActivity(),
+                        "长按:周" + day  + ",第" + start + "节",
+                        Toast.LENGTH_SHORT).show())
+                .callback(curWeek -> {
+                    titleTextView.setText("第" + curWeek + "周");
                 })
-                .callback(new ISchedule.OnItemLongClickListener() {
-                    @Override
-                    public void onLongClick(View v, int day, int start) {
-                        Toast.makeText(getActivity(),
-                                "长按:周" + day  + ",第" + start + "节",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .callback(new ISchedule.OnWeekChangedListener() {
-                    @Override
-                    public void onWeekChanged(int curWeek) {
-                        titleTextView.setText("第" + curWeek + "周");
-                    }
-                })
-                //旗标布局点击监听
-//                .callback(new ISchedule.OnFlaglayoutClickListener() {
-//                    @Override
-//                    public void onFlaglayoutClick(int day, int start) {
-//                        mTimetableView.hideFlaglayout();
-//                        Toast.makeText(getActivity(),
-//                                "点击了旗标:周" + (day + 1) + ",第" + start + "节",
-//                                Toast.LENGTH_SHORT).show();
-//                    }
-//                })
+                //隐藏旗标布局
+                .isShowFlaglayout(false)
                 .showView();
         if (tableSettingData.isHideOtherWeek()) {
             hideNonThisWeek();
@@ -210,14 +173,11 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                         target = i;
                     }
                 });
-        builder.setPositiveButton("设置为当前周", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (target != -1) {
-                    generalData.setWeek(target + 1);
-                    mWeekView.curWeek(target + 1).updateView();
-                    mTimetableView.changeWeekForce(target + 1);
-                }
+        builder.setPositiveButton("设置为当前周", (dialog, which) -> {
+            if (target != -1) {
+                generalData.setWeek(target + 1);
+                mWeekView.curWeek(target + 1).updateView();
+                mTimetableView.changeWeekForce(target + 1);
             }
         });
         builder.setNegativeButton("取消", null);
