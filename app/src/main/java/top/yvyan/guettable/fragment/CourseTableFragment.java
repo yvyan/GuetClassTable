@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
 import com.zhuangfei.timetable.TimetableView;
@@ -30,6 +31,7 @@ import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.TableSettingData;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
 
@@ -49,6 +51,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private AccountData accountData;
     private GeneralData generalData;
     private ClassData classData;
+    private TableSettingData tableSettingData;
 
     //记录切换的周次，不一定是当前周
     int target = -1;
@@ -78,6 +81,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
         classData = ClassData.newInstance(getActivity());
+        tableSettingData = TableSettingData.newInstance(getActivity());
         titleTextView = view.findViewById(R.id.id_title);
         linearLayout = view.findViewById(R.id.id_class_layout);
         linearLayout.setOnClickListener(this);
@@ -154,16 +158,19 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     }
                 })
                 //旗标布局点击监听
-                .callback(new ISchedule.OnFlaglayoutClickListener() {
-                    @Override
-                    public void onFlaglayoutClick(int day, int start) {
-                        mTimetableView.hideFlaglayout();
-                        Toast.makeText(getActivity(),
-                                "点击了旗标:周" + (day + 1) + ",第" + start + "节",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                })
+//                .callback(new ISchedule.OnFlaglayoutClickListener() {
+//                    @Override
+//                    public void onFlaglayoutClick(int day, int start) {
+//                        mTimetableView.hideFlaglayout();
+//                        Toast.makeText(getActivity(),
+//                                "点击了旗标:周" + (day + 1) + ",第" + start + "节",
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                })
                 .showView();
+        if (tableSettingData.isHideOtherWeek()) {
+            hideNonThisWeek();
+        }
     }
 
     /**
@@ -234,65 +241,30 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
      * 显示弹出菜单
      */
     public void showPopMenu() {
-//        PopupMenu popup = new PopupMenu(this, moreButton);
-//        popup.getMenuInflater().inflate(R.menu.popmenu_base_func, popup.getMenu());
-//        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//            public boolean onMenuItemClick(MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.top1:
-//                        addSubject();
-//                        break;
-//                    case R.id.top2:
-//                        deleteSubject();
-//                        break;
-//
-//                    case R.id.top4:
-//                        hideNonThisWeek();
-//                        break;
-//                    case R.id.top5:
-//                        showNonThisWeek();
-//                        break;
-//                    case R.id.top6:
-//                        setMaxItem(8);
-//                        break;
-//                    case R.id.top7:
-//                        setMaxItem(10);
-//                        break;
-//                    case R.id.top8:
-//                        setMaxItem(12);
-//                        break;
-//                    case R.id.top9:
-//                        showTime();
-//                        break;
-//                    case R.id.top10:
-//                        hideTime();
-//                        break;
-//                    case R.id.top11:
-//                        showWeekView();
-//                        break;
-//                    case R.id.top12:
-//                        hideWeekView();
-//                        break;
-//                    case R.id.top13:
-//                        setMonthWidth();
-//                        break;
-//                    case R.id.top16:
-//                        resetMonthWidth();
-//                        break;
-//                    case R.id.top14:
-//                        hideWeekends();
-//                        break;
-//                    case R.id.top15:
-//                        showWeekends();
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
-//
-//        popup.show();
+        PopupMenu popup = new PopupMenu(getActivity(), moreButton);
+        popup.getMenuInflater().inflate(R.menu.popmenu, popup.getMenu());
+        if (tableSettingData.isHideOtherWeek()) {
+            popup.getMenu().findItem(R.id.top1).setTitle("显示非本周课程");
+        }
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.top1:
+                    if (tableSettingData.isHideOtherWeek()) {
+                        tableSettingData.setHideOtherWeek(false);
+                        showNonThisWeek();
+                        popup.getMenu().findItem(R.id.top1).setTitle("隐藏非本周课程");
+                    } else {
+                        tableSettingData.setHideOtherWeek(true);
+                        hideNonThisWeek();
+                        popup.getMenu().findItem(R.id.top1).setTitle("显示非本周课程");
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        });
+        popup.show();
     }
 
     @Override
