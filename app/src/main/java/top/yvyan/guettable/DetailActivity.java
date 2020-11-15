@@ -16,5 +16,6 @@ public class DetailActivity extends AppCompatActivity {
         DayClassData dayClassData = DayClassData.newInstance();
         TextView detail = findViewById(R.id.detail);
         detail.setText(dayClassData.getCourseBeans().toString());
+
     }
 }
