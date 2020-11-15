@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <TextView
+            style=""
             android:id="@+id/day_class_test"
             android:layout_width="wrap_content"
             android:textSize="50px"
