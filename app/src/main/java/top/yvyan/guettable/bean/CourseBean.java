@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseBean implements ScheduleEnable, Serializable {
+    private static String IS_LAB = "isLab";
+    private static String LIB_NAME = "libName";
+    private static String REMARKS = "remarks";
+    private static String NUMBER = "number";
+    private static String WEEK_START = "weekStart";
+    private static String WEEK_END = "weekEnd";
 
     //id
     private int id;
@@ -74,6 +80,24 @@ public class CourseBean implements ScheduleEnable, Serializable {
         this.remarks = remarks;
     }
 
+    public void setFromSchedule(Schedule schedule) {
+        isLab = (boolean)schedule.getExtras().get(IS_LAB);
+        weekStart = (int) schedule.getExtras().get(WEEK_START);
+        weekEnd = (int) schedule.getExtras().get(WEEK_END);
+        if (isLab) {
+            libName = (String) schedule.getExtras().get(LIB_NAME);
+            remarks = (String) schedule.getExtras().get(REMARKS);
+        }
+
+        number = (String) schedule.getExtras().get(NUMBER);
+        day = schedule.getDay();
+        name = schedule.getName();
+        room = schedule.getRoom();
+        time = (schedule.getStart() + 1) / 2;
+        teacher = schedule.getTeacher();
+        weekList = schedule.getWeekList();
+    }
+
     @Override
     public Schedule getSchedule() {
         Schedule schedule=new Schedule();
@@ -85,6 +109,13 @@ public class CourseBean implements ScheduleEnable, Serializable {
         schedule.setTeacher(getTeacher());
         schedule.setWeekList(getWeekList());
         schedule.setColorRandom(2);
+
+        schedule.putExtras(IS_LAB, isLab);
+        schedule.putExtras(LIB_NAME, libName);
+        schedule.putExtras(REMARKS, remarks);
+        schedule.putExtras(NUMBER, number);
+        schedule.putExtras(WEEK_START, weekStart);
+        schedule.putExtras(WEEK_END, weekEnd);
         return schedule;
     }
 

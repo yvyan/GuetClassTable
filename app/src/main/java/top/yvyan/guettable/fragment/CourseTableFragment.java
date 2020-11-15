@@ -1,6 +1,7 @@
 package top.yvyan.guettable.fragment;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,10 +27,12 @@ import com.zhuangfei.timetable.view.WeekView;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.yvyan.guettable.DetailActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
+import top.yvyan.guettable.data.DayClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TableSettingData;
 
@@ -52,6 +55,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private GeneralData generalData;
     private ClassData classData;
     private TableSettingData tableSettingData;
+    private DayClassData dayClassData;
 
     //记录切换的周次，不一定是当前周
     int target = -1;
@@ -77,6 +81,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         generalData = GeneralData.newInstance(getActivity());
         classData = ClassData.newInstance(getActivity());
         tableSettingData = TableSettingData.newInstance(getActivity());
+        dayClassData = DayClassData.newInstance();
         titleTextView = view.findViewById(R.id.id_title);
         linearLayout = view.findViewById(R.id.id_class_layout);
         linearLayout.setOnClickListener(this);
@@ -202,11 +207,15 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
      * @param beans
      */
     protected void display(List<Schedule> beans) {
-        String str = "";
-        for (Schedule bean : beans) {
-            str += bean.getName() + ","+bean.getWeekList().toString()+","+bean.getStart()+","+bean.getStep()+"\n";
+        List<CourseBean> courseBeans = new ArrayList<>();
+        for (Schedule schedule : beans) {
+            CourseBean courseBean = new CourseBean();
+            courseBean.setFromSchedule(schedule);
+            courseBeans.add(courseBean);
         }
-        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+        dayClassData.setCourseBeans(courseBeans);
+        Intent intent = new Intent(getContext(), DetailActivity.class);
+        startActivity(intent);
     }
 
     /**
