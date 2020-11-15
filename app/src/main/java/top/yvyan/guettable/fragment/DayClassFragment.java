@@ -10,11 +10,14 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.Date;
+
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.service.GetDataService;
+import top.yvyan.guettable.util.TimeUtil;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
@@ -48,7 +51,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         generalData = GeneralData.newInstance(getActivity());
         updateUser();
         if (accountData.getIsLogin()) {
-            GetDataService.autoUpdateThread(getActivity(), accountData.getUsername(), accountData.getPassword(), generalData.getTerm());
+            if (generalData.getLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(System.currentTimeMillis()), new Date(generalData.getLastUpdateTime())) >= generalData.updateFrequency) {
+                GetDataService.autoUpdateThread(getActivity(), accountData.getUsername(), accountData.getPassword(), generalData.getTerm());
+            }
         }
         Log.d("test:", "create");
         return view;

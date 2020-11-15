@@ -15,12 +15,15 @@ public class GeneralData {
     private static final String TIME = "time";
     private static final String GRADE = "grade";
     private static final String TERM = "term";
+    private static final String LAST_UPDATE_TIME = "lastUpdateTime";
     SharedPreferences sharedPreferences;
 
     private int week;
     private long time;
     private String grade;
     private String term;
+    private long lastUpdateTime;
+    public int updateFrequency = 1;
 
     private GeneralData(Activity activity) {
         sharedPreferences = activity.getApplication().getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -32,6 +35,7 @@ public class GeneralData {
         time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
         grade = sharedPreferences.getString(GRADE, null);
         term = sharedPreferences.getString(TERM, null);
+        lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
     }
 
     public static GeneralData newInstance(Activity activity) {
@@ -87,6 +91,21 @@ public class GeneralData {
     private void saveTerm() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(TERM, term);
+        editor.apply();
+    }
+
+    public long getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(long lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+        saveLastUpdateTime();
+    }
+
+    private void saveLastUpdateTime() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(LAST_UPDATE_TIME, lastUpdateTime);
         editor.apply();
     }
 }
