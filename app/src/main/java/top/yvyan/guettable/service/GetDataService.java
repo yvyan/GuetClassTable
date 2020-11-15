@@ -93,14 +93,14 @@ public class GetDataService {
                 activity.runOnUiThread(() -> {
                     CourseTableFragment.newInstance().updateTable(courseBeans);
                 });
+                activity.runOnUiThread(() -> {
+                    DayClassFragment.newInstance().updateText("更新成功");
+                });
             } else {
                 activity.runOnUiThread(() -> {
                     DayClassFragment.newInstance().updateText("网络错误");
                 });
             }
-            activity.runOnUiThread(() -> {
-                DayClassFragment.newInstance().updateText("更新成功");
-            });
         }).start();
     }
 
