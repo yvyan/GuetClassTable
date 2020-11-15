@@ -169,7 +169,7 @@
         </RelativeLayout>
 
 
-    <Button
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
         android:id="@+id/btn_quit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -179,10 +179,10 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:background="?attr/colorPrimary"
-        android:text="退出登陆"
+        app:rb_backgroundColor="@color/app_red"
+        android:text="退出登录"
         android:textColor="@android:color/white"
-        android:textSize="18sp"/>
+        android:textSize="23dp"/>
 
 
 </LinearLayout>
