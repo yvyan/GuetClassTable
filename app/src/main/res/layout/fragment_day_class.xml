@@ -14,7 +14,7 @@
             style=""
             android:id="@+id/day_class_test"
             android:layout_width="wrap_content"
-            android:textSize="50px"
+            android:textSize="25dp"
             android:layout_height="0dp"
             android:visibility="visible"
             android:layout_marginTop="10px"

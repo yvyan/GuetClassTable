@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.ISchedule;
+import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
 import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.view.WeekView;
@@ -121,6 +122,17 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .curTerm("大三下学期")
                 .maxSlideItem(10)
                 .monthWidthDp(20)
+                .itemHeight(160)
+                .callback(new OnItemBuildAdapter() {
+                    @Override
+                    public String getItemText(Schedule schedule, boolean isThisWeek) {
+                        if (schedule.getRoom() != null) {
+                            return schedule.getName() + "@" + schedule.getRoom();
+                        } else {
+                            return schedule.getName();
+                        }
+                    }
+                })
                 .callback((ISchedule.OnItemClickListener) (v, scheduleList) -> display(scheduleList))
                 .callback((ISchedule.OnItemLongClickListener) (v, day, start) -> Toast.makeText(getActivity(),
                         "长按:周" + day  + ",第" + start + "节",
