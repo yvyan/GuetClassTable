@@ -17,6 +17,8 @@ import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.ClassData;
+import top.yvyan.guettable.data.DayClassData;
+import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.service.fetch.LAN;
@@ -95,6 +97,8 @@ public class GetDataService {
                 });
                 activity.runOnUiThread(() -> {
                     DayClassFragment.newInstance().updateText("更新成功");
+                    GeneralData generalData = GeneralData.newInstance(activity);
+                    generalData.setLastUpdateTime(System.currentTimeMillis());
                 });
             } else {
                 activity.runOnUiThread(() -> {
