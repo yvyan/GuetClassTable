@@ -32,7 +32,7 @@ public class MoreFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragement_more, container, false);
 
-        textView = view.findViewById(R.id.more_head);
+        textView = view.findViewById(R.id.more_hint);
         return view;
     }
 }

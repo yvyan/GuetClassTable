@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/app_white">
+    android:background="@color/colorPrimary">
 
     <LinearLayout
         android:id="@+id/id_class_layout"
@@ -16,13 +16,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="课程表"
-            android:textColor="@color/app_course_textcolor_blue"
+            android:textColor="@color/app_white"
             android:textSize="16sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="选择周次"
-            android:textColor="@color/app_gray"
+            android:textColor="@color/ic_launcher_background"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -31,7 +31,7 @@
         android:text="功能"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:textColor="@color/app_blue1"
+        android:textColor="@color/app_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
