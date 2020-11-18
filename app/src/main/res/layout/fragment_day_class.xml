@@ -4,24 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_white"
     tools:context=".fragment.DayClassFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
 
         <TextView
             style=""
             android:id="@+id/day_class_test"
             android:layout_width="wrap_content"
-            android:textSize="25dp"
-            android:layout_height="0dp"
+            android:textSize="20dp"
+            android:textColor="@color/app_white"
+            android:layout_height="wrap_content"
             android:visibility="visible"
-            android:layout_marginTop="10px"
+            android:layout_marginTop="30px"
             android:layout_marginLeft="70px"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 </FrameLayout>

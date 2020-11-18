@@ -1,6 +1,5 @@
 package top.yvyan.guettable.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
@@ -35,6 +33,7 @@ import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.DayClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TableSettingData;
+import top.yvyan.guettable.util.ToastUtil;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
 
@@ -114,14 +113,18 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     mTimetableView.changeWeekOnly(week);
                 })
                 .callback(() -> {
-                    generalData.setWeek(target);
-                    mWeekView.curWeek(target).updateView();
-                    mTimetableView.changeWeekForce(target);
-                    //onWeekLeftLayoutClicked();
+                    if (generalData.getWeek() == target) {
+                        ToastUtil.showToast(getActivity(), "选择其它周后点击此按钮可设置为当前周");
+                    } else {
+                        generalData.setWeek(target);
+                        mWeekView.curWeek(target).updateView();
+                        ToastUtil.showToast(getActivity(), "设置第" + target + "周为当前周");
+                        mTimetableView.changeWeekForce(target);
+                    }
                 })
                 .isShow(false)//设置隐藏，默认显示
                 .showView();
-
+        target = generalData.getWeek();
         mTimetableView.source(courseBeans)
                 .curWeek(generalData.getWeek())
                 .curTerm("大三下学期")
@@ -168,37 +171,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .showView();
         mTimetableView.source(courseBeans)
                 .updateView();
-    }
-
-    /**
-     * 周次选择布局的左侧被点击时回调<br/>
-     * 对话框修改当前周次
-     */
-    protected void onWeekLeftLayoutClicked() {
-        final String items[] = new String[20];
-        int itemCount = mWeekView.itemCount();
-        for (int i = 0; i < itemCount; i++) {
-            items[i] = "第" + (i + 1) + "周";
-        }
-        target = -1;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("设置当前周");
-        builder.setSingleChoiceItems(items, mTimetableView.curWeek() - 1,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        target = i;
-                    }
-                });
-        builder.setPositiveButton("设置为当前周", (dialog, which) -> {
-            if (target != -1) {
-                generalData.setWeek(target + 1);
-                mWeekView.curWeek(target + 1).updateView();
-                mTimetableView.changeWeekForce(target + 1);
-            }
-        });
-        builder.setNegativeButton("取消", null);
-        builder.create().show();
     }
 
     /**
@@ -256,7 +228,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 //否则，显示
                 if (mWeekView.isShowing()) {
                     mWeekView.isShow(false);
-                    titleTextView.setTextColor(getResources().getColor(R.color.app_course_textcolor_blue));
+                    titleTextView.setTextColor(getResources().getColor(R.color.app_white));
                     int cur = mTimetableView.curWeek();
                     mTimetableView.onDateBuildListener()
                             .onUpdateDate(cur, cur);
