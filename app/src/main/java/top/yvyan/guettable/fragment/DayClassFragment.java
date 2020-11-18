@@ -51,7 +51,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         generalData = GeneralData.newInstance(getActivity());
         updateUser();
         if (accountData.getIsLogin()) {
-            if (generalData.getLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(System.currentTimeMillis()), new Date(generalData.getLastUpdateTime())) >= generalData.updateFrequency) {
+            if (generalData.getLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getLastUpdateTime()), new Date(System.currentTimeMillis())) >= generalData.updateFrequency) {
                 GetDataService.autoUpdateThread(getActivity(), accountData.getUsername(), accountData.getPassword(), generalData.getTerm());
             }
         }
