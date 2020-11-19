@@ -1,14 +1,12 @@
 package top.yvyan.guettable;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import top.yvyan.guettable.adapter.ClassDetailAdapter;
-import top.yvyan.guettable.data.DayClassData;
 
 public class DetailActivity extends AppCompatActivity {
     RecyclerView recyclerView;

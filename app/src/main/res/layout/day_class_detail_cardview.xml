@@ -28,10 +28,10 @@
                 android:id="@+id/t_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:text="名称："
                 app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/isLab" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
             <TextView
                 android:id="@+id/t_time"
@@ -49,68 +49,48 @@
                 android:layout_marginTop="5dp"
                 android:text="教室："
                 app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/t_name" />
+                app:layout_constraintTop_toBottomOf="@+id/t_teacher" />
 
             <TextView
                 android:id="@+id/t_week"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="12dp"
                 android:text="周次："
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toBottomOf="@+id/t_time" />
 
             <TextView
-                android:id="@+id/isLab"
+                android:id="@+id/textViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="(实验)"
+                android:layout_marginTop="10dp"
+                android:text="xxx"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/textViewLibname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="计算机网络(外文教材)"
-                android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@+id/isLab"
-                app:layout_constraintTop_toTopOf="@+id/isLab" />
-
-            <TextView
-                android:id="@+id/libname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="简单LAN设计"
+                android:text="xxx"
                 app:layout_constraintStart_toEndOf="@+id/t_name"
                 app:layout_constraintTop_toTopOf="@+id/t_name" />
 
             <TextView
-                android:id="@+id/t_room_place"
+                android:id="@+id/textViewDay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="花江校区"
-                app:layout_constraintStart_toEndOf="@+id/t_room"
-                app:layout_constraintTop_toTopOf="@+id/t_room" />
-
-            <TextView
-                android:id="@+id/day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="星期日"
+                android:text="xxx"
                 app:layout_constraintStart_toEndOf="@+id/t_time"
                 app:layout_constraintTop_toTopOf="@+id/t_time" />
 
             <TextView
-                android:id="@+id/weekStart"
+                android:id="@+id/textViewWeekStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8"
+                android:text="x"
                 app:layout_constraintStart_toEndOf="@+id/t_week"
                 app:layout_constraintTop_toTopOf="@+id/t_week" />
 
@@ -120,17 +100,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="第"
-                app:layout_constraintStart_toEndOf="@+id/day"
-                app:layout_constraintTop_toTopOf="@+id/day" />
+                app:layout_constraintStart_toEndOf="@+id/textViewDay"
+                app:layout_constraintTop_toTopOf="@+id/textViewDay" />
 
             <TextView
-                android:id="@+id/time"
+                android:id="@+id/textViewTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                android:text="3"
+                android:text="x"
                 app:layout_constraintStart_toEndOf="@+id/t_time_word1"
-                app:layout_constraintTop_toTopOf="@+id/day" />
+                app:layout_constraintTop_toTopOf="@+id/textViewDay" />
 
             <TextView
                 android:id="@+id/t_time_word2"
@@ -138,8 +118,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:text="大节"
-                app:layout_constraintStart_toEndOf="@+id/time"
-                app:layout_constraintTop_toTopOf="@+id/day" />
+                app:layout_constraintStart_toEndOf="@+id/textViewTime"
+                app:layout_constraintTop_toTopOf="@+id/textViewDay" />
 
             <TextView
                 android:id="@+id/t_week_word1"
@@ -147,34 +127,69 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:text="-"
-                app:layout_constraintStart_toEndOf="@+id/weekStart"
-                app:layout_constraintTop_toTopOf="@+id/weekStart" />
+                app:layout_constraintStart_toEndOf="@+id/textViewWeekStart"
+                app:layout_constraintTop_toTopOf="@+id/textViewWeekStart" />
 
             <TextView
-                android:id="@+id/weekEnd"
+                android:id="@+id/textViewWeekEnd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                android:text="8"
+                android:text="x"
                 app:layout_constraintStart_toEndOf="@+id/t_week_word1"
-                app:layout_constraintTop_toTopOf="@+id/weekStart" />
+                app:layout_constraintTop_toTopOf="@+id/textViewWeekStart" />
 
             <TextView
                 android:id="@+id/t_week_word2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="周"
-                app:layout_constraintStart_toEndOf="@+id/weekEnd"
-                app:layout_constraintTop_toTopOf="@+id/weekStart" />
+                app:layout_constraintStart_toEndOf="@+id/textViewWeekEnd"
+                app:layout_constraintTop_toTopOf="@+id/textViewWeekStart" />
 
             <TextView
-                android:id="@+id/room"
+                android:id="@+id/textViewRoom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:text="5404"
-                app:layout_constraintStart_toEndOf="@+id/t_room_place"
+                android:text="xxx"
+                app:layout_constraintStart_toEndOf="@+id/t_room"
                 app:layout_constraintTop_toTopOf="@+id/t_room" />
+
+            <TextView
+                android:id="@+id/t_remarks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="12dp"
+                android:text="备注："
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/t_week" />
+
+            <TextView
+                android:id="@+id/textViewRemarks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xxx"
+                app:layout_constraintStart_toEndOf="@+id/t_remarks"
+                app:layout_constraintTop_toTopOf="@+id/t_remarks" />
+
+            <TextView
+                android:id="@+id/t_teacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="教师："
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/t_name" />
+
+            <TextView
+                android:id="@+id/textViewTeacherName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xxx"
+                app:layout_constraintStart_toEndOf="@+id/t_teacher"
+                app:layout_constraintTop_toTopOf="@+id/t_teacher" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
