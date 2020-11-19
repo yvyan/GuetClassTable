@@ -66,7 +66,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     //设置为实验课
-    public void setLab(String name, String libName, int batch, String room, int weekStart, int day, int time, String remarks) {
+    public void setLab(String name, String libName, int batch, String room, int weekStart, int day, int time, String teacher, String remarks) {
         this.isLab = true;
         this.name = "(实验)" + name;
         this.libName = libName + "(" + batch + "批次)";
@@ -77,6 +77,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         this.weekEnd = weekStart;
         this.day = day;
         this.time = time;
+        this.teacher = teacher;
         this.remarks = remarks;
     }
 
