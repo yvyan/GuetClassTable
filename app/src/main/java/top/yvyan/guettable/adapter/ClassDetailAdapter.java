@@ -8,25 +8,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Collections;
 import java.util.List;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
-import top.yvyan.guettable.data.DayClassData;
-import top.yvyan.guettable.util.ComparatorCourse;
 
 public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.ClassDetailViewHolder> {
     List<CourseBean> courseBeans;
+
+    public ClassDetailAdapter(List<CourseBean> courseBeans) {
+        this.courseBeans = courseBeans;
+    }
 
     @NonNull
     @Override
     public ClassDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.day_class_detail_cardview,parent,false);
-        courseBeans = DayClassData.newInstance().getCourseBeans();
-        ComparatorCourse comparatorCourse = new ComparatorCourse();
-        Collections.sort(courseBeans, comparatorCourse);
         return new ClassDetailViewHolder(itemView);
     }
 
@@ -49,7 +47,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
 
     @Override
     public int getItemCount() {
-        return DayClassData.newInstance().getCourseBeans().size();
+        return courseBeans.size();
     }
 
     public String whichDay(int number){
