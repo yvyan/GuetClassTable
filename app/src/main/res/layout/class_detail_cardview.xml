@@ -30,7 +30,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:text="名称：地方v地方"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"/>
 
@@ -38,7 +37,6 @@
                 android:id="@+id/card_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="时间：的深V大V"
                 android:layout_marginTop="6dp"
                 android:layout_marginLeft="5dp" />
 
@@ -46,7 +44,6 @@
                 android:id="@+id/card_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="教室：davedev的"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="5dp"/>
 
@@ -54,7 +51,6 @@
                 android:id="@+id/card_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="周次：反而更温柔"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="5dp"/>
 
@@ -62,7 +58,6 @@
                 android:id="@+id/card_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="xxx啊复方过围绕改革"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="5dp"/>
 
@@ -70,7 +65,6 @@
                 android:id="@+id/card_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="xxx啊复方过围绕改革"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="5dp"/>
 
@@ -78,7 +72,6 @@
                 android:id="@+id/card_7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="名称：地方v地方"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginBottom="5dp"/>
