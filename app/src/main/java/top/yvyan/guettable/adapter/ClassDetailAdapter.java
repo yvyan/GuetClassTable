@@ -31,17 +31,18 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
     @Override
     public void onBindViewHolder(@NonNull ClassDetailViewHolder holder, int position) {
         if(courseBeans.get(position).isLab()) {
-            holder.tName.setText(courseBeans.get(position).getName());
-            holder.tTeacherName.setText(courseBeans.get(position).getTeacher());
-            holder.tLibname.setText(courseBeans.get(position).getLibName());
-            holder.tRoom.setText(courseBeans.get(position).getRoom());
-            holder.tDay.setText(whichDay(courseBeans.get(position).getDay()));
-            holder.tTime.setText(String.valueOf(courseBeans.get(position).getTime()));
-            holder.tWeekStart.setText(String.valueOf(courseBeans.get(position).getWeekStart()));
-            holder.tWeekEnd.setText(String.valueOf(courseBeans.get(position).getWeekEnd()));
-            holder.tRemarks.setText(courseBeans.get(position).getRemarks());
-        }
-        else {
+            holder.textView1.setText(courseBeans.get(position).getName());
+            holder.textView2.setText("名称：" + courseBeans.get(position).getLibName());
+            if (courseBeans.get(position).getTeacher() == null) {
+                holder.textView3.setVisibility(View.GONE);
+            } else {
+                holder.textView3.setText("教师：" + courseBeans.get(position).getTeacher());
+            }
+            holder.textView4.setText("教室：" + courseBeans.get(position).getRoom());
+            holder.textView5.setText("时间：" + whichDay(courseBeans.get(position).getDay()) + " 第" + courseBeans.get(position).getTime() + "大节");
+            holder.textView6.setText("周次：" + courseBeans.get(position).getWeekStart() + "-" + courseBeans.get(position).getWeekEnd() + "周");
+            holder.textView7.setText(courseBeans.get(position).getRemarks());
+        } else {
         }
     }
 
@@ -79,18 +80,16 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
     }
 
     static class ClassDetailViewHolder extends RecyclerView.ViewHolder {
-        TextView tName, tTeacherName, tLibname, tRoom, tDay, tTime, tWeekStart, tWeekEnd, tRemarks;
+        TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
         public ClassDetailViewHolder(@NonNull View itemView) {
             super(itemView);
-            tName = itemView.findViewById(R.id.textViewName);
-            tTeacherName = itemView.findViewById(R.id.textViewTeacherName);
-            tLibname = itemView.findViewById(R.id.textViewLibname);
-            tRoom = itemView.findViewById(R.id.textViewRoom);
-            tDay = itemView.findViewById(R.id.textViewDay);
-            tTime = itemView.findViewById(R.id.textViewTime);
-            tWeekStart = itemView.findViewById(R.id.textViewWeekStart);
-            tWeekEnd = itemView.findViewById(R.id.textViewWeekEnd);
-            tRemarks = itemView.findViewById(R.id.textViewRemarks);
+            textView1 = itemView.findViewById(R.id.card_1);
+            textView2 = itemView.findViewById(R.id.card_2);
+            textView3 = itemView.findViewById(R.id.card_3);
+            textView4 = itemView.findViewById(R.id.card_4);
+            textView5 = itemView.findViewById(R.id.card_5);
+            textView6 = itemView.findViewById(R.id.card_6);
+            textView7 = itemView.findViewById(R.id.card_7);
         }
     }
 }
