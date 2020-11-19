@@ -9,12 +9,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.zhuangfei.timetable.model.Schedule;
+import com.zhuangfei.timetable.model.ScheduleSupport;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.adapter.ClassDetailAdapter;
+import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.AccountData;
+import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.service.GetDataService;
 import top.yvyan.guettable.util.TimeUtil;
@@ -25,6 +36,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private View view;
     private TextView textView;
+    private RecyclerView recyclerView;
+    private ClassDetailAdapter classDetailAdapter;
     private AccountData accountData;
     private GeneralData generalData;
 
@@ -55,7 +68,21 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 GetDataService.autoUpdateThread(getActivity(), accountData.getUsername(), accountData.getPassword(), generalData.getTerm());
             }
         }
-        Log.d("test:", "create");
+
+        final Calendar calendar = Calendar.getInstance();
+        List<Schedule> tmpList = ScheduleSupport.getHaveSubjectsWithDay(
+                getData(), GeneralData.newInstance(getActivity()).getWeek(), calendar.get(Calendar.DAY_OF_WEEK) - 2);
+        List<CourseBean> courseBeans = new ArrayList<>();
+        for (Schedule schedule : tmpList) {
+            CourseBean courseBean = new CourseBean();
+            courseBean.setFromSchedule(schedule);
+            courseBeans.add(courseBean);
+        }
+        recyclerView = view.findViewById(R.id.day_class_detail_recycleView);
+        classDetailAdapter = new ClassDetailAdapter(courseBeans);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(classDetailAdapter);
+
         return view;
     }
 
@@ -95,4 +122,15 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         textView.setText(text);
         Log.d("test:", "updateText");
     }
+
+    /**
+     * 获取List<Schedule>类型的课表数据
+     * @return List<Schedule>类型的课表数据
+     */
+    private List<Schedule> getData() {
+        List<Schedule> list = ScheduleSupport.transform(ClassData.newInstance(getActivity()).getCourseBeans());
+        list = ScheduleSupport.getColorReflect(list);//分配颜色
+        return list;
+    }
+
 }
