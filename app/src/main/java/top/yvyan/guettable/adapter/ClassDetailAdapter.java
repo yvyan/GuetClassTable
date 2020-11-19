@@ -8,32 +8,40 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
+import java.util.List;
+
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.DayClassData;
+import top.yvyan.guettable.util.ComparatorCourse;
 
 public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.ClassDetailViewHolder> {
-    DayClassData dayClassData = DayClassData.newInstance();
+    List<CourseBean> courseBeans;
 
     @NonNull
     @Override
     public ClassDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.day_class_detail_cardview,parent,false);
+        courseBeans = DayClassData.newInstance().getCourseBeans();
+        ComparatorCourse comparatorCourse = new ComparatorCourse();
+        Collections.sort(courseBeans, comparatorCourse);
         return new ClassDetailViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ClassDetailViewHolder holder, int position) {
-        if(dayClassData.getCourseBeans().get(position).isLab()) {
-            holder.tName.setText(dayClassData.getCourseBeans().get(position).getName());
-            holder.tTeacherName.setText(dayClassData.getCourseBeans().get(position).getTeacher());
-            holder.tLibname.setText(dayClassData.getCourseBeans().get(position).getLibName());
-            holder.tRoom.setText(dayClassData.getCourseBeans().get(position).getRoom());
-            holder.tDay.setText(whichDay(dayClassData.getCourseBeans().get(position).getDay()));
-            holder.tTime.setText(String.valueOf(dayClassData.getCourseBeans().get(position).getTime()));
-            holder.tWeekStart.setText(String.valueOf(dayClassData.getCourseBeans().get(position).getWeekStart()));
-            holder.tWeekEnd.setText(String.valueOf(dayClassData.getCourseBeans().get(position).getWeekEnd()));
-            holder.tRemarks.setText(dayClassData.getCourseBeans().get(position).getRemarks());
+        if(courseBeans.get(position).isLab()) {
+            holder.tName.setText(courseBeans.get(position).getName());
+            holder.tTeacherName.setText(courseBeans.get(position).getTeacher());
+            holder.tLibname.setText(courseBeans.get(position).getLibName());
+            holder.tRoom.setText(courseBeans.get(position).getRoom());
+            holder.tDay.setText(whichDay(courseBeans.get(position).getDay()));
+            holder.tTime.setText(String.valueOf(courseBeans.get(position).getTime()));
+            holder.tWeekStart.setText(String.valueOf(courseBeans.get(position).getWeekStart()));
+            holder.tWeekEnd.setText(String.valueOf(courseBeans.get(position).getWeekEnd()));
+            holder.tRemarks.setText(courseBeans.get(position).getRemarks());
         }
         else {
         }
@@ -41,7 +49,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
 
     @Override
     public int getItemCount() {
-        return dayClassData.getCourseBeans().size();
+        return DayClassData.newInstance().getCourseBeans().size();
     }
 
     public String whichDay(int number){
