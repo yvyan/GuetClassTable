@@ -30,19 +30,27 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ClassDetailViewHolder holder, int position) {
-        if(courseBeans.get(position).isLab()) {
-            holder.textView1.setText(courseBeans.get(position).getName());
-            holder.textView2.setText("名称：" + courseBeans.get(position).getLibName());
-            if (courseBeans.get(position).getTeacher() == null) {
-                holder.textView3.setVisibility(View.GONE);
-            } else {
-                holder.textView3.setText("教师：" + courseBeans.get(position).getTeacher());
-            }
+        holder.textView1.setText(courseBeans.get(position).getName());
+        if (courseBeans.get(position).getTeacher() == null) {
+            holder.textView3.setVisibility(View.GONE);
+        } else {
+            holder.textView3.setText("教师：" + courseBeans.get(position).getTeacher());
+        }
+        if (courseBeans.get(position).getRoom() == null) {
+            holder.textView4.setVisibility(View.GONE);
+        } else {
             holder.textView4.setText("教室：" + courseBeans.get(position).getRoom());
-            holder.textView5.setText("时间：" + whichDay(courseBeans.get(position).getDay()) + " 第" + courseBeans.get(position).getTime() + "大节");
+        }
+        holder.textView5.setText("时间：" + whichDay(courseBeans.get(position).getDay()) + " 第" + courseBeans.get(position).getTime() + "大节");
+
+        if(courseBeans.get(position).isLab()) { //课内实验
+            holder.textView2.setText("名称：" + courseBeans.get(position).getLibName());
             holder.textView6.setText("周次：" + courseBeans.get(position).getWeekStart() + "-" + courseBeans.get(position).getWeekEnd() + "周");
             holder.textView7.setText(courseBeans.get(position).getRemarks());
-        } else {
+        } else { //理论课
+            holder.textView2.setText("课号：" + courseBeans.get(position).getNumber());
+            holder.textView6.setVisibility(View.GONE);
+            holder.textView7.setText("周次：" + courseBeans.get(position).getWeekStart() + "-" + courseBeans.get(position).getWeekEnd() + "周");
         }
     }
 
