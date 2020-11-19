@@ -24,7 +24,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
     @Override
     public ClassDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.day_class_detail_cardview,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.class_detail_cardview,parent,false);
         return new ClassDetailViewHolder(itemView);
     }
 
