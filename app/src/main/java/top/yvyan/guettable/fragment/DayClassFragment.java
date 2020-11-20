@@ -128,8 +128,13 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      * @return List<Schedule>类型的课表数据
      */
     private List<Schedule> getData() {
-        List<Schedule> list = ScheduleSupport.transform(ClassData.newInstance(getActivity()).getCourseBeans());
-        list = ScheduleSupport.getColorReflect(list);//分配颜色
+        List<Schedule> list;
+        if(ClassData.newInstance(getActivity()).getCourseBeans() != null) {
+            list = ScheduleSupport.transform(ClassData.newInstance(getActivity()).getCourseBeans());
+            list = ScheduleSupport.getColorReflect(list);//分配颜色
+        } else {
+            list = new ArrayList<>();
+        }
         return list;
     }
 
