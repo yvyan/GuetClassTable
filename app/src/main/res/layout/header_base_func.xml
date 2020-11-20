@@ -26,13 +26,13 @@
             android:textSize="10sp" />
     </LinearLayout>
 
-    <Button
+    <ImageView
         android:id="@+id/id_more"
-        android:text="功能"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:textColor="@color/app_white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_marginRight="15dp"
+        android:src="@drawable/attribute"/>
 
 </RelativeLayout>

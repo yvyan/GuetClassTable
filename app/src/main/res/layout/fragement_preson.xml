@@ -122,23 +122,23 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
                     android:layout_margin="3dp"
+                    android:layout_weight="3"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="年级"
-                        android:textSize="15dp"
-                        android:gravity="center" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="2018级"
-                        android:textSize="18dp"
-                        android:gravity="center" />
+                        android:textSize="18dp" />
 
                 </LinearLayout>
 
@@ -150,23 +150,23 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
                     android:layout_margin="3dp"
+                    android:layout_weight="4"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="学年"
-                        android:textSize="15dp"
-                        android:gravity="center" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="大三"
-                        android:textSize="18dp"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="大三上学期"
+                        android:textSize="18dp" />
 
                 </LinearLayout>
 
@@ -178,23 +178,23 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
                     android:layout_margin="3dp"
+                    android:layout_weight="3"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="学期"
-                        android:textSize="15dp"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="周数"
+                        android:textSize="15dp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="上学期"
-                        android:textSize="18dp"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="第9周"
+                        android:textSize="18dp" />
 
                 </LinearLayout>
 
@@ -203,79 +203,131 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <com.allen.library.SuperTextView
-        android:id="@+id/tv_information"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        stv:sLeftIconRes="@android:drawable/ic_menu_myplaces"
-        stv:sLeftTextColor="#000000"
-        stv:sLeftTextSize="15sp"
-        stv:sLeftTextString="个人信息"
-        stv:sRightIconRes="@drawable/ic_right_next" />
-
-
-    <com.allen.library.SuperTextView
-        android:id="@+id/tv_password_edit"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        stv:sLeftIconRes="@android:drawable/ic_lock_idle_lock"
-        stv:sLeftTextColor="#000000"
-        stv:sLeftTextSize="15sp"
-        stv:sLeftTextString="设置密码"
-        stv:sRightIconRes="@drawable/ic_right_next" />
-
-
-    <com.allen.library.SuperTextView
-        android:id="@+id/tv_info_help"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        stv:sLeftIconRes="@android:drawable/ic_menu_agenda"
-        stv:sLeftTextColor="#000000"
-        stv:sLeftTextSize="15sp"
-        stv:sLeftTextString="关于与帮助"
-        stv:sRightIconRes="@drawable/ic_right_next" />
-
-
-    <com.allen.library.SuperTextView
-        android:id="@+id/tv_share"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        stv:sLeftIconRes="@android:drawable/ic_menu_share"
-        stv:sLeftTextColor="#000000"
-        stv:sLeftTextSize="15sp"
-        stv:sLeftTextString="分享"
-        stv:sRightIconRes="@drawable/ic_right_next" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/app_white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:layout_height="50dp"
+            android:background="@color/app_white"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="版本号:"
-                android:textColor="#000000"
-                android:textSize="15sp" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="3dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/xueshengdangan"
+                app:tint="@color/colorPrimary" />
 
             <TextView
-                android:id="@+id/tv_profile_version"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="V1.0.0"
-                android:textColor="#000000"
-                android:textSize="15sp" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:text="个人详细信息"
+                android:textColor="@color/app_black"
+                android:textSize="20dp" />
+
         </LinearLayout>
-    </RelativeLayout>
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/app_white"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="3dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/bangzhu"
+                app:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:text="帮助"
+                android:textColor="@color/app_black"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/app_white"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/fankui"
+                app:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:text="问题反馈"
+                android:textColor="@color/app_black"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorPrimary" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/app_white"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="版本:"
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_profile_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="V1.0.0"
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <com.xuexiang.xui.widget.button.roundbutton.RoundButton
         android:id="@+id/btn_quit"

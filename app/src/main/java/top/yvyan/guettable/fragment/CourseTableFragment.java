@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +45,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private TimetableView mTimetableView;
     private WeekView mWeekView;
 
-    private Button moreButton;
+    private ImageView moreButton;
     private LinearLayout linearLayout;
     private TextView titleTextView;
 
