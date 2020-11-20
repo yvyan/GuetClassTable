@@ -50,8 +50,6 @@ dependencies {
     implementation 'com.github.xuexiangjys:XUI:1.1.5'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-    /** fresco 图片加载 **/
-    implementation 'com.facebook.fresco:fresco:2.1.0'
     /** TextView样式布局 **/
     implementation 'com.github.lygttpod:SuperTextView:2.1.6'
 }
