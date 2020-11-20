@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_white"
     android:orientation="vertical"
     tools:context=".fragment.PersonFragment">
 
@@ -37,63 +36,172 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_white"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/images_head"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/table" />
+        android:layout_margin="5dp">
 
         <LinearLayout
-            android:id="@+id/afterLogin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:orientation="vertical">
 
-            <TextView
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="20dp" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="陈金涛"
-                android:textColor="@color/app_black"
-                android:textSize="20dp" />
+                android:background="@color/app_white"
+                android:orientation="horizontal">
 
-            <TextView
+                <ImageView
+                    android:id="@+id/images_head"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/table" />
+
+                <LinearLayout
+                    android:id="@+id/afterLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="陈金涛"
+                        android:textColor="@color/app_black"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="1800100606"
+                        android:textColor="@color/app_black"
+                        android:textSize="20dp" />
+
+
+                </LinearLayout>
+
+                <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+                    android:id="@+id/before_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:text="点击登录"
+                    android:textSize="30dp"
+                    app:rb_backgroundColor="@color/colorPrimary" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorPrimary" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="1800100606"
-                android:textColor="@color/app_black"
-                android:textSize="20dp" />
+                android:layout_height="50dp"
+                android:orientation="horizontal">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_margin="3dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="年级"
+                        android:textSize="15dp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2018级"
+                        android:textSize="18dp"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="fill_parent"
+                    android:background="@color/colorPrimary" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_margin="3dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="学年"
+                        android:textSize="15dp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="大三"
+                        android:textSize="18dp"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="fill_parent"
+                    android:background="@color/colorPrimary" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_margin="3dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="学期"
+                        android:textSize="15dp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="上学期"
+                        android:textSize="18dp"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <com.xuexiang.xui.widget.button.roundbutton.RoundButton
-            android:id="@+id/before_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:text="点击登录"
-            android:textSize="30dp"
-            app:rb_backgroundColor="@color/colorPrimary" />
-
-    </LinearLayout>
-
-    <View style="@style/horizontal_line_style" />
+    </androidx.cardview.widget.CardView>
 
     <com.allen.library.SuperTextView
         android:id="@+id/tv_information"
@@ -137,7 +245,6 @@
         stv:sLeftTextSize="15sp"
         stv:sLeftTextString="分享"
         stv:sRightIconRes="@drawable/ic_right_next" />
-
 
     <RelativeLayout
         android:layout_width="match_parent"
