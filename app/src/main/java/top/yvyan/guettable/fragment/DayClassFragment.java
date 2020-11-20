@@ -69,6 +69,16 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             }
         }
 
+        recyclerView = view.findViewById(R.id.day_class_detail_recycleView);
+        updateView();
+
+        return view;
+    }
+
+    /**
+     * 更新日课表视图
+     */
+    public void updateView() {
         final Calendar calendar = Calendar.getInstance();
         List<Schedule> tmpList = ScheduleSupport.getHaveSubjectsWithDay(
                 getData(), GeneralData.newInstance(getActivity()).getWeek(), calendar.get(Calendar.DAY_OF_WEEK) - 2);
@@ -78,12 +88,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             courseBean.setFromSchedule(schedule);
             courseBeans.add(courseBean);
         }
-        recyclerView = view.findViewById(R.id.day_class_detail_recycleView);
         classDetailAdapter = new ClassDetailAdapter(courseBeans);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(classDetailAdapter);
-
-        return view;
     }
 
     @Override

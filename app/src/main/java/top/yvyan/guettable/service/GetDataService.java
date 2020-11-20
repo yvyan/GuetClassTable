@@ -94,6 +94,7 @@ public class GetDataService {
                 classData.setCourseBeans(courseBeans);
                 activity.runOnUiThread(() -> {
                     CourseTableFragment.newInstance().updateTable(courseBeans);
+                    DayClassFragment.newInstance().updateView();
                 });
                 activity.runOnUiThread(() -> {
                     DayClassFragment.newInstance().updateText("更新成功");
