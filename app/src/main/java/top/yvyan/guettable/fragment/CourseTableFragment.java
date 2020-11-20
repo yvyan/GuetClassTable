@@ -118,6 +118,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     } else {
                         generalData.setWeek(target);
                         mWeekView.curWeek(target).updateView();
+                        DayClassFragment.newInstance().updateView();
                         ToastUtil.showToast(getActivity(), "设置第" + target + "周为当前周");
                         mTimetableView.changeWeekForce(target);
                     }
