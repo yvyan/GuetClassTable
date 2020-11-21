@@ -79,9 +79,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      * 更新日课表视图
      */
     public void updateView() {
-        final Calendar calendar = Calendar.getInstance();
         List<Schedule> tmpList = ScheduleSupport.getHaveSubjectsWithDay(
-                getData(), GeneralData.newInstance(getActivity()).getWeek(), calendar.get(Calendar.DAY_OF_WEEK) - 2);
+                getData(), GeneralData.newInstance(getActivity()).getWeek(), TimeUtil.getDay());
         List<CourseBean> courseBeans = new ArrayList<>();
         for (Schedule schedule : tmpList) {
             CourseBean courseBean = new CourseBean();

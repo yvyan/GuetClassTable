@@ -53,4 +53,14 @@ public class TimeUtil {
         weekOffset = weekOffset + a;
         return weekOffset;
     }
+
+    public static int getDay() {
+        final Calendar calendar = Calendar.getInstance();
+        int n = calendar.get(Calendar.DAY_OF_WEEK);
+        if (n == 1) {
+            return 6;
+        } else {
+            return n - 2;
+        }
+    }
 }
