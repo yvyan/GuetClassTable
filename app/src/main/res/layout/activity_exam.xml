@@ -16,9 +16,10 @@
         tools:layout_editor_absoluteX="109dp">
 
         <TextView
+            android:id="@+id/exam_state"
             android:layout_width="wrap_content"
             android:textSize="20dp"
-            android:text="考试安排"
+            android:text="考试安排 正在更新"
             android:textColor="@color/app_white"
             android:layout_height="wrap_content"
             android:layout_marginTop="30px"
@@ -28,9 +29,14 @@
 
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/exam_info_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/exam_info_recycler_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+
+    <TextView
+        android:id="@+id/testShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
