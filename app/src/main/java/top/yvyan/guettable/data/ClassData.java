@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,6 +51,9 @@ public class ClassData {
     }
 
     public List<CourseBean> getCourseBeans() {
+        if (courseBeans == null) {
+            courseBeans = new ArrayList<>();
+        }
         return courseBeans;
     }
 
