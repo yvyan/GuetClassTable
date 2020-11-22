@@ -111,46 +111,64 @@ public class GetDataService {
 
     public static void autoUpdateThread(Activity activity, String account, String password, String term) {
         new Thread(() -> {
-            StringBuilder cookie_builder = null;
-            /**
-             * state记录当前状态
-             * 0 : 登录成功
-             * 1 : 验证码错误
-             * 2 : 密码错误
-             * 3 : 网络错误/未知错误
-             */
-            int state = 1;
-            for (int i = 0; i < 3; i++) {
-                activity.runOnUiThread(() -> {
-                    DayClassFragment.newInstance().updateText("尝试登录");
-                });
-                cookie_builder = new StringBuilder();
-                String checkCode = changeCode(activity, cookie_builder);
-                HttpConnectionAndCode login_res = LAN.login(activity, account, password, checkCode, cookie_builder.toString(), cookie_builder);
-                if (login_res.code != 0) { //登录失败
-                    if (login_res.comment != null && login_res.comment.contains("验证码")) {
-                        continue;
-                    } else if (login_res.comment != null && login_res.comment.contains("密码")) {
-                        state = 2;
-                        activity.runOnUiThread(() -> {
-                            DayClassFragment.newInstance().updateText("密码错误");
-                        });
-                        break;
-                    } else { //请连接校园网
-                        state = 3;
-                        activity.runOnUiThread(() -> {
-                            DayClassFragment.newInstance().updateText("网络错误");
-                        });
-                        break;
-                    }
-                } else { //登录成功
-                    state = 0;
-                    break;
-                }
-            }
-            if (state == 0) {
-                getClassTable(activity, cookie_builder.toString(), term);
+            String cookie = autoLogin(activity, account, password, term);
+            if (cookie != null) {
+                getClassTable(activity, cookie, term);
             }
         }).start();
+    }
+
+    /**
+     * 自动登录
+     * @param activity 活动
+     * @param account  学号
+     * @param password 密码
+     * @param term     学期
+     * @return          null: 登录失败
+     *                  else: 登录成功后的cookie
+     */
+    public static String autoLogin(Activity activity, String account, String password, String term) {
+        StringBuilder cookie_builder = null;
+        /**
+         * state记录当前状态
+         * 0 : 登录成功
+         * 1 : 验证码错误
+         * 2 : 密码错误
+         * 3 : 网络错误/未知错误
+         */
+        int state = 1;
+        for (int i = 0; i < 3; i++) {
+            activity.runOnUiThread(() -> {
+                DayClassFragment.newInstance().updateText("尝试登录");
+            });
+            cookie_builder = new StringBuilder();
+            String checkCode = changeCode(activity, cookie_builder);
+            HttpConnectionAndCode login_res = LAN.login(activity, account, password, checkCode, cookie_builder.toString(), cookie_builder);
+            if (login_res.code != 0) { //登录失败
+                if (login_res.comment != null && login_res.comment.contains("验证码")) {
+                    continue;
+                } else if (login_res.comment != null && login_res.comment.contains("密码")) {
+                    state = 2;
+                    activity.runOnUiThread(() -> {
+                        DayClassFragment.newInstance().updateText("密码错误");
+                    });
+                    break;
+                } else { //请连接校园网
+                    state = 3;
+                    activity.runOnUiThread(() -> {
+                        DayClassFragment.newInstance().updateText("网络错误");
+                    });
+                    break;
+                }
+            } else { //登录成功
+                state = 0;
+                break;
+            }
+        }
+        if (state == 0) {
+            return cookie_builder.toString();
+        } else {
+            return null;
+        }
     }
 }

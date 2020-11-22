@@ -16,8 +16,8 @@ public class LAN {
 
     /**
      * 获取验证码
-     * @param context
-     * @return
+     * @param context activity
+     * @return        验证码图片
      */
     public static HttpConnectionAndCode checkCode(Context context) {
         Resources resources = context.getResources();
@@ -32,14 +32,14 @@ public class LAN {
     }
 
     /**
-     * 登陆
-     * @param context
-     * @param account
-     * @param pwd
-     * @param checkCode
-     * @param cookie
-     * @param builder
-     * @return
+     * 登录
+     * @param context   activity
+     * @param account   学号
+     * @param pwd       密码
+     * @param checkCode 验证码
+     * @param cookie    获取验证码之后的cookie
+     * @param builder   用于接收登录后的cookie
+     * @return          登录状态
      */
     public static HttpConnectionAndCode login(Context context, String account, String pwd, String checkCode, String cookie, StringBuilder builder) {
         Resources resources = context.getResources();
@@ -72,9 +72,9 @@ public class LAN {
 
     /**
      * 获取学生个人信息
-     * @param context
-     * @param cookie
-     * @return
+     * @param context activity
+     * @param cookie  登录后的cookie
+     * @return        gson格式的个人信息
      */
     public static HttpConnectionAndCode studentInfo(Context context, String cookie) {
         Resources resources = context.getResources();
@@ -95,11 +95,11 @@ public class LAN {
 
     /**
      * 获取课程安排
-     * @param context
-     * @param cookie
-     * @return
+     * @param context activity
+     * @param cookie  登录后的cookie
+     * @return        gson格式的课程安排
      */
-    public static HttpConnectionAndCode getClassTable(Context context, String cookie, String term){
+    public static HttpConnectionAndCode getClassTable(Context context, String cookie, String term) {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
@@ -120,11 +120,12 @@ public class LAN {
 
     /**
      * 获取课内实验安排
-     * @param context
-     * @param cookie
-     * @return
+     * @param context activity
+     * @param cookie  登录后的cookie
+     * @param term    学期（格式：2020-2021_1）
+     * @return        gson格式的课内实验安排
      */
-    public static HttpConnectionAndCode getLabTable(Context context, String cookie, String term){
+    public static HttpConnectionAndCode getLabTable(Context context, String cookie, String term) {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
@@ -132,6 +133,32 @@ public class LAN {
                 param,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.lan_get_table_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_table_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 获取考试安排
+     * @param context activity
+     * @param cookie  登录后的cookie
+     * @param term    学期（格式：2020-2021_1）
+     * @return        gson格式的考试安排
+     */
+    public static HttpConnectionAndCode getExam(Context context, String cookie, String term) {
+        Resources resources = context.getResources();
+        String[] param = {"term=" + term};
+        return Get.get(
+                resources.getString(R.string.lan_get_exam_url),
+                param,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_login_referer),
                 cookie,
                 "]}",
                 null,
