@@ -2,6 +2,8 @@ package top.yvyan.guettable.Gson;
 
 import java.util.Date;
 
+import top.yvyan.guettable.bean.ExamBean;
+
 public class ExamInfo {
     private String croomno;
     private String croomname;
@@ -55,6 +57,10 @@ public class ExamInfo {
     private String postdate;
     private String operator;
     private String pk;
+
+    public ExamBean toExamBean() {
+        return new ExamBean(courseno, cname, name, zc, xq, Integer.valueOf(ksjc), kssj, examdate, croomno);
+    }
 
     public void setCroomno(String croomno) {
         this.croomno = croomno;

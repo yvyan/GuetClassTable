@@ -10,12 +10,15 @@ import java.util.List;
 
 import top.yvyan.guettable.Gson.ClassTable;
 import top.yvyan.guettable.Gson.ClassTableOuter;
+import top.yvyan.guettable.Gson.ExamInfo;
+import top.yvyan.guettable.Gson.ExamInfoOuter;
 import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.LabTableOuter;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.DayClassData;
 import top.yvyan.guettable.data.GeneralData;
@@ -109,6 +112,13 @@ public class GetDataService {
         }).start();
     }
 
+    /**
+     * 自动更新数据（线程）
+     * @param activity
+     * @param account
+     * @param password
+     * @param term
+     */
     public static void autoUpdateThread(Activity activity, String account, String password, String term) {
         new Thread(() -> {
             String cookie = autoLogin(activity, account, password, term);
@@ -170,5 +180,19 @@ public class GetDataService {
         } else {
             return null;
         }
+    }
+
+    public static List<ExamBean> getExam(Activity activity, String cookie, String term) {
+        List<ExamBean> examBeans = new ArrayList<>();
+        HttpConnectionAndCode examInfo = LAN.getExam(activity, cookie, term);
+        if (examInfo.code == 0) {
+            ExamInfoOuter examInfoOuter = new Gson().fromJson(examInfo.comment, ExamInfoOuter.class);
+            for (ExamInfo examInfo1 : examInfoOuter.getData()) {
+                examBeans.add(examInfo1.toExamBean());
+            }
+        } else {
+            return null;
+        }
+        return examBeans;
     }
 }
