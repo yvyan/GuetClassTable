@@ -20,7 +20,6 @@ import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.ClassData;
-import top.yvyan.guettable.data.DayClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;

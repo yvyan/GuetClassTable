@@ -4,19 +4,19 @@ import java.util.List;
 
 import top.yvyan.guettable.bean.CourseBean;
 
-public class DayClassData {
-    private static DayClassData dayClassData;
+public class DetailClassData {
+    private static DetailClassData detailClassData;
 
     private List<CourseBean> courseBeans;
 
-    private DayClassData() {
+    private DetailClassData() {
     }
 
-    public static DayClassData newInstance() {
-        if (dayClassData == null) {
-            dayClassData = new DayClassData();
+    public static DetailClassData newInstance() {
+        if (detailClassData == null) {
+            detailClassData = new DetailClassData();
         }
-        return dayClassData;
+        return detailClassData;
     }
 
     public List<CourseBean> getCourseBeans() {

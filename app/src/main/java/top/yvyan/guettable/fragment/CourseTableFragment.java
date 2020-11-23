@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +30,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
-import top.yvyan.guettable.data.DayClassData;
+import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TableSettingData;
 import top.yvyan.guettable.util.ToastUtil;
@@ -55,7 +54,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private GeneralData generalData;
     private ClassData classData;
     private TableSettingData tableSettingData;
-    private DayClassData dayClassData;
+    private DetailClassData detailClassData;
 
     //记录切换的周次，不一定是当前周
     int target = -1;
@@ -81,7 +80,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         generalData = GeneralData.newInstance(getActivity());
         classData = ClassData.newInstance(getActivity());
         tableSettingData = TableSettingData.newInstance(getActivity());
-        dayClassData = DayClassData.newInstance();
+        detailClassData = DetailClassData.newInstance();
         titleTextView = view.findViewById(R.id.id_title);
         linearLayout = view.findViewById(R.id.id_class_layout);
         linearLayout.setOnClickListener(this);
@@ -187,7 +186,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             courseBean.setFromSchedule(schedule);
             courseBeans.add(courseBean);
         }
-        dayClassData.setCourseBeans(courseBeans);
+        detailClassData.setCourseBeans(courseBeans);
         Intent intent = new Intent(getContext(), DetailActivity.class);
         startActivity(intent);
     }

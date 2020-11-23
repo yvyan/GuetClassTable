@@ -11,7 +11,7 @@ import java.util.List;
 
 import top.yvyan.guettable.adapter.ClassDetailAdapter;
 import top.yvyan.guettable.bean.CourseBean;
-import top.yvyan.guettable.data.DayClassData;
+import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.util.ComparatorCourse;
 
 public class DetailActivity extends AppCompatActivity {
@@ -22,7 +22,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        List<CourseBean> courseBeans = DayClassData.newInstance().getCourseBeans();
+        List<CourseBean> courseBeans = DetailClassData.newInstance().getCourseBeans();
         ComparatorCourse comparatorCourse = new ComparatorCourse();
         Collections.sort(courseBeans, comparatorCourse);
         recyclerView = findViewById(R.id.class_detail_recycleView);
