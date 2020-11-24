@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import top.yvyan.guettable.fragment.CourseTableFragment;
-import top.yvyan.guettable.fragment.DayClassFragment;
+import top.yvyan.guettable.fragment.dayClass.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;

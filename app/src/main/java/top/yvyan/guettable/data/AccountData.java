@@ -1,6 +1,5 @@
 package top.yvyan.guettable.data;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -21,14 +20,14 @@ public class AccountData {
     private String username;
     private String password;
 
-    private AccountData(Activity activity) {
-        sharedPreferences = activity.getApplication().getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
+    private AccountData(Context context) {
+        sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         load();
     }
 
-    public static AccountData newInstance(Activity activity) {
+    public static AccountData newInstance(Context context) {
         if (accountData == null) {
-            accountData = new AccountData(activity);
+            accountData = new AccountData(context);
         }
         return accountData;
     }

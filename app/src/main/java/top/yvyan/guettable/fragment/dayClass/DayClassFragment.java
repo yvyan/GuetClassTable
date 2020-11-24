@@ -1,6 +1,5 @@
-package top.yvyan.guettable.fragment;
+package top.yvyan.guettable.fragment.dayClass;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.SavedStateViewModelFactory;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,29 +18,27 @@ import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleSupport;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ClassDetailAdapter;
 import top.yvyan.guettable.bean.CourseBean;
-import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.service.GetDataService;
+import top.yvyan.guettable.databinding.FragmentDayClassBinding;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private static DayClassFragment dayClassFragment;
 
+    private MyViewModel myViewModel;
+    private FragmentDayClassBinding binding;
+
     private View view;
     private TextView textView;
     private RecyclerView recyclerView;
     private ClassDetailAdapter classDetailAdapter;
-    private AccountData accountData;
     private GeneralData generalData;
 
     public DayClassFragment() {
@@ -56,18 +56,16 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_day_class, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_day_class, container, false);
+        view = binding.getRoot();
+        ViewModelProvider viewModelProvider = new ViewModelProvider(getActivity(), new SavedStateViewModelFactory(getActivity().getApplication(), getActivity()));
+        myViewModel = viewModelProvider.get(MyViewModel.class);
+        binding.setData(myViewModel);
+        binding.setLifecycleOwner(getActivity());
 
         textView = view.findViewById(R.id.day_class_test);
         textView.setOnClickListener(this);
-        accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
-        updateUser();
-        if (accountData.getIsLogin()) {
-            if (generalData.getLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getLastUpdateTime()), new Date(System.currentTimeMillis())) >= generalData.updateFrequency) {
-                GetDataService.autoUpdateThread(getActivity(), accountData.getUsername(), accountData.getPassword(), generalData.getTerm());
-            }
-        }
 
         recyclerView = view.findViewById(R.id.day_class_detail_recycleView);
         updateView();
@@ -105,23 +103,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     @Override
     public void onClick(View view) {
-        if ("请登录".equals(textView.getText()) || "密码错误".equals(textView.getText())) {
-            Intent intent = new Intent(getContext(), LoginActivity.class);
-            startActivity(intent);
-        } else if ("更新成功".equals(textView.getText()) || "已登录".equals(textView.getText()) || "网络错误".equals(textView.getText())) {
-            //启动自动更新线程
-            if (accountData.getIsLogin()) {
-                GetDataService.autoUpdateThread(getActivity(), accountData.getUsername(), accountData.getPassword(), generalData.getTerm());
-            }
-        }
-    }
-
-    private void updateUser() {
-        if (accountData.getIsLogin()) {
-            textView.setText("已登录");
-        } else {
-            textView.setText("请登录");
-        }
     }
 
     public void updateText(String text) {
