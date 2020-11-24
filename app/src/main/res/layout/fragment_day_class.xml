@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.DayClassFragment"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary">
+    <data>
+        <variable
+            name="data"
+            type="top.yvyan.guettable.fragment.dayClass.MyViewModel" />
+    </data>
 
-        <TextView
-            style=""
-            android:id="@+id/day_class_test"
-            android:layout_width="wrap_content"
-            android:textSize="20dp"
-            android:textColor="@color/app_white"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:layout_marginTop="30px"
-            android:layout_marginLeft="70px"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/day_class_detail_recycleView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        tools:context=".fragment.dayClass.DayClassFragment"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                style=""
+                android:id="@+id/day_class_test"
+                android:layout_width="wrap_content"
+                android:textSize="20dp"
+                android:text="@{data.state}"
+                android:textColor="@color/app_white"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_marginTop="30px"
+                android:layout_marginLeft="70px"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/day_class_detail_recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+</layout>
