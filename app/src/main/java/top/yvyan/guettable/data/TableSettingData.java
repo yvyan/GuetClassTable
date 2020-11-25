@@ -12,8 +12,8 @@ public class TableSettingData {
 
     private boolean hideOtherWeek;
 
-    private TableSettingData(Activity activity) {
-        sharedPreferences = activity.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
+    private TableSettingData(Context context) {
+        sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         load();
     }
 
@@ -21,9 +21,9 @@ public class TableSettingData {
         hideOtherWeek = sharedPreferences.getBoolean(HIDE_OTHER_WEEK, false);
     }
 
-    public static TableSettingData newInstance(Activity activity) {
+    public static TableSettingData newInstance(Context context) {
         if (tableSettingData == null) {
-            tableSettingData = new TableSettingData(activity);
+            tableSettingData = new TableSettingData(context);
         }
         return tableSettingData;
     }

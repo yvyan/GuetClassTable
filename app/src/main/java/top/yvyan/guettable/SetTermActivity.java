@@ -10,7 +10,7 @@ import com.xuexiang.xui.widget.button.ButtonView;
 
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.service.GetDataService;
+import top.yvyan.guettable.service.StaticService;
 
 public class SetTermActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,7 +42,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         generalData = GeneralData.newInstance(this);
 
         new Thread(() -> {
-            StudentInfo studentInfo = GetDataService.getStudentInfo(this, cookie);
+            StudentInfo studentInfo = StaticService.getStudentInfo(this, cookie);
             generalData.setGrade(studentInfo.getGrade());
             generalData.setTerm(studentInfo.getTerm());
         }).start();
@@ -55,7 +55,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.input:
-                GetDataService.getClassTable(this, cookie, generalData.getTerm());
+                //StaticService.getClassTable(this, cookie, generalData.getTerm());
                 finish();
                 break;
         }

@@ -1,4 +1,4 @@
-package top.yvyan.guettable.fragment.dayClass;
+package top.yvyan.guettable.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,10 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.SavedStateViewModelFactory;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,23 +20,23 @@ import java.util.List;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ClassDetailAdapter;
 import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.databinding.FragmentDayClassBinding;
+import top.yvyan.guettable.service.AutoUpdate;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private static DayClassFragment dayClassFragment;
 
-    private MyViewModel myViewModel;
-    private FragmentDayClassBinding binding;
-
     private View view;
     private TextView textView;
     private RecyclerView recyclerView;
     private ClassDetailAdapter classDetailAdapter;
+    private AccountData accountData;
     private GeneralData generalData;
+    private AutoUpdate autoUpdate;
 
     public DayClassFragment() {
         // Required empty public constructor
@@ -56,16 +53,15 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_day_class, container, false);
-        view = binding.getRoot();
-        ViewModelProvider viewModelProvider = new ViewModelProvider(getActivity(), new SavedStateViewModelFactory(getActivity().getApplication(), getActivity()));
-        myViewModel = viewModelProvider.get(MyViewModel.class);
-        binding.setData(myViewModel);
-        binding.setLifecycleOwner(getActivity());
+        view = inflater.inflate(R.layout.fragment_day_class, container, false);
 
         textView = view.findViewById(R.id.day_class_test);
         textView.setOnClickListener(this);
+        accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
+
+        autoUpdate = AutoUpdate.newInstance(getActivity());
+        autoUpdate.start();
 
         recyclerView = view.findViewById(R.id.day_class_detail_recycleView);
         updateView();
@@ -93,6 +89,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+        autoUpdate.updateView();
         Log.d("test:", "start");
         //updateUser();
     }
@@ -103,6 +100,15 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     @Override
     public void onClick(View view) {
+        autoUpdate.update();
+    }
+
+    private void updateUser() {
+        if (accountData.getIsLogin()) {
+            textView.setText("已登录");
+        } else {
+            textView.setText("请登录");
+        }
     }
 
     public void updateText(String text) {

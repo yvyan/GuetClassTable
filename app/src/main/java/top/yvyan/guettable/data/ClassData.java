@@ -20,8 +20,8 @@ public class ClassData {
 
     private List<CourseBean> courseBeans;
 
-    private ClassData(Activity activity) {
-        sharedPreferences = activity.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
+    private ClassData(Context context) {
+        sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         load();
     }
 
@@ -43,9 +43,9 @@ public class ClassData {
         }
     }
 
-    public static ClassData newInstance(Activity activity) {
+    public static ClassData newInstance(Context context) {
         if (classData == null) {
-            classData = new ClassData(activity);
+            classData = new ClassData(context);
         }
         return classData;
     }
