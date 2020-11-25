@@ -1,27 +1,17 @@
 package top.yvyan.guettable;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.zhuangfei.timetable.model.Schedule;
-import com.zhuangfei.timetable.model.ScheduleSupport;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import top.yvyan.guettable.adapter.ClassDetailAdapter;
-import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
-import top.yvyan.guettable.service.GetDataService;
-import top.yvyan.guettable.util.TimeUtil;
-import top.yvyan.guettable.util.ToastUtil;
+import top.yvyan.guettable.service.StaticService;
 
 public class ExamActivity extends AppCompatActivity {
 
@@ -48,14 +38,15 @@ public class ExamActivity extends AppCompatActivity {
 
         new Thread(() -> {
             List<ExamBean> examBeans;
-            String cookie = GetDataService.autoLogin(
+            StringBuilder cookie_builder = new StringBuilder();
+            int state = StaticService.autoLogin(
                     this,
                     accountData.getUsername(),
                     accountData.getPassword(),
-                    generalData.getTerm()
+                    cookie_builder
             );
-            if (cookie != null) {
-                examBeans = GetDataService.getExam(this, cookie, generalData.getTerm());
+            if (state == 0) {
+                examBeans = StaticService.getExam(this, cookie_builder.toString(), generalData.getTerm());
                 if (examBeans != null) {
                     moreDate.setExamBeans(examBeans);
                     runOnUiThread(() -> {

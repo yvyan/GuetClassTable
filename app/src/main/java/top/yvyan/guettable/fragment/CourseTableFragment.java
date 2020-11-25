@@ -33,7 +33,6 @@ import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TableSettingData;
-import top.yvyan.guettable.fragment.dayClass.DayClassFragment;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
@@ -168,10 +167,10 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .onHighLight();
     }
 
-    public void updateTable(List<CourseBean> courseBeans) {
-        mWeekView.source(courseBeans)
+    public void updateTable() {
+        mWeekView.source(classData.getCourseBeans())
                 .showView();
-        mTimetableView.source(courseBeans)
+        mTimetableView.source(classData.getCourseBeans())
                 .updateView();
     }
 

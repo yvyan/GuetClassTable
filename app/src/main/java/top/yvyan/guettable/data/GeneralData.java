@@ -25,8 +25,8 @@ public class GeneralData {
     private long lastUpdateTime;
     public int updateFrequency = 1;
 
-    private GeneralData(Activity activity) {
-        sharedPreferences = activity.getApplication().getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
+    private GeneralData(Context context) {
+        sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         load();
     }
 
@@ -38,9 +38,9 @@ public class GeneralData {
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
     }
 
-    public static GeneralData newInstance(Activity activity) {
+    public static GeneralData newInstance(Context context) {
         if (generalData == null) {
-            generalData = new GeneralData(activity);
+            generalData = new GeneralData(context);
         }
         return generalData;
     }
