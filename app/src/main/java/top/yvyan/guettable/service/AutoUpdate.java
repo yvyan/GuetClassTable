@@ -78,10 +78,19 @@ public class AutoUpdate {
      * 启动更新
      */
     public void update() {
+
         // 判断状态是否符合；合适的状态：就绪 网络错误 更新成功(点击更新)
         if (state == 5 || state == 3 || state == 8) {
             update_thread();
         }
+    }
+
+    /**
+     * 首次登录成功后导入课表
+     */
+    public void firstLogin() {
+        init();
+        update();
     }
 
     public void logoff() {
@@ -165,6 +174,7 @@ public class AutoUpdate {
                         generalData.setLastUpdateTime(System.currentTimeMillis());
                         activity.runOnUiThread(() -> {
                             CourseTableFragment.newInstance().updateTable();
+                            DayClassFragment.newInstance().updateView();
                         });
                     } else {
                         updateView(3);
