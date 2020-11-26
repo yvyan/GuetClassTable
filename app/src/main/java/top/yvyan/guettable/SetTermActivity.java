@@ -10,7 +10,9 @@ import com.xuexiang.xui.widget.button.ButtonView;
 
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.service.AutoUpdate;
 import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.util.ToastUtil;
 
 public class SetTermActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,7 +57,8 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.input:
-                //StaticService.getClassTable(this, cookie, generalData.getTerm());
+                AutoUpdate.newInstance(this).firstLogin();
+                ToastUtil.showLongToast(getApplicationContext(), "正在导入课表，受教务系统影响，需要约30秒，请耐心等待");
                 finish();
                 break;
         }

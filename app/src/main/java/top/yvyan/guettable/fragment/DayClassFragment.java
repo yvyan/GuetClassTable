@@ -1,5 +1,6 @@
 package top.yvyan.guettable.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.zhuangfei.timetable.model.ScheduleSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ClassDetailAdapter;
 import top.yvyan.guettable.bean.CourseBean;
@@ -61,7 +63,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         generalData = GeneralData.newInstance(getActivity());
 
         autoUpdate = AutoUpdate.newInstance(getActivity());
-        autoUpdate.start();
+        if (accountData.getIsLogin()) {
+            autoUpdate.start();
+        }
 
         recyclerView = view.findViewById(R.id.day_class_detail_recycleView);
         updateView();
@@ -73,17 +77,20 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      * 更新日课表视图
      */
     public void updateView() {
-        List<Schedule> tmpList = ScheduleSupport.getHaveSubjectsWithDay(
-                getData(), GeneralData.newInstance(getActivity()).getWeek(), TimeUtil.getDay());
-        List<CourseBean> courseBeans = new ArrayList<>();
-        for (Schedule schedule : tmpList) {
-            CourseBean courseBean = new CourseBean();
-            courseBean.setFromSchedule(schedule);
-            courseBeans.add(courseBean);
+        List<Schedule> allClass = getData();
+        if (allClass != null) {
+            List<Schedule> tmpList = ScheduleSupport.getHaveSubjectsWithDay(
+                    allClass, generalData.getWeek(), TimeUtil.getDay());
+            List<CourseBean> courseBeans = new ArrayList<>();
+            for (Schedule schedule : tmpList) {
+                CourseBean courseBean = new CourseBean();
+                courseBean.setFromSchedule(schedule);
+                courseBeans.add(courseBean);
+            }
+            classDetailAdapter = new ClassDetailAdapter(courseBeans);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(classDetailAdapter);
         }
-        classDetailAdapter = new ClassDetailAdapter(courseBeans);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(classDetailAdapter);
     }
 
     @Override
@@ -100,7 +107,12 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     @Override
     public void onClick(View view) {
-        autoUpdate.update();
+        if ("点击登录".equals(textView.getText())) {
+            Intent intent = new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+        } else {
+            autoUpdate.update();
+        }
     }
 
     private void updateUser() {
