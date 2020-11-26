@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.yvyan.guettable.database.MySQLite;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
@@ -67,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
         list.add(MoreFragment.newInstance());
         list.add(PersonFragment.newInstance());
         viewPagerAdapter.setList(list);
+
+
+        /**
+         * 创建数据库
+         * */
+        MySQLite mySQLite = new MySQLite(this);
+        mySQLite.getWritableDatabase();
 
     }
 
