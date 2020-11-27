@@ -33,6 +33,7 @@ import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TableSettingData;
+import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
@@ -128,10 +129,11 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         target = generalData.getWeek();
         mTimetableView.source(courseBeans)
                 .curWeek(generalData.getWeek())
+                //TODO 学期是死的
                 .curTerm("大三下学期")
                 .maxSlideItem(10)
                 .monthWidthDp(20)
-                .itemHeight(160)
+                .itemHeight(DensityUtil.dip2px(getContext(), 60))
                 .callback(new OnItemBuildAdapter() {
                     @Override
                     public String getItemText(Schedule schedule, boolean isThisWeek) {
