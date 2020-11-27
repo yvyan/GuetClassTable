@@ -12,6 +12,7 @@ import java.util.List;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.util.TimeUtil;
 
 public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.ClassDetailViewHolder> {
     List<CourseBean> courseBeans;
@@ -24,7 +25,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
     @Override
     public ClassDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.class_detail_cardview,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.detail_cardview,parent,false);
         return new ClassDetailViewHolder(itemView);
     }
 
@@ -41,7 +42,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
         } else {
             holder.textView4.setText("教室：" + courseBeans.get(position).getRoom());
         }
-        holder.textView5.setText("时间：" + whichDay(courseBeans.get(position).getDay()) + " 第" + courseBeans.get(position).getTime() + "大节");
+        holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBeans.get(position).getDay()) + " 第" + courseBeans.get(position).getTime() + "大节");
 
         if(courseBeans.get(position).isLab()) { //课内实验
             holder.textView2.setText("名称：" + courseBeans.get(position).getLibName());
@@ -57,34 +58,6 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
     @Override
     public int getItemCount() {
         return courseBeans.size();
-    }
-
-    public String whichDay(int number){
-        String s = new String();
-        switch (number){
-            case 1:
-                s = "星期一";
-                break;
-            case 2:
-                s = "星期二";
-                break;
-            case 3:
-                s = "星期三";
-                break;
-            case 4:
-                s = "星期四";
-                break;
-            case 5:
-                s = "星期五";
-                break;
-            case 6:
-                s = "星期六";
-                break;
-            case 7:
-                s = "星期日";
-                break;
-        }
-        return s;
     }
 
     static class ClassDetailViewHolder extends RecyclerView.ViewHolder {
