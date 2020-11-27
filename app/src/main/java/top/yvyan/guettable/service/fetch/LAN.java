@@ -16,7 +16,7 @@ public class LAN {
 
     /**
      * 获取验证码
-     * @param context activity
+     * @param context context
      * @return        验证码图片
      */
     public static HttpConnectionAndCode checkCode(Context context) {
@@ -33,7 +33,7 @@ public class LAN {
 
     /**
      * 登录
-     * @param context   activity
+     * @param context   context
      * @param account   学号
      * @param pwd       密码
      * @param checkCode 验证码
@@ -72,7 +72,7 @@ public class LAN {
 
     /**
      * 获取学生个人信息
-     * @param context activity
+     * @param context context
      * @param cookie  登录后的cookie
      * @return        gson格式的个人信息
      */
@@ -95,7 +95,7 @@ public class LAN {
 
     /**
      * 获取课程安排
-     * @param context activity
+     * @param context context
      * @param cookie  登录后的cookie
      * @return        gson格式的课程安排
      */
@@ -120,7 +120,7 @@ public class LAN {
 
     /**
      * 获取课内实验安排
-     * @param context activity
+     * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期（格式：2020-2021_1）
      * @return        gson格式的课内实验安排
@@ -146,7 +146,7 @@ public class LAN {
 
     /**
      * 获取考试安排
-     * @param context activity
+     * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期（格式：2020-2021_1）
      * @return        gson格式的考试安排

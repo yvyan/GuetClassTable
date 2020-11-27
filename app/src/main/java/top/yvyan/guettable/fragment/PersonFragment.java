@@ -8,23 +8,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
+import top.yvyan.guettable.data.GeneralData;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
     private static PersonFragment personFragment;
 
     private static final String TAG = "PersonFragment";
     private View view;
-    private View afterLogin;
-    private View beforeLogin;
+
+    private View person_userNameAndNo;
+    private View person_login;
     private Button buttonQuit;
+    private View person_line_1;
+    private View person_userInfo;
+    private TextView person_name;
+    private TextView person_number;
+    private TextView person_grade;
+    private TextView person_term;
+    private TextView person_week;
 
     private AccountData accountData;
+    private GeneralData generalData;
 
     public PersonFragment() {
     }
@@ -42,22 +53,49 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 
         Log.d(TAG, "createPersonFragmentView");
         view = inflater.inflate(R.layout.fragement_preson, container, false);
-        accountData = AccountData.newInstance(getActivity());
-        afterLogin = view.findViewById(R.id.afterLogin);
-        beforeLogin = view.findViewById(R.id.before_login);
-        beforeLogin.setOnClickListener(this);
+        accountData = AccountData.newInstance(getContext());
+        generalData = GeneralData.newInstance(getContext());
+        initView();
+        updateView();
+        return view;
+    }
+
+    private void initView() {
+        person_userNameAndNo = view.findViewById(R.id.person_userNameAndNo);
+        person_login = view.findViewById(R.id.person_login);
+        person_login.setOnClickListener(this);
+        person_name = view.findViewById(R.id.person_name);
+        person_number = view.findViewById(R.id.person_number);
         buttonQuit = view.findViewById(R.id.btn_quit);
         buttonQuit.setOnClickListener(this);
+        person_line_1 = view.findViewById(R.id.person_line_1);
+        person_userInfo = view.findViewById(R.id.person_userInfo);
+        person_grade = view.findViewById(R.id.person_grade);
+        person_term = view.findViewById(R.id.person_term);
+        person_week = view.findViewById(R.id.person_week);
+    }
 
+    public void updateView() {
         if (accountData.getIsLogin()) {
-            afterLogin.setVisibility(View.VISIBLE);
-            beforeLogin.setVisibility(View.GONE);
+            person_userNameAndNo.setVisibility(View.VISIBLE);
+            person_line_1.setVisibility(View.VISIBLE);
+            person_userInfo.setVisibility(View.VISIBLE);
+            buttonQuit.setVisibility(View.VISIBLE);
+            person_login.setVisibility(View.GONE);
+
+            person_name.setText(generalData.getName());
+            person_number.setText(generalData.getNumber());
+            person_grade.setText(generalData.getGrade() + "级");
+            person_term.setText(generalData.getTerm());
+            person_week.setText("第" + generalData.getWeek() + "周");
+
         } else {
-            afterLogin.setVisibility(View.GONE);
-            beforeLogin.setVisibility(View.VISIBLE);
+            person_userNameAndNo.setVisibility(View.GONE);
+            person_line_1.setVisibility(View.GONE);
+            person_userInfo.setVisibility(View.GONE);
             buttonQuit.setVisibility(View.GONE);
+            person_login.setVisibility(View.VISIBLE);
         }
-        return view;
     }
 
     @Override
@@ -65,9 +103,9 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.btn_quit:
                 accountData.logoff();
-                buttonQuit.setVisibility(View.GONE);
+                updateView();
                 break;
-            case R.id.before_login:
+            case R.id.person_login:
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
                 break;

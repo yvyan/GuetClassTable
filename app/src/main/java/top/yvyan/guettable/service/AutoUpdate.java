@@ -14,6 +14,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.util.TimeUtil;
+import top.yvyan.guettable.util.ToastUtil;
 
 public class AutoUpdate {
 
@@ -175,6 +176,7 @@ public class AutoUpdate {
                         activity.runOnUiThread(() -> {
                             CourseTableFragment.newInstance().updateTable();
                             DayClassFragment.newInstance().updateView();
+                            ToastUtil.showToast(activity, "更新成功");
                         });
                     } else {
                         updateView(3);
