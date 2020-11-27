@@ -41,7 +41,8 @@ public class GeneralData {
         time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
         grade = sharedPreferences.getString(GRADE, null);
         term = sharedPreferences.getString(TERM, null);
-        lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, 1);
+        lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
+        updateFrequency = sharedPreferences.getInt(UPDATE_FREQUENCY, 1);
     }
 
     public static GeneralData newInstance(Context context) {
