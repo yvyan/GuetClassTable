@@ -11,9 +11,9 @@
     <item
         android:id="@+id/navigation_func"
         android:icon="@drawable/tab_func"
-        android:title="教务" />
+        android:title="更多" />
     <item
         android:id="@+id/navigation_person"
         android:icon="@drawable/tab_user"
-        android:title="用户" />
+        android:title="我的" />
 </menu>
