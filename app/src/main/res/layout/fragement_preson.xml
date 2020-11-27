@@ -328,7 +328,7 @@
                     android:id="@+id/tv_profile_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="V2.0"
+                    android:text="2.0.1"
                     android:textColor="#000000"
                     android:textSize="15sp" />
             </LinearLayout>
