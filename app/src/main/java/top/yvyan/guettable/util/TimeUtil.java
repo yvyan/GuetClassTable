@@ -1,5 +1,7 @@
 package top.yvyan.guettable.util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -62,5 +64,38 @@ public class TimeUtil {
         } else {
             return n - 2;
         }
+    }
+
+    public static String whichDay(int number){
+        String s = new String();
+        switch (number){
+            case 1:
+                s = "星期一";
+                break;
+            case 2:
+                s = "星期二";
+                break;
+            case 3:
+                s = "星期三";
+                break;
+            case 4:
+                s = "星期四";
+                break;
+            case 5:
+                s = "星期五";
+                break;
+            case 6:
+                s = "星期六";
+                break;
+            case 7:
+                s = "星期日";
+                break;
+        }
+        return s;
+    }
+
+    public static String timeFormat(Date date) {
+        DateFormat fmt = new SimpleDateFormat("yyyy年MM月dd日");
+        return fmt.format(date); // 转换成 X年X月X日
     }
 }

@@ -1,17 +1,22 @@
 package top.yvyan.guettable;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import java.util.List;
 
+import top.yvyan.guettable.adapter.ExamAdapter;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.service.StaticService;
+
+import static com.xuexiang.xui.XUI.getContext;
 
 public class ExamActivity extends AppCompatActivity {
 
@@ -20,7 +25,7 @@ public class ExamActivity extends AppCompatActivity {
     private MoreDate moreDate;
 
     private TextView examState;
-    private TextView textView;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +37,7 @@ public class ExamActivity extends AppCompatActivity {
         moreDate = MoreDate.newInstance(this);
 
         examState = findViewById(R.id.exam_state);
-        textView = findViewById(R.id.testShow);
+        recyclerView = findViewById(R.id.exam_info_recycler_view);
 
         updateView();
 
@@ -68,6 +73,8 @@ public class ExamActivity extends AppCompatActivity {
      */
     public void updateView() {
         List<ExamBean> examBeans = moreDate.getExamBeans();
-        textView.setText(examBeans.toString());
+        ExamAdapter examAdapter = new ExamAdapter(examBeans);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(examAdapter);
     }
 }
