@@ -44,25 +44,31 @@ public class ExamActivity extends AppCompatActivity {
         new Thread(() -> {
             List<ExamBean> examBeans;
             StringBuilder cookie_builder = new StringBuilder();
-            int state = StaticService.autoLogin(
-                    this,
-                    accountData.getUsername(),
-                    accountData.getPassword(),
-                    cookie_builder
-            );
-            if (state == 0) {
-                examBeans = StaticService.getExam(this, cookie_builder.toString(), generalData.getTerm());
-                if (examBeans != null) {
-                    moreDate.setExamBeans(examBeans);
+            if (accountData.getIsLogin()) {
+                int state = StaticService.autoLogin(
+                        this,
+                        accountData.getUsername(),
+                        accountData.getPassword(),
+                        cookie_builder
+                );
+                if (state == 0) {
+                    examBeans = StaticService.getExam(this, cookie_builder.toString(), generalData.getTerm());
+                    if (examBeans != null) {
+                        moreDate.setExamBeans(examBeans);
+                        runOnUiThread(() -> {
+                            examState.setText("考试安排 更新成功");
+                            updateView();
+                        });
+                    }
+                } else {
                     runOnUiThread(() -> {
-                        examState.setText("考试安排 更新成功");
+                        examState.setText("考试安排 网络错误，从本地导入");
                         updateView();
                     });
                 }
             } else {
                 runOnUiThread(() -> {
-                    examState.setText("考试安排 网络错误，从本地导入");
-                    updateView();
+                    examState.setText("考试安排 未登录，从本地导入");
                 });
             }
         }).start();

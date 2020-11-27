@@ -79,7 +79,7 @@ public class AutoUpdate {
      * 启动更新
      */
     public void update() {
-
+        init();
         // 判断状态是否符合；合适的状态：就绪 网络错误 更新成功(点击更新)
         if (state == 5 || state == 3 || state == 8) {
             update_thread();
@@ -110,7 +110,7 @@ public class AutoUpdate {
                 text = "已登录(点击更新)";
                 break;
             case 4:
-                text = "点击登录";
+                text = "未登录";
                 break;
             case 0:
                 text = "登录成功";
@@ -133,7 +133,10 @@ public class AutoUpdate {
         }
         final String out = text;
         activity.runOnUiThread(() -> {
-            DayClassFragment.newInstance().updateText(out);
+            try{
+                DayClassFragment.newInstance().updateText(out);
+            } catch (Exception e) {
+            }
         });
     }
 

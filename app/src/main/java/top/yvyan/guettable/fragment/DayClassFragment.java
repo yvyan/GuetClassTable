@@ -107,12 +107,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     @Override
     public void onClick(View view) {
-        if ("点击登录".equals(textView.getText())) {
-            Intent intent = new Intent(getContext(), LoginActivity.class);
-            startActivity(intent);
-        } else {
-            autoUpdate.update();
-        }
+        //TODO 该页面点击登录后导入课表会出现页面被关闭，视图空指针的bug，未找到解决方案，先去掉首页登录功能
+        autoUpdate.update();
     }
 
     private void updateUser() {
