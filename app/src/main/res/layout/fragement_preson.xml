@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:stv="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -71,7 +70,7 @@
                     android:src="@drawable/table" />
 
                 <LinearLayout
-                    android:id="@+id/afterLogin"
+                    android:id="@+id/person_userNameAndNo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -80,18 +79,20 @@
                     android:weightSum="1">
 
                     <TextView
+                        android:id="@+id/person_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="陈金涛"
+                        android:text=""
                         android:textColor="@color/app_black"
                         android:textSize="20dp" />
 
                     <TextView
+                        android:id="@+id/person_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="1800100606"
+                        android:text=""
                         android:textColor="@color/app_black"
                         android:textSize="20dp" />
 
@@ -99,7 +100,7 @@
                 </LinearLayout>
 
                 <com.xuexiang.xui.widget.button.roundbutton.RoundButton
-                    android:id="@+id/before_login"
+                    android:id="@+id/person_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -111,11 +112,13 @@
             </LinearLayout>
 
             <View
+                android:id="@+id/person_line_1"
                 android:layout_width="fill_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/colorPrimary" />
 
             <LinearLayout
+                android:id="@+id/person_userInfo"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
@@ -135,10 +138,11 @@
                         android:textSize="15dp" />
 
                     <TextView
+                        android:id="@+id/person_grade"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="2018级"
+                        android:text=""
                         android:textSize="18dp" />
 
                 </LinearLayout>
@@ -163,10 +167,11 @@
                         android:textSize="15dp" />
 
                     <TextView
+                        android:id="@+id/person_term"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="大三上学期"
+                        android:text=""
                         android:textSize="18dp" />
 
                 </LinearLayout>
@@ -191,10 +196,11 @@
                         android:textSize="15dp" />
 
                     <TextView
+                        android:id="@+id/person_week"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="第9周"
+                        android:text=""
                         android:textSize="18dp" />
 
                 </LinearLayout>
@@ -213,15 +219,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:background="@color/app_white"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="3dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="8dp"
                 android:src="@drawable/xueshengdangan"
                 app:tint="@color/colorPrimary" />
 
@@ -231,7 +237,7 @@
                 android:layout_marginTop="10dp"
                 android:text="个人详细信息"
                 android:textColor="@color/app_black"
-                android:textSize="20dp" />
+                android:textSize="17dp" />
 
         </LinearLayout>
 
@@ -242,15 +248,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:background="@color/app_white"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="3dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="8dp"
                 android:src="@drawable/bangzhu"
                 app:tint="@color/colorPrimary" />
 
@@ -260,7 +266,7 @@
                 android:layout_marginTop="10dp"
                 android:text="帮助"
                 android:textColor="@color/app_black"
-                android:textSize="20dp" />
+                android:textSize="17dp" />
 
         </LinearLayout>
 
@@ -271,25 +277,26 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:background="@color/app_white"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="8dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/fankui"
                 app:tint="@color/colorPrimary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
                 android:layout_marginTop="10dp"
                 android:text="问题反馈"
                 android:textColor="@color/app_black"
-                android:textSize="20dp" />
+                android:textSize="17dp" />
 
         </LinearLayout>
 
@@ -300,7 +307,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@color/app_white"
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
