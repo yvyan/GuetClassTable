@@ -3,6 +3,7 @@ package top.yvyan.guettable;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,8 +17,8 @@ import top.yvyan.guettable.util.ToastUtil;
 
 public class SetTermActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ButtonView back;
-    private ButtonView input;
+    private Button back;
+    private Button input;
 
     private String cookie;
     private GeneralData generalData;
