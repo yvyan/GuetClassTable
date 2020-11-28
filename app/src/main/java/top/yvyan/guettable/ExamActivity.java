@@ -86,9 +86,7 @@ public class ExamActivity extends AppCompatActivity {
                     });
                 }
             } else {
-                runOnUiThread(() -> {
-                    examState.setText("考试安排 未登录，从本地导入");
-                });
+                runOnUiThread(() -> examState.setText("考试安排 未登录，从本地导入"));
             }
         }).start();
     }
@@ -99,8 +97,11 @@ public class ExamActivity extends AppCompatActivity {
      */
     public void updateView() {
         List<ExamBean> examBeans = moreDate.getExamBeans();
-        if (singleSettingData.isCombineCourses()) {
+        if (singleSettingData.isCombineExam()) {
             examBeans = ExamUtil.combineExam(examBeans);
+        }
+        if (singleSettingData.isHideOutdatedExam()) {
+            examBeans = ExamUtil.ridOfOutdatedExam(examBeans);
         }
         if (examBeans.size() != 0) {
             examNotFind.setVisibility(View.GONE);
@@ -120,20 +121,34 @@ public class ExamActivity extends AppCompatActivity {
     public void showPopMenu() {
         PopupMenu popup = new PopupMenu(this, examMore);
         popup.getMenuInflater().inflate(R.menu.exam_popmenu, popup.getMenu());
-        if (singleSettingData.isCombineCourses()) {
+        if (singleSettingData.isCombineExam()) {
             popup.getMenu().findItem(R.id.exam_top1).setTitle("不合并考试安排");
+        }
+        if (singleSettingData.isHideOutdatedExam()) {
+            popup.getMenu().findItem(R.id.exam_top2).setTitle("显示过期的考试安排");
         }
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.exam_top1:
-                    if (singleSettingData.isCombineCourses()) {
-                        singleSettingData.setCombineCourses(false);
+                    if (singleSettingData.isCombineExam()) {
+                        singleSettingData.setCombineExam(false);
                         updateView();
                         popup.getMenu().findItem(R.id.exam_top1).setTitle("合并考试安排");
                     } else {
-                        singleSettingData.setCombineCourses(true);
+                        singleSettingData.setCombineExam(true);
                         updateView();
                         popup.getMenu().findItem(R.id.exam_top1).setTitle("不合并考试安排");
+                    }
+                    break;
+                case R.id.exam_top2:
+                    if (singleSettingData.isHideOutdatedExam()) {
+                        singleSettingData.setHideOutdatedExam(false);
+                        updateView();
+                        popup.getMenu().findItem(R.id.exam_top2).setTitle("隐藏过期的考试安排");
+                    } else {
+                        singleSettingData.setHideOutdatedExam(true);
+                        updateView();
+                        popup.getMenu().findItem(R.id.exam_top2).setTitle("显示过期的考试安排");
                     }
                     break;
                 default:

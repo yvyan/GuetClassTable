@@ -4,4 +4,7 @@
     <item android:id="@+id/exam_top1"
         android:title="合并考试安排"/>
 
+    <item android:id="@+id/exam_top2"
+        android:title="隐藏过期的考试安排"/>
+
 </menu>
