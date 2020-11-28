@@ -81,13 +81,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         if (allClass != null) {
             List<Schedule> tmpList = ScheduleSupport.getHaveSubjectsWithDay(
                     allClass, generalData.getWeek(), TimeUtil.getDay());
-            List<CourseBean> courseBeans = new ArrayList<>();
-            for (Schedule schedule : tmpList) {
-                CourseBean courseBean = new CourseBean();
-                courseBean.setFromSchedule(schedule);
-                courseBeans.add(courseBean);
-            }
-            classDetailAdapter = new ClassDetailAdapter(courseBeans);
+            classDetailAdapter = new ClassDetailAdapter(tmpList);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(classDetailAdapter);
         }

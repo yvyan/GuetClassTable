@@ -8,17 +8,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zhuangfei.timetable.model.Schedule;
+
 import java.util.List;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.ClassDetailViewHolder> {
-    List<CourseBean> courseBeans;
+    List<Schedule> schedules;
 
-    public ClassDetailAdapter(List<CourseBean> courseBeans) {
-        this.courseBeans = courseBeans;
+    public ClassDetailAdapter(List<Schedule> schedules) {
+        this.schedules = schedules;
     }
 
     @NonNull
@@ -31,33 +34,47 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ClassDetailViewHolder holder, int position) {
-        holder.textView1.setText(courseBeans.get(position).getName());
-        if (courseBeans.get(position).getTeacher() == null) {
-            holder.textView3.setVisibility(View.GONE);
-        } else {
-            holder.textView3.setText("教师：" + courseBeans.get(position).getTeacher());
-        }
-        if (courseBeans.get(position).getRoom() == null) {
-            holder.textView4.setVisibility(View.GONE);
-        } else {
-            holder.textView4.setText("教室：" + courseBeans.get(position).getRoom());
-        }
-        holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBeans.get(position).getDay()) + " 第" + courseBeans.get(position).getTime() + "大节");
-
-        if(courseBeans.get(position).isLab()) { //课内实验
-            holder.textView2.setText("名称：" + courseBeans.get(position).getLibName());
-            holder.textView6.setText("周次：" + courseBeans.get(position).getWeekStart() + "-" + courseBeans.get(position).getWeekEnd() + "周");
-            holder.textView7.setText(courseBeans.get(position).getRemarks());
-        } else { //理论课
-            holder.textView2.setText("课号：" + courseBeans.get(position).getNumber());
+        if ((int)schedules.get(position).getExtras().get(ExamBean.TYPE) == 2) { //考试安排
+            ExamBean examBean = new ExamBean();
+            examBean.setFromSchedule(schedules.get(position));
+            holder.textView1.setText("(考试)" + examBean.getName());
+            holder.textView2.setText("课号：" + examBean.getNumber());
+            holder.textView3.setText("教师：" + examBean.getTeacher());
+            holder.textView4.setText("教室：" + examBean.getRoom());
+            holder.textView5.setText("时间：" + examBean.getTime());
             holder.textView6.setVisibility(View.GONE);
-            holder.textView7.setText("周次：" + courseBeans.get(position).getWeekStart() + "-" + courseBeans.get(position).getWeekEnd() + "周");
+            holder.textView7.setText("日期：" + TimeUtil.timeFormat(examBean.getDate()) + "(第" + examBean.getWeek() + "周 " + TimeUtil.whichDay(examBean.getDay()) + ")");
+        } else { //理论课和课内实验
+            CourseBean courseBean = new CourseBean();
+            courseBean.setFromSchedule(schedules.get(position));
+            holder.textView1.setText(courseBean.getName());
+            if (courseBean.getTeacher() == null) {
+                holder.textView3.setVisibility(View.GONE);
+            } else {
+                holder.textView3.setText("教师：" + courseBean.getTeacher());
+            }
+            if (courseBean.getRoom() == null) {
+                holder.textView4.setVisibility(View.GONE);
+            } else {
+                holder.textView4.setText("教室：" + courseBean.getRoom());
+            }
+            holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + courseBean.getTime() + "大节");
+
+            if(courseBean.isLab()) { //课内实验
+                holder.textView2.setText("名称：" + courseBean.getLibName());
+                holder.textView6.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
+                holder.textView7.setText(courseBean.getRemarks());
+            } else { //理论课
+                holder.textView2.setText("课号：" + courseBean.getNumber());
+                holder.textView6.setVisibility(View.GONE);
+                holder.textView7.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return courseBeans.size();
+        return schedules.size();
     }
 
     static class ClassDetailViewHolder extends RecyclerView.ViewHolder {

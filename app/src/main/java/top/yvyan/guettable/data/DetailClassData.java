@@ -1,13 +1,13 @@
 package top.yvyan.guettable.data;
 
-import java.util.List;
+import com.zhuangfei.timetable.model.Schedule;
 
-import top.yvyan.guettable.bean.CourseBean;
+import java.util.List;
 
 public class DetailClassData {
     private static DetailClassData detailClassData;
 
-    private List<CourseBean> courseBeans;
+    private List<Schedule> schedules;
 
     private DetailClassData() {
     }
@@ -19,11 +19,11 @@ public class DetailClassData {
         return detailClassData;
     }
 
-    public List<CourseBean> getCourseBeans() {
-        return courseBeans;
+    public List<Schedule> getCourseBeans() {
+        return schedules;
     }
 
-    public void setCourseBeans(List<CourseBean> courseBeans) {
-        this.courseBeans = courseBeans;
+    public void setCourseBeans(List<Schedule> schedules) {
+        this.schedules = schedules;
     }
 }
