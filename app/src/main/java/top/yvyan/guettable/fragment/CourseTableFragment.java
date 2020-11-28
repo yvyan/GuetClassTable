@@ -178,7 +178,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
     /**
      * 显示内容
-     *
      * @param beans
      */
     protected void display(List<Schedule> beans) {
