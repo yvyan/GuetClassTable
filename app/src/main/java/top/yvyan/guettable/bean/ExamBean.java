@@ -24,7 +24,18 @@ public class ExamBean implements Serializable {
     //教室
     private String room;
 
-    public ExamBean() {
+    public ExamBean() {}
+
+    public ExamBean(ExamBean examBean) {
+        this.number = examBean.getNumber();
+        this.name = examBean.getName();
+        this.teacher = examBean.getTeacher();
+        this.week = examBean.getWeek();
+        this.day = examBean.getDay();
+        this.classNum = examBean.getClassNum();
+        this.time = examBean.getTime();
+        this.date = examBean.getDate();
+        this.room = examBean.getRoom();
     }
 
     public ExamBean(String number, String name, String teacher, int week, int day, int classNum, String time, Date date, String room) {

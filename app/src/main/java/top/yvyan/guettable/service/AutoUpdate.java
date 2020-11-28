@@ -79,6 +79,7 @@ public class AutoUpdate {
      * 启动更新
      */
     public void update() {
+        //TODO 点击更新后会出新“已登录（点击更新）的错误状态”
         init();
         // 判断状态是否符合；合适的状态：就绪 网络错误 更新成功(点击更新)
         if (state == 5 || state == 3 || state == 8) {

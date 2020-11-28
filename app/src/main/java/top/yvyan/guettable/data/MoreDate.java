@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import top.yvyan.guettable.bean.ExamBean;
-import top.yvyan.guettable.util.SerializeUtils;
+import top.yvyan.guettable.util.SerializeUtil;
 
 public class MoreDate {
     private static MoreDate moreDate;
@@ -30,7 +30,7 @@ public class MoreDate {
         String examString = sharedPreferences.getString(EXAM_STRING, null);
         if (examString != null) {
             try {
-                examBeans1 = (ExamBean[]) SerializeUtils.serializeToObject(examString);
+                examBeans1 = (ExamBean[]) SerializeUtil.serializeToObject(examString);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -67,7 +67,7 @@ public class MoreDate {
         ExamBean[] examBeans1 = new ExamBean[examBeans.size()];
         examBeans.toArray(examBeans1);
         try {
-            examString = SerializeUtils.serialize(examBeans1);
+            examString = SerializeUtil.serialize(examBeans1);
         } catch (IOException e) {
             e.printStackTrace();
         }
