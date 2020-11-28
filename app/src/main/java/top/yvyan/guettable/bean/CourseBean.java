@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseBean implements ScheduleEnable, Serializable {
-    private static String IS_LAB = "isLab";
-    private static String LIB_NAME = "libName";
-    private static String REMARKS = "remarks";
-    private static String NUMBER = "number";
-    private static String WEEK_START = "weekStart";
-    private static String WEEK_END = "weekEnd";
+    public static String IS_LAB = "isLab";
+    public static String LIB_NAME = "libName";
+    public static String REMARKS = "remarks";
+    public static String NUMBER = "number";
+    public static String WEEK_START = "weekStart";
+    public static String WEEK_END = "weekEnd";
+    public static String TYPE = "type";
 
     //id
     private int id;
@@ -117,6 +118,8 @@ public class CourseBean implements ScheduleEnable, Serializable {
         schedule.putExtras(NUMBER, number);
         schedule.putExtras(WEEK_START, weekStart);
         schedule.putExtras(WEEK_END, weekEnd);
+        //类型: 0:理论课; 1:实验课; 2:考试安排
+        schedule.putExtras(TYPE, isLab? 1 : 0);
         return schedule;
     }
 

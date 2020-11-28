@@ -28,12 +28,15 @@ import java.util.List;
 import top.yvyan.guettable.DetailActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.DensityUtil;
+import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
@@ -51,11 +54,11 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
     private View view;
 
-    private AccountData accountData;
     private GeneralData generalData;
     private ClassData classData;
     private SingleSettingData singleSettingData;
     private DetailClassData detailClassData;
+    private MoreDate moreDate;
 
     //记录切换的周次，不一定是当前周
     int target = -1;
@@ -77,11 +80,12 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         moreButton = view.findViewById(R.id.id_more);
         moreButton.setOnClickListener(view -> showPopMenu());
 
-        accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
         classData = ClassData.newInstance(getActivity());
         singleSettingData = SingleSettingData.newInstance(getActivity());
         detailClassData = DetailClassData.newInstance();
+        moreDate = MoreDate.newInstance(getActivity());
+
         titleTextView = view.findViewById(R.id.id_title);
         linearLayout = view.findViewById(R.id.id_class_layout);
         linearLayout.setOnClickListener(this);
@@ -98,13 +102,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         mTimetableView = view.findViewById(R.id.id_timetableView);
 
         //设置周次选择属性
-        List<CourseBean> courseBeans;
-        courseBeans = classData.getCourseBeans();
-        if (courseBeans == null) {
-            courseBeans = new ArrayList<>();
-        }
-        mWeekView.source(courseBeans)
-                .curWeek(generalData.getWeek())
+        mWeekView.curWeek(generalData.getWeek())
                 .callback(week -> {
                     int cur = mTimetableView.curWeek();
                     target = week;
@@ -127,8 +125,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .isShow(false)//设置隐藏，默认显示
                 .showView();
         target = generalData.getWeek();
-        mTimetableView.source(courseBeans)
-                .curWeek(generalData.getWeek())
+        mTimetableView.curWeek(generalData.getWeek())
                 //TODO 学期是死的
                 .curTerm("大三下学期")
                 .maxSlideItem(10)
@@ -137,10 +134,14 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .callback(new OnItemBuildAdapter() {
                     @Override
                     public String getItemText(Schedule schedule, boolean isThisWeek) {
-                        if (schedule.getRoom() != null) {
-                            return schedule.getName() + "@" + schedule.getRoom();
-                        } else {
-                            return schedule.getName();
+                        if ((int)schedule.getExtras().get(ExamBean.TYPE) == 2) { //考试安排
+                            return "(考试)" + schedule.getName() + "@" + schedule.getRoom();
+                        } else { //理论课和课内实验
+                            if (schedule.getRoom() != null) {
+                                return schedule.getName() + "@" + schedule.getRoom();
+                            } else {
+                                return schedule.getName();
+                            }
                         }
                     }
                 })
@@ -157,6 +158,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         if (singleSettingData.isHideOtherWeek()) {
             hideNonThisWeek();
         }
+        updateTable();
     }
 
     /**
@@ -170,9 +172,17 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     }
 
     public void updateTable() {
-        mWeekView.source(classData.getCourseBeans())
+        List<Schedule> schedules = new ArrayList<>();
+        for (CourseBean courseBean : classData.getCourseBeans()) {
+            schedules.add(courseBean.getSchedule());
+        }
+        for (ExamBean examBean : ExamUtil.combineExam(moreDate.getExamBeans())) {
+            schedules.add(examBean.getSchedule());
+            Log.d(TAG, "exam");
+        }
+        mWeekView.data(schedules)
                 .showView();
-        mTimetableView.source(classData.getCourseBeans())
+        mTimetableView.data(schedules)
                 .updateView();
     }
 
@@ -181,13 +191,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
      * @param beans
      */
     protected void display(List<Schedule> beans) {
-        List<CourseBean> courseBeans = new ArrayList<>();
-        for (Schedule schedule : beans) {
-            CourseBean courseBean = new CourseBean();
-            courseBean.setFromSchedule(schedule);
-            courseBeans.add(courseBean);
-        }
-        detailClassData.setCourseBeans(courseBeans);
+        detailClassData.setCourseBeans(beans);
         Intent intent = new Intent(getContext(), DetailActivity.class);
         startActivity(intent);
     }

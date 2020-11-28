@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zhuangfei.timetable.model.Schedule;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -22,11 +24,11 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        List<CourseBean> courseBeans = DetailClassData.newInstance().getCourseBeans();
+        List<Schedule> schedules = DetailClassData.newInstance().getCourseBeans();
         ComparatorCourse comparatorCourse = new ComparatorCourse();
-        Collections.sort(courseBeans, comparatorCourse);
+        Collections.sort(schedules, comparatorCourse);
         recyclerView = findViewById(R.id.class_detail_recycleView);
-        classDetailAdapter = new ClassDetailAdapter(courseBeans);
+        classDetailAdapter = new ClassDetailAdapter(schedules);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(classDetailAdapter);
     }

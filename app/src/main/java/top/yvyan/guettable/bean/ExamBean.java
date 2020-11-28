@@ -1,9 +1,18 @@
 package top.yvyan.guettable.bean;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.zhuangfei.timetable.model.Schedule;
+import com.zhuangfei.timetable.model.ScheduleEnable;
 
-public class ExamBean implements Serializable {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class ExamBean implements Serializable, ScheduleEnable {
+    public static String NUMBER = "number";
+    public static String TIME = "time";
+    public static String DATE = "date";
+    public static String TYPE = "type";
 
     //课号
     private String number;
@@ -48,6 +57,40 @@ public class ExamBean implements Serializable {
         this.time = time;
         this.date = date;
         this.room = room;
+    }
+
+    public void setFromSchedule(Schedule schedule) {
+        number = (String) schedule.getExtras().get(NUMBER);
+        day = schedule.getDay();
+        name = schedule.getName();
+        room = schedule.getRoom();
+        classNum = (schedule.getStart() + 1) / 2;
+        teacher = schedule.getTeacher();
+        week = schedule.getWeekList().get(0);
+        time = (String) schedule.getExtras().get(TIME);
+        date = (Date) schedule.getExtras().get(DATE);
+    }
+
+    @Override
+    public Schedule getSchedule() {
+        Schedule schedule=new Schedule();
+        schedule.setDay(getDay());
+        schedule.setName(getName());
+        schedule.setRoom(getRoom());
+        schedule.setStart(getClassNum() * 2 - 1);
+        schedule.setStep(2);
+        schedule.setTeacher(getTeacher());
+        List<Integer> weekList = new ArrayList<>();
+        weekList.add(getWeek());
+        schedule.setWeekList(weekList);
+        schedule.setColorRandom(2);
+
+        schedule.putExtras(TIME, time);
+        schedule.putExtras(DATE, date);
+        schedule.putExtras(NUMBER, number);
+        //类型: 0:理论课; 1:实验课; 2:考试安排
+        schedule.putExtras(TYPE, 2);
+        return schedule;
     }
 
     public String getNumber() {
