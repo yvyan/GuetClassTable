@@ -70,7 +70,7 @@ public class AutoUpdate {
     public void start() {
         // 判断时间间隔
         updateView();
-        if (generalData.getLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getLastUpdateTime()), new Date(System.currentTimeMillis())) >= generalData.updateFrequency) {
+        if (generalData.getLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getLastUpdateTime()), new Date()) >= generalData.updateFrequency) {
             update();
         }
     }
