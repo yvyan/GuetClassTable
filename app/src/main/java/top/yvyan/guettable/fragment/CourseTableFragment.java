@@ -32,7 +32,7 @@ import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.TableSettingData;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -54,7 +54,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private AccountData accountData;
     private GeneralData generalData;
     private ClassData classData;
-    private TableSettingData tableSettingData;
+    private SingleSettingData singleSettingData;
     private DetailClassData detailClassData;
 
     //记录切换的周次，不一定是当前周
@@ -80,7 +80,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
         classData = ClassData.newInstance(getActivity());
-        tableSettingData = TableSettingData.newInstance(getActivity());
+        singleSettingData = SingleSettingData.newInstance(getActivity());
         detailClassData = DetailClassData.newInstance();
         titleTextView = view.findViewById(R.id.id_title);
         linearLayout = view.findViewById(R.id.id_class_layout);
@@ -154,7 +154,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 //隐藏旗标布局
                 .isShowFlaglayout(false)
                 .showView();
-        if (tableSettingData.isHideOtherWeek()) {
+        if (singleSettingData.isHideOtherWeek()) {
             hideNonThisWeek();
         }
     }
@@ -198,21 +198,21 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
      */
     public void showPopMenu() {
         PopupMenu popup = new PopupMenu(getActivity(), moreButton);
-        popup.getMenuInflater().inflate(R.menu.popmenu, popup.getMenu());
-        if (tableSettingData.isHideOtherWeek()) {
-            popup.getMenu().findItem(R.id.top1).setTitle("显示非本周课程");
+        popup.getMenuInflater().inflate(R.menu.course_table_popmenu, popup.getMenu());
+        if (singleSettingData.isHideOtherWeek()) {
+            popup.getMenu().findItem(R.id.course_tab_top1).setTitle("显示非本周课程");
         }
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
-                case R.id.top1:
-                    if (tableSettingData.isHideOtherWeek()) {
-                        tableSettingData.setHideOtherWeek(false);
+                case R.id.course_tab_top1:
+                    if (singleSettingData.isHideOtherWeek()) {
+                        singleSettingData.setHideOtherWeek(false);
                         showNonThisWeek();
-                        popup.getMenu().findItem(R.id.top1).setTitle("隐藏非本周课程");
+                        popup.getMenu().findItem(R.id.course_tab_top1).setTitle("隐藏非本周课程");
                     } else {
-                        tableSettingData.setHideOtherWeek(true);
+                        singleSettingData.setHideOtherWeek(true);
                         hideNonThisWeek();
-                        popup.getMenu().findItem(R.id.top1).setTitle("显示非本周课程");
+                        popup.getMenu().findItem(R.id.course_tab_top1).setTitle("显示非本周课程");
                     }
                     break;
                 default:

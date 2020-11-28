@@ -1,6 +1,5 @@
 package top.yvyan.guettable.data;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -10,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import top.yvyan.guettable.bean.CourseBean;
-import top.yvyan.guettable.util.SerializeUtils;
+import top.yvyan.guettable.util.SerializeUtil;
 
 public class ClassData {
     private static ClassData classData;
@@ -30,7 +29,7 @@ public class ClassData {
         String classString = sharedPreferences.getString(CLASS_STRING, null);
         if (classString != null) {
             try {
-                courseBeans1 = (CourseBean[]) SerializeUtils.serializeToObject(classString);
+                courseBeans1 = (CourseBean[]) SerializeUtil.serializeToObject(classString);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -67,7 +66,7 @@ public class ClassData {
         CourseBean[] courseBeans1 = new CourseBean[courseBeans.size()];
         courseBeans.toArray(courseBeans1);
         try {
-            classString = SerializeUtils.serialize(courseBeans1);
+            classString = SerializeUtil.serialize(courseBeans1);
         } catch (IOException e) {
             e.printStackTrace();
         }

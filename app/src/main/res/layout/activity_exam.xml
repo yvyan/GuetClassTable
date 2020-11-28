@@ -27,7 +27,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/exam_more"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/attribute"/>
+
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/exam_not_find"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="没有查询到符合条件的考试安排信息!"
+        android:textSize="25dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exam_info_recycler_view"
