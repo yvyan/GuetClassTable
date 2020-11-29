@@ -1,6 +1,5 @@
 package top.yvyan.guettable.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,14 +17,15 @@ import com.zhuangfei.timetable.model.ScheduleSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ClassDetailAdapter;
-import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.service.AutoUpdate;
+import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
@@ -35,10 +35,13 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private View view;
     private TextView textView;
     private RecyclerView recyclerView;
+
     private ClassDetailAdapter classDetailAdapter;
+    private AutoUpdate autoUpdate;
+
     private AccountData accountData;
     private GeneralData generalData;
-    private AutoUpdate autoUpdate;
+    private MoreDate moreDate;
 
     public DayClassFragment() {
         // Required empty public constructor
@@ -61,6 +64,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         textView.setOnClickListener(this);
         accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
+        moreDate = MoreDate.newInstance(getActivity());
 
         autoUpdate = AutoUpdate.newInstance(getActivity());
         if (accountData.getIsLogin()) {
@@ -129,6 +133,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             list = ScheduleSupport.getColorReflect(list);//分配颜色
         } else {
             list = new ArrayList<>();
+        }
+        for (ExamBean examBean : ExamUtil.combineExam(moreDate.getExamBeans())) {
+            list.add(examBean.getSchedule());
         }
         return list;
     }
