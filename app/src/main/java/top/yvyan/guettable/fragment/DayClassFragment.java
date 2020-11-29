@@ -19,6 +19,7 @@ import java.util.List;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ClassDetailAdapter;
+import top.yvyan.guettable.adapter.DayClassAdapter;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
@@ -36,7 +37,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private TextView textView;
     private RecyclerView recyclerView;
 
-    private ClassDetailAdapter classDetailAdapter;
+    private DayClassAdapter dayClassAdapter;
     private AutoUpdate autoUpdate;
 
     private AccountData accountData;
@@ -82,13 +83,25 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     public void updateView() {
         List<Schedule> allClass = getData();
+        List<Schedule> todayList, tomorrowList;
         if (allClass != null) {
-            List<Schedule> tmpList = ScheduleSupport.getHaveSubjectsWithDay(
-                    allClass, generalData.getWeek(), TimeUtil.getDay());
-            classDetailAdapter = new ClassDetailAdapter(tmpList);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setAdapter(classDetailAdapter);
+            todayList = ScheduleSupport.getHaveSubjectsWithDay(
+                    allClass,
+                    generalData.getWeek(),
+                    TimeUtil.getDay()
+            );
+            tomorrowList = ScheduleSupport.getHaveSubjectsWithDay(
+                    allClass,
+                    TimeUtil.getNextDayWeek(generalData.getWeek()),
+                    TimeUtil.getNextDay()
+            );
+        } else {
+            todayList = new ArrayList<>();
+            tomorrowList = new ArrayList<>();
         }
+        dayClassAdapter = new DayClassAdapter(getContext(), todayList, tomorrowList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(dayClassAdapter);
     }
 
     @Override
