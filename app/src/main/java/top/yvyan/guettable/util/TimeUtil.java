@@ -56,6 +56,10 @@ public class TimeUtil {
         return weekOffset;
     }
 
+    /**
+     * 返回今天周几
+     * @return 星期几，0：周一，1：周二，依次类推..周日：6
+     */
     public static int getDay() {
         final Calendar calendar = Calendar.getInstance();
         int n = calendar.get(Calendar.DAY_OF_WEEK);
@@ -66,6 +70,33 @@ public class TimeUtil {
         }
     }
 
+    /**
+     * 返回明天周几
+     * @return 星期几，0：周一，1：周二，依次类推..周日：6
+     */
+    public static int getNextDay() {
+        int n = getDay();
+        return (n + 1) % 7;
+    }
+
+    /**
+     * 返回明天是第几周
+     * @param week 今天的周数
+     * @return     明天的周数
+     */
+    public static int getNextDayWeek(int week) {
+        int n = getDay();
+        if (n == 6) {
+            week++;
+        }
+        return week;
+    }
+
+    /**
+     * 数字转汉字
+     * @param number 星期几 数字
+     * @return       "星期几"
+     */
     public static String whichDay(int number){
         String s = new String();
         switch (number){
