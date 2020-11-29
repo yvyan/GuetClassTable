@@ -42,7 +42,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private AccountData accountData;
     private GeneralData generalData;
-    private MoreDate moreDate;
 
     public DayClassFragment() {
         // Required empty public constructor
@@ -65,7 +64,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         textView.setOnClickListener(this);
         accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
-        moreDate = MoreDate.newInstance(getActivity());
 
         autoUpdate = AutoUpdate.newInstance(getActivity());
         if (accountData.getIsLogin()) {
@@ -140,15 +138,18 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      * @return List<Schedule>类型的课表数据
      */
     private List<Schedule> getData() {
-        List<Schedule> list;
+        List<Schedule> list = new ArrayList<>();
         if(ClassData.newInstance(getActivity()).getCourseBeans() != null) {
             list = ScheduleSupport.transform(ClassData.newInstance(getActivity()).getCourseBeans());
             list = ScheduleSupport.getColorReflect(list);//分配颜色
-        } else {
+        }
+        if (list == null) {
             list = new ArrayList<>();
         }
-        for (ExamBean examBean : ExamUtil.combineExam(moreDate.getExamBeans())) {
-            list.add(examBean.getSchedule());
+        for (ExamBean examBean : ExamUtil.combineExam(MoreDate.newInstance(getActivity()).getExamBeans())) {
+            if (examBean != null) {
+                list.add(examBean.getSchedule());
+            }
         }
         return list;
     }

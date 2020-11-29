@@ -8,9 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.util.TimeUtil;
@@ -131,6 +133,9 @@ public class AutoUpdate {
             case 8:
                 text = "更新成功(点击更新)";
                 break;
+            case 9:
+                text = "正在更新考试安排...";
+                break;
         }
         final String out = text;
         activity.runOnUiThread(() -> {
@@ -165,28 +170,43 @@ public class AutoUpdate {
                         );
                 if (getClass != null) {
                     courseBeans = getClass;
-                    // 获取实验课
-                    updateView(7);
-                    List<CourseBean> getLab = StaticService.getLab(
-                            activity,
-                            cookie,
-                            generalData.getTerm()
-                    );
-                    if (getLab != null) {
-                        updateView(8);
-                        courseBeans.addAll(getLab);
-                        classData.setCourseBeans(courseBeans);
-                        generalData.setLastUpdateTime(System.currentTimeMillis());
-                        activity.runOnUiThread(() -> {
-                            CourseTableFragment.newInstance().updateTable();
-                            DayClassFragment.newInstance().updateView();
-                            ToastUtil.showToast(activity, "更新成功");
-                        });
-                    } else {
-                        updateView(3);
-                    }
+                    updateView(9);
                 } else {
                     updateView(3);
+                    return;
+                }
+                //获取考试安排
+                List<ExamBean> examBeans = StaticService.getExam(
+                        activity,
+                        cookie,
+                        generalData.getTerm()
+                );
+                if (examBeans != null) {
+                    MoreDate.newInstance(activity).setExamBeans(examBeans);
+                    updateView(7);
+                } else {
+                    updateView(3);
+                    return;
+                }
+                //获取实验课
+                List<CourseBean> getLab = StaticService.getLab(
+                        activity,
+                        cookie,
+                        generalData.getTerm()
+                );
+                if (getLab != null) {
+                    updateView(8);
+                    courseBeans.addAll(getLab);
+                    classData.setCourseBeans(courseBeans);
+                    generalData.setLastUpdateTime(System.currentTimeMillis());
+                    activity.runOnUiThread(() -> {
+                        CourseTableFragment.newInstance().updateTable();
+                        DayClassFragment.newInstance().updateView();
+                        ToastUtil.showToast(activity, "更新成功");
+                    });
+                } else {
+                    updateView(3);
+                    return;
                 }
             }
         }).start();
