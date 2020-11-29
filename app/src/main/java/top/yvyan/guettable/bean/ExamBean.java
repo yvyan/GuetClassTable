@@ -73,7 +73,7 @@ public class ExamBean implements Serializable, ScheduleEnable {
 
     @Override
     public Schedule getSchedule() {
-        Schedule schedule=new Schedule();
+        Schedule schedule = new Schedule();
         schedule.setDay(getDay());
         schedule.setName(getName());
         schedule.setRoom(getRoom());
