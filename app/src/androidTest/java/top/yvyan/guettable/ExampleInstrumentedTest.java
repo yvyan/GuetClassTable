@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("top.yvayn.guettable", appContext.getPackageName());
+        assertEquals("top.yvyan.guettable", appContext.getPackageName());
     }
 }
