@@ -138,12 +138,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      * @return List<Schedule>类型的课表数据
      */
     private List<Schedule> getData() {
-        List<Schedule> list = new ArrayList<>();
-        if(ClassData.newInstance(getActivity()).getCourseBeans() != null) {
+        List<Schedule> list;
+        if(!ClassData.newInstance(getActivity()).getCourseBeans().isEmpty()) {
             list = ScheduleSupport.transform(ClassData.newInstance(getActivity()).getCourseBeans());
             list = ScheduleSupport.getColorReflect(list);//分配颜色
-        }
-        if (list == null) {
+        } else {
             list = new ArrayList<>();
         }
         for (ExamBean examBean : ExamUtil.combineExam(MoreDate.newInstance(getActivity()).getExamBeans())) {
