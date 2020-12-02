@@ -32,7 +32,6 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
     private MoreDate moreDate;
     private SingleSettingData singleSettingData;
 
-    private ImageView back;
     private TextView examState;
     private TextView examNotFind;
     private ImageView examMore;
@@ -47,7 +46,7 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
         moreDate = MoreDate.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
 
-        back = findViewById(R.id.exam_back);
+        ImageView back = findViewById(R.id.exam_back);
         back.setOnClickListener(view -> {
             finish();
         });
