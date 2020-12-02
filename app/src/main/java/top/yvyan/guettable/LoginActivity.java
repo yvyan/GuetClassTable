@@ -19,6 +19,7 @@ import androidx.core.content.res.ResourcesCompat;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.data.AccountData;
+import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.service.fetch.LAN;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -26,12 +27,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Boolean bPwdSwitch = false;
     private EditText etPwd;
     private EditText etAccount;
-    private EditText checkCodeInput;
     private CheckBox cbRememberPwd;
     private Button button;
 
     private AccountData accountData;
-    private StringBuilder cookie_builder = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         button.setOnClickListener(this);
         etAccount = findViewById(R.id.et_account);
         etPwd = findViewById(R.id.et_pwd);
-        checkCodeInput = findViewById(R.id.checkcode_input);
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
 
         cbRememberPwd.setChecked(true);
@@ -66,93 +64,61 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             etAccount.setText(accountData.getUsername());
             etPwd.setText(accountData.getPassword());
         }
-
-        changeCode();
     }
 
     @Override
     public void onClick(View view) {
+        setUnClick();
+        StringBuilder cookieBuilder = new StringBuilder();
+        String account = etAccount.getText().toString();
+        String pwd = etPwd.getText().toString();
+        new Thread(() -> {
+            int state = StaticService.autoLogin(
+                    this,
+                    account,
+                    pwd,
+                    cookieBuilder
+            );
+            if (state == 0) {
+                accountData.setUser(account, pwd, cbRememberPwd.isChecked());
+                Intent intent = new Intent(this, SetTermActivity.class);
+                intent.putExtra("fromLogin", ""); //便于识别启动类
+                startActivity(intent);
+                finish();
+            } else {
+                runOnUiThread(() -> {
+                    switch (state) {
+                        case -1:
+                            ToastUtil.showToast(this, getResources().getString(R.string.lan_login_fail_pwd));
+                            break;
+                        case -2:
+                            ToastUtil.showToast(this, getResources().getString(R.string.lan_login_fail));
+                            break;
+                        case -3:
+                            ToastUtil.showToast(this, getResources().getString(R.string.lan_login_fail_ck));
+                            break;
+                    }
+                    setEnClick();
+                });
+            }
+        }).start();
+    }
+
+    /**
+     * 设置按钮可点击
+     */
+    private void setEnClick() {
+        button.setText("登录");
+        button.setBackgroundColor(0xFF03A9F4);
+        button.setEnabled(true);
+    }
+
+    /**
+     * 设置按钮不可点击
+     */
+    private void setUnClick() {
         button.setBackgroundColor(0x44444444);
         button.setText("正在登录");
         button.setEnabled(false);
-        testAccount(
-                etAccount.getText().toString(),
-                etPwd.getText().toString(),
-                checkCodeInput.getText().toString()
-        );
     }
-
-    /**
-     * 尝试登陆
-     * 若密码正确，则存储密码
-     * @param account   学号
-     * @param pwd       密码
-     * @param checkCode 验证码
-     */
-    private void testAccount(String account, String pwd, String checkCode) {
-        final String cookie_before_login = cookie_builder.toString();
-        if ("".equals(account) || "".equals(pwd)) {
-            runOnUiThread(() -> {
-                ToastUtil.showToast(this, "请输入学号/密码");
-                button.setText("登录");
-                button.setBackgroundColor(0xFF03A9F4);
-                button.setEnabled(true);
-            });
-            return;
-        }
-        new Thread(() -> {
-            HttpConnectionAndCode login_res = LAN.login(this, account, pwd, checkCode, cookie_before_login, cookie_builder);
-            if (login_res.code != 0) { //登录失败
-                String msg;
-                if (login_res.comment != null && login_res.comment.contains("验证码")) {
-                    msg = getResources().getString(R.string.lan_login_fail_ck);
-                } else if (login_res.comment != null && login_res.comment.contains("密码")) {
-                    msg = getResources().getString(R.string.lan_login_fail_pwd);
-                } else {
-                    //TODO: 修改为ToastUtil
-                    msg = getResources().getString(R.string.lan_login_fail);
-                }
-                Looper.prepare();
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-                runOnUiThread(() -> {
-                    button.setText("登录");
-                    button.setBackgroundColor(0xFF03A9F4);
-                    button.setEnabled(true);
-                });
-                Looper.loop();
-            } else { //登录成功
-                accountData.setUser(account, pwd, cbRememberPwd.isChecked());
-
-                //启动SetTerm活动
-                Intent intent = new Intent(this, SetTermActivity.class);
-                intent.putExtra("cookie", cookie_builder.toString());
-                startActivity(intent);
-                finish();
-            }
-        }).start();
-    }
-
-    /**
-     * 刷新验证码
-     */
-    public void changeCode() {
-        final ImageView imageView = findViewById(R.id.imageView_checkcode);
-        imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.network, getTheme()));
-        checkCodeInput.setText("");
-
-        cookie_builder = new StringBuilder();
-        new Thread(() -> {
-            final HttpConnectionAndCode res = LAN.checkCode(this);
-            if (res.obj != null) {
-                final String ocr = OCR.getTextFromBitmap(this, (Bitmap) res.obj, "telephone");
-                cookie_builder.append(res.cookie);
-
-                runOnUiThread(() -> {
-                    imageView.setImageBitmap((Bitmap)res.obj);
-                    checkCodeInput.setText(ocr);
-                });
-            }
-        }).start();
-    }
-
 }
