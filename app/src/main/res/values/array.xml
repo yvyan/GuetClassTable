@@ -11,7 +11,7 @@
         <item>第一学期</item>
         <item>第二学期</item>
     </string-array>
-    <string-array name="spinnerweeks">
+    <string-array name="spinnerWeeks">
         <item>第1周</item>
         <item>第2周</item>
         <item>第3周</item>
@@ -24,5 +24,15 @@
         <item>第10周</item>
         <item>第11周</item>
         <item>第12周</item>
+        <item>第13周</item>
+        <item>第14周</item>
+        <item>第15周</item>
+        <item>第16周</item>
+        <item>第17周</item>
+        <item>第18周</item>
+        <item>第19周</item>
+        <item>第20周</item>
+        <item>第21周</item>
+        <item>第22周</item>
     </string-array>
 </resources>

@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="陈金涛"
+            android:text=""
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +34,7 @@
             android:id="@+id/stu_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1800100606"
+            android:text=""
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -53,7 +53,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:tint="@color/colorPrimary"
+            android:src="@drawable/table" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -88,8 +89,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            android:entries="@array/spinneryear" />
+            android:layout_marginBottom="20dp" />
 
         <TextView
             android:id="@+id/set_term_textView2"
@@ -137,7 +137,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
-            android:entries="@array/spinnerweeks" />
+            android:entries="@array/spinnerWeeks" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
