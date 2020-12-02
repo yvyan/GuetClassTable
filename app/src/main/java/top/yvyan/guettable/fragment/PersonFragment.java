@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
+import top.yvyan.guettable.SettingActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 
@@ -26,6 +27,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 
     private View person_userNameAndNo;
     private View person_login;
+    private View person_setting;
     private Button buttonQuit;
     private View person_line_1;
     private View person_userInfo;
@@ -51,13 +53,15 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         Log.d(TAG, "createPersonFragmentView");
         view = inflater.inflate(R.layout.fragement_preson, container, false);
         accountData = AccountData.newInstance(getContext());
         generalData = GeneralData.newInstance(getContext());
         initView();
         updateView();
+        person_setting = view.findViewById(R.id.person_setting);
+        person_setting.setOnClickListener(this);
+
         return view;
     }
 
@@ -84,7 +88,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
             person_userInfo.setVisibility(View.VISIBLE);
             buttonQuit.setVisibility(View.VISIBLE);
             person_login.setVisibility(View.GONE);
-
             person_name.setText(generalData.getName());
             person_number.setText(generalData.getNumber());
             person_grade.setText(generalData.getGrade() + "级");
@@ -114,6 +117,10 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.person_login:
                 intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                break;
+            case  R.id.person_setting:
+                intent = new Intent(getContext(), SettingActivity.class);
                 startActivity(intent);
                 break;
         }
