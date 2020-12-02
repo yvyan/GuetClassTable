@@ -128,7 +128,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         mTimetableView.curWeek(generalData.getWeek())
                 //TODO 学期是死的
                 .curTerm("大三下学期")
-                .maxSlideItem(10)
+                .maxSlideItem(12)
                 .monthWidthDp(20)
                 .itemHeight(DensityUtil.dip2px(getContext(), 60))
                 .callback(new OnItemBuildAdapter() {

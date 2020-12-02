@@ -28,7 +28,6 @@ public class CETActivity extends AppCompatActivity implements IMoreFun {
 
     private MoreDate moreDate;
 
-    private ImageView back;
     private TextView CET_state;
     private TextView CET_not_find;
     private RecyclerView recyclerView;
@@ -40,7 +39,7 @@ public class CETActivity extends AppCompatActivity implements IMoreFun {
 
         moreDate = MoreDate.newInstance(this);
 
-        back = findViewById(R.id.CET_back);
+        ImageView back = findViewById(R.id.CET_back);
         back.setOnClickListener(view -> {
             finish();
         });
