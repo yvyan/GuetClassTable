@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.SetTermActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 
@@ -70,6 +71,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         buttonQuit.setOnClickListener(this);
         person_line_1 = view.findViewById(R.id.person_line_1);
         person_userInfo = view.findViewById(R.id.person_userInfo);
+        person_userInfo.setOnClickListener(this);
         person_grade = view.findViewById(R.id.person_grade);
         person_term = view.findViewById(R.id.person_term);
         person_week = view.findViewById(R.id.person_week);
@@ -100,13 +102,18 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
+            case R.id.person_userInfo:
+                intent = new Intent(getContext(), SetTermActivity.class);
+                startActivity(intent);
+                break;
             case R.id.btn_quit:
                 accountData.logoff();
                 updateView();
                 break;
             case R.id.person_login:
-                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
                 break;
         }

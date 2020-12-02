@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import top.yvyan.guettable.Gson.StudentInfo;
+import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.service.AutoUpdate;
@@ -118,6 +119,8 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                AccountData.newInstance(this).logoff();
+                PersonFragment.newInstance().updateView();
                 finish();
                 break;
             case R.id.input:
