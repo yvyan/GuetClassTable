@@ -57,9 +57,9 @@ public class ExamInfo {
     private String postdate;
     private String operator;
     private String pk;
-
+    //TODO: 2019-2020_2学期考试安排包含没有考试星期和节次的考试安排，会导致闪退！！
     public ExamBean toExamBean() {
-        return new ExamBean(courseno, cname, name, zc, xq, Integer.valueOf(ksjc), kssj, examdate, croomno);
+        return new ExamBean(courseno, cname, name, zc, xq, Integer.parseInt(ksjc), kssj, examdate, croomno);
     }
 
     public void setCroomno(String croomno) {
