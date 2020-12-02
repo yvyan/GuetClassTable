@@ -18,14 +18,15 @@ import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
+import top.yvyan.guettable.service.IMoreFun;
+import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.util.ExamUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
-public class ExamActivity extends AppCompatActivity {
+public class ExamActivity extends AppCompatActivity implements IMoreFun {
 
-    private AccountData accountData;
     private GeneralData generalData;
     private MoreDate moreDate;
     private SingleSettingData singleSettingData;
@@ -40,7 +41,6 @@ public class ExamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam);
 
-        accountData = AccountData.newInstance(this);
         generalData = GeneralData.newInstance(this);
         moreDate = MoreDate.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
@@ -52,45 +52,9 @@ public class ExamActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.exam_info_recycler_view);
 
         updateView();
-
-        updateExam();
+        MoreFunService moreFunService = new MoreFunService(this, this);
+        moreFunService.update();
     }
-
-    /**
-     * 获取考试安排信息
-     */
-    private void updateExam() {
-        new Thread(() -> {
-            List<ExamBean> examBeans;
-            StringBuilder cookie_builder = new StringBuilder();
-            if (accountData.getIsLogin()) {
-                int state = StaticService.autoLogin(
-                        this,
-                        accountData.getUsername(),
-                        accountData.getPassword(),
-                        cookie_builder
-                );
-                if (state == 0) {
-                    examBeans = StaticService.getExam(this, cookie_builder.toString(), generalData.getTerm());
-                    if (examBeans != null) {
-                        moreDate.setExamBeans(examBeans);
-                        runOnUiThread(() -> {
-                            examState.setText("考试安排 更新成功");
-                            updateView();
-                        });
-                    }
-                } else {
-                    runOnUiThread(() -> {
-                        examState.setText("考试安排 网络错误，从本地导入");
-                        updateView();
-                    });
-                }
-            } else {
-                runOnUiThread(() -> examState.setText("考试安排 未登录，从本地导入"));
-            }
-        }).start();
-    }
-
 
     /**
      * 更新考试安排视图
@@ -157,5 +121,67 @@ public class ExamActivity extends AppCompatActivity {
             return true;
         });
         popup.show();
+    }
+
+    @Override
+    public int updateData(String cookie) {
+        List<ExamBean> examBeans;
+        examBeans = StaticService.getExam(this, cookie, generalData.getTerm());
+        if (examBeans != null) {
+            moreDate.setExamBeans(examBeans);
+            return 5;
+        }
+        return 1;
+    }
+    /**
+     * state记录当前状态
+     *  0 : 登录成功
+     *  1 : 登录失效
+     *  2 : 未登录
+     *
+     *  5 : 通用获取数据成功
+     *
+     * -1 : 密码错误
+     * -2 : 网络错误/未知错误
+     * -3 : 验证码连续错误
+     *
+     * 21 : 理论课更新成功
+     * 22 : 课内实验更新成功
+     * 23 : 考试安排更新成功
+     *
+     * 91 : 登录状态检查
+     * 92 : 正在登录
+     * 93 : 正在更新
+     *
+     */
+    @Override
+    public void updateView(int state) {
+        switch (state) {
+            case 2:
+                examState.setText("未登录");
+                break;
+            case -1:
+                examState.setText("密码错误");
+                break;
+            case -2:
+                examState.setText("网络错误");
+                break;
+            case 91:
+                examState.setText("登录状态检查");
+                break;
+            case 92:
+                examState.setText("正在登录");
+                break;
+            case 93:
+                examState.setText("正在更新");
+                break;
+            case 5:
+                examState.setText("更新成功");
+                updateView();
+                break;
+            default:
+                examState.setText("未知错误");
+                break;
+        }
     }
 }

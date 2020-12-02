@@ -46,18 +46,11 @@ public class StaticService {
      * @param cookie_builder cookie
      * @return         state记录当前状态
      *                 0 : 登录成功
-     *                 1 : 验证码错误
-     *                 2 : 密码错误
-     *                 3 : 网络错误/未知错误
+     *                -1 : 密码错误
+     *                -2 : 网络错误/未知错误
+     *                -3 : 验证码连续错误
      */
     public static int autoLogin(Context context, String account, String password, StringBuilder cookie_builder) {
-        /**
-         * state记录当前状态
-         * 0 : 登录成功
-         * 1 : 验证码错误
-         * 2 : 密码错误
-         * 3 : 网络错误/未知错误
-         */
         int state = 1;
         for (int i = 0; i < 4; i++) {
             String checkCode = changeCode(context, cookie_builder);
@@ -65,12 +58,13 @@ public class StaticService {
             if (login_res.code != 0) { //登录失败
                 cookie_builder.delete(0, cookie_builder.length());
                 if (login_res.comment != null && login_res.comment.contains("验证码")) {
+                    state = -3;
                     continue;
                 } else if (login_res.comment != null && login_res.comment.contains("密码")) {
-                    state = 2;
+                    state = -1;
                     break;
                 } else { //请连接校园网
-                    state = 3;
+                    state = -2;
                     break;
                 }
             } else { //登录成功
