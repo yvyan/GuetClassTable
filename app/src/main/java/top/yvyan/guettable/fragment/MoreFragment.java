@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import top.yvyan.guettable.ExamActivity;
+import top.yvyan.guettable.moreFun.CETActivity;
+import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -16,7 +17,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private static MoreFragment moreFragment;
 
     private View view;
-    private View more_item_1, more_item_2, more_item_3;
+    private View more_item_1, more_item_2, more_item_3, more_item_4;
 
     public MoreFragment() {
         // Required empty public constructor
@@ -37,17 +38,24 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         more_item_1 = view.findViewById(R.id.more_item_1);
         more_item_2 = view.findViewById(R.id.more_item_2);
         more_item_3 = view.findViewById(R.id.more_item_3);
+        more_item_4 = view.findViewById(R.id.more_item_4);
         more_item_1.setOnClickListener(this);
         more_item_2.setOnClickListener(this);
         more_item_3.setOnClickListener(this);
+        more_item_4.setOnClickListener(this);
         return view;
     }
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.more_item_1:
-                Intent intent = new Intent(getContext(), ExamActivity.class);
+                intent = new Intent(getContext(), ExamActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.more_item_2:
+                intent = new Intent(getContext(), CETActivity.class);
                 startActivity(intent);
                 break;
             default:

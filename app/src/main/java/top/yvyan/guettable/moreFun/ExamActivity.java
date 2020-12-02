@@ -1,4 +1,4 @@
-package top.yvyan.guettable;
+package top.yvyan.guettable.moreFun;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ExamAdapter;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
@@ -31,6 +32,7 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
     private MoreDate moreDate;
     private SingleSettingData singleSettingData;
 
+    private ImageView back;
     private TextView examState;
     private TextView examNotFind;
     private ImageView examMore;
@@ -45,6 +47,10 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
         moreDate = MoreDate.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
 
+        back = findViewById(R.id.exam_back);
+        back.setOnClickListener(view -> {
+            finish();
+        });
         examState = findViewById(R.id.exam_state);
         examNotFind = findViewById(R.id.exam_not_find);
         examMore = findViewById(R.id.exam_more);

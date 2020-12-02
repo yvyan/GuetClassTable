@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.yvyan.guettable.Gson.CET;
+import top.yvyan.guettable.Gson.CETOuter;
 import top.yvyan.guettable.Gson.ClassTable;
 import top.yvyan.guettable.Gson.ClassTableOuter;
 import top.yvyan.guettable.Gson.ExamInfo;
@@ -17,6 +19,7 @@ import top.yvyan.guettable.Gson.LabTableOuter;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
+import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.service.fetch.LAN;
@@ -148,9 +151,29 @@ public class StaticService {
             for (ExamInfo examInfo1 : examInfoOuter.getData()) {
                 examBeans.add(examInfo1.toExamBean());
             }
+            return examBeans;
         } else {
             return null;
         }
-        return examBeans;
+    }
+
+    /**
+     * 获取等级考试成绩
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        等级考试成绩列表
+     */
+    public static List<CETBean> getCET(Context context, String cookie) {
+        List<CETBean> cetBeans = new ArrayList<>();
+        HttpConnectionAndCode cetInfo = LAN.getCET(context, cookie);
+        if (cetInfo.code == 0) {
+            CETOuter cetOuter = new Gson().fromJson(cetInfo.comment, CETOuter.class);
+            for (CET cet : cetOuter.getData()) {
+                cetBeans.add(cet.toCETBean());
+            }
+            return cetBeans;
+        } else {
+            return null;
+        }
     }
 }

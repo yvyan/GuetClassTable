@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import top.yvyan.guettable.Gson.CET;
+import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.util.SerializeUtil;
 
@@ -16,9 +19,11 @@ public class MoreDate {
     private static MoreDate moreDate;
     private static final String SHP_NAME = "MoreData";
     private static final String EXAM_STRING = "examString";
+    private static final String CET_STRING = "CET_STRING";
     private SharedPreferences sharedPreferences;
 
     private List<ExamBean> examBeans;
+    private List<CETBean> cetBeans;
 
     private MoreDate(Activity activity) {
         sharedPreferences = activity.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -27,7 +32,9 @@ public class MoreDate {
 
     private void load() {
         ExamBean[] examBeans1 = null;
+        CETBean[] cetBeans1 = null;
         String examString = sharedPreferences.getString(EXAM_STRING, null);
+        String cetString = sharedPreferences.getString(CET_STRING, null);
         if (examString != null) {
             try {
                 examBeans1 = (ExamBean[]) SerializeUtil.serializeToObject(examString);
@@ -39,6 +46,19 @@ public class MoreDate {
 
             if (examBeans1 != null) {
                 examBeans = Arrays.asList(examBeans1);
+            }
+        }
+        if (cetString != null) {
+            try {
+                cetBeans1 = (CETBean[]) SerializeUtil.serializeToObject(cetString);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            if (cetBeans1 != null) {
+                cetBeans = Arrays.asList(cetBeans1);
             }
         }
     }
@@ -77,5 +97,33 @@ public class MoreDate {
             editor.apply();
         }
 
+    }
+
+    public List<CETBean> getCetBeans() {
+        if (cetBeans == null) {
+            cetBeans = new ArrayList<>();
+        }
+        return cetBeans;
+    }
+
+    public void setCetBeans(List<CETBean> cetBeans) {
+        this.cetBeans = cetBeans;
+        saveCETBeans();
+    }
+
+    private void saveCETBeans() {
+        String cetString = null;
+        CETBean[] cetBeans1 = new CETBean[cetBeans.size()];
+        cetBeans.toArray(cetBeans1);
+        try {
+            cetString = SerializeUtil.serialize(cetBeans1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (cetString != null) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(CET_STRING, cetString);
+            editor.apply();
+        }
     }
 }

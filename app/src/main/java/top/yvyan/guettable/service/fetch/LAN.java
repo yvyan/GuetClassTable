@@ -11,6 +11,7 @@ import top.yvyan.guettable.Http.GetBitmap;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.Http.Post;
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.data.GeneralData;
 
 public class LAN {
 
@@ -163,6 +164,30 @@ public class LAN {
                 "]}",
                 null,
                 resources.getString(R.string.lan_get_table_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 获取等级考试成绩
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        gson格式的等级考试成绩
+     */
+    public static HttpConnectionAndCode getCET(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Get.get(
+                resources.getString(R.string.lan_get_cet_url),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_student_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_student_success_contain_response_text),
                 null,
                 null,
                 null,
