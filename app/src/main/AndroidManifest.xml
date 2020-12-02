@@ -23,6 +23,7 @@
         <activity android:name=".DetailActivity" />
         <activity android:name=".SetTermActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".SettingActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

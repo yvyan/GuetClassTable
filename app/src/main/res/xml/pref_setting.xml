@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SettingActivity">
+    <PreferenceCategory
+        android:title="基本设置">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:title="开启刷新数据"
+            android:summary="在实时数据中开启实时刷新最新的数据"
+            android:key="switch_preference_1" />
+        <ListPreference
+            android:key="list_preference"
+            android:title="数据周期"
+            android:summary="选择数据刷新时间"
+            android:dependency="switch_preference_1"
+            android:entries="@array/day_entities"
+            android:entryValues="@array/day_values"
+            android:dialogTitle="选择一个" />
+    </PreferenceCategory>
+</PreferenceScreen>
