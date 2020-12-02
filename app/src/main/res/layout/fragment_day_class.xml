@@ -13,7 +13,16 @@
         android:background="@color/colorPrimary">
 
         <TextView
-            style=""
+            android:layout_width="wrap_content"
+            android:textSize="20dp"
+            android:text="日课表"
+            android:textColor="@color/app_white"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30px"
+            android:layout_marginLeft="40px"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/day_class_test"
             android:layout_width="wrap_content"
             android:textSize="20dp"
@@ -21,7 +30,7 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             android:layout_marginTop="30px"
-            android:layout_marginLeft="70px"
+            android:layout_marginLeft="220px"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
