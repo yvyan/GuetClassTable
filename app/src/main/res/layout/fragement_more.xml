@@ -210,6 +210,97 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/more_item_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/more_card_image5"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_weight="1"
+                        app:tint="@color/colorPrimary"
+                        android:baselineAlignBottom="false"
+                        android:src="@drawable/index" />
+
+                    <TextView
+                        android:id="@+id/more_card_text5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/more_card_image5"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="1"
+                        android:textSize="18dp"
+                        android:text="网址导航" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:id="@+id/more_item_2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                app:cardCornerRadius="10dp"-->
+<!--                android:layout_marginStart="6dp"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:layout_marginEnd="12dp">-->
+
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="5dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:orientation="vertical" >-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/more_card_image2"-->
+<!--                        android:layout_width="90dp"-->
+<!--                        android:layout_height="90dp"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        android:layout_weight="1"-->
+<!--                        app:tint="@color/colorPrimary"-->
+<!--                        android:baselineAlignBottom="false"-->
+<!--                        android:src="@drawable/more_cet" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/more_card_text2"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_below="@+id/more_card_image2"-->
+<!--                        android:layout_centerInParent="true"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:textSize="18dp"-->
+<!--                        android:text="CET成绩" />-->
+
+<!--                </RelativeLayout>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

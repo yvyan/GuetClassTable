@@ -1,7 +1,6 @@
 package top.yvyan.guettable.bean;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class CETBean implements Serializable {
     //等级名称 CET4 CET6

@@ -36,6 +36,7 @@
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/person_userInfo_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp">
@@ -264,11 +265,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:text="帮助"
+                android:text="帮助关于"
                 android:textColor="@color/app_black"
                 android:textSize="17dp" />
 
         </LinearLayout>
+
+<!--        <View-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="0.5dp"-->
+<!--            android:background="@color/colorPrimary" />-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:background="@color/app_white"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="24dp"-->
+<!--                android:layout_marginLeft="6dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:src="@drawable/fankui"-->
+<!--                app:tint="@color/colorPrimary" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginLeft="2dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:text="问题反馈"-->
+<!--                android:textColor="@color/app_black"-->
+<!--                android:textSize="17dp" />-->
+
+<!--        </LinearLayout>-->
 
         <View
             android:layout_width="fill_parent"
@@ -276,6 +307,7 @@
             android:background="@color/colorPrimary" />
 
         <LinearLayout
+            android:id="@+id/person_share"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@color/app_white"
@@ -286,7 +318,7 @@
                 android:layout_height="24dp"
                 android:layout_marginLeft="6dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/fankui"
+                android:src="@drawable/share"
                 app:tint="@color/colorPrimary" />
 
             <TextView
@@ -294,7 +326,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="10dp"
-                android:text="问题反馈"
+                android:text="分享给同学"
                 android:textColor="@color/app_black"
                 android:textSize="17dp" />
 
@@ -329,7 +361,6 @@
                     android:id="@+id/tv_profile_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2.1.1"
                     android:textColor="#000000"
                     android:textSize="15sp" />
             </LinearLayout>

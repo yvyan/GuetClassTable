@@ -16,8 +16,10 @@ import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
 import top.yvyan.guettable.SettingActivity;
+import top.yvyan.guettable.ShareActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.util.AppUtil;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
     private static PersonFragment personFragment;
@@ -31,11 +33,14 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private Button buttonQuit;
     private View person_line_1;
     private View person_userInfo;
+    private View person_userInfo_card;
     private TextView person_name;
     private TextView person_number;
     private TextView person_grade;
     private TextView person_term;
     private TextView person_week;
+    private TextView profileVersion;
+    private View share;
 
     private AccountData accountData;
     private GeneralData generalData;
@@ -75,10 +80,15 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         buttonQuit.setOnClickListener(this);
         person_line_1 = view.findViewById(R.id.person_line_1);
         person_userInfo = view.findViewById(R.id.person_userInfo);
-        person_userInfo.setOnClickListener(this);
+        person_userInfo_card = view.findViewById(R.id.person_userInfo_card);
+        person_userInfo_card.setOnClickListener(this);
         person_grade = view.findViewById(R.id.person_grade);
         person_term = view.findViewById(R.id.person_term);
         person_week = view.findViewById(R.id.person_week);
+        profileVersion = view.findViewById(R.id.tv_profile_version);
+        profileVersion.setText(AppUtil.getAppVersionName(getContext()));
+        share = view.findViewById(R.id.person_share);
+        share.setOnClickListener(this);
     }
 
     public void updateView() {
@@ -107,7 +117,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
-            case R.id.person_userInfo:
+            case R.id.person_userInfo_card:
                 intent = new Intent(getContext(), SetTermActivity.class);
                 startActivity(intent);
                 break;
@@ -123,6 +133,9 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getContext(), SettingActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.person_share:
+                intent = new Intent(getContext(), ShareActivity.class);
+                startActivity(intent);
         }
     }
 }

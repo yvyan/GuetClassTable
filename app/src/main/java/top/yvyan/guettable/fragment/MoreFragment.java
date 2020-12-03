@@ -1,6 +1,8 @@
 package top.yvyan.guettable.fragment;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private static MoreFragment moreFragment;
 
     private View view;
-    private View more_item_1, more_item_2, more_item_3, more_item_4;
+    private View more_item_1, more_item_2, more_item_3, more_item_4, more_item_5;
 
     public MoreFragment() {
         // Required empty public constructor
@@ -40,10 +42,12 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         more_item_2 = view.findViewById(R.id.more_item_2);
         more_item_3 = view.findViewById(R.id.more_item_3);
         more_item_4 = view.findViewById(R.id.more_item_4);
+        more_item_5 = view.findViewById(R.id.more_item_5);
         more_item_1.setOnClickListener(this);
         more_item_2.setOnClickListener(this);
         more_item_3.setOnClickListener(this);
         more_item_4.setOnClickListener(this);
+        more_item_5.setOnClickListener(this);
         return view;
     }
 
@@ -61,6 +65,13 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.more_item_3:
                 intent = new Intent(getContext(), ExamScoreActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.more_item_5:
+                Uri uri = Uri.parse(getContext().getResources().getString(R.string.guet_yvyan_top));
+                intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                intent.setData(uri);
                 startActivity(intent);
                 break;
             default:
