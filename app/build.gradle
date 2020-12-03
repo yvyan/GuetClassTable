@@ -8,8 +8,8 @@ android {
         applicationId "top.yvyan.guettable"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 4
-        versionName "2.1.1"
+        versionCode 6
+        versionName "2.3.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         dataBinding.enabled = true
