@@ -33,6 +33,7 @@
     <string name="lan_get_lab_table_url">http://172.16.13.22/student/getlabtable</string>
     <string name="lan_get_exam_url">http://172.16.13.22/student/getexamap</string>
     <string name="lan_get_cet_url">http://172.16.13.22/student/GetLvlScore</string>
+    <string name="lan_get_examscore_url">http://172.16.13.22/Student/GetStuScore</string>
 
     <string name="lan_login_fail">登录失败, 检查校园网连接后重试</string>
     <string name="lan_login_fail_ck">验证码错误，登录失败</string>
