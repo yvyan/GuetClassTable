@@ -31,11 +31,11 @@ public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.Exam
 
     @Override
     public void onBindViewHolder(@NonNull ExamScoreAdapter.ExamScoreViewHolder holder, int position) {
-        holder.examscore_name.setText(examScoreBeans.get(position).getName());
-        holder.examscore_totalScore.setText(String.valueOf(examScoreBeans.get(position).getTotalScore()));
-        holder.examscore_usuallyScore.setText(String.valueOf(examScoreBeans.get(position).getUsuallyScore()));
-        holder.examscore_experimentScore.setText(String.valueOf(examScoreBeans.get(position).getExperimentScore()));
-        holder.examscore_checkScore.setText(String.valueOf(examScoreBeans.get(position).getCheckScore()));
+        holder.examScoreName.setText(examScoreBeans.get(position).getName());
+        holder.examScoreScore.setText(String.valueOf(examScoreBeans.get(position).getScore()));
+        holder.examScoreUsually.setText(String.valueOf(examScoreBeans.get(position).getUsuallyScore()));
+        holder.examScoreExperiment.setText(String.valueOf(examScoreBeans.get(position).getExperimentScore()));
+        holder.examScoreCheck.setText(String.valueOf(examScoreBeans.get(position).getCheckScore()));
     }
 
     @Override
@@ -44,14 +44,14 @@ public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.Exam
     }
 
     public class ExamScoreViewHolder extends RecyclerView.ViewHolder {
-        TextView examscore_name, examscore_totalScore, examscore_usuallyScore, examscore_experimentScore, examscore_checkScore;
+        TextView examScoreName, examScoreScore, examScoreUsually, examScoreExperiment, examScoreCheck;
         public ExamScoreViewHolder(@NonNull View itemView) {
             super(itemView);
-            examscore_name = itemView.findViewById(R.id.examscore_name);
-            examscore_totalScore = itemView.findViewById(R.id.examscore_totalScore);
-            examscore_usuallyScore = itemView.findViewById(R.id.examscore_usuallyScore);
-            examscore_experimentScore = itemView.findViewById(R.id.examscore_experimentScore);
-            examscore_checkScore = itemView.findViewById(R.id.examscore_checkScore);
+            examScoreName = itemView.findViewById(R.id.examScoreName);
+            examScoreScore = itemView.findViewById(R.id.examScoreScore);
+            examScoreUsually = itemView.findViewById(R.id.examScoreUsually);
+            examScoreExperiment = itemView.findViewById(R.id.examScoreExperiment);
+            examScoreCheck = itemView.findViewById(R.id.examScoreCheck);
         }
     }
 }

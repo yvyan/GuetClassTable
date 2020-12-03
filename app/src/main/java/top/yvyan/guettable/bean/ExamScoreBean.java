@@ -1,6 +1,8 @@
 package top.yvyan.guettable.bean;
 
-public class ExamScoreBean {
+import java.io.Serializable;
+
+public class ExamScoreBean implements Serializable {
     //课程名称
     private String name;
     //学期
