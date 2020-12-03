@@ -5,6 +5,8 @@ public class ExamScoreBean {
     private String name;
     //学期
     private String term;
+    //显示数据
+    private String score;
     //总成绩
     private float totalScore;
     //平时成绩
@@ -13,16 +15,20 @@ public class ExamScoreBean {
     private float experimentScore;
     //考核成绩
     private float checkScore;
+    //学分
+    private float credit;
 
     public ExamScoreBean() {}
 
-    public ExamScoreBean(String name, String term, float totalScore, float usuallyScore, float experimentScore, float checkScore) {
+    public ExamScoreBean(String name, String term, String score, float totalScore, float usuallyScore, float experimentScore, float checkScore, float credit) {
         this.name = name;
         this.term = term;
+        this.score = score;
         this.totalScore = totalScore;
         this.usuallyScore = usuallyScore;
         this.experimentScore = experimentScore;
         this.checkScore = checkScore;
+        this.credit = credit;
     }
 
     public String getName() {
@@ -83,5 +89,21 @@ public class ExamScoreBean {
                 ", experimentScore='" + experimentScore + '\'' +
                 ", checkScore='" + checkScore + '\'' +
                 '}';
+    }
+
+    public float getCredit() {
+        return credit;
+    }
+
+    public void setCredit(float credit) {
+        this.credit = credit;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 }
