@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.adapter.ClassDetailAdapter;
 import top.yvyan.guettable.adapter.DayClassAdapter;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
