@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:textSize="20dp"
-            android:text="考试安排"
+            android:text="考试成绩"
             android:textColor="@color/app_white"
             android:layout_height="wrap_content"
             android:layout_marginTop="30px"
@@ -66,9 +66,78 @@
         android:text="没有查询到符合条件的考试成绩信息!"
         android:textSize="25dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/examscore_info_recycler_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:id="@+id/examscore_info_view"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:id="@+id/examScoreName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="课程"
+                android:textColor="@color/app_white"
+                android:gravity="center"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/examScoreScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="考核"
+                android:textColor="@color/app_white"
+                android:gravity="center"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/examScoreUsually"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="实验"
+                android:textColor="@color/app_white"
+                android:gravity="center"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/examScoreExperiment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="平时"
+                android:textColor="@color/app_white"
+                android:gravity="center"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/examScoreCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="成绩"
+                android:textColor="@color/app_white"
+                android:gravity="center"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/examscore_info_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

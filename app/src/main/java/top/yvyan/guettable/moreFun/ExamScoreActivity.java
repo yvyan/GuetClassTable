@@ -30,6 +30,7 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
     private TextView examScoreState;
     private TextView examScoreNotFind;
     private ImageView examScoreMore;
+    private View examScoreInfoView;
     private RecyclerView recyclerView;
 
     @Override
@@ -46,6 +47,7 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
         examScoreNotFind = findViewById(R.id.examscore_not_find);
         examScoreMore = findViewById(R.id.examscore_more);
         examScoreMore.setOnClickListener(view -> showPopMenu());
+        examScoreInfoView = findViewById(R.id.examscore_info_view);
         recyclerView = findViewById(R.id.examscore_info_recycler_view);
 
         updateView();
@@ -60,10 +62,10 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
         List<ExamScoreBean> examScoreBeans = moreDate.getExamScoreBeans();
         if (examScoreBeans.size() != 0) {
             examScoreNotFind.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
+            examScoreInfoView.setVisibility(View.VISIBLE);
         } else {
             examScoreNotFind.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
+            examScoreInfoView.setVisibility(View.GONE);
         }
         ExamScoreAdapter examScoreAdapter = new ExamScoreAdapter(examScoreBeans);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
