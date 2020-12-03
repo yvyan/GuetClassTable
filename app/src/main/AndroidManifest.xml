@@ -18,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".moreFun.ExamScoreActivity"></activity>
         <activity android:name=".moreFun.CETActivity"></activity>
         <activity android:name=".moreFun.ExamActivity" />
         <activity android:name=".DetailActivity" />

@@ -14,6 +14,8 @@ import top.yvyan.guettable.Gson.ClassTable;
 import top.yvyan.guettable.Gson.ClassTableOuter;
 import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamInfoOuter;
+import top.yvyan.guettable.Gson.ExamScore;
+import top.yvyan.guettable.Gson.ExamScoreOuter;
 import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.LabTableOuter;
 import top.yvyan.guettable.Gson.StudentInfo;
@@ -22,6 +24,7 @@ import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
+import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.service.fetch.LAN;
 
 public class StaticService {
@@ -172,6 +175,26 @@ public class StaticService {
                 cetBeans.add(cet.toCETBean());
             }
             return cetBeans;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取普通考试成绩
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        普通考试成绩列表
+     */
+    public static List<ExamScoreBean> getExamScore(Context context, String cookie) {
+        List<ExamScoreBean> examScoreBeans = new ArrayList<>();
+        HttpConnectionAndCode examScoreInfo = LAN.getExamScore(context, cookie);
+        if (examScoreInfo.code == 0) {
+            ExamScoreOuter examScoreOuter = new Gson().fromJson(examScoreInfo.comment, ExamScoreOuter.class);
+            for (ExamScore examscore1 : examScoreOuter.getData()) {
+                examScoreBeans.add(examscore1.toExamScoreBean());
+            }
+            return examScoreBeans;
         } else {
             return null;
         }
