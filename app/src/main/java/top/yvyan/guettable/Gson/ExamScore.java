@@ -30,7 +30,7 @@ public class ExamScore {
     private String kslb;
     private String cjlb;
     private int kssj;
-    private int xf;
+    private float xf;
     private String xslb;
     private String tname1;
     private int stage;
@@ -41,7 +41,7 @@ public class ExamScore {
     private String comm;
 
     public ExamScoreBean toExamScoreBean() {
-        return new ExamScoreBean(cname, term, score, pscj, sycj, khcj);
+        return new ExamScoreBean(cname, term, zpxs, score, pscj, sycj, khcj, xf);
     }
 
     public void setDptno(String dptno) {
@@ -233,10 +233,10 @@ public class ExamScore {
         return kssj;
     }
 
-    public void setXf(int xf) {
+    public void setXf(float xf) {
         this.xf = xf;
     }
-    public int getXf() {
+    public float getXf() {
         return xf;
     }
 
