@@ -3,20 +3,80 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".SettingActivity">
+    <Preference
+        android:key="option"
+        android:layout="@layout/setting" />
+
     <PreferenceCategory
+        android:key="basic_settings"
         android:title="基本设置">
         <SwitchPreference
+            android:colorAccent="@color/colorPrimary"
             android:defaultValue="false"
-            android:title="开启刷新数据"
+            android:key="refresh_data"
             android:summary="在实时数据中开启实时刷新最新的数据"
-            android:key="switch_preference_1" />
+            android:title="开启刷新数据" />
+
         <ListPreference
-            android:key="list_preference"
-            android:title="数据周期"
-            android:summary="选择数据刷新时间"
-            android:dependency="switch_preference_1"
+            android:dependency="refresh_data"
+            android:dialogTitle="选择数据刷新时间"
             android:entries="@array/day_entities"
             android:entryValues="@array/day_values"
-            android:dialogTitle="选择一个" />
+            android:key="list_preference"
+            android:summary="选择数据刷新时间"
+            android:defaultValue="3天"
+            android:title="数据周期" />
+
+        <CheckBoxPreference
+            android:key="optionA"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:summary="这里是选项测试a"
+            android:summaryOff="禁止A"
+            android:summaryOn="允许A"
+            android:title="选项测试A" />
+        <CheckBoxPreference
+            android:dependency="optionA"
+            android:key="optionB"
+            android:summary="这里是选项测试b"
+            android:summaryOff="禁止B"
+            android:summaryOn="允许B"
+            android:title="选项测试B" />
+
+        <CheckBoxPreference
+            android:checked="true"
+            android:key="optionC"
+            android:summary="这里是选项测试c"
+            android:summaryOff="禁止C"
+            android:summaryOn="允许C"
+            android:title="选项测试C" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="复合选项">
+
+        <ListPreference
+            android:dialogTitle="对话框标题"
+            android:entries="@array/day_entities"
+            android:entryValues="@array/day_values"
+            android:key="option2_1"
+            android:summary="请选择时间"
+            android:title="时间" />
+
+
+        <MultiSelectListPreference
+            android:dialogIcon="@mipmap/ic_launcher"
+            android:entries="@array/day_entities"
+            android:entryValues="@array/day_values"
+            android:key="option2_2"
+            android:title="消息类型" />
+
+        <PreferenceScreen
+            android:key="option2_3"
+            android:summary="打开哔哩哔哩"
+            android:title="哔哩哔哩">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.bilibili.com/" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+
 </PreferenceScreen>
