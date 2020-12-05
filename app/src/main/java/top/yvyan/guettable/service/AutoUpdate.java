@@ -1,7 +1,6 @@
 package top.yvyan.guettable.service;
 
 import android.app.Activity;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -112,6 +111,8 @@ public class AutoUpdate {
      * 22 : 课内实验更新成功
      * 23 : 考试安排更新成功
      *
+     * 92 : 正在登录
+     *
      */
     private void updateView(int state) {
         this.state = state;
@@ -143,6 +144,9 @@ public class AutoUpdate {
             case 9:
                 text = "正在更新考试安排...";
                 break;
+            case 92:
+                text = "正在登录";
+                break;
         }
         final String out = text;
         activity.runOnUiThread(() -> {
@@ -158,6 +162,7 @@ public class AutoUpdate {
      */
     private void update_thread() {
         new Thread(() -> {
+            updateView(92);
             // 刷新cookie
             updateView(cookieData.refresh());
             if (state == 0) {
