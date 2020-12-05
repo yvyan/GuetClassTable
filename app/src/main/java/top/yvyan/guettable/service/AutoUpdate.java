@@ -11,6 +11,7 @@ import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
+import top.yvyan.guettable.data.CookieData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.fragment.CourseTableFragment;
@@ -26,37 +27,8 @@ public class AutoUpdate {
     private AccountData accountData;
     private ClassData classData;
     private GeneralData generalData;
+    private CookieData cookieData;
 
-    /**
-     * state记录当前状态
-     *  0 : 登录成功
-     *  1 : 登录失效
-     *  2 : 未登录
-     *
-     * -1 : 密码错误
-     * -2 : 网络错误/未知错误
-     * -3 : 验证码连续错误
-     *
-     * 21 : 理论课更新成功
-     * 22 : 课内实验更新成功
-     * 23 : 考试安排更新成功
-     *
-     */
-
-
-    /**
-     * state记录当前状态
-     *  0 : 登录成功
-     *  1 : 验证码错误
-     *  2 : 密码错误
-     *  3 : 网络错误/未知错误
-     *  4 : 未登录
-     *  5 : 就绪（默认）
-     *
-     *  6 : 更新理论课
-     *  7 : 更新课内实验
-     *  8 : 更新完成
-     */
     private int state;
 
     private AutoUpdate(Activity activity) {
@@ -64,14 +36,15 @@ public class AutoUpdate {
         accountData = AccountData.newInstance(activity);
         classData = ClassData.newInstance(activity);
         generalData = GeneralData.newInstance(activity);
+        cookieData = CookieData.newInstance(activity);
         init();
     }
 
     private void init() {
         if (accountData.getIsLogin()) {
-            updateView(5);
+            updateView(0);
         } else {
-            updateView(4);
+            updateView(2);
         }
         updateView(state);
     }
@@ -98,10 +71,9 @@ public class AutoUpdate {
      * 启动更新
      */
     public void update() {
-        //TODO 点击更新后会出新“已登录（点击更新）的错误状态”
         init();
         // 判断状态是否符合；合适的状态：就绪 网络错误 更新成功(点击更新)
-        if (state == 5 || state == 3 || state == 8) {
+        if (state == 0 || state == -2 || state == 8) {
             update_thread();
         }
     }
@@ -114,26 +86,42 @@ public class AutoUpdate {
         update();
     }
 
-    public void logoff() {
-
-    }
-
     public void updateView() {
-        updateView(state);
+        if (!accountData.getIsLogin()) {
+            updateView(2);
+        } else {
+            updateView(state);
+        }
     }
 
+    /**
+     * state记录当前状态
+     *  0 : 登录成功
+     *  1 : 登录失效
+     *  2 : 未登录
+     *
+     * -1 : 密码错误
+     * -2 : 网络错误/未知错误
+     * -3 : 验证码连续错误
+     *
+     *  6 : 正在更新理论课
+     *  7 : 正在更新课内实验
+     *  8 : 更新完成
+     *
+     * 21 : 理论课更新成功
+     * 22 : 课内实验更新成功
+     * 23 : 考试安排更新成功
+     *
+     */
     private void updateView(int state) {
         this.state = state;
-        String text = "error";
+        String text = "网络错误";
         switch (state) {
-            case 5:
+            case 0:
                 text = "已登录(点击更新)";
                 break;
-            case 4:
+            case 2:
                 text = "去登录";
-                break;
-            case 0:
-                text = "登录成功";
                 break;
             case -1:
                 text = "密码错误";
@@ -165,20 +153,15 @@ public class AutoUpdate {
         });
     }
 
+    /**
+     * 自动更新线程
+     */
     private void update_thread() {
         new Thread(() -> {
-            StringBuilder cookie_builder = new StringBuilder();
-            // 自动登录
-            updateView(
-                    StaticService.autoLogin(
-                        activity,
-                        accountData.getUsername(),
-                        accountData.getPassword(),
-                        cookie_builder
-                )
-            );
+            // 刷新cookie
+            updateView(cookieData.refresh());
             if (state == 0) {
-                String cookie = cookie_builder.toString();
+                String cookie = cookieData.getCookie();
                 List<CourseBean> courseBeans = new ArrayList<>();
                 // 获取理论课
                 updateView(6);
