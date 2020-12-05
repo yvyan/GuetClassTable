@@ -49,11 +49,24 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
 
             holder.textView1.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             holder.textView1.setTextSize(23);
+            int size;
+            String text;
             if (position == 0) {
-                holder.textView1.setText("今天的课程");
+                size = todayList.size();
+                if (size == 0) {
+                    text = "今天没有课";
+                } else {
+                    text = "今天有" + size + "节课";
+                }
             } else {
-                holder.textView1.setText("明天的课程");
+                size = tomorrowList.size();
+                if (size == 0) {
+                    text = "明天没有课";
+                } else {
+                    text = "明天有" + size + "节课";
+                }
             }
+            holder.textView1.setText(text);
             return;
         }
         //课程显示

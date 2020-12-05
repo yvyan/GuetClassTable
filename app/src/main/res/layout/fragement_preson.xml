@@ -219,6 +219,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/person_detail_info"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@color/app_white"
@@ -236,6 +237,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="3dp"
                 android:text="个人详细信息"
                 android:textColor="@color/app_black"
                 android:textSize="17dp" />
@@ -248,6 +250,7 @@
             android:background="@color/colorPrimary" />
 
         <LinearLayout
+            android:id="@+id/person_help"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@color/app_white"
@@ -265,7 +268,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:text="帮助关于"
+                android:layout_marginLeft="3dp"
+                android:text="帮助与进阶"
                 android:textColor="@color/app_black"
                 android:textSize="17dp" />
 
@@ -324,9 +328,71 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
+                android:layout_marginLeft="6dp"
                 android:layout_marginTop="10dp"
                 android:text="分享给同学"
+                android:textColor="@color/app_black"
+                android:textSize="17dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:id="@+id/person_update"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/app_white"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/gengxin"
+                app:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="7dp"
+                android:text="检查更新"
+                android:textColor="@color/app_black"
+                android:textSize="17dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:id="@+id/person_about"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/app_white"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/guanyu"
+                app:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="4dp"
+                android:text="关于APP"
                 android:textColor="@color/app_black"
                 android:textSize="17dp" />
 
