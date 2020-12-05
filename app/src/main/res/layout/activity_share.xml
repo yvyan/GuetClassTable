@@ -31,8 +31,8 @@
             android:text="分享给同学"
             android:textColor="@color/app_white"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
-            android:layout_marginLeft="130px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dp"
             app:layout_constraintStart_toStartOf="@id/CET_back"
             app:layout_constraintTop_toTopOf="parent" />
 
