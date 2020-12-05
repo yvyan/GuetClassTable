@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleSupport;
@@ -32,12 +33,14 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private static DayClassFragment dayClassFragment;
 
+    private ViewPager viewPager;
     private View view;
     private TextView textView;
     private RecyclerView recyclerView;
 
     private DayClassAdapter dayClassAdapter;
     private AutoUpdate autoUpdate;
+    private OnButtonClick onButtonClick;
 
     private AccountData accountData;
     private GeneralData generalData;
@@ -59,7 +62,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_day_class, container, false);
 
-        textView = view.findViewById(R.id.day_class_test);
+        viewPager = view.findViewById(R.id.vp);
+        textView = view.findViewById(R.id.day_class_hint);
         textView.setOnClickListener(this);
         accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
@@ -115,16 +119,13 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     @Override
     public void onClick(View view) {
-        //TODO 该页面点击登录后导入课表会出现页面被关闭，视图空指针的bug，未找到解决方案，先去掉首页登录功能
-        autoUpdate.update();
-    }
-
-    private void updateUser() {
-        if (accountData.getIsLogin()) {
-            textView.setText("已登录");
-        } else {
-            textView.setText("请登录");
+        if ("去登录".equals(textView.getText())) {
+            if (onButtonClick != null) {
+                onButtonClick.onClick(3);
+            }
+            return;
         }
+        autoUpdate.update();
     }
 
     public void updateText(String text) {
@@ -150,6 +151,18 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             }
         }
         return list;
+    }
+
+    public OnButtonClick getOnButtonClick() {
+        return onButtonClick;
+    }
+
+    public void setOnButtonClick(OnButtonClick onButtonClick) {
+        this.onButtonClick = onButtonClick;
+    }
+
+    public interface OnButtonClick {
+        public void onClick(int n);
     }
 
 }
