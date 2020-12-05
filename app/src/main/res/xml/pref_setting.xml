@@ -11,7 +11,6 @@
         android:key="basic_settings"
         android:title="基本设置">
         <SwitchPreference
-            android:colorAccent="@color/colorPrimary"
             android:defaultValue="false"
             android:key="refresh_data"
             android:summary="在实时数据中开启实时刷新最新的数据"
@@ -22,14 +21,13 @@
             android:dialogTitle="选择数据刷新时间"
             android:entries="@array/day_entities"
             android:entryValues="@array/day_values"
-            android:key="list_preference"
+            android:key="list_day"
             android:summary="选择数据刷新时间"
-            android:defaultValue="3天"
-            android:title="数据周期" />
+            android:defaultValue="1天"
+            android:title="数据刷新时间" />
 
         <CheckBoxPreference
             android:key="optionA"
-            android:layout="?android:attr/preferenceLayoutChild"
             android:summary="这里是选项测试a"
             android:summaryOff="禁止A"
             android:summaryOn="允许A"

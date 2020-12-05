@@ -47,5 +47,7 @@
 
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36</string>
     <string name="cookie_delimiter">"; "</string>
+    <string name="setting">设置</string>
+    <string name="todo">TODO</string>
 
 </resources>
