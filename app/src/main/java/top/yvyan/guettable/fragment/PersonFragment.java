@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import top.yvyan.guettable.LoginActivity;
+import top.yvyan.guettable.MySettingActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
 import top.yvyan.guettable.SettingActivity;
@@ -130,7 +131,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case  R.id.person_setting:
-                intent = new Intent(getContext(), SettingActivity.class);
+                intent = new Intent(getContext(), MySettingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.person_share:

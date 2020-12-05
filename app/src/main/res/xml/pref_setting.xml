@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".SettingActivity">
+
     <Preference
         android:key="option"
         android:layout="@layout/setting" />
