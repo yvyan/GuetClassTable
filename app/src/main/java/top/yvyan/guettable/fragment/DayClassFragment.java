@@ -110,7 +110,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         super.onStart();
         autoUpdate.updateView();
         Log.d("test:", "start");
-        //updateUser();
     }
 
     /**
