@@ -25,7 +25,7 @@ public class SingleSettingData {
 
     private void load() {
         hideOtherWeek = sharedPreferences.getBoolean(HIDE_OTHER_WEEK, false);
-        combineExam = sharedPreferences.getBoolean(COMBINE_EXAM, false);
+        combineExam = sharedPreferences.getBoolean(COMBINE_EXAM, true);
         hideOutdatedExam = sharedPreferences.getBoolean(HIDE_OUTDATED_EXAM, false);
     }
 
