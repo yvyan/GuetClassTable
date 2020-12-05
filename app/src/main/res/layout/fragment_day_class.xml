@@ -18,8 +18,8 @@
             android:text="日课表"
             android:textColor="@color/app_white"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
-            android:layout_marginLeft="40px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -29,8 +29,8 @@
             android:textColor="@color/app_white"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            android:layout_marginTop="30px"
-            android:layout_marginLeft="220px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="100dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
