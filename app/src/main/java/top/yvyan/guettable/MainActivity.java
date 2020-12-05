@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private MenuItem menuItem;
 
+    private DayClassFragment dayClassFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
         list.add(PersonFragment.newInstance());
         viewPagerAdapter.setList(list);
 
+        dayClassFragment = DayClassFragment.newInstance();
+        dayClassFragment.setOnButtonClick(n -> {
+            viewPager.setCurrentItem(n);
+        });
 
         /**
          * 创建数据库

@@ -130,7 +130,7 @@ public class AutoUpdate {
                 text = "已登录(点击更新)";
                 break;
             case 4:
-                text = "未登录";
+                text = "去登录";
                 break;
             case 0:
                 text = "登录成功";

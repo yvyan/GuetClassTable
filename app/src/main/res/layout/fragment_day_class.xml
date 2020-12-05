@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/day_class_test"
+            android:id="@+id/day_class_hint"
             android:layout_width="wrap_content"
             android:textSize="20dp"
             android:textColor="@color/app_white"
