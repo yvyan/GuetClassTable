@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".MySettingActivity"
     android:orientation="vertical">
-
+<!--
     <RelativeLayout
         android:id="@+id/more_head"
         android:layout_width="match_parent"
@@ -22,8 +23,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/back"
-            android:onClick="doBack" />
+            android:src="@drawable/back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
             android:layout_marginLeft="130px"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <ListView
         android:id="@android:id/list"

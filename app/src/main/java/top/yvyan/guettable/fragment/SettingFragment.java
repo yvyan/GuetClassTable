@@ -9,7 +9,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
-import android.widget.Toast;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.util.ToastUtil;
@@ -27,8 +26,6 @@ public class SettingFragment extends PreferenceFragment {
         basic_settings = (PreferenceCategory) findPreference("basic_settings");
         refresh_data = (SwitchPreference) findPreference("refresh_data");
         list_day = (ListPreference) findPreference("list_day");
-
-
         refresh_data.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -71,4 +68,5 @@ public class SettingFragment extends PreferenceFragment {
         */
         return true;
     }
+
 }
