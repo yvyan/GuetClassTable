@@ -10,6 +10,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.List;
 
 import top.yvyan.guettable.R;
@@ -19,6 +20,7 @@ import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.util.ComparatorExamScore;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -79,6 +81,8 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
         List<ExamScoreBean> examScoreBeans;
         examScoreBeans = StaticService.getExamScore(this, cookie);
         if (examScoreBeans != null) {
+            ComparatorExamScore comparatorExamScore = new ComparatorExamScore();
+            Collections.sort(examScoreBeans, comparatorExamScore);
             moreDate.setExamScoreBeans(examScoreBeans);
             return 5 ;
         }

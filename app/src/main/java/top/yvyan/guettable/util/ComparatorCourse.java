@@ -1,12 +1,8 @@
 package top.yvyan.guettable.util;
 
-import android.util.Log;
-
 import com.zhuangfei.timetable.model.Schedule;
 
 import java.util.Comparator;
-
-import top.yvyan.guettable.bean.CourseBean;
 
 public class ComparatorCourse implements Comparator<Schedule> {
 

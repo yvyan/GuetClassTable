@@ -116,7 +116,7 @@ public class AutoUpdate {
      */
     private void updateView(int state) {
         this.state = state;
-        String text = "网络错误";
+        String text = "未知错误";
         switch (state) {
             case 0:
                 text = "已登录(点击更新)";
