@@ -47,15 +47,6 @@
             android:layout_marginLeft="300px"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/CET_more"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:layout_marginRight="15dp"-->
-<!--            android:src="@drawable/attribute"/>-->
-
     </RelativeLayout>
 
     <TextView

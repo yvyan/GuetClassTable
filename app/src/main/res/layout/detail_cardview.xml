@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/detail_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -25,7 +26,7 @@
                 app:layout_constraintGuide_begin="20dp" />
 
             <TextView
-                android:id="@+id/card_1"
+                android:id="@+id/detail_text_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
@@ -35,41 +36,41 @@
                 android:layout_marginLeft="5dp"/>
 
             <TextView
-                android:id="@+id/card_2"
+                android:id="@+id/detail_text_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp" />
 
             <TextView
-                android:id="@+id/card_3"
+                android:id="@+id/detail_text_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="5dp"/>
 
             <TextView
-                android:id="@+id/card_4"
+                android:id="@+id/detail_text_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="5dp"/>
 
             <TextView
-                android:id="@+id/card_5"
+                android:id="@+id/detail_text_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="5dp"/>
 
             <TextView
-                android:id="@+id/card_6"
+                android:id="@+id/detail_text_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="5dp"/>
 
             <TextView
-                android:id="@+id/card_7"
+                android:id="@+id/detail_text_7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
