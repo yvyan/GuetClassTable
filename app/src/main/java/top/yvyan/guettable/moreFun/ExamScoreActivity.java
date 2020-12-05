@@ -16,17 +16,22 @@ import java.util.List;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ExamScoreAdapter;
 import top.yvyan.guettable.bean.ExamScoreBean;
+import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.util.ComparatorExamScore;
+import top.yvyan.guettable.util.ExamScoreUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
 public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
 
     private MoreDate moreDate;
+    private GeneralData generalData;
+    private SingleSettingData singleSettingData;
 
     private ImageView back;
     private TextView examScoreState;
@@ -41,13 +46,15 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
         setContentView(R.layout.activity_examscore);
 
         moreDate = MoreDate.newInstance(this);
+        generalData = GeneralData.newInstance(this);
+        singleSettingData = SingleSettingData.newInstance(this);
 
         back = findViewById(R.id.examscore_back);
         back.setOnClickListener(view -> {finish();});
 
         examScoreState = findViewById(R.id.examscore_state);
         examScoreNotFind = findViewById(R.id.examscore_not_find);
-        examScoreMore = findViewById(R.id.examscore_more);
+        examScoreMore = findViewById(R.id.exam_score_more);
         examScoreMore.setOnClickListener(view -> showPopMenu());
         examScoreInfoView = findViewById(R.id.examscore_info_view);
         recyclerView = findViewById(R.id.examscore_info_recycler_view);
@@ -62,6 +69,9 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
      */
     public void updateView() {
         List<ExamScoreBean> examScoreBeans = moreDate.getExamScoreBeans();
+        if (singleSettingData.isHideOtherTermExamScore()) {
+            examScoreBeans = ExamScoreUtil.hideOtherTermExamScore(examScoreBeans, generalData.getTerm());
+        }
         if (examScoreBeans.size() != 0) {
             examScoreNotFind.setVisibility(View.GONE);
             examScoreInfoView.setVisibility(View.VISIBLE);
@@ -74,7 +84,32 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
         recyclerView.setAdapter(examScoreAdapter);
     }
 
-    public void showPopMenu() { }
+    public void showPopMenu() {
+        PopupMenu popup = new PopupMenu(this, examScoreMore);
+        popup.getMenuInflater().inflate(R.menu.exam_score_popmenu, popup.getMenu());
+        if (singleSettingData.isHideOtherTermExamScore()) {
+            popup.getMenu().findItem(R.id.exam_score_top1).setTitle("显示其它学期成绩");
+        }
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.exam_score_top1:
+                    if (singleSettingData.isHideOtherTermExamScore()) {
+                        singleSettingData.setHideOtherTermExamScore(false);
+                        updateView();
+                        popup.getMenu().findItem(R.id.exam_score_top1).setTitle("显示其它学期成绩");
+                    } else {
+                        singleSettingData.setHideOtherTermExamScore(true);
+                        updateView();
+                        popup.getMenu().findItem(R.id.exam_score_top1).setTitle("隐藏其它学期成绩");
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        });
+        popup.show();
+    }
 
     @Override
     public int updateData(String cookie) {

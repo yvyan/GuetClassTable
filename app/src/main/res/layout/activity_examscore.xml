@@ -48,7 +48,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/examscore_more"
+            android:id="@+id/exam_score_more"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
