@@ -50,13 +50,13 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
         TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
         public ExamViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView1 = itemView.findViewById(R.id.card_1);
-            textView2 = itemView.findViewById(R.id.card_2);
-            textView3 = itemView.findViewById(R.id.card_3);
-            textView4 = itemView.findViewById(R.id.card_4);
-            textView5 = itemView.findViewById(R.id.card_5);
-            textView6 = itemView.findViewById(R.id.card_6);
-            textView7 = itemView.findViewById(R.id.card_7);
+            textView1 = itemView.findViewById(R.id.detail_text_1);
+            textView2 = itemView.findViewById(R.id.detail_text_2);
+            textView3 = itemView.findViewById(R.id.detail_text_3);
+            textView4 = itemView.findViewById(R.id.detail_text_4);
+            textView5 = itemView.findViewById(R.id.detail_text_5);
+            textView6 = itemView.findViewById(R.id.detail_text_6);
+            textView7 = itemView.findViewById(R.id.detail_text_7);
         }
     }
 }
