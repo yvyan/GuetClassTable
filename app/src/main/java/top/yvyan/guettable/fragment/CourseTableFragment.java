@@ -33,6 +33,7 @@ import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ExamUtil;
@@ -58,6 +59,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private SingleSettingData singleSettingData;
     private DetailClassData detailClassData;
     private MoreDate moreDate;
+    private SettingData settingData;
 
     //记录切换的周次，不一定是当前周
     int target;
@@ -84,6 +86,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         singleSettingData = SingleSettingData.newInstance(getActivity());
         detailClassData = DetailClassData.newInstance();
         moreDate = MoreDate.newInstance(getActivity());
+        settingData = SettingData.newInstance(getActivity());
 
         target = generalData.getWeek();
 
@@ -127,11 +130,9 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .showView();
         target = generalData.getWeek();
         mTimetableView.curWeek(generalData.getWeek())
-                //TODO 学期是死的
-                .curTerm("大三下学期")
                 .maxSlideItem(12)
-                .monthWidthDp(20)
-                .itemHeight(DensityUtil.dip2px(getContext(), 60))
+                .monthWidthDp(18)
+                .itemHeight(DensityUtil.dip2px(getContext(), settingData.getClassLength()))
                 .callback(new OnItemBuildAdapter() {
                     @Override
                     public String getItemText(Schedule schedule, boolean isThisWeek) {
@@ -177,9 +178,10 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         for (CourseBean courseBean : classData.getCourseBeans()) {
             schedules.add(courseBean.getSchedule());
         }
-        for (ExamBean examBean : ExamUtil.combineExam(moreDate.getExamBeans())) {
-            schedules.add(examBean.getSchedule());
-            Log.d(TAG, "exam");
+        if (settingData.getShowExamOnTable()) {
+            for (ExamBean examBean : ExamUtil.combineExam(moreDate.getExamBeans())) {
+                schedules.add(examBean.getSchedule());
+            }
         }
         mWeekView.data(schedules)
                 .showView();
