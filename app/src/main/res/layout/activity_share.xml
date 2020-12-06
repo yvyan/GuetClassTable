@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteX="109dp">
 
         <ImageView
-            android:id="@+id/CET_back"
+            android:id="@+id/share_back"
             android:layout_width="25dp"
             android:layout_height="25dp"
             app:tint="@color/app_white"
@@ -25,7 +25,7 @@
             android:src="@drawable/back" />
 
         <TextView
-            android:id="@+id/CET_title"
+            android:id="@+id/share_title"
             android:layout_width="wrap_content"
             android:textSize="20dp"
             android:text="分享给同学"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="50dp"
-            app:layout_constraintStart_toStartOf="@id/CET_back"
+            app:layout_constraintStart_toStartOf="@id/share_back"
             app:layout_constraintTop_toTopOf="parent" />
 
     </RelativeLayout>
