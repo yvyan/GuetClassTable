@@ -10,4 +10,17 @@
         <item>3</item>
         <item>7</item>
     </string-array>
+
+    <string-array name="class_length_entities">
+        <item>小号</item>
+        <item>正常</item>
+        <item>大号</item>
+        <item>超大</item>
+    </string-array>
+    <string-array name="class_length_values">
+        <item>55</item>
+        <item>62</item>
+        <item>68</item>
+        <item>76</item>
+    </string-array>
 </resources>

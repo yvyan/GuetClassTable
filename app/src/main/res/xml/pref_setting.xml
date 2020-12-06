@@ -28,55 +28,49 @@
             android:defaultValue="3"
             android:title="课表更新频率" />
 
-        <CheckBoxPreference
-            android:key="optionA"
-            android:summary="这里是选项测试a"
-            android:summaryOff="禁止A"
-            android:summaryOn="允许A"
-            android:title="选项测试A" />
-        <CheckBoxPreference
-            android:dependency="optionA"
-            android:key="optionB"
-            android:summary="这里是选项测试b"
-            android:summaryOff="禁止B"
-            android:summaryOn="允许B"
-            android:title="选项测试B" />
+        <SwitchPreference
+            android:key="show_exam_on_table"
+            android:summary="开启后考试安排将在日课表和周课表显示"
+            android:title="课表显示考试安排"
+            android:defaultValue="true"/>
 
-        <CheckBoxPreference
-            android:checked="true"
-            android:key="optionC"
-            android:summary="这里是选项测试c"
-            android:summaryOff="禁止C"
-            android:summaryOn="允许C"
-            android:title="选项测试C" />
+<!--        <CheckBoxPreference-->
+<!--            android:dependency="optionA"-->
+<!--            android:key="optionB"-->
+<!--            android:summary="这里是选项测试b"-->
+<!--            android:summaryOff="禁止B"-->
+<!--            android:summaryOn="允许B"-->
+<!--            android:title="选项测试B" />-->
+
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="复合选项">
+    <PreferenceCategory android:title="高级设置">
 
         <ListPreference
-            android:dialogTitle="对话框标题"
-            android:entries="@array/day_entities"
-            android:entryValues="@array/day_values"
-            android:key="option2_1"
-            android:summary="请选择时间"
-            android:title="时间" />
+            android:dialogTitle="选择课程项长度"
+            android:entries="@array/class_length_entities"
+            android:entryValues="@array/class_length_values"
+            android:key="class_length"
+            android:defaultValue="62"
+            android:summary="设置周课表单个课程的长度"
+            android:title="课程项长度" />
 
+<!--       <MultiSelectListPreference-->
+<!--            android:dialogIcon="@mipmap/ic_launcher"-->
+<!--            android:entries="@array/day_entities"-->
+<!--            android:entryValues="@array/day_values"-->
+<!--            android:key="option2_2"-->
+<!--            android:title="消息类型" />-->
 
-        <MultiSelectListPreference
-            android:dialogIcon="@mipmap/ic_launcher"
-            android:entries="@array/day_entities"
-            android:entryValues="@array/day_values"
-            android:key="option2_2"
-            android:title="消息类型" />
+<!--        <PreferenceScreen-->
+<!--            android:key="option2_3"-->
+<!--            android:summary="打开哔哩哔哩"-->
+<!--            android:title="哔哩哔哩">-->
+<!--            <intent-->
+<!--                android:action="android.intent.action.VIEW"-->
+<!--                android:data="https://www.bilibili.com/" />-->
+<!--        </PreferenceScreen>-->
 
-        <PreferenceScreen
-            android:key="option2_3"
-            android:summary="打开哔哩哔哩"
-            android:title="哔哩哔哩">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="https://www.bilibili.com/" />
-        </PreferenceScreen>
     </PreferenceCategory>
 
 </PreferenceScreen>
