@@ -29,7 +29,6 @@ import top.yvyan.guettable.DetailActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
-import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
@@ -61,7 +60,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private MoreDate moreDate;
 
     //记录切换的周次，不一定是当前周
-    int target = -1;
+    int target;
 
     public static CourseTableFragment newInstance() {
         if (courseTableFragment == null) {
@@ -85,6 +84,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         singleSettingData = SingleSettingData.newInstance(getActivity());
         detailClassData = DetailClassData.newInstance();
         moreDate = MoreDate.newInstance(getActivity());
+
+        target = generalData.getWeek();
 
         titleTextView = view.findViewById(R.id.id_title);
         linearLayout = view.findViewById(R.id.id_class_layout);
@@ -193,6 +194,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     protected void display(List<Schedule> beans) {
         detailClassData.setCourseBeans(beans);
         Intent intent = new Intent(getContext(), DetailActivity.class);
+        intent.putExtra("week", target);
         startActivity(intent);
     }
 
@@ -239,6 +241,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     mTimetableView.onDateBuildListener()
                             .onUpdateDate(cur, cur);
                     mTimetableView.changeWeekOnly(cur);
+                    target = cur;
                 } else {
                     mWeekView.isShow(true);
                     titleTextView.setTextColor(getResources().getColor(R.color.app_red));

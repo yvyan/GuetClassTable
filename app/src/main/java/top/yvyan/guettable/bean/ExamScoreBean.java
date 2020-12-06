@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class ExamScoreBean implements Serializable {
     //课程名称
     private String name;
+    //课号
+    private String number;
     //学期
     private String term;
     //显示数据
@@ -22,8 +24,9 @@ public class ExamScoreBean implements Serializable {
 
     public ExamScoreBean() {}
 
-    public ExamScoreBean(String name, String term, String score, float totalScore, float usuallyScore, float experimentScore, float checkScore, float credit) {
+    public ExamScoreBean(String name, String number, String term, String score, float totalScore, float usuallyScore, float experimentScore, float checkScore, float credit) {
         this.name = name;
+        this.number = number;
         this.term = term;
         this.score = score;
         this.totalScore = totalScore;
@@ -81,18 +84,6 @@ public class ExamScoreBean implements Serializable {
         this.checkScore = checkScore;
     }
 
-    @Override
-    public String toString() {
-        return "ExamScoreBean{" +
-                "name='" + name + '\'' +
-                ", term='" + term + '\'' +
-                ", totalScore=" + totalScore +
-                ", usuallyScore=" + usuallyScore +
-                ", experimentScore='" + experimentScore + '\'' +
-                ", checkScore='" + checkScore + '\'' +
-                '}';
-    }
-
     public float getCredit() {
         return credit;
     }
@@ -107,5 +98,13 @@ public class ExamScoreBean implements Serializable {
 
     public void setScore(String score) {
         this.score = score;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }

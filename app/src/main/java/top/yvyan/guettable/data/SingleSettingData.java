@@ -12,11 +12,15 @@ public class SingleSettingData {
     private static final String HIDE_OTHER_WEEK = "hideOtherWeek";
     private static final String COMBINE_EXAM = "combineExam";
     private static final String HIDE_OUTDATED_EXAM = "hideOutdatedExam";
+    private static final String HIDE_OTHER_TERM_EXAM_SCORE = "hideOtherTermExamScore";
     SharedPreferences sharedPreferences;
 
     private boolean hideOtherWeek;     //(课程表)隐藏其它周的课程
+
     private boolean combineExam;       //(考试安排)合并考试安排
     private boolean hideOutdatedExam;  //(考试安排)隐藏过期的考试安排
+
+    private boolean hideOtherTermExamScore; //(考试成绩)隐藏其它学期的考试成绩
 
     private SingleSettingData(Context context) {
         sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -27,6 +31,7 @@ public class SingleSettingData {
         hideOtherWeek = sharedPreferences.getBoolean(HIDE_OTHER_WEEK, false);
         combineExam = sharedPreferences.getBoolean(COMBINE_EXAM, true);
         hideOutdatedExam = sharedPreferences.getBoolean(HIDE_OUTDATED_EXAM, false);
+        hideOtherTermExamScore = sharedPreferences.getBoolean(HIDE_OTHER_TERM_EXAM_SCORE, false);
     }
 
     public static SingleSettingData newInstance(Context context) {
@@ -66,11 +71,22 @@ public class SingleSettingData {
         save();
     }
 
+    //(考试成绩)隐藏其它学期的考试成绩
+    public boolean isHideOtherTermExamScore() {
+        return hideOtherTermExamScore;
+    }
+
+    public void setHideOtherTermExamScore(boolean hideOtherTermExamScore) {
+        this.hideOtherTermExamScore = hideOtherTermExamScore;
+        save();
+    }
+
     private void save() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(HIDE_OTHER_WEEK, hideOtherWeek);
         editor.putBoolean(COMBINE_EXAM, combineExam);
         editor.putBoolean(HIDE_OUTDATED_EXAM, hideOutdatedExam);
+        editor.putBoolean(HIDE_OTHER_TERM_EXAM_SCORE, hideOtherTermExamScore);
         editor.apply();
     }
 }

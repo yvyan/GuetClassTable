@@ -2,6 +2,7 @@ package top.yvyan.guettable.fragment;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import top.yvyan.guettable.ShareActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.ToastUtil;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
     private static PersonFragment personFragment;
@@ -41,7 +43,12 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private TextView person_term;
     private TextView person_week;
     private TextView profileVersion;
+
+    private View info;
+    private View help;
     private View share;
+    private View update;
+    private View about;
 
     private AccountData accountData;
     private GeneralData generalData;
@@ -88,8 +95,17 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         person_week = view.findViewById(R.id.person_week);
         profileVersion = view.findViewById(R.id.tv_profile_version);
         profileVersion.setText(AppUtil.getAppVersionName(getContext()));
+
+        info = view.findViewById(R.id.person_detail_info);
+        info.setOnClickListener(this);
+        help = view.findViewById(R.id.person_help);
+        help.setOnClickListener(this);
         share = view.findViewById(R.id.person_share);
         share.setOnClickListener(this);
+        update = view.findViewById(R.id.person_update);
+        update.setOnClickListener(this);
+        about = view.findViewById(R.id.person_about);
+        about.setOnClickListener(this);
     }
 
     public void updateView() {
@@ -137,6 +153,16 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
             case R.id.person_share:
                 intent = new Intent(getContext(), ShareActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.person_update:
+                Uri uri = Uri.parse(getContext().getResources().getString(R.string.downloadApp_url));
+                intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                intent.setData(uri);
+                startActivity(intent);
+                break;
+            default:
+                ToastUtil.showToast(getContext(), "尽请期待");
         }
     }
 }

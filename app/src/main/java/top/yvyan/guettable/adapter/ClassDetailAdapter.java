@@ -18,10 +18,12 @@ import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.ClassDetailViewHolder> {
-    List<Schedule> schedules;
+    private List<Schedule> schedules;
+    private int week;
 
-    public ClassDetailAdapter(List<Schedule> schedules) {
+    public ClassDetailAdapter(List<Schedule> schedules, int week) {
         this.schedules = schedules;
+        this.week = week;
     }
 
     @NonNull
@@ -34,6 +36,9 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ClassDetailViewHolder holder, int position) {
+        if (schedules.get(position).getWeekList().contains(week)) {
+            holder.card.setBackgroundColor(0xCF94D6F9);
+        }
         if ((int)schedules.get(position).getExtras().get(ExamBean.TYPE) == 2) { //考试安排
             ExamBean examBean = new ExamBean();
             examBean.setFromSchedule(schedules.get(position));
@@ -78,16 +83,18 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
     }
 
     static class ClassDetailViewHolder extends RecyclerView.ViewHolder {
+        View card;
         TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
         public ClassDetailViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView1 = itemView.findViewById(R.id.card_1);
-            textView2 = itemView.findViewById(R.id.card_2);
-            textView3 = itemView.findViewById(R.id.card_3);
-            textView4 = itemView.findViewById(R.id.card_4);
-            textView5 = itemView.findViewById(R.id.card_5);
-            textView6 = itemView.findViewById(R.id.card_6);
-            textView7 = itemView.findViewById(R.id.card_7);
+            card = itemView.findViewById(R.id.detail_card);
+            textView1 = itemView.findViewById(R.id.detail_text_1);
+            textView2 = itemView.findViewById(R.id.detail_text_2);
+            textView3 = itemView.findViewById(R.id.detail_text_3);
+            textView4 = itemView.findViewById(R.id.detail_text_4);
+            textView5 = itemView.findViewById(R.id.detail_text_5);
+            textView6 = itemView.findViewById(R.id.detail_text_6);
+            textView7 = itemView.findViewById(R.id.detail_text_7);
         }
     }
 }

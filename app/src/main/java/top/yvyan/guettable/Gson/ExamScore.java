@@ -41,7 +41,7 @@ public class ExamScore {
     private String comm;
 
     public ExamScoreBean toExamScoreBean() {
-        return new ExamScoreBean(cname, term, zpxs, score, pscj, sycj, khcj, xf);
+        return new ExamScoreBean(cname, cno, term, zpxs, score, pscj, sycj, khcj, xf);
     }
 
     public void setDptno(String dptno) {
