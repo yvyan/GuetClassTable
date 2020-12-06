@@ -62,6 +62,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_day_class, container, false);
 
+        Log.d("test:", "create");
+
         viewPager = view.findViewById(R.id.vp);
         textView = view.findViewById(R.id.day_class_hint);
         textView.setOnClickListener(this);
@@ -129,7 +131,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     public void updateText(String text) {
         textView.setText(text);
-        Log.d("test:", "updateText");
     }
 
     /**
@@ -158,10 +159,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     public void setOnButtonClick(OnButtonClick onButtonClick) {
         this.onButtonClick = onButtonClick;
-    }
-
-    public interface OnButtonClick {
-        public void onClick(int n);
     }
 
 }

@@ -132,8 +132,11 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 int week = (int)spinnerWeek.getSelectedItemId() + 1;
                 generalData.setWeek(week);
 
-                AutoUpdate.newInstance(this).firstLogin();
-                PersonFragment.newInstance().updateView();
+                GeneralData.newInstance(this).setLastUpdateTime(-1);
+                PersonFragment personFragment = PersonFragment.newInstance();
+                personFragment.updateView();
+                personFragment.getOnButtonClick().onClick(0); //切换页面0
+
                 ToastUtil.showLongToast(getApplicationContext(), "正在导入课表，受教务系统影响，需要约30秒，请耐心等待");
                 finish();
                 break;
