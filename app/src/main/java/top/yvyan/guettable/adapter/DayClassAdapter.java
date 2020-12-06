@@ -1,7 +1,6 @@
 package top.yvyan.guettable.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,11 +49,24 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
 
             holder.textView1.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             holder.textView1.setTextSize(23);
+            int size;
+            String text;
             if (position == 0) {
-                holder.textView1.setText("今天的课程");
+                size = todayList.size();
+                if (size == 0) {
+                    text = "今天没有课";
+                } else {
+                    text = "今天有" + size + "节课";
+                }
             } else {
-                holder.textView1.setText("明天的课程");
+                size = tomorrowList.size();
+                if (size == 0) {
+                    text = "明天没有课";
+                } else {
+                    text = "明天有" + size + "节课";
+                }
             }
+            holder.textView1.setText(text);
             return;
         }
         //课程显示
@@ -111,13 +123,13 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
         TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
         public ClassDetailViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView1 = itemView.findViewById(R.id.card_1);
-            textView2 = itemView.findViewById(R.id.card_2);
-            textView3 = itemView.findViewById(R.id.card_3);
-            textView4 = itemView.findViewById(R.id.card_4);
-            textView5 = itemView.findViewById(R.id.card_5);
-            textView6 = itemView.findViewById(R.id.card_6);
-            textView7 = itemView.findViewById(R.id.card_7);
+            textView1 = itemView.findViewById(R.id.detail_text_1);
+            textView2 = itemView.findViewById(R.id.detail_text_2);
+            textView3 = itemView.findViewById(R.id.detail_text_3);
+            textView4 = itemView.findViewById(R.id.detail_text_4);
+            textView5 = itemView.findViewById(R.id.detail_text_5);
+            textView6 = itemView.findViewById(R.id.detail_text_6);
+            textView7 = itemView.findViewById(R.id.detail_text_7);
         }
     }
 }

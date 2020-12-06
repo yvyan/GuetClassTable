@@ -15,7 +15,7 @@ import top.yvyan.guettable.bean.ExamScoreBean;
 
 public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.ExamScoreViewHolder> {
 
-    List<ExamScoreBean> examScoreBeans;
+    private List<ExamScoreBean> examScoreBeans;
 
     public ExamScoreAdapter(List<ExamScoreBean> examScoreBeans) {
         this.examScoreBeans = examScoreBeans;
@@ -31,6 +31,12 @@ public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.Exam
 
     @Override
     public void onBindViewHolder(@NonNull ExamScoreAdapter.ExamScoreViewHolder holder, int position) {
+        if (position == 0 || !examScoreBeans.get(position).getTerm().equals(examScoreBeans.get(position - 1).getTerm())) {
+            holder.headerTerm.setText(examScoreBeans.get(position).getTerm());
+            holder.headerTerm.setVisibility(View.VISIBLE);
+        } else {
+            holder.headerTerm.setVisibility(View.GONE);
+        }
         holder.examScoreName.setText(examScoreBeans.get(position).getName());
         holder.examScoreScore.setText(String.valueOf(examScoreBeans.get(position).getScore()));
         holder.examScoreUsually.setText(String.valueOf(examScoreBeans.get(position).getUsuallyScore()));
@@ -44,9 +50,10 @@ public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.Exam
     }
 
     public class ExamScoreViewHolder extends RecyclerView.ViewHolder {
-        TextView examScoreName, examScoreScore, examScoreUsually, examScoreExperiment, examScoreCheck;
+        TextView headerTerm, examScoreName, examScoreScore, examScoreUsually, examScoreExperiment, examScoreCheck;
         public ExamScoreViewHolder(@NonNull View itemView) {
             super(itemView);
+            headerTerm = itemView.findViewById(R.id.header_term);
             examScoreName = itemView.findViewById(R.id.examScoreName);
             examScoreScore = itemView.findViewById(R.id.examScoreScore);
             examScoreUsually = itemView.findViewById(R.id.examScoreUsually);
