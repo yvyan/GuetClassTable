@@ -7,11 +7,13 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import top.yvyan.guettable.util.ToastUtil;
 
 public class ShareActivity extends AppCompatActivity {
 
+    private ImageView back;
     private Button butShare;
 
     @Override
@@ -19,6 +21,10 @@ public class ShareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
 
+        back = findViewById(R.id.share_back);
+        back.setOnClickListener(view -> {
+            finish();
+        });
         butShare = findViewById(R.id.btn_copy);
         butShare.setOnClickListener(view -> {
             //获取剪贴板管理器：

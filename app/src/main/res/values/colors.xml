@@ -7,4 +7,6 @@
     <color name="tab_checked">#2ABFFD</color>
     <color name="tab_unchecked">#757575</color>
 
+    <color name="ic_launcher_background">#FFFFFF</color>
+
 </resources>
