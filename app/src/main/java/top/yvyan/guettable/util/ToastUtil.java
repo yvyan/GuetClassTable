@@ -3,8 +3,6 @@ package top.yvyan.guettable.util;
 import android.content.Context;
 import android.widget.Toast;
 
-import top.yvyan.guettable.SettingActivity;
-
 /**
  * Created by Kevin on 2017/2/17.
  * Blog:http://blog.csdn.net/student9128
@@ -49,5 +47,4 @@ public class ToastUtil {
         mLongToast.setText(message);
         mLongToast.show();
     }
-
 }
