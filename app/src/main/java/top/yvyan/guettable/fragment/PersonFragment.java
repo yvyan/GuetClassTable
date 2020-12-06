@@ -52,6 +52,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 
     private AccountData accountData;
     private GeneralData generalData;
+    private OnButtonClick onButtonClick;
 
     public PersonFragment() {
     }
@@ -164,5 +165,13 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
             default:
                 ToastUtil.showToast(getContext(), "尽请期待");
         }
+    }
+
+    public OnButtonClick getOnButtonClick() {
+        return onButtonClick;
+    }
+
+    public void setOnButtonClick(OnButtonClick onButtonClick) {
+        this.onButtonClick = onButtonClick;
     }
 }

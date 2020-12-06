@@ -2,6 +2,7 @@ package top.yvyan.guettable;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,10 +18,11 @@ import top.yvyan.guettable.database.MySQLite;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
+import top.yvyan.guettable.fragment.OnButtonClick;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnButtonClick {
 
     private BottomNavigationView bottomNavigationView;
     private ViewPagerAdapter viewPagerAdapter;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem menuItem;
 
     private DayClassFragment dayClassFragment;
+    private PersonFragment personFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +75,11 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.setList(list);
 
         dayClassFragment = DayClassFragment.newInstance();
-        dayClassFragment.setOnButtonClick(n -> {
-            viewPager.setCurrentItem(n);
-        });
+        dayClassFragment.setOnButtonClick(this);
+        personFragment = PersonFragment.newInstance();
+        personFragment.setOnButtonClick(this);
+
+
 
         /**
          * 创建数据库
@@ -82,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
         MySQLite mySQLite = new MySQLite(this);
         mySQLite.getWritableDatabase();
 
+    }
+
+
+    @Override
+    public void onClick(int n) {
+        viewPager.setCurrentItem(n);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemReselectedListener
