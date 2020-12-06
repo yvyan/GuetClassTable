@@ -13,6 +13,8 @@ public class SettingFragment extends PreferenceFragment {
     public static final String BASE_SETTINGS = "basic_settings";
     public static final String REFRESH_DATA = "refresh_data";
     public static final String REFRESH_DATA_FREQUENCY = "refresh_data_frequency";
+    public static final String SHOW_EXAM_ON_TABLE = "show_exam_on_table";
+    public static final String CLASS_LENGTH = "class_length";
 
 
     private PreferenceCategory basicSettings;
@@ -25,9 +27,8 @@ public class SettingFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.pref_setting);
 
         basicSettings = (PreferenceCategory) findPreference(BASE_SETTINGS);
+
         refreshData = (SwitchPreference) findPreference(REFRESH_DATA);
-        refreshDataFrequency = (ListPreference) findPreference(REFRESH_DATA_FREQUENCY);
-        refreshDataFrequency.setSummary("刷新频率：" + refreshDataFrequency.getValue() + "天");
         refreshData.setOnPreferenceChangeListener((preference, newValue) -> {
             if((boolean)newValue) {
                 basicSettings.addPreference(refreshDataFrequency);
@@ -37,10 +38,11 @@ public class SettingFragment extends PreferenceFragment {
             return true;
         });
 
+        refreshDataFrequency = (ListPreference) findPreference(REFRESH_DATA_FREQUENCY);
+        refreshDataFrequency.setSummary("刷新频率：" + refreshDataFrequency.getValue() + "天");
         refreshDataFrequency.setOnPreferenceChangeListener((preference, newValue) -> {
             refreshDataFrequency.setSummary("刷新频率：" + newValue.toString() + "天");
             return true;
         });
-
     }
 }

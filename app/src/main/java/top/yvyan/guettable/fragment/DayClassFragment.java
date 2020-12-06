@@ -25,6 +25,7 @@ import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.service.AutoUpdate;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.TimeUtil;
@@ -44,6 +45,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private AccountData accountData;
     private GeneralData generalData;
+    private SettingData settingData;
 
     public DayClassFragment() {
         // Required empty public constructor
@@ -69,6 +71,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         textView.setOnClickListener(this);
         accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
+        settingData = SettingData.newInstance(getActivity());
 
         autoUpdate = AutoUpdate.newInstance(getActivity());
         if (accountData.getIsLogin()) {
@@ -145,9 +148,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         } else {
             list = new ArrayList<>();
         }
-        for (ExamBean examBean : ExamUtil.combineExam(MoreDate.newInstance(getActivity()).getExamBeans())) {
-            if (examBean != null) {
-                list.add(examBean.getSchedule());
+        if (settingData.getShowExamOnTable()) {
+            for (ExamBean examBean : ExamUtil.combineExam(MoreDate.newInstance(getActivity()).getExamBeans())) {
+                if (examBean != null) {
+                    list.add(examBean.getSchedule());
+                }
             }
         }
         return list;
