@@ -21,7 +21,7 @@ public class MySettingActivity extends AppCompatActivity {
         back.setOnClickListener(view -> {
             finish();
         });
-
+        setTheme(R.style.ThemeText);
         SettingFragment settingFragment = new SettingFragment();
         getFragmentManager().beginTransaction()
                 .add(android.R.id.content, settingFragment)

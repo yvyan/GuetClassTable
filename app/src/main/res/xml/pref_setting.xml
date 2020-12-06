@@ -8,9 +8,10 @@
         android:key="option"
         android:layout="@layout/setting" />
 
-    <PreferenceCategory
-        android:key="basic_settings"
-        android:title="基本设置">
+        <PreferenceCategory
+            style="PreferenceCategoryStyle"
+            android:key="basic_settings"
+            android:title="基本设置">
         <SwitchPreference
             android:defaultValue="true"
             android:key="refresh_data"
