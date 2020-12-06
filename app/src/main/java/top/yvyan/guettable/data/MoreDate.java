@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import top.yvyan.guettable.Gson.CET;
 import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.bean.ExamScoreBean;

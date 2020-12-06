@@ -13,6 +13,7 @@ import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.CookieData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.util.TimeUtil;
@@ -27,6 +28,7 @@ public class AutoUpdate {
     private ClassData classData;
     private GeneralData generalData;
     private CookieData cookieData;
+    private SettingData settingData;
 
     private int state;
 
@@ -36,6 +38,7 @@ public class AutoUpdate {
         classData = ClassData.newInstance(activity);
         generalData = GeneralData.newInstance(activity);
         cookieData = CookieData.newInstance(activity);
+        settingData = SettingData.newInstance(activity);
         init();
     }
 
@@ -61,8 +64,10 @@ public class AutoUpdate {
     public void start() {
         // 判断时间间隔
         updateView();
-        if (generalData.getLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getLastUpdateTime()), new Date()) >= generalData.updateFrequency) {
-            update();
+        if (settingData.getIsRefresh()) {
+            if (generalData.getLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getLastUpdateTime()), new Date()) >= settingData.getRefreshFrequency()) {
+                update();
+            }
         }
     }
 

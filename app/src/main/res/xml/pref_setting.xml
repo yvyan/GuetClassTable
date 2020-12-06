@@ -12,20 +12,20 @@
         android:key="basic_settings"
         android:title="基本设置">
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="refresh_data"
-            android:summary="在实时数据中开启实时刷新最新的数据"
-            android:title="开启刷新数据" />
+            android:summary="开启后按设定频率自动更新课表"
+            android:title="课表自动更新" />
 
         <ListPreference
             android:dependency="refresh_data"
-            android:dialogTitle="选择数据刷新时间"
+            android:dialogTitle="选择课表更新频率"
             android:entries="@array/day_entities"
             android:entryValues="@array/day_values"
-            android:key="list_day"
-            android:summary="选择数据刷新时间"
-            android:defaultValue="1天"
-            android:title="数据刷新时间" />
+            android:key="refresh_data_frequency"
+            android:summary="选择课表更新频率"
+            android:defaultValue="3"
+            android:title="课表更新频率" />
 
         <CheckBoxPreference
             android:key="optionA"
