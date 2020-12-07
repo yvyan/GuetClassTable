@@ -2,9 +2,7 @@ package top.yvyan.guettable;
 
 
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import top.yvyan.guettable.fragment.SettingFragment;

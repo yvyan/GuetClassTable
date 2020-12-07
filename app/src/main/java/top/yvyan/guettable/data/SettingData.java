@@ -31,4 +31,12 @@ public class SettingData {
         return Integer.parseInt(sharedPreferences.getString(SettingFragment.REFRESH_DATA_FREQUENCY, "3"));
     }
 
+    public boolean getShowExamOnTable() {
+        return sharedPreferences.getBoolean(SettingFragment.SHOW_EXAM_ON_TABLE, true);
+    }
+
+    public int getClassLength() {
+        return Integer.parseInt(sharedPreferences.getString(SettingFragment.CLASS_LENGTH, "60"));
+    }
+
 }
