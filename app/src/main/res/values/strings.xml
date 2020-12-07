@@ -41,6 +41,12 @@
 
     <string name="share_hint">建议直接将此APP发给同学，若您没有找不到安装包，可以复制下面的信息发给同学或者群聊，同学点击链接即可下载最新版桂电课程表：</string>
     <string name="share_text">新的桂电课程表，挺好用的，分享给你，点击链接下载：https://cloud.yvyan.top/index.php/s/mzF5nkCLfikHnjs \n(同学自己的服务器，人数多时下载较慢，请耐心等待)</string>
+    <string name="first_about">该项目与学校官方无关。个人开发者作品，不含广告，永久免费</string>
+    <string name="about_1">仍然记得刚入学时看到同学发来的“桂电课程表”时的激动，一个简单的APP，却能够给桂电学子带来切实的便利，自己又何尝不想成为这样一个人...</string>
+    <string name="about_2">两年过去了，学长的那个课程表已经有点儿跟不上时代，学校正在逐步废弃老版的教务系统，并最终关闭这个APP，20级及以后的学弟学妹就已经没法使用那个系统，学长的课程表接入的正是这个系统，所以自然也无法使用；我也借Android课设的机会，完成自己的一个愿望，也是对学长的致敬。</string>
+    <string name="github_url">https://github.com/yvyan/GuetClassTable</string>
+    <string name="thanks_1">课程表控件: https://github.com/zfman/TimetableView</string>
+    <string name="thanks_2">GUET课程表: https://github.com/Telephone2019/CourseTable</string>
 
     <string name="lan_login_fail">登录失败, 检查校园网连接后重试</string>
     <string name="lan_login_fail_ck">验证码错误，登录失败</string>
