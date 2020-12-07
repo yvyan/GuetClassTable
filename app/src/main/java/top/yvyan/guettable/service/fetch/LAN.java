@@ -218,4 +218,28 @@ public class LAN {
                 null
         );
     }
+
+    /**
+     * 获取实验考试成绩
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        gson格式的实验考试成绩
+     */
+    public static HttpConnectionAndCode getExperimentScore(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Get.get(
+                resources.getString(R.string.lan_get_experimentscore_url),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_student_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_table_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
 }

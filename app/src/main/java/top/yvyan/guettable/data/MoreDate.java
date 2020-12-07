@@ -12,6 +12,7 @@ import java.util.List;
 import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.bean.ExamScoreBean;
+import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.util.SerializeUtil;
 
 public class MoreDate {
@@ -20,12 +21,14 @@ public class MoreDate {
     private static final String EXAM_STRING = "examString";
     private static final String CET_STRING = "CET_STRING";
     private static final String EXAM_SCORE_STRING = "EXAM_SCORE_STRING";
+    private static final String EXPERIMENT_SCORE_STRING = "EXPERIMENT_SCORE_STRING";
 
     private SharedPreferences sharedPreferences;
 
     private List<ExamBean> examBeans;
     private List<CETBean> cetBeans;
     private List<ExamScoreBean> examScoreBeans;
+    private List<ExperimentScoreBean> experimentScoreBeans;
 
     private MoreDate(Activity activity) {
         sharedPreferences = activity.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -36,10 +39,12 @@ public class MoreDate {
         ExamBean[] examBeans1 = null;
         CETBean[] cetBeans1 = null;
         ExamScoreBean[] examScoreBeans1 = null;
+        ExperimentScoreBean[] experimentScoreBeans1 = null;
 
         String examString = sharedPreferences.getString(EXAM_STRING, null);
         String cetString = sharedPreferences.getString(CET_STRING, null);
         String examScoreString = sharedPreferences.getString(EXAM_SCORE_STRING,null);
+        String experimentScoreString = sharedPreferences.getString(EXPERIMENT_SCORE_STRING,null);
 
         if (examString != null) {
             try {
@@ -75,6 +80,18 @@ public class MoreDate {
             }
             if (examScoreBeans1 != null) {
                 examScoreBeans = Arrays.asList(examScoreBeans1);
+            }
+        }
+        if(experimentScoreString != null) {
+            try {
+                experimentScoreBeans1 = (ExperimentScoreBean[]) SerializeUtil.serializeToObject(experimentScoreString);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (experimentScoreBeans1 != null) {
+                experimentScoreBeans = Arrays.asList(experimentScoreBeans1);
             }
         }
     }
@@ -169,6 +186,35 @@ public class MoreDate {
         if (examScoreString != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(EXAM_SCORE_STRING, examScoreString);
+            editor.apply();
+        }
+    }
+
+    //实验成绩
+    public List<ExperimentScoreBean> getExperimentScoreBeans() {
+        if (experimentScoreBeans == null) {
+            experimentScoreBeans = new ArrayList<>();
+        }
+        return experimentScoreBeans;
+    }
+
+    public void setExperimentScoreBeans(List<ExperimentScoreBean> experimentScoreBeans) {
+        this.experimentScoreBeans = experimentScoreBeans;
+        saveExperimentScoreBeans();
+    }
+
+    private void saveExperimentScoreBeans() {
+        String experimentScoreString = null;
+        ExperimentScoreBean[] experimentScoreBeans1 = new ExperimentScoreBean[experimentScoreBeans.size()];
+        experimentScoreBeans.toArray(experimentScoreBeans1);
+        try {
+            experimentScoreString = SerializeUtil.serialize(experimentScoreBeans1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (experimentScoreString != null) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(EXAM_SCORE_STRING, experimentScoreString);
             editor.apply();
         }
     }

@@ -16,6 +16,8 @@ import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamInfoOuter;
 import top.yvyan.guettable.Gson.ExamScore;
 import top.yvyan.guettable.Gson.ExamScoreOuter;
+import top.yvyan.guettable.Gson.ExperimentScore;
+import top.yvyan.guettable.Gson.ExperimentScoreOuter;
 import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.LabTableOuter;
 import top.yvyan.guettable.Gson.StudentInfo;
@@ -25,6 +27,7 @@ import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.bean.ExamScoreBean;
+import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.service.fetch.LAN;
 
 public class StaticService {
@@ -195,6 +198,26 @@ public class StaticService {
                 examScoreBeans.add(examscore1.toExamScoreBean());
             }
             return examScoreBeans;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取实验考试成绩
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        普通考试成绩列表
+     */
+    public static List<ExperimentScoreBean> getExperimentScore(Context context, String cookie) {
+        List<ExperimentScoreBean> experimentScoreBeans = new ArrayList<>();
+        HttpConnectionAndCode experimentScoreInfo = LAN.getExperimentScore(context, cookie);
+        if (experimentScoreInfo.code == 0) {
+            ExperimentScoreOuter experimentScoreOuter = new Gson().fromJson(experimentScoreInfo.comment, ExperimentScoreOuter.class);
+            for (ExperimentScore experimentscore1 : experimentScoreOuter.getData()) {
+                experimentScoreBeans.add(experimentscore1.toExperimentScoreBean());
+            }
+            return experimentScoreBeans;
         } else {
             return null;
         }

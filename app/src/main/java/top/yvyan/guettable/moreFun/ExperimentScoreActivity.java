@@ -14,50 +14,50 @@ import java.util.Collections;
 import java.util.List;
 
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.adapter.ExamScoreAdapter;
-import top.yvyan.guettable.bean.ExamScoreBean;
+import top.yvyan.guettable.adapter.ExperimentScoreAdapter;
+import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
-import top.yvyan.guettable.util.ComparatorExamScore;
 import top.yvyan.guettable.util.BeanHideUtil;
+import top.yvyan.guettable.util.ComparatorExperimentScore;
 
 import static com.xuexiang.xui.XUI.getContext;
 
-public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
+public class ExperimentScoreActivity extends AppCompatActivity implements IMoreFun {
 
     private MoreDate moreDate;
     private GeneralData generalData;
     private SingleSettingData singleSettingData;
 
     private ImageView back;
-    private TextView examScoreState;
-    private TextView examScoreNotFind;
-    private ImageView examScoreMore;
-    private View examScoreInfoView;
+    private TextView experimentScoreState;
+    private TextView experimentScoreNotFind;
+    private ImageView experimentScoreMore;
+    private View experimentScoreInfoView;
     private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_examscore);
+        setContentView(R.layout.activity_experimentscore);
 
         moreDate = MoreDate.newInstance(this);
         generalData = GeneralData.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
 
-        back = findViewById(R.id.examscore_back);
+        back = findViewById(R.id.experimentscore_back);
         back.setOnClickListener(view -> {finish();});
 
-        examScoreState = findViewById(R.id.examscore_state);
-        examScoreNotFind = findViewById(R.id.examscore_not_find);
-        examScoreMore = findViewById(R.id.exam_score_more);
-        examScoreMore.setOnClickListener(view -> showPopMenu());
-        examScoreInfoView = findViewById(R.id.examscore_info_view);
-        recyclerView = findViewById(R.id.examscore_info_recycler_view);
+        experimentScoreState = findViewById(R.id.experimentscore_state);
+        experimentScoreNotFind = findViewById(R.id.experimentscore_not_find);
+        experimentScoreMore = findViewById(R.id.experiment_score_more);
+        experimentScoreMore.setOnClickListener(view -> showPopMenu());
+        experimentScoreInfoView = findViewById(R.id.experimentscore_info_view);
+        recyclerView = findViewById(R.id.experimentscore_info_recycler_view);
 
         updateView();
         MoreFunService moreFunService = new MoreFunService(this, this);
@@ -68,24 +68,24 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
      * 更新考试成绩视图
      */
     public void updateView() {
-        List<ExamScoreBean> examScoreBeans = moreDate.getExamScoreBeans();
+        List<ExperimentScoreBean> experimentScoreBeans = moreDate.getExperimentScoreBeans();
         if (singleSettingData.isHideOtherTermExamScore()) {
-            examScoreBeans = BeanHideUtil.hideOtherTermExamScore(examScoreBeans, generalData.getTerm());
+            experimentScoreBeans = BeanHideUtil.hideOtherTermExamScore(experimentScoreBeans, generalData.getTerm());
         }
-        if (examScoreBeans.size() != 0) {
-            examScoreNotFind.setVisibility(View.GONE);
-            examScoreInfoView.setVisibility(View.VISIBLE);
+        if (experimentScoreBeans.size() != 0) {
+            experimentScoreNotFind.setVisibility(View.GONE);
+            experimentScoreInfoView.setVisibility(View.VISIBLE);
         } else {
-            examScoreNotFind.setVisibility(View.VISIBLE);
-            examScoreInfoView.setVisibility(View.GONE);
+            experimentScoreNotFind.setVisibility(View.VISIBLE);
+            experimentScoreInfoView.setVisibility(View.GONE);
         }
-        ExamScoreAdapter examScoreAdapter = new ExamScoreAdapter(examScoreBeans);
+        ExperimentScoreAdapter experimentScoreAdapter = new ExperimentScoreAdapter(experimentScoreBeans);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(examScoreAdapter);
+        recyclerView.setAdapter(experimentScoreAdapter);
     }
 
     public void showPopMenu() {
-        PopupMenu popup = new PopupMenu(this, examScoreMore);
+        PopupMenu popup = new PopupMenu(this, experimentScoreMore);
         popup.getMenuInflater().inflate(R.menu.exam_score_popmenu, popup.getMenu());
         if (singleSettingData.isHideOtherTermExamScore()) {
             popup.getMenu().findItem(R.id.exam_score_top1).setTitle("显示其它学期成绩");
@@ -113,12 +113,12 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
 
     @Override
     public int updateData(String cookie) {
-        List<ExamScoreBean> examScoreBeans;
-        examScoreBeans = StaticService.getExamScore(this, cookie);
-        if (examScoreBeans != null) {
-            ComparatorExamScore comparatorExamScore = new ComparatorExamScore();
-            Collections.sort(examScoreBeans, comparatorExamScore);
-            moreDate.setExamScoreBeans(examScoreBeans);
+        List<ExperimentScoreBean> experimentScoreBeans;
+        experimentScoreBeans = StaticService.getExperimentScore(this, cookie);
+        if (experimentScoreBeans != null) {
+            ComparatorExperimentScore comparatorExperimentScore = new ComparatorExperimentScore();
+            Collections.sort(experimentScoreBeans, comparatorExperimentScore);
+            moreDate.setExperimentScoreBeans(experimentScoreBeans);
             return 5 ;
         }
         return 1;
@@ -128,29 +128,29 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
     public void updateView(int state) {
         switch (state) {
             case 2:
-                examScoreState.setText("未登录");
+                experimentScoreState.setText("未登录");
                 break;
             case -1:
-                examScoreState.setText("密码错误");
+                experimentScoreState.setText("密码错误");
                 break;
             case -2:
-                examScoreState.setText("网络错误");
+                experimentScoreState.setText("网络错误");
                 break;
             case 91:
-                examScoreState.setText("登录状态检查");
+                experimentScoreState.setText("登录状态检查");
                 break;
             case 92:
-                examScoreState.setText("正在登录");
+                experimentScoreState.setText("正在登录");
                 break;
             case 93:
-                examScoreState.setText("正在更新");
+                experimentScoreState.setText("正在更新");
                 break;
             case 5:
-                examScoreState.setText("更新成功");
+                experimentScoreState.setText("更新成功");
                 updateView();
                 break;
             default:
-                examScoreState.setText("未知错误");
+                experimentScoreState.setText("未知错误");
                 break;
         }
     }

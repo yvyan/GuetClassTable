@@ -25,7 +25,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/examScoreName"
+            android:id="@+id/ScoreName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -33,7 +33,7 @@
             android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/examScoreCheck"
+            android:id="@+id/ScoreCheck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
@@ -41,7 +41,7 @@
             android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/examScoreExperiment"
+            android:id="@+id/ScoreExperiment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
@@ -49,7 +49,7 @@
             android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/examScoreUsually"
+            android:id="@+id/ScoreUsually"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
@@ -57,7 +57,7 @@
             android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/examScoreScore"
+            android:id="@+id/ScoreFinal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
