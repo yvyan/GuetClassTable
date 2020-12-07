@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import top.yvyan.guettable.AboutActivity;
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.MySettingActivity;
 import top.yvyan.guettable.R;
@@ -44,7 +45,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private TextView person_week;
     private TextView profileVersion;
 
-    private View info;
+//    private View info;
     private View help;
     private View share;
     private View update;
@@ -97,8 +98,8 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         profileVersion = view.findViewById(R.id.tv_profile_version);
         profileVersion.setText(AppUtil.getAppVersionName(getContext()));
 
-        info = view.findViewById(R.id.person_detail_info);
-        info.setOnClickListener(this);
+//        info = view.findViewById(R.id.person_detail_info);
+//        info.setOnClickListener(this);
         help = view.findViewById(R.id.person_help);
         help.setOnClickListener(this);
         share = view.findViewById(R.id.person_share);
@@ -160,6 +161,10 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
                 intent.setData(uri);
+                startActivity(intent);
+                break;
+            case R.id.person_about:
+                intent = new Intent(getContext(), AboutActivity.class);
                 startActivity(intent);
                 break;
             default:

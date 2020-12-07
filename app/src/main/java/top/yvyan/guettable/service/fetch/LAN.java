@@ -11,7 +11,6 @@ import top.yvyan.guettable.Http.GetBitmap;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.Http.Post;
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.data.GeneralData;
 
 public class LAN {
 
@@ -115,7 +114,7 @@ public class LAN {
                 null,
                 null,
                 null,
-                null
+                10000
         );
     }
 

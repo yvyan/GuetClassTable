@@ -68,7 +68,6 @@ public class StaticService {
                 cookie_builder.delete(0, cookie_builder.length());
                 if (login_res.comment != null && login_res.comment.contains("验证码")) {
                     state = -3;
-                    continue;
                 } else if (login_res.comment != null && login_res.comment.contains("密码")) {
                     state = -1;
                     break;
@@ -93,8 +92,7 @@ public class StaticService {
     public static StudentInfo getStudentInfo(Context context, String cookie) {
         HttpConnectionAndCode studentInfo = LAN.studentInfo(context, cookie);
         if (studentInfo.code == 0) {
-            StudentInfo studentData = new Gson().fromJson(studentInfo.comment, StudentInfo.class);
-            return studentData;
+            return new Gson().fromJson(studentInfo.comment, StudentInfo.class);
         } else {
             return null;
         }
@@ -207,7 +205,7 @@ public class StaticService {
      * 获取实验考试成绩
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        普通考试成绩列表
+     * @return        验考试成绩列表
      */
     public static List<ExperimentScoreBean> getExperimentScore(Context context, String cookie) {
         List<ExperimentScoreBean> experimentScoreBeans = new ArrayList<>();
