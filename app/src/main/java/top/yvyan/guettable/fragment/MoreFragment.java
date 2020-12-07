@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
+import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
@@ -65,6 +67,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.more_item_3:
                 intent = new Intent(getContext(), ExamScoreActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.more_item_4:
+                intent = new Intent(getContext(), ExperimentScoreActivity.class);
                 startActivity(intent);
                 break;
             case R.id.more_item_5:

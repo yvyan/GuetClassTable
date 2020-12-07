@@ -2,7 +2,7 @@ package top.yvyan.guettable.bean;
 
 import java.io.Serializable;
 
-public class ExamScoreBean implements Serializable {
+public class ExamScoreBean extends BeanAttribute implements Serializable {
     //课程名称
     private String name;
     //课号

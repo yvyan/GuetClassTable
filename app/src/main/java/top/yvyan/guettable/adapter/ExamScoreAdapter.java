@@ -25,7 +25,7 @@ public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.Exam
     @Override
     public ExamScoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.examscore_cardview,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.score_cardview,parent,false);
         return new ExamScoreViewHolder(itemView);
     }
 
@@ -54,11 +54,11 @@ public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.Exam
         public ExamScoreViewHolder(@NonNull View itemView) {
             super(itemView);
             headerTerm = itemView.findViewById(R.id.header_term);
-            examScoreName = itemView.findViewById(R.id.examScoreName);
-            examScoreScore = itemView.findViewById(R.id.examScoreScore);
-            examScoreUsually = itemView.findViewById(R.id.examScoreUsually);
-            examScoreExperiment = itemView.findViewById(R.id.examScoreExperiment);
-            examScoreCheck = itemView.findViewById(R.id.examScoreCheck);
+            examScoreName = itemView.findViewById(R.id.ScoreName);
+            examScoreScore = itemView.findViewById(R.id.ScoreFinal);
+            examScoreUsually = itemView.findViewById(R.id.ScoreUsually);
+            examScoreExperiment = itemView.findViewById(R.id.ScoreExperiment);
+            examScoreCheck = itemView.findViewById(R.id.ScoreCheck);
         }
     }
 }
