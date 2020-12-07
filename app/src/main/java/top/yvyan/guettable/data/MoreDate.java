@@ -214,7 +214,7 @@ public class MoreDate {
         }
         if (experimentScoreString != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EXAM_SCORE_STRING, experimentScoreString);
+            editor.putString(EXPERIMENT_SCORE_STRING, experimentScoreString);
             editor.apply();
         }
     }
