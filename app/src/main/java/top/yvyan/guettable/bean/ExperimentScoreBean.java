@@ -2,7 +2,7 @@ package top.yvyan.guettable.bean;
 
 import java.io.Serializable;
 
-public class ExperimentScoreBean extends BeanAttribute implements Serializable {
+public class ExperimentScoreBean implements Serializable, BeanAttribute {
     //实验名称
     private String name;
     //实验序号
@@ -41,6 +41,7 @@ public class ExperimentScoreBean extends BeanAttribute implements Serializable {
         this.number = number;
     }
 
+    @Override
     public String getTerm() {
         return term;
     }
