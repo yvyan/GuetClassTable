@@ -82,6 +82,9 @@ public class GeneralData {
 
     public int getWeek() {
         int err = TimeUtil.calcWeekOffset(new Date(time), new Date(System.currentTimeMillis()));
+        if (week + err >= 20) {
+            return 20;
+        }
         return week + err;
     }
 
