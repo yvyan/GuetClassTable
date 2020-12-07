@@ -200,6 +200,17 @@ public class AutoUpdate {
                     updateView(3);
                     return;
                 }
+
+                if (!settingData.getUpdateLab()) {
+                    classData.setCourseBeans(courseBeans);
+                    generalData.setLastUpdateTime(System.currentTimeMillis());
+                    activity.runOnUiThread(() -> {
+                        CourseTableFragment.newInstance().updateTable();
+                        DayClassFragment.newInstance().updateView();
+                        ToastUtil.showToast(activity, "更新成功");
+                    });
+                }
+
                 //获取实验课
                 List<CourseBean> getLab = StaticService.getLab(
                         activity,
