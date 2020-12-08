@@ -129,7 +129,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .showView();
         target = generalData.getWeek();
         mTimetableView.curWeek(generalData.getWeek())
-                .maxSlideItem(12)
+                .maxSlideItem(14)
                 .monthWidthDp(18)
                 .itemHeight(DensityUtil.dip2px(getContext(), settingData.getClassLength()))
                 .callback(new OnItemBuildAdapter() {

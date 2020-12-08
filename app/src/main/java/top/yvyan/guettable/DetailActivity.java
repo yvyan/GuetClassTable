@@ -38,7 +38,11 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int week = (Integer) intent.getExtras().get("week");
         detailTitle = findViewById(R.id.detail_title);
-        detailTitle.setText("第" + week + "周" + TimeUtil.whichDay(schedules.get(0).getDay()) + " 第" + (schedules.get(0).getStart() / 2 + 1) + "大节");
+        int n = (schedules.get(0).getStart() / 2 + 1);
+        if (n == 7) {
+            n = 0;
+        }
+        detailTitle.setText("第" + week + "周" + TimeUtil.whichDay(schedules.get(0).getDay()) + " 第" + n + "大节");
 
         ComparatorCourse comparatorCourse = new ComparatorCourse();
         Collections.sort(schedules, comparatorCourse);
