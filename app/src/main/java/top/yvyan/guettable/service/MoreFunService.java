@@ -69,8 +69,35 @@ public class MoreFunService {
      *
      */
     private void setView(int state) {
+        String hint;
+        switch (state) {
+            case 2:
+                hint = "未登录";
+                break;
+            case -1:
+                hint = "密码错误";
+                break;
+            case -2:
+                hint = "网络错误";
+                break;
+            case 91:
+                hint = "登录状态检查";
+                break;
+            case 92:
+                hint = "正在登录";
+                break;
+            case 93:
+                hint = "正在更新";
+                break;
+            case 5:
+                hint = "更新成功";
+                break;
+            default:
+                hint = "未知错误";
+                break;
+        }
         activity.runOnUiThread(() -> {
-            iMoreFun.updateView(state);
+            iMoreFun.updateView(hint, state);
         });
     }
 }

@@ -141,55 +141,12 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
         }
         return 1;
     }
-    /**
-     * state记录当前状态
-     *  0 : 登录成功
-     *  1 : 登录失效
-     *  2 : 未登录
-     *
-     *  5 : 通用获取数据成功
-     *
-     * -1 : 密码错误
-     * -2 : 网络错误/未知错误
-     * -3 : 验证码连续错误
-     *
-     * 21 : 理论课更新成功
-     * 22 : 课内实验更新成功
-     * 23 : 考试安排更新成功
-     *
-     * 91 : 登录状态检查
-     * 92 : 正在登录
-     * 93 : 正在更新
-     *
-     */
+
     @Override
-    public void updateView(int state) {
-        switch (state) {
-            case 2:
-                examState.setText("未登录");
-                break;
-            case -1:
-                examState.setText("密码错误");
-                break;
-            case -2:
-                examState.setText("网络错误");
-                break;
-            case 91:
-                examState.setText("登录状态检查");
-                break;
-            case 92:
-                examState.setText("正在登录");
-                break;
-            case 93:
-                examState.setText("正在更新");
-                break;
-            case 5:
-                examState.setText("更新成功");
-                updateView();
-                break;
-            default:
-                examState.setText("未知错误");
-                break;
+    public void updateView(String hint, int state) {
+        examState.setText(hint);
+        if (state == 5) {
+            updateView();
         }
     }
 }
