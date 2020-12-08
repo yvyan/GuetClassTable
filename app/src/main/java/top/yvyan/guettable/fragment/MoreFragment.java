@@ -20,7 +20,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private static MoreFragment moreFragment;
 
     private View view;
-    private View more_item_1, more_item_2, more_item_3, more_item_4, more_item_5;
+    private View more_item_1, more_item_2, more_item_3, more_item_4, more_item_5, more_item_6, more_item_7;
 
     public MoreFragment() {
         // Required empty public constructor
@@ -43,11 +43,19 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         more_item_3 = view.findViewById(R.id.more_item_3);
         more_item_4 = view.findViewById(R.id.more_item_4);
         more_item_5 = view.findViewById(R.id.more_item_5);
+        more_item_6 = view.findViewById(R.id.more_item_6);
+        more_item_7 = view.findViewById(R.id.more_item_7);
         more_item_1.setOnClickListener(this);
         more_item_2.setOnClickListener(this);
         more_item_3.setOnClickListener(this);
         more_item_4.setOnClickListener(this);
         more_item_5.setOnClickListener(this);
+        more_item_6.setOnClickListener(this);
+        more_item_7.setOnClickListener(this);
+
+        more_item_5.setVisibility(View.GONE);
+        more_item_6.setVisibility(View.GONE);
+
         return view;
     }
 
@@ -72,6 +80,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.more_item_5:
+            case R.id.more_item_6:
+                ToastUtil.showToast(getContext(), "下版本更新，敬请期待！");
+                break;
+            case R.id.more_item_7:
                 Uri uri = Uri.parse(getContext().getResources().getString(R.string.guet_yvyan_top));
                 intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");

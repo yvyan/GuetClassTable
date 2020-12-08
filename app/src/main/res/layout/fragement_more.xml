@@ -213,10 +213,98 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="2"
             android:orientation="horizontal" >
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/more_item_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                android:layout_weight="2"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <RelativeLayout
+                        android:id="@+id/more_item_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/more_card_image5"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_weight="1"
+                            app:tint="@color/colorPrimary"
+                            android:baselineAlignBottom="false"
+                            android:src="@drawable/pingjiao" />
+
+                        <TextView
+                            android:id="@+id/more_card_text5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/more_card_image5"
+                            android:layout_centerInParent="true"
+                            android:layout_weight="1"
+                            android:textSize="18dp"
+                            android:text="评教教师" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/more_item_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/more_card_image6"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_weight="1"
+                            app:tint="@color/colorPrimary"
+                            android:baselineAlignBottom="false"
+                            android:src="@drawable/jiaocai" />
+
+                        <TextView
+                            android:id="@+id/more_card_text6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/more_card_image6"
+                            android:layout_centerInParent="true"
+                            android:layout_weight="1"
+                            android:textSize="18dp"
+                            android:text="评价教材" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/more_item_7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
@@ -234,7 +322,7 @@
                     android:orientation="vertical" >
 
                     <ImageView
-                        android:id="@+id/more_card_image5"
+                        android:id="@+id/more_card_image7"
                         android:layout_width="90dp"
                         android:layout_height="90dp"
                         android:layout_centerHorizontal="true"
@@ -244,10 +332,10 @@
                         android:src="@drawable/index" />
 
                     <TextView
-                        android:id="@+id/more_card_text5"
+                        android:id="@+id/more_card_text7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/more_card_image5"
+                        android:layout_below="@+id/more_card_image7"
                         android:layout_centerInParent="true"
                         android:layout_weight="1"
                         android:textSize="18dp"

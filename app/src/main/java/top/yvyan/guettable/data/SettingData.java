@@ -39,8 +39,4 @@ public class SettingData {
         return Integer.parseInt(sharedPreferences.getString(SettingFragment.CLASS_LENGTH, "60"));
     }
 
-    public boolean getUpdateLab() {
-        return sharedPreferences.getBoolean(SettingFragment.UPDATE_LAB, true);
-    }
-
 }

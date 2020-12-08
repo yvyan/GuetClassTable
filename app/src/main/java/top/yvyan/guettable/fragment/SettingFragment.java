@@ -14,7 +14,6 @@ public class SettingFragment extends PreferenceFragment {
     public static final String REFRESH_DATA = "refresh_data";
     public static final String REFRESH_DATA_FREQUENCY = "refresh_data_frequency";
     public static final String SHOW_EXAM_ON_TABLE = "show_exam_on_table";
-    public static final String UPDATE_LAB = "update_lab";
     public static final String CLASS_LENGTH = "class_length";
 
 
