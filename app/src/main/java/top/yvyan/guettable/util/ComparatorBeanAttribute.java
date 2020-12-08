@@ -3,7 +3,6 @@ package top.yvyan.guettable.util;
 import java.util.Comparator;
 
 import top.yvyan.guettable.bean.BeanAttribute;
-import top.yvyan.guettable.bean.ExamScoreBean;
 
 public class ComparatorBeanAttribute implements Comparator<BeanAttribute> {
 

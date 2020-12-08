@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
@@ -148,9 +147,9 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     }
                 })
                 .callback((ISchedule.OnItemClickListener) (v, scheduleList) -> display(scheduleList))
-                .callback((ISchedule.OnItemLongClickListener) (v, day, start) -> Toast.makeText(getActivity(),
+                .callback((ISchedule.OnItemLongClickListener) (v, day, start) -> {} /*Toast.makeText(getActivity(),
                         "长按:周" + day  + ",第" + start + "节",
-                        Toast.LENGTH_SHORT).show())
+                        Toast.LENGTH_SHORT).show()*/)
                 .callback(curWeek -> {
                     titleTextView.setText("第" + curWeek + "周");
                 })

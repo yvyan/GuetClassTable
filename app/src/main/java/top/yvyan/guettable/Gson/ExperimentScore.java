@@ -1,6 +1,5 @@
 package top.yvyan.guettable.Gson;
 
-import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
 
 public class ExperimentScore {

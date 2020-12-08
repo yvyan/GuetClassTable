@@ -2,7 +2,6 @@ package top.yvyan.guettable.Gson;
 
 import java.util.List;
 
-import top.yvyan.guettable.bean.ExperimentScoreBean;
 
 public class ExperimentScoreOuter {
     private boolean success;

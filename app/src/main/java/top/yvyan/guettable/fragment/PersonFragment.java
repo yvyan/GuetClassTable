@@ -14,11 +14,11 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import top.yvyan.guettable.AboutActivity;
+import top.yvyan.guettable.HelperActivity;
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.MySettingActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
-import top.yvyan.guettable.SettingActivity;
 import top.yvyan.guettable.ShareActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
@@ -150,6 +150,10 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             case  R.id.person_setting:
                 intent = new Intent(getContext(), MySettingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.person_help:
+                intent = new Intent(getContext(), HelperActivity.class);
                 startActivity(intent);
                 break;
             case R.id.person_share:

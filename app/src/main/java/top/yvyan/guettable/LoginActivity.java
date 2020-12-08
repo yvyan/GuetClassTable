@@ -1,26 +1,19 @@
 package top.yvyan.guettable;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Looper;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 
-import top.yvyan.guettable.Http.HttpConnectionAndCode;
-import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.service.StaticService;
-import top.yvyan.guettable.service.fetch.LAN;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
