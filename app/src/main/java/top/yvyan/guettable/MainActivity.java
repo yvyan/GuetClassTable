@@ -14,7 +14,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-import top.yvyan.guettable.database.MySQLite;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
@@ -78,15 +77,6 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         dayClassFragment.setOnButtonClick(this);
         personFragment = PersonFragment.newInstance();
         personFragment.setOnButtonClick(this);
-
-
-
-        /**
-         * 创建数据库
-         * */
-        MySQLite mySQLite = new MySQLite(this);
-        mySQLite.getWritableDatabase();
-
     }
 
 
