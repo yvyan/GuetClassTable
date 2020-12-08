@@ -1,7 +1,6 @@
 package top.yvyan.guettable.fragment;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.R;

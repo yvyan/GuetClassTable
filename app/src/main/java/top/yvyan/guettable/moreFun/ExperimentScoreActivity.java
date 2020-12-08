@@ -23,7 +23,7 @@ import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.util.BeanHideUtil;
-import top.yvyan.guettable.util.ComparatorExperimentScore;
+import top.yvyan.guettable.util.ComparatorBeanAttribute;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -116,8 +116,8 @@ public class ExperimentScoreActivity extends AppCompatActivity implements IMoreF
         List<ExperimentScoreBean> experimentScoreBeans;
         experimentScoreBeans = StaticService.getExperimentScore(this, cookie);
         if (experimentScoreBeans != null) {
-            ComparatorExperimentScore comparatorExperimentScore = new ComparatorExperimentScore();
-            Collections.sort(experimentScoreBeans, comparatorExperimentScore);
+            ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
+            Collections.sort(experimentScoreBeans, comparatorBeanAttribute);
             moreDate.setExperimentScoreBeans(experimentScoreBeans);
             return 5 ;
         }

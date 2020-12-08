@@ -49,6 +49,11 @@ public class ExamScoreBean implements Serializable, BeanAttribute {
         return term;
     }
 
+    @Override
+    public long getOrder() {
+        return Integer.parseInt(number) * (-1);
+    }
+
     public void setTerm(String term) {
         this.term = term;
     }

@@ -10,18 +10,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ExamAdapter;
 import top.yvyan.guettable.bean.ExamBean;
-import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.util.ComparatorBeanAttribute;
 import top.yvyan.guettable.util.ExamUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
@@ -133,6 +134,8 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
         List<ExamBean> examBeans;
         examBeans = StaticService.getExam(this, cookie, generalData.getTerm());
         if (examBeans != null) {
+            ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
+            Collections.sort(examBeans, comparatorBeanAttribute);
             moreDate.setExamBeans(examBeans);
             return 5;
         }
