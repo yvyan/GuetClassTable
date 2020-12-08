@@ -3,6 +3,7 @@ package top.yvyan.guettable.service;
 import android.app.Activity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
+import top.yvyan.guettable.util.ComparatorBeanAttribute;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -194,6 +196,8 @@ public class AutoUpdate {
                         generalData.getTerm()
                 );
                 if (examBeans != null) {
+                    ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
+                    Collections.sort(examBeans, comparatorBeanAttribute);
                     MoreDate.newInstance(activity).setExamBeans(examBeans);
                     updateView(7);
                 } else {
