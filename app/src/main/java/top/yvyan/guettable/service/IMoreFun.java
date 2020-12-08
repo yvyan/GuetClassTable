@@ -22,5 +22,5 @@ public interface IMoreFun {
      * 92 : 正在登录
      * 93 : 正在更新
      */
-    void updateView(int state);
+    void updateView(String hint, int state);
 }

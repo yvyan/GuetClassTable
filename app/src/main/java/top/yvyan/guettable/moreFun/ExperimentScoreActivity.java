@@ -125,33 +125,10 @@ public class ExperimentScoreActivity extends AppCompatActivity implements IMoreF
     }
 
     @Override
-    public void updateView(int state) {
-        switch (state) {
-            case 2:
-                experimentScoreState.setText("未登录");
-                break;
-            case -1:
-                experimentScoreState.setText("密码错误");
-                break;
-            case -2:
-                experimentScoreState.setText("网络错误");
-                break;
-            case 91:
-                experimentScoreState.setText("登录状态检查");
-                break;
-            case 92:
-                experimentScoreState.setText("正在登录");
-                break;
-            case 93:
-                experimentScoreState.setText("正在更新");
-                break;
-            case 5:
-                experimentScoreState.setText("更新成功");
-                updateView();
-                break;
-            default:
-                experimentScoreState.setText("未知错误");
-                break;
+    public void updateView(String hint, int state) {
+        experimentScoreState.setText(hint);
+        if (state == 5) {
+            updateView();
         }
     }
 }

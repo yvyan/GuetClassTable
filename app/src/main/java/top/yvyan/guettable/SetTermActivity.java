@@ -157,7 +157,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void updateView(int state) {
+    public void updateView(String hint, int state) {
         if (state == 5) {
             initView();
         }

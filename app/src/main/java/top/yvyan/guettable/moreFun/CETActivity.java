@@ -82,33 +82,10 @@ public class CETActivity extends AppCompatActivity implements IMoreFun {
     }
 
     @Override
-    public void updateView(int state) {
-        switch (state) {
-            case 2:
-                CET_state.setText("未登录");
-                break;
-            case -1:
-                CET_state.setText("密码错误");
-                break;
-            case -2:
-                CET_state.setText("网络错误");
-                break;
-            case 91:
-                CET_state.setText("登录状态检查");
-                break;
-            case 92:
-                CET_state.setText("正在登录");
-                break;
-            case 93:
-                CET_state.setText("正在更新");
-                break;
-            case 5:
-                CET_state.setText("更新成功");
-                updateView();
-                break;
-            default:
-                CET_state.setText("未知错误");
-                break;
+    public void updateView(String hint, int state) {
+        CET_state.setText(hint);
+        if (state == 5) {
+            updateView();
         }
     }
 }

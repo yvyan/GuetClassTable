@@ -125,33 +125,10 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
     }
 
     @Override
-    public void updateView(int state) {
-        switch (state) {
-            case 2:
-                examScoreState.setText("未登录");
-                break;
-            case -1:
-                examScoreState.setText("密码错误");
-                break;
-            case -2:
-                examScoreState.setText("网络错误");
-                break;
-            case 91:
-                examScoreState.setText("登录状态检查");
-                break;
-            case 92:
-                examScoreState.setText("正在登录");
-                break;
-            case 93:
-                examScoreState.setText("正在更新");
-                break;
-            case 5:
-                examScoreState.setText("更新成功");
-                updateView();
-                break;
-            default:
-                examScoreState.setText("未知错误");
-                break;
+    public void updateView(String hint, int state) {
+        examScoreState.setText(hint);
+        if (state == 5) {
+            updateView();
         }
     }
 }
