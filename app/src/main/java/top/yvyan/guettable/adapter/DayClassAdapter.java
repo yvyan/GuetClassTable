@@ -100,7 +100,11 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             } else {
                 holder.textView4.setText("教室：" + courseBean.getRoom());
             }
-            holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + courseBean.getTime() + "大节");
+            int n = courseBean.getTime();
+            if (n == 7) {
+                n = 0;
+            }
+            holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + n + "大节");
 
             if(courseBean.isLab()) { //课内实验
                 holder.textView2.setText("名称：" + courseBean.getLibName());
