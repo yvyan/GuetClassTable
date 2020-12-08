@@ -132,7 +132,11 @@ public class StaticService {
             List<CourseBean> courseBeans = new ArrayList<>();
             LabTableOuter labTableOuter = new Gson().fromJson(labTable.comment, LabTableOuter.class);
             for (LabTable labTable1 : labTableOuter.getData()) {
-                courseBeans.add(labTable1.toCourseBean());
+                CourseBean courseBean = labTable1.toCourseBean();
+                if (courseBean.getTime() == 0) {
+                    courseBean.setTime(7);
+                }
+                courseBeans.add(courseBean);
             }
             return courseBeans;
         } else {
