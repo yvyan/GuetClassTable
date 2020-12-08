@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ExamBean implements Serializable, ScheduleEnable {
+public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
     public static String NUMBER = "number";
     public static String TIME = "time";
     public static String DATE = "date";
@@ -178,5 +178,15 @@ public class ExamBean implements Serializable, ScheduleEnable {
                 ", date=" + date +
                 ", room='" + room + '\'' +
                 '}';
+    }
+
+    @Override
+    public String getTerm() {
+        return null;
+    }
+
+    @Override
+    public long getOrder() {
+        return week * 10 + day;
     }
 }

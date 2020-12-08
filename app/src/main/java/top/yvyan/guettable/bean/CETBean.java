@@ -2,7 +2,7 @@ package top.yvyan.guettable.bean;
 
 import java.io.Serializable;
 
-public class CETBean implements Serializable {
+public class CETBean implements Serializable, BeanAttribute {
     //等级名称 CET4 CET6
     private String name;
     //学期
@@ -35,8 +35,16 @@ public class CETBean implements Serializable {
         this.name = name;
     }
 
+    @Override
     public String getTerm() {
         return term;
+    }
+
+    @Override
+    public long getOrder() {
+        int year = Integer.parseInt(term.substring(0, 4));
+        year = year * 10 + Integer.parseInt(term.substring(10, 11));
+        return year;
     }
 
     public void setTerm(String term) {

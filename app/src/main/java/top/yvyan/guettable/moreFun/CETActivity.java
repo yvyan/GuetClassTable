@@ -9,18 +9,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.CETAdapter;
-import top.yvyan.guettable.adapter.ExamAdapter;
 import top.yvyan.guettable.bean.CETBean;
-import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
-import top.yvyan.guettable.util.ExamUtil;
+import top.yvyan.guettable.util.ComparatorBeanAttribute;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -74,6 +73,8 @@ public class CETActivity extends AppCompatActivity implements IMoreFun {
         List<CETBean> cetBeans;
         cetBeans = StaticService.getCET(this, cookie);
         if (cetBeans != null) {
+            ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
+            Collections.sort(cetBeans, comparatorBeanAttribute);
             moreDate.setCetBeans(cetBeans);
             return 5;
         }

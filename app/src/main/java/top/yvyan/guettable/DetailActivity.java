@@ -31,7 +31,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         List<Schedule> schedules = DetailClassData.newInstance().getCourseBeans();
-        ComparatorCourse comparatorCourse = new ComparatorCourse();
+
         back = findViewById(R.id.detail_back);
         back.setOnClickListener((view) -> finish());
 
@@ -40,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
         detailTitle = findViewById(R.id.detail_title);
         detailTitle.setText("第" + week + "周" + TimeUtil.whichDay(schedules.get(0).getDay()) + " 第" + (schedules.get(0).getStart() / 2 + 1) + "大节");
 
+        ComparatorCourse comparatorCourse = new ComparatorCourse();
         Collections.sort(schedules, comparatorCourse);
         recyclerView = findViewById(R.id.class_detail_recycleView);
         classDetailAdapter = new ClassDetailAdapter(schedules, week);
