@@ -33,12 +33,6 @@
             android:summary="开启后考试安排将在日课表和周课表显示"
             android:title="课表显示考试安排" />
 
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="update_lab"
-            android:summary="网络不佳时建议关闭同步课内实验"
-            android:title="同步更新课内实验安排" />
-
         <!--        <CheckBoxPreference-->
         <!--            android:dependency="optionA"-->
         <!--            android:key="optionB"-->

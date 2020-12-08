@@ -19,6 +19,7 @@ import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
+import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
@@ -147,6 +148,7 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
         examState.setText(hint);
         if (state == 5) {
             updateView();
+            CourseTableFragment.newInstance().updateTable();
         }
     }
 }
