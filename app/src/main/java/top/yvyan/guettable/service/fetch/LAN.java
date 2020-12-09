@@ -2,11 +2,8 @@ package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 
 import com.google.gson.Gson;
-
-import java.time.Clock;
 
 import top.yvyan.guettable.Gson.LoginResponse;
 import top.yvyan.guettable.Http.Get;
@@ -330,7 +327,7 @@ public class LAN {
     }
 
     /**
-     * 保存老师评价表单
+     * 提交老师评价表单
      * @param context   context
      * @param cookie    登录后的cookie
      * @param term      学期（格式：2020-2021_1）
