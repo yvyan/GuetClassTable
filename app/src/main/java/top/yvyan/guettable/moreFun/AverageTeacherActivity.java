@@ -50,19 +50,8 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
     public int updateData(String cookie) {
         List<AvgTeacher> avgTeachers = StaticService.getTeacherList(this, cookie, null);
         if (avgTeachers != null) {
-            AvgTeacher avgTeacher = avgTeachers.get(8);
-            Log.d("detailInfo", avgTeacher.toString());
-            List<AvgTeacherFormGet> avgTeacherFormGets = StaticService.getAvgTeacherForm(this, cookie, avgTeacher);
-            Log.d("detailInfo", avgTeacherFormGets.toString());
-
-            List<AvgTeacherFormSend> avgTeacherFormSends = new ArrayList<>();
-            for (AvgTeacherFormGet avgTeacherFormGet : avgTeacherFormGets) {
-                avgTeacherFormSends.add(new AvgTeacherFormSend(avgTeacherFormGet, avgTeacher.getCourseid(), avgTeacher.getCourseno(), avgTeacher.getTeacherno(), avgTeacher.getTerm()));
-            }
-            Log.d("detailInfo", avgTeacherFormGets.toString());
-            str = StaticService.saveTeacherForm(this, cookie, avgTeacherFormSends);
-            if (str != null) {
-                str = StaticService.commitTeacherForm(this, cookie, avgTeacherFormSends, GeneralData.newInstance(this).getNumber(), avgTeacher.getCname(), avgTeacher.getName(), avgTeacher.getTeacherno());
+            for (AvgTeacher avgTeacher : avgTeachers) {
+                int n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
             }
             return 5;
         }

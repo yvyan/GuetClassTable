@@ -2,11 +2,8 @@ package top.yvyan.guettable.service;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -286,7 +283,6 @@ public class StaticService {
     public static List<AvgTeacherFormGet> getAvgTeacherForm(Context context, String cookie, AvgTeacher avgTeacher) {
         HttpConnectionAndCode httpConnectionAndCode = LAN.getAvgTeacherForm(context, cookie, avgTeacher.getTerm(), avgTeacher.getCourseno(), avgTeacher.getTeacherno());
         if (httpConnectionAndCode.code == 0) {
-            Log.d("detailInfo", httpConnectionAndCode.comment);
             AvgTeacherFormGetOuter avgTeacherFormGetOuter = new Gson().fromJson(httpConnectionAndCode.comment, AvgTeacherFormGetOuter.class);
             return new ArrayList<>(avgTeacherFormGetOuter.getData());
         } else {
@@ -295,7 +291,7 @@ public class StaticService {
     }
 
     /**
-     * 保存老师评价表单
+     * 提交老师评价表单
      * @param context             context
      * @param cookie              登录后的cookie
      * @param avgTeacherFormSends 评价表单集合
@@ -303,7 +299,6 @@ public class StaticService {
      */
     public static String saveTeacherForm(Context context, String cookie, List<AvgTeacherFormSend> avgTeacherFormSends) {
         String postBody = new Gson().toJson(avgTeacherFormSends);
-        Log.d("testpostBody", "postBody:" + postBody);
         HttpConnectionAndCode httpConnectionAndCode = LAN.saveTeacherForm(context, cookie, avgTeacherFormSends.get(0).getTerm(), avgTeacherFormSends.get(0).getCourseno(), avgTeacherFormSends.get(0).getTeacherno(), postBody);
         if (httpConnectionAndCode.code == 0) {
             return httpConnectionAndCode.comment;
@@ -313,10 +308,14 @@ public class StaticService {
 
     /**
      * 提交评价老师总评
-     * @param context   context
-     * @param cookie    登录后的cookie
-     *
-     * @return          操作结果
+     * @param context             context
+     * @param cookie              登录后的cookie
+     * @param avgTeacherFormSends 评价表单
+     * @param studentId           学号
+     * @param courseName          课程名称
+     * @param teacherName         教师名称
+     * @param teacherNumber       教师编号
+     * @return                    操作结果
      */
     public static String commitTeacherForm(Context context, String cookie, List<AvgTeacherFormSend> avgTeacherFormSends, String studentId, String courseName, String teacherName, String teacherNumber) {
         AvgTeacherFormSend avgTeacherFormSend = avgTeacherFormSends.get(0);
@@ -326,12 +325,47 @@ public class StaticService {
                     "&stid=" + studentId + "&cname=" + URLEncoder.encode(courseName, StandardCharsets.UTF_8.toString()) +
                     "&name=" + URLEncoder.encode(teacherName, StandardCharsets.UTF_8.toString()) +
                     "&teacherno=" + teacherNumber + "&courseid=" + avgTeacherFormSend.getCourseid() +
-                    "&lb=" + 1 + "&chk=" + "&can=" + true + "&userid=" + "&bz=676" + "&score=100";
+                    "&lb=" + 1 + "&chk=" + "&can=" + true + "&userid=" + "&bz=" + URLEncoder.encode("老师很好", StandardCharsets.UTF_8.toString()) + "&score=100";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        Log.d("testpostBody", "postBody2" + postBody);
         HttpConnectionAndCode httpConnectionAndCode = LAN.commitTeacherForm(context, cookie, postBody);
-        return httpConnectionAndCode.comment;
+        if (httpConnectionAndCode.code == 0) {
+            return httpConnectionAndCode.comment;
+        }
+        return null;
+    }
+
+    /**
+     * 自动评价一个教师
+     * @param context    context
+     * @param cookie     登录后的cookie
+     * @param avgTeacher 教师信息类
+     * @param number     学号
+     * @return           0 : 操作成功
+     *                  -1 : 获取评价表单失败
+     *                  -2 : 提交评价表单失败
+     *                  -3 : 提交总评失败
+     */
+    public static int averageTeacher(Context context, String cookie, AvgTeacher avgTeacher, String number) {
+        List<AvgTeacherFormGet> avgTeacherFormGets = getAvgTeacherForm(context, cookie, avgTeacher);
+        if (avgTeacherFormGets == null) {
+            return -1;
+        }
+        List<AvgTeacherFormSend> avgTeacherFormSends = new ArrayList<>();
+        for (AvgTeacherFormGet avgTeacherFormGet : avgTeacherFormGets) {
+            avgTeacherFormSends.add(new AvgTeacherFormSend(avgTeacherFormGet, avgTeacher.getCourseid(), avgTeacher.getCourseno(), avgTeacher.getTeacherno(), avgTeacher.getTerm()));
+        }
+        String str = StaticService.saveTeacherForm(context, cookie, avgTeacherFormSends);
+        if (str != null) {
+            str = StaticService.commitTeacherForm(context, cookie, avgTeacherFormSends, number, avgTeacher.getCname(), avgTeacher.getName(), avgTeacher.getTeacherno());
+            if (str != null) {
+                return 0;
+            } else {
+                return -3;
+            }
+        } else {
+            return -2;
+        }
     }
 }
