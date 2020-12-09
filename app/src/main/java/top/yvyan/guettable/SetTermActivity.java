@@ -2,7 +2,6 @@ package top.yvyan.guettable;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -48,11 +47,9 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         init();
 
         if (generalData.getTerm() == null || fromLogin) {
-            Log.d("156", "MoreFunService");
             MoreFunService moreFunService = new MoreFunService(this, this);
             moreFunService.update();
         } else {
-            Log.d("156", "local");
             initView();
         }
     }

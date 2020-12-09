@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import top.yvyan.guettable.data.AccountData;
+import top.yvyan.guettable.data.CookieData;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -74,6 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             );
             if (state == 0) {
                 accountData.setUser(account, pwd, cbRememberPwd.isChecked());
+                CookieData.newInstance(this).refresh();
                 Intent intent = new Intent(this, SetTermActivity.class);
                 intent.putExtra("fromLogin", ""); //便于识别启动类
                 startActivity(intent);

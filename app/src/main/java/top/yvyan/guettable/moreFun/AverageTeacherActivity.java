@@ -1,35 +1,29 @@
 package top.yvyan.guettable.moreFun;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import top.yvyan.guettable.Gson.AvgTeacher;
-import top.yvyan.guettable.Gson.AvgTeacherFormGet;
-import top.yvyan.guettable.Gson.AvgTeacherFormSend;
-import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
-import top.yvyan.guettable.service.fetch.LAN;
 
 public class AverageTeacherActivity extends AppCompatActivity implements View.OnClickListener, IMoreFun {
 
     private ImageView back;
     private TextView title;
-
-    private TextView textView;
-    private String str;
+    private RecyclerView recyclerView;
+    private Button start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +33,9 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
         back = findViewById(R.id.average_teacher_back);
         back.setOnClickListener(this);
         title = findViewById(R.id.average_teacher_state);
-
-        textView = findViewById(R.id.test);
+        recyclerView = findViewById(R.id.teacher_info_recycler_view);
+        start = findViewById(R.id.avg_teacher_start);
+        start.setOnClickListener(this);
 
         MoreFunService moreFunService = new MoreFunService(this, this);
         moreFunService.update();
@@ -62,7 +57,7 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
     public void updateView(String hint, int state) {
         title.setText(hint);
         if (state == 5) {
-            textView.setText(str);
+
         }
     }
 
