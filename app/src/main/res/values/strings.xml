@@ -36,6 +36,14 @@
     <string name="lan_get_examscore_url">http://172.16.13.22/Student/GetStuScore</string>
     <string name="lan_get_experimentscore_url">http://172.16.13.22/student/getstulab</string>
 
+    <!-- 评价教师 -->
+    <string name="lan_get_this_term">http://172.16.13.22/student/temsterm</string>
+    <string name="lan_get_teacher_referer">http://172.16.13.22/Login/MainDesktop</string>
+    <string name="lan_get_teacher_list">http://172.16.13.22/student/getpjcno</string>
+    <string name="lan_get_avg_thacher_data">http://172.16.13.22/student/jxpgdata</string>
+    <string name="lan_save_avg_teacher_data">http://172.16.13.22/student/SaveJxpg</string>
+    <string name="lan_commit_avg_teacher_data">http://172.16.13.22/student/SaveJxpgJg/1</string>
+
     <string name="guet_yvyan_top">http://guet.yvyan.top/</string>
     <string name="downloadApp_url">https://cloud.yvyan.top/index.php/s/mzF5nkCLfikHnjs</string>
 

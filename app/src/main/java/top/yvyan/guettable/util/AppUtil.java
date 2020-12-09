@@ -21,4 +21,25 @@ public class AppUtil {
         }
         return appVersionName;
     }
+
+    /**
+     * 编码
+     * @Author     telephone
+     * @param text 原字符串
+     * @return     编码后的字符串
+     */
+    public static String encode(String text){
+        StringBuilder sb = new StringBuilder();
+        if (text != null){
+            char[] chs = text.toCharArray();
+            for (char ch : chs){
+                if (ch < 128){
+                    sb.append(ch);
+                }else {
+                    sb.append('\\').append('u').append(String.format("%04x", (int) ch).toLowerCase());
+                }
+            }
+        }
+        return sb.toString();
+    }
 }

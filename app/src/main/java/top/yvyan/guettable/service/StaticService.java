@@ -2,12 +2,23 @@ package top.yvyan.guettable.service;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.yvyan.guettable.Gson.AvgTeacher;
+import top.yvyan.guettable.Gson.AvgTeacherFormGet;
+import top.yvyan.guettable.Gson.AvgTeacherFormGetOuter;
+import top.yvyan.guettable.Gson.AvgTeacherFormSend;
+import top.yvyan.guettable.Gson.AvgTeacherOuter;
 import top.yvyan.guettable.Gson.CET;
 import top.yvyan.guettable.Gson.CETOuter;
 import top.yvyan.guettable.Gson.ClassTable;
@@ -223,5 +234,104 @@ public class StaticService {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 获取当前学期
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        当前学期字符串(例:2020-2021_1)
+     */
+    public static String getThisTerm(Context context, String cookie) {
+        HttpConnectionAndCode termInfo = LAN.getThisTerm(context, cookie);
+        if (termInfo.code == 0) {
+            String comment = termInfo.comment;
+            int index = comment.indexOf("term");
+            return comment.substring(index + 7, index + 18);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取评价教师列表
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @param term    学期（格式：2020-2021_1，不输入默认当前学期）
+     * @return        教师列表
+     */
+    public static List<AvgTeacher> getTeacherList(Context context, String cookie, String term) {
+        if (term == null) {
+            term = getThisTerm(context, cookie);
+        }
+        if (term == null) {
+            return null;
+        }
+        HttpConnectionAndCode teacherList = LAN.getTeacherList(context, cookie, term);
+        if (teacherList.code == 0) {
+            AvgTeacherOuter avgTeacherOuter = new Gson().fromJson(teacherList.comment, AvgTeacherOuter.class);
+            return new ArrayList<>(avgTeacherOuter.getData());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取某个老师的评价表单
+     * @param context    context
+     * @param cookie     登录后的cookie
+     * @param avgTeacher 教师信息类
+     * @return           老师评价表单
+     */
+    public static List<AvgTeacherFormGet> getAvgTeacherForm(Context context, String cookie, AvgTeacher avgTeacher) {
+        HttpConnectionAndCode httpConnectionAndCode = LAN.getAvgTeacherForm(context, cookie, avgTeacher.getTerm(), avgTeacher.getCourseno(), avgTeacher.getTeacherno());
+        if (httpConnectionAndCode.code == 0) {
+            Log.d("detailInfo", httpConnectionAndCode.comment);
+            AvgTeacherFormGetOuter avgTeacherFormGetOuter = new Gson().fromJson(httpConnectionAndCode.comment, AvgTeacherFormGetOuter.class);
+            return new ArrayList<>(avgTeacherFormGetOuter.getData());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 保存老师评价表单
+     * @param context             context
+     * @param cookie              登录后的cookie
+     * @param avgTeacherFormSends 评价表单集合
+     * @return                    结果
+     */
+    public static String saveTeacherForm(Context context, String cookie, List<AvgTeacherFormSend> avgTeacherFormSends) {
+        String postBody = new Gson().toJson(avgTeacherFormSends);
+        Log.d("testpostBody", "postBody:" + postBody);
+        HttpConnectionAndCode httpConnectionAndCode = LAN.saveTeacherForm(context, cookie, avgTeacherFormSends.get(0).getTerm(), avgTeacherFormSends.get(0).getCourseno(), avgTeacherFormSends.get(0).getTeacherno(), postBody);
+        if (httpConnectionAndCode.code == 0) {
+            return httpConnectionAndCode.comment;
+        }
+        return null;
+    }
+
+    /**
+     * 提交评价老师总评
+     * @param context   context
+     * @param cookie    登录后的cookie
+     *
+     * @return          操作结果
+     */
+    public static String commitTeacherForm(Context context, String cookie, List<AvgTeacherFormSend> avgTeacherFormSends, String studentId, String courseName, String teacherName, String teacherNumber) {
+        AvgTeacherFormSend avgTeacherFormSend = avgTeacherFormSends.get(0);
+        String postBody = "";
+        try {
+            postBody = "term=" + avgTeacherFormSend.getTerm() + "&courseno=" + avgTeacherFormSend.getCourseno() +
+                    "&stid=" + studentId + "&cname=" + URLEncoder.encode(courseName, StandardCharsets.UTF_8.toString()) +
+                    "&name=" + URLEncoder.encode(teacherName, StandardCharsets.UTF_8.toString()) +
+                    "&teacherno=" + teacherNumber + "&courseid=" + avgTeacherFormSend.getCourseid() +
+                    "&lb=" + 1 + "&chk=" + "&can=" + true + "&userid=" + "&bz=676" + "&score=100";
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Log.d("testpostBody", "postBody2" + postBody);
+        HttpConnectionAndCode httpConnectionAndCode = LAN.commitTeacherForm(context, cookie, postBody);
+        return httpConnectionAndCode.comment;
     }
 }

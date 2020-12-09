@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import top.yvyan.guettable.moreFun.AverageTeacherActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.R;
@@ -53,9 +54,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         more_item_6.setOnClickListener(this);
         more_item_7.setOnClickListener(this);
 
-        more_item_5.setVisibility(View.GONE);
-        more_item_6.setVisibility(View.GONE);
-
         return view;
     }
 
@@ -80,6 +78,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.more_item_5:
+                intent = new Intent(getContext(), AverageTeacherActivity.class);
+                startActivity(intent);
+                break;
             case R.id.more_item_6:
                 ToastUtil.showToast(getContext(), "下版本更新，敬请期待！");
                 break;
