@@ -9,7 +9,7 @@ public class AvgTeacher {
     private String cname;
     private String name;
     private int lb;
-    private String chk;
+    private int chk;
     private boolean can;
     public void setTerm(String term) {
         this.term = term;
@@ -67,10 +67,10 @@ public class AvgTeacher {
         return lb;
     }
 
-    public void setChk(String chk) {
+    public void setChk(int chk) {
         this.chk = chk;
     }
-    public String getChk() {
+    public int getChk() {
         return chk;
     }
 
