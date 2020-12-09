@@ -2,8 +2,11 @@ package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.google.gson.Gson;
+
+import java.time.Clock;
 
 import top.yvyan.guettable.Gson.LoginResponse;
 import top.yvyan.guettable.Http.Get;
@@ -55,6 +58,7 @@ public class LAN {
                 resources.getString(R.string.cookie_delimiter),
                 resources.getString(R.string.lan_login_success_contain_response_text),
                 null,
+                null,
                 null
         );
         if (login_res.code == 0) {
@@ -88,6 +92,7 @@ public class LAN {
                 "}",
                 null,
                 resources.getString(R.string.lan_get_student_success_contain_response_text),
+                null,
                 null,
                 null
         );
@@ -236,6 +241,146 @@ public class LAN {
                 null,
                 resources.getString(R.string.lan_get_table_success_contain_response_text),
                 null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 获取当前学期
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        gson格式的当前学期
+     */
+    public static HttpConnectionAndCode getThisTerm(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Post.post(
+                resources.getString(R.string.lan_get_this_term),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_student_referer),
+                null,
+                cookie,
+                null,
+                resources.getString(R.string.cookie_delimiter),
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 获取评价教师列表
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @param term    学期（格式：2020-2021_1）
+     * @return        gson格式的教师列表
+     */
+    public static HttpConnectionAndCode getTeacherList(Context context, String cookie, String term) {
+        Resources resources = context.getResources();
+        String[] param = {"term=" + term};
+        return Get.get(
+                resources.getString(R.string.lan_get_teacher_list),
+                param,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_student_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null,
+                10000
+        );
+    }
+
+    /**
+     * 获取某个老师的评价表单
+     * @param context   context
+     * @param cookie    登录后的cookie
+     * @param term      学期（格式：2020-2021_1）
+     * @param courseNo  课程编号
+     * @param teacherNo 老师编号
+     * @return           gson格式的老师评价表单
+     */
+    public static HttpConnectionAndCode getAvgTeacherForm(Context context, String cookie, String term, String courseNo, String teacherNo) {
+        Resources resources = context.getResources();
+        String[] params = {
+                "term=" + term,
+                "courseno=" + courseNo,
+                "teacherno=" + teacherNo
+        };
+        return Get.get(
+                resources.getString(R.string.lan_get_avg_thacher_data),
+                params,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_table_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 保存老师评价表单
+     * @param context   context
+     * @param cookie    登录后的cookie
+     * @param term      学期（格式：2020-2021_1）
+     * @param courseNo  课程编号
+     * @param teacherNo 老师编号
+     * @param postBody  评价表单
+     * @return          结果
+     */
+    public static HttpConnectionAndCode saveTeacherForm(Context context, String cookie, String term, String courseNo, String teacherNo, String postBody) {
+        Resources resources = context.getResources();
+        String[] params = {
+                "term=" + term,
+                "courseno" + courseNo,
+                "teacherno" + teacherNo
+        };
+        return Post.post(
+                resources.getString(R.string.lan_save_avg_teacher_data),
+                params,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_student_referer),
+                postBody,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                "application/json"
+        );
+    }
+
+    /**
+     * 提交评价老师总评
+     * @param context   context
+     * @param cookie    登录后的cookie
+     * @param postBody  请求体
+     * @return          操作结果
+     */
+    public static HttpConnectionAndCode commitTeacherForm(Context context, String cookie, String postBody) {
+        Resources resources = context.getResources();
+        return Post.post(
+                resources.getString(R.string.lan_commit_avg_teacher_data),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_student_referer),
+                postBody,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
                 null,
                 null,
                 null
