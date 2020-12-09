@@ -23,7 +23,7 @@ public class ExamScore {
     private String cid;
     private String cno;
     private float sycj;
-    private int qzcj;
+    private float qzcj;
     private float pscj;
     private float khcj;
     private int zpcj;
@@ -184,10 +184,10 @@ public class ExamScore {
         return sycj;
     }
 
-    public void setQzcj(int qzcj) {
+    public void setQzcj(float qzcj) {
         this.qzcj = qzcj;
     }
-    public int getQzcj() {
+    public float getQzcj() {
         return qzcj;
     }
 
