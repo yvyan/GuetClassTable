@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ExamAdapter;
 import top.yvyan.guettable.bean.ExamBean;
@@ -34,29 +36,22 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
     private MoreDate moreDate;
     private SingleSettingData singleSettingData;
 
-    private TextView examState;
-    private TextView examNotFind;
-    private ImageView examMore;
-    private RecyclerView recyclerView;
+    @BindView(R.id.exam_state) TextView examState;
+    @BindView(R.id.exam_not_find) TextView examNotFind;
+    @BindView(R.id.exam_more) ImageView examMore;
+    @BindView(R.id.exam_info_recycler_view) RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam);
+        ButterKnife.bind(this);
 
         generalData = GeneralData.newInstance(this);
         moreDate = MoreDate.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
 
-        ImageView back = findViewById(R.id.exam_back);
-        back.setOnClickListener(view -> {
-            finish();
-        });
-        examState = findViewById(R.id.exam_state);
-        examNotFind = findViewById(R.id.exam_not_find);
-        examMore = findViewById(R.id.exam_more);
         examMore.setOnClickListener(view -> showPopMenu());
-        recyclerView = findViewById(R.id.exam_info_recycler_view);
 
         updateView();
         MoreFunService moreFunService = new MoreFunService(this, this);
@@ -150,5 +145,10 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
             updateView();
             CourseTableFragment.newInstance().updateTable();
         }
+    }
+
+
+    public void onClick(View view) {
+        finish();
     }
 }

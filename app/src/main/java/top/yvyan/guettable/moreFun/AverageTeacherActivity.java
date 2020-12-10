@@ -8,12 +8,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import top.yvyan.guettable.Gson.AvgTeacher;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.AvgTeacherAdapter;
@@ -28,11 +29,10 @@ import static com.xuexiang.xui.XUI.getContext;
 
 public class AverageTeacherActivity extends AppCompatActivity implements View.OnClickListener, IMoreFun {
 
-    private ImageView back;
-    private TextView title;
-    private TextView waite;
-    private RecyclerView recyclerView;
-    private Button start;
+    @BindView(R.id.average_teacher_state) TextView title;
+    @BindView(R.id.teacher_waite) TextView waite;
+    @BindView(R.id.teacher_info_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.avg_teacher_start) Button start;
 
     private List<AvgTeacher> avgTeachers;
     private String cookie;
@@ -43,14 +43,7 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_average_teacher);
-
-        back = findViewById(R.id.average_teacher_back);
-        back.setOnClickListener(this);
-        title = findViewById(R.id.average_teacher_state);
-        waite = findViewById(R.id.teacher_waite);
-        recyclerView = findViewById(R.id.teacher_info_recycler_view);
-        start = findViewById(R.id.avg_teacher_start);
-        start.setOnClickListener(this);
+        ButterKnife.bind(this);
 
         MoreFunService moreFunService = new MoreFunService(this, this);
         moreFunService.update();
