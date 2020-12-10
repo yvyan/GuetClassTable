@@ -6,12 +6,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.CETAdapter;
 import top.yvyan.guettable.bean.CETBean;
@@ -27,24 +28,17 @@ public class CETActivity extends AppCompatActivity implements IMoreFun {
 
     private MoreDate moreDate;
 
-    private TextView CET_state;
-    private TextView CET_not_find;
-    private RecyclerView recyclerView;
+    @BindView(R.id.CET_state) TextView CET_state;
+    @BindView(R.id.CET_not_find) TextView CET_not_find;
+    @BindView(R.id.CET_info_recycler_view) RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cet);
+        ButterKnife.bind(this);
 
         moreDate = MoreDate.newInstance(this);
-
-        ImageView back = findViewById(R.id.CET_back);
-        back.setOnClickListener(view -> {
-            finish();
-        });
-        CET_state = findViewById(R.id.CET_state);
-        CET_not_find = findViewById(R.id.CET_not_find);
-        recyclerView = findViewById(R.id.CET_info_recycler_view);
 
         updateView();
         MoreFunService moreFunService = new MoreFunService(this, this);
@@ -87,5 +81,9 @@ public class CETActivity extends AppCompatActivity implements IMoreFun {
         if (state == 5) {
             updateView();
         }
+    }
+
+    public void onClick(View view) {
+        finish();
     }
 }

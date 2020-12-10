@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ExamScoreAdapter;
 import top.yvyan.guettable.bean.ExamScoreBean;
@@ -27,37 +29,27 @@ import top.yvyan.guettable.util.BeanHideUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
-public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
+public class ExamScoreActivity extends AppCompatActivity implements View.OnClickListener, IMoreFun {
 
     private MoreDate moreDate;
     private GeneralData generalData;
     private SingleSettingData singleSettingData;
 
-    private ImageView back;
-    private TextView examScoreState;
-    private TextView examScoreNotFind;
-    private ImageView examScoreMore;
-    private View examScoreInfoView;
-    private RecyclerView recyclerView;
+    @BindView(R.id.examscore_state) TextView examScoreState;
+    @BindView(R.id.examscore_not_find) TextView examScoreNotFind;
+    @BindView(R.id.exam_score_more) ImageView examScoreMore;
+    @BindView(R.id.examscore_info_view) View examScoreInfoView;
+    @BindView(R.id.examscore_info_recycler_view) RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_examscore);
+        ButterKnife.bind(this);
 
         moreDate = MoreDate.newInstance(this);
         generalData = GeneralData.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
-
-        back = findViewById(R.id.examscore_back);
-        back.setOnClickListener(view -> {finish();});
-
-        examScoreState = findViewById(R.id.examscore_state);
-        examScoreNotFind = findViewById(R.id.examscore_not_find);
-        examScoreMore = findViewById(R.id.exam_score_more);
-        examScoreMore.setOnClickListener(view -> showPopMenu());
-        examScoreInfoView = findViewById(R.id.examscore_info_view);
-        recyclerView = findViewById(R.id.examscore_info_recycler_view);
 
         updateView();
         MoreFunService moreFunService = new MoreFunService(this, this);
@@ -84,7 +76,7 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
         recyclerView.setAdapter(examScoreAdapter);
     }
 
-    public void showPopMenu() {
+    public void showPopMenu(View view) {
         PopupMenu popup = new PopupMenu(this, examScoreMore);
         popup.getMenuInflater().inflate(R.menu.exam_score_popmenu, popup.getMenu());
         if (singleSettingData.isHideOtherTermExamScore()) {
@@ -130,5 +122,10 @@ public class ExamScoreActivity extends AppCompatActivity implements IMoreFun {
         if (state == 5) {
             updateView();
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        finish();
     }
 }

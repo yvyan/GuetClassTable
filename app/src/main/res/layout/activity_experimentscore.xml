@@ -16,6 +16,7 @@
         tools:layout_editor_absoluteX="109dp">
 
         <ImageView
+            android:onClick="onClick"
             android:id="@+id/experimentscore_back"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -48,6 +49,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:onClick="showPopMenu"
             android:id="@+id/experiment_score_more"
             android:layout_width="30dp"
             android:layout_height="30dp"
