@@ -100,6 +100,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 
 //        info = view.findViewById(R.id.person_detail_info);
 //        info.setOnClickListener(this);
+
         help = view.findViewById(R.id.person_help);
         help.setOnClickListener(this);
         share = view.findViewById(R.id.person_share);
@@ -137,16 +138,17 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         Intent intent;
         switch (view.getId()) {
             case R.id.person_userInfo_card:
-                intent = new Intent(getContext(), SetTermActivity.class);
+            case R.id.person_login:
+                if (accountData.getIsLogin()) {
+                    intent = new Intent(getContext(), SetTermActivity.class);
+                } else {
+                    intent = new Intent(getContext(), LoginActivity.class);
+                }
                 startActivity(intent);
                 break;
             case R.id.btn_quit:
                 accountData.logoff();
                 updateView();
-                break;
-            case R.id.person_login:
-                intent = new Intent(getContext(), LoginActivity.class);
-                startActivity(intent);
                 break;
             case  R.id.person_setting:
                 intent = new Intent(getContext(), MySettingActivity.class);
