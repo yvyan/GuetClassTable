@@ -1,6 +1,10 @@
 package top.yvyan.guettable;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Process;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -9,6 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.xiaomi.channel.commonutils.logger.LoggerInterface;
+import com.xiaomi.mipush.sdk.Logger;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +28,10 @@ import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity implements OnButtonClick {
+
+    public static final String APP_ID = "2882303761518881128";
+    public static final String APP_KEY = "5601888146128";
+    public static final String TAG = "MainActivityInfo";
 
     private BottomNavigationView bottomNavigationView;
     private ViewPagerAdapter viewPagerAdapter;
@@ -37,6 +48,25 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
             getSupportActionBar().hide();
         }
         setContentView(R.layout.activity_main);
+
+        if (shouldInit()) {
+            MiPushClient.registerPush(this, APP_ID, APP_KEY);
+        }
+        LoggerInterface newLogger = new LoggerInterface() {
+            @Override
+            public void setTag(String tag) {
+                // ignore
+            }
+            @Override
+            public void log(String content, Throwable t) {
+                Log.d(TAG, content, t);
+            }
+            @Override
+            public void log(String content) {
+                Log.d(TAG, content);
+            }
+        };
+        Logger.setLogger(this, newLogger);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemReselectedListener);
@@ -107,4 +137,24 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
             return false;
         }
     };
+
+    private boolean shouldInit() {
+
+        //通过ActivityManager我们可以获得系统里正在运行的activities
+        //包括进程(Process)等、应用程序/包、服务(Service)、任务(Task)信息。
+        ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
+        List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+        String mainProcessName = getPackageName();
+
+        //获取本App的唯一标识
+        int myPid = Process.myPid();
+        //利用一个增强for循环取出手机里的所有进程
+        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
+            //通过比较进程的唯一标识和包名判断进程里是否存在该App
+            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
