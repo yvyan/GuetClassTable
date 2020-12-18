@@ -9,15 +9,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="109dp">
 
         <ImageView
             android:id="@+id/about_back"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
@@ -31,7 +31,7 @@
             android:layout_marginLeft="50dp"
             android:text="关于"
             android:textColor="@color/app_white"
-            android:textSize="20dp"
+            android:textSize="18dp"
             app:layout_constraintStart_toStartOf="@id/about_back"
             app:layout_constraintTop_toTopOf="parent" />
 
