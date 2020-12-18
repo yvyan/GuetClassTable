@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/more_head"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -19,7 +19,7 @@
             android:layout_marginLeft="25dp"
             android:text="更多功能"
             android:textColor="@color/app_white"
-            android:textSize="20dp"
+            android:textSize="18dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

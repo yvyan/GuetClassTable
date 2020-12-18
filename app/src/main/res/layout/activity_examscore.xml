@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/more_head"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="109dp">
@@ -18,8 +18,8 @@
         <ImageView
             android:onClick="onClick"
             android:id="@+id/examscore_back"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             app:tint="@color/app_white"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
@@ -28,7 +28,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:text="考试成绩"
             android:textColor="@color/app_white"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         <TextView
             android:id="@+id/examscore_state"
             android:layout_width="wrap_content"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:text="正在更新"
             android:textColor="@color/app_white"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                 android:text="课程"
                 android:textColor="@color/app_white"
                 android:gravity="center"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/examScoreFinal"
@@ -99,7 +99,7 @@
                 android:text="考核"
                 android:textColor="@color/app_white"
                 android:gravity="center"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/examScoreUsually"
@@ -109,7 +109,7 @@
                 android:text="实验"
                 android:textColor="@color/app_white"
                 android:gravity="center"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/examScoreExperiment"
@@ -119,7 +119,7 @@
                 android:text="平时"
                 android:textColor="@color/app_white"
                 android:gravity="center"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/examScoreCheck"
@@ -129,7 +129,7 @@
                 android:text="成绩"
                 android:textColor="@color/app_white"
                 android:gravity="center"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
         </LinearLayout>
 
