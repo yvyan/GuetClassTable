@@ -142,7 +142,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="陈子昌"
+                android:text="就这 Casual"
                 android:textSize="20dp" />
 
             <TextView
