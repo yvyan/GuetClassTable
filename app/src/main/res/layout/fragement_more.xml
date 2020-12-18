@@ -593,7 +593,7 @@
                                         android:layout_below="@+id/more_url_staff_picture"
                                         android:layout_centerInParent="true"
                                         android:layout_weight="1"
-                                        android:text="考试安排"
+                                        android:text="智慧学工"
                                         android:textSize="13dp" />
 
                                 </RelativeLayout>

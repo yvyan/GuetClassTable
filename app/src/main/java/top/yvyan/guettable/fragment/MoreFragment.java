@@ -82,6 +82,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         Intent intent;
+        Intent webIntent = new Intent();
+        webIntent.setAction("android.intent.action.VIEW");
+        Uri uri;
         switch (view.getId()) {
             case R.id.more_test_schedule:
                 intent = new Intent(getContext(), ExamActivity.class);
@@ -101,12 +104,30 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
 
+            case R.id.more_url_bkjw:
+                uri = Uri.parse(getContext().getResources().getString(R.string.url_bkjw));
+                webIntent.setData(uri);
+                startActivity(webIntent);
+                break;
+            case R.id.more_url_vpn:
+                uri = Uri.parse(getContext().getResources().getString(R.string.url_vpn));
+                webIntent.setData(uri);
+                startActivity(webIntent);
+                break;
+            case R.id.more_url_campus:
+                uri = Uri.parse(getContext().getResources().getString(R.string.smart_campus));
+                webIntent.setData(uri);
+                startActivity(webIntent);
+                break;
+            case R.id.more_url_staff:
+                uri = Uri.parse(getContext().getResources().getString(R.string.url_xsgl));
+                webIntent.setData(uri);
+                startActivity(webIntent);
+                break;
             case R.id.more_url_more:
-                Uri uri = Uri.parse(getContext().getResources().getString(R.string.guet_yvyan_top));
-                intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                intent.setData(uri);
-                startActivity(intent);
+                uri = Uri.parse(getContext().getResources().getString(R.string.guet_yvyan_top));
+                webIntent.setData(uri);
+                startActivity(webIntent);
                 break;
 
             case R.id.more_evaluating_teachers:

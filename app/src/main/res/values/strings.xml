@@ -44,6 +44,10 @@
     <string name="lan_save_avg_teacher_data">http://172.16.13.22/student/SaveJxpg</string>
     <string name="lan_commit_avg_teacher_data">http://172.16.13.22/student/SaveJxpgJg/1</string>
 
+    <string name="smart_campus">http://icampus.guet.edu.cn/</string>
+    <string name="url_vpn">https://v.guet.edu.cn/</string>
+    <string name="url_bkjw">http://172.16.13.22/?mCode=000708</string>
+    <string name="url_xsgl">https://xsgl.guet.edu.cn/</string>
     <string name="guet_yvyan_top">http://guet.yvyan.top/</string>
     <string name="downloadApp_url">https://cloud.yvyan.top/index.php/s/mzF5nkCLfikHnjs</string>
     <string name="privacy_url">http://privacy.guet.yvyan.top/</string>
