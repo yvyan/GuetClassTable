@@ -20,6 +20,7 @@ import top.yvyan.guettable.MySettingActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
 import top.yvyan.guettable.ShareActivity;
+import top.yvyan.guettable.WebViewActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.util.AppUtil;
@@ -50,6 +51,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private View share;
     private View update;
     private View about;
+    private View privacy;
 
     private AccountData accountData;
     private GeneralData generalData;
@@ -109,6 +111,8 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         update.setOnClickListener(this);
         about = view.findViewById(R.id.person_about);
         about.setOnClickListener(this);
+        privacy = view.findViewById(R.id.person_privacy);
+        privacy.setOnClickListener(this);
     }
 
     public void updateView() {
@@ -171,6 +175,12 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.person_about:
                 intent = new Intent(getContext(), AboutActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.person_privacy:
+                intent = new Intent(getContext(), WebViewActivity.class);
+                intent.putExtra(WebViewActivity.WEB_URL, getContext().getResources().getString(R.string.privacy_url));
+                intent.putExtra(WebViewActivity.WEB_TITLE, "隐私政策");
                 startActivity(intent);
                 break;
             default:
