@@ -383,4 +383,76 @@ public class LAN {
                 null
         );
     }
+
+    /**
+     * 同步有效课程
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        操作结果
+     */
+    public static HttpConnectionAndCode updateEffectiveCredits(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Post.post(
+                resources.getString(R.string.lan_update_effective_credits),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_student_referer),
+                null,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_get_table_success_contain_response_text),
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 获取有效学分
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        操作结果
+     */
+    public static HttpConnectionAndCode getEffectiveCredits(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Get.get(
+                resources.getString(R.string.lan_get_effective_credits),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_table_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_table_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 获取计划课程
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        操作结果
+     */
+    public static HttpConnectionAndCode getPlannedCourses(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Get.get(
+                resources.getString(R.string.lan_get_planned_credits),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_table_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_table_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
 }

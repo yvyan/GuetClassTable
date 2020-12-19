@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".moreFun.ExamActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".moreFun.PlannedCoursesActivity">
 
     <RelativeLayout
-        android:id="@+id/more_head"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/colorPrimary"
@@ -16,103 +15,82 @@
         tools:layout_editor_absoluteX="109dp">
 
         <ImageView
-            android:onClick="onClick"
-            android:id="@+id/experimentscore_back"
+            android:id="@+id/planned_course_back"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:tint="@color/app_white"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/back" />
+            android:onClick="onClick"
+            android:src="@drawable/back"
+            app:tint="@color/app_white" />
 
         <TextView
+            android:id="@+id/planned_course_title"
             android:layout_width="wrap_content"
-            android:textSize="18dp"
-            android:text="实验成绩"
-            android:textColor="@color/app_white"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="50dp"
+            android:text="计划课程"
+            android:textColor="@color/app_white"
+            android:textSize="18dp"
+            app:layout_constraintStart_toStartOf="@id/planned_course_back"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/experimentscore_state"
+            android:id="@+id/planned_course_state"
             android:layout_width="wrap_content"
-            android:textSize="18dp"
-            android:text="正在更新"
-            android:textColor="@color/app_white"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="160dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="正在更新"
+            android:textColor="@color/app_white"
+            android:textSize="18dp"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:onClick="showPopMenu"
-            android:id="@+id/experiment_score_more"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/attribute"/>
 
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/experimentscore_not_find"
+        android:id="@+id/planned_course_loading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="没有查询到符合条件的考试成绩信息!"
-        android:textSize="25dp"/>
+        android:text="正常查询，请稍后！"
+        android:textSize="18dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/experimentscore_info_view"
+        android:id="@+id/planned_course_info_view"
         android:layout_marginBottom="8dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/experimentScoreName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="实验名称"
+                android:text="课程"
                 android:textColor="@color/app_white"
                 android:gravity="center"
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/experimentScoreCheck"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
-                android:text="考核"
+                android:text="学分"
                 android:textColor="@color/app_white"
                 android:gravity="center"
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/experimentScoreUsually"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:text="平时"
-                android:textColor="@color/app_white"
-                android:gravity="center"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/experimentScoreFinal"
+                android:id="@+id/planned_course_degree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
@@ -121,15 +99,14 @@
                 android:gravity="center"
                 android:textSize="18dp" />
 
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/experimentscore_info_recycler_view"
+            android:id="@+id/planned_course_info_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </LinearLayout>
-
-
 
 </LinearLayout>

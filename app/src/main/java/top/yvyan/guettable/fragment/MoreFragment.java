@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import top.yvyan.guettable.WebViewActivity;
 import top.yvyan.guettable.moreFun.AverageTeacherActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
+import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
@@ -99,6 +99,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
 
+            case R.id.more_plan_courses:
+                intent = new Intent(getContext(), PlannedCoursesActivity.class);
+                startActivity(intent);
+                break;
             case R.id.more_cet:
                 intent = new Intent(getContext(), CETActivity.class);
                 startActivity(intent);

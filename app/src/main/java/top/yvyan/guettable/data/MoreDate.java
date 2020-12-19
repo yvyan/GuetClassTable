@@ -3,6 +3,7 @@ package top.yvyan.guettable.data;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.ArrayAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
+import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.util.SerializeUtil;
 
 public class MoreDate {
@@ -22,16 +24,20 @@ public class MoreDate {
     private static final String CET_STRING = "CET_STRING";
     private static final String EXAM_SCORE_STRING = "EXAM_SCORE_STRING";
     private static final String EXPERIMENT_SCORE_STRING = "EXPERIMENT_SCORE_STRING";
+    private static final String PLANNED_COURSE_STRING = "plannedCourseString";
 
     private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     private List<ExamBean> examBeans;
     private List<CETBean> cetBeans;
     private List<ExamScoreBean> examScoreBeans;
     private List<ExperimentScoreBean> experimentScoreBeans;
+    private List<PlannedCourseBean> plannedCourseBeans;
 
     private MoreDate(Activity activity) {
         sharedPreferences = activity.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         load();
     }
 
@@ -40,11 +46,13 @@ public class MoreDate {
         CETBean[] cetBeans1 = null;
         ExamScoreBean[] examScoreBeans1 = null;
         ExperimentScoreBean[] experimentScoreBeans1 = null;
+        PlannedCourseBean[] plannedCourseBeans1 = null;
 
         String examString = sharedPreferences.getString(EXAM_STRING, null);
         String cetString = sharedPreferences.getString(CET_STRING, null);
         String examScoreString = sharedPreferences.getString(EXAM_SCORE_STRING,null);
         String experimentScoreString = sharedPreferences.getString(EXPERIMENT_SCORE_STRING,null);
+        String plannedCourseString = sharedPreferences.getString(PLANNED_COURSE_STRING, null);
 
         if (examString != null) {
             try {
@@ -94,6 +102,18 @@ public class MoreDate {
                 experimentScoreBeans = Arrays.asList(experimentScoreBeans1);
             }
         }
+        if (plannedCourseString != null) {
+            try {
+                plannedCourseBeans1 = (PlannedCourseBean[]) SerializeUtil.serializeToObject(plannedCourseString);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (plannedCourseBeans1 != null) {
+                plannedCourseBeans = Arrays.asList(plannedCourseBeans1);
+            }
+        }
     }
 
     public static MoreDate newInstance(Activity activity) {
@@ -126,7 +146,6 @@ public class MoreDate {
             e.printStackTrace();
         }
         if (examString != null) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(EXAM_STRING, examString);
             editor.apply();
         }
@@ -155,7 +174,6 @@ public class MoreDate {
             e.printStackTrace();
         }
         if (cetString != null) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(CET_STRING, cetString);
             editor.apply();
         }
@@ -184,7 +202,6 @@ public class MoreDate {
             e.printStackTrace();
         }
         if (examScoreString != null) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(EXAM_SCORE_STRING, examScoreString);
             editor.apply();
         }
@@ -213,8 +230,34 @@ public class MoreDate {
             e.printStackTrace();
         }
         if (experimentScoreString != null) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(EXPERIMENT_SCORE_STRING, experimentScoreString);
+            editor.apply();
+        }
+    }
+
+    public List<PlannedCourseBean> getPlannedCourseBeans() {
+        if (plannedCourseBeans == null) {
+            plannedCourseBeans = new ArrayList<>();
+        }
+        return plannedCourseBeans;
+    }
+
+    public void setPlannedCourseBeans(List<PlannedCourseBean> plannedCourseBeans) {
+        this.plannedCourseBeans = plannedCourseBeans;
+        savePlannedCourseBeans();
+    }
+
+    private void savePlannedCourseBeans() {
+        String plannedCourseString = null;
+        PlannedCourseBean[] plannedCourseBeans1 = new PlannedCourseBean[plannedCourseBeans.size()];
+        plannedCourseBeans.toArray(plannedCourseBeans1);
+        try {
+            plannedCourseString = SerializeUtil.serialize(plannedCourseBeans1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (plannedCourseString != null) {
+            editor.putString(PLANNED_COURSE_STRING, plannedCourseString);
             editor.apply();
         }
     }
