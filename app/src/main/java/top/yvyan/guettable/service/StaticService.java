@@ -49,8 +49,9 @@ public class StaticService {
 
     /**
      * 刷新验证码(后台)
+     *
      * @param context context
-     * @return        cookie
+     * @return cookie
      */
     public static String changeCode(Context context, StringBuilder cookie_builder) {
         final HttpConnectionAndCode res = LAN.checkCode(context);
@@ -64,15 +65,16 @@ public class StaticService {
 
     /**
      * 自动登录
-     * @param context  context
-     * @param account  学号
-     * @param password 密码
+     *
+     * @param context        context
+     * @param account        学号
+     * @param password       密码
      * @param cookie_builder cookie
-     * @return         state记录当前状态
-     *                 0 : 登录成功
-     *                -1 : 密码错误
-     *                -2 : 网络错误/未知错误
-     *                -3 : 验证码连续错误
+     * @return state记录当前状态
+     * 0 : 登录成功
+     * -1 : 密码错误
+     * -2 : 网络错误/未知错误
+     * -3 : 验证码连续错误
      */
     public static int autoLogin(Context context, String account, String password, StringBuilder cookie_builder) {
         int state = 1;
@@ -100,9 +102,10 @@ public class StaticService {
 
     /**
      * 获取基本的学生信息
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        基本学生信息
+     * @return 基本学生信息
      */
     public static StudentInfo getStudentInfo(Context context, String cookie) {
         HttpConnectionAndCode studentInfo = LAN.studentInfo(context, cookie);
@@ -115,10 +118,11 @@ public class StaticService {
 
     /**
      * 获取理论课程
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期
-     * @return        理论课程列表
+     * @return 理论课程列表
      */
     public static List<CourseBean> getClass(Context context, String cookie, String term) {
         HttpConnectionAndCode classTable = LAN.getClassTable(context, cookie, term);
@@ -136,10 +140,11 @@ public class StaticService {
 
     /**
      * 获取课内实验
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期
-     * @return        课内实验列表
+     * @return 课内实验列表
      */
     public static List<CourseBean> getLab(Context context, String cookie, String term) {
         HttpConnectionAndCode labTable = LAN.getLabTable(context, cookie, term);
@@ -161,10 +166,11 @@ public class StaticService {
 
     /**
      * 获取考试安排
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期
-     * @return        考试安排列表
+     * @return 考试安排列表
      */
     public static List<ExamBean> getExam(Context context, String cookie, String term) {
         List<ExamBean> examBeans = new ArrayList<>();
@@ -182,9 +188,10 @@ public class StaticService {
 
     /**
      * 获取等级考试成绩
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        等级考试成绩列表
+     * @return 等级考试成绩列表
      */
     public static List<CETBean> getCET(Context context, String cookie) {
         List<CETBean> cetBeans = new ArrayList<>();
@@ -202,9 +209,10 @@ public class StaticService {
 
     /**
      * 获取普通考试成绩
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        普通考试成绩列表
+     * @return 普通考试成绩列表
      */
     public static List<ExamScoreBean> getExamScore(Context context, String cookie) {
         List<ExamScoreBean> examScoreBeans = new ArrayList<>();
@@ -222,9 +230,10 @@ public class StaticService {
 
     /**
      * 获取实验考试成绩
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        验考试成绩列表
+     * @return 验考试成绩列表
      */
     public static List<ExperimentScoreBean> getExperimentScore(Context context, String cookie) {
         List<ExperimentScoreBean> experimentScoreBeans = new ArrayList<>();
@@ -242,9 +251,10 @@ public class StaticService {
 
     /**
      * 获取当前学期
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        当前学期字符串(例:2020-2021_1)
+     * @return 当前学期字符串(例 : 2020 - 2021_1)
      */
     public static String getThisTerm(Context context, String cookie) {
         HttpConnectionAndCode termInfo = LAN.getThisTerm(context, cookie);
@@ -259,10 +269,11 @@ public class StaticService {
 
     /**
      * 获取评价教师列表
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期（格式：2020-2021_1，不输入默认当前学期）
-     * @return        教师列表
+     * @return 教师列表
      */
     public static List<AvgTeacher> getTeacherList(Context context, String cookie, String term) {
         if (term == null) {
@@ -282,10 +293,11 @@ public class StaticService {
 
     /**
      * 获取某个老师的评价表单
+     *
      * @param context    context
      * @param cookie     登录后的cookie
      * @param avgTeacher 教师信息类
-     * @return           老师评价表单
+     * @return 老师评价表单
      */
     public static List<AvgTeacherFormGet> getAvgTeacherForm(Context context, String cookie, AvgTeacher avgTeacher) {
         HttpConnectionAndCode httpConnectionAndCode = LAN.getAvgTeacherForm(context, cookie, avgTeacher.getTerm(), avgTeacher.getCourseno(), avgTeacher.getTeacherno());
@@ -299,10 +311,11 @@ public class StaticService {
 
     /**
      * 提交老师评价表单
+     *
      * @param context             context
      * @param cookie              登录后的cookie
      * @param avgTeacherFormSends 评价表单集合
-     * @return                    结果
+     * @return 结果
      */
     public static String saveTeacherForm(Context context, String cookie, List<AvgTeacherFormSend> avgTeacherFormSends) {
         String postBody = new Gson().toJson(avgTeacherFormSends);
@@ -315,6 +328,7 @@ public class StaticService {
 
     /**
      * 提交评价老师总评
+     *
      * @param context             context
      * @param cookie              登录后的cookie
      * @param avgTeacherFormSends 评价表单
@@ -322,7 +336,7 @@ public class StaticService {
      * @param courseName          课程名称
      * @param teacherName         教师名称
      * @param teacherNumber       教师编号
-     * @return                    操作结果
+     * @return 操作结果
      */
     public static String commitTeacherForm(Context context, String cookie, List<AvgTeacherFormSend> avgTeacherFormSends, String studentId, String courseName, String teacherName, String teacherNumber) {
         AvgTeacherFormSend avgTeacherFormSend = avgTeacherFormSends.get(0);
@@ -345,14 +359,15 @@ public class StaticService {
 
     /**
      * 自动评价一个教师
+     *
      * @param context    context
      * @param cookie     登录后的cookie
      * @param avgTeacher 教师信息类
      * @param number     学号
-     * @return           0 : 操作成功
-     *                  -1 : 获取评价表单失败
-     *                  -2 : 提交评价表单失败
-     *                  -3 : 提交总评失败
+     * @return 0 : 操作成功
+     * -1 : 获取评价表单失败
+     * -2 : 提交评价表单失败
+     * -3 : 提交总评失败
      */
     public static int averageTeacher(Context context, String cookie, AvgTeacher avgTeacher, String number) {
         List<AvgTeacherFormGet> avgTeacherFormGets = getAvgTeacherForm(context, cookie, avgTeacher);
@@ -378,9 +393,10 @@ public class StaticService {
 
     /**
      * 获取有效学分
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        有效学分列表
+     * @return 有效学分列表
      */
     public static List<EffectiveCredit> getEffectiveCredits(Context context, String cookie) {
         HttpConnectionAndCode updateResult = LAN.updateEffectiveCredits(context, cookie);
@@ -399,9 +415,10 @@ public class StaticService {
 
     /**
      * 获取计划课程
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        计划课程列表
+     * @return 计划课程列表
      */
     public static List<PlannedCourse> getPlannedCourses(Context context, String cookie) {
         HttpConnectionAndCode updateResult = LAN.updateEffectiveCredits(context, cookie);
@@ -420,15 +437,16 @@ public class StaticService {
 
     /**
      * 获取计划课程(含限选、任选和通识)
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        计划课程列表(含限选、任选和通识)
+     * @return 计划课程列表(含限选 、 任选和通识)
      */
     public static List<PlannedCourseBean> getPlannedCourseBeans(Context context, String cookie) {
         List<EffectiveCredit> effectiveCredits = getEffectiveCredits(context, cookie);
         List<PlannedCourse> plannedCourses = getPlannedCourses(context, cookie);
         List<PlannedCourseBean> plannedCourseBeans = new ArrayList<>();
-        if (effectiveCredits != null &&  plannedCourses != null) {
+        if (effectiveCredits != null && plannedCourses != null) {
             for (PlannedCourse plannedCourse : plannedCourses) {
                 plannedCourseBeans.add(plannedCourse.toPlannedCourseBean());
             }
@@ -442,6 +460,68 @@ public class StaticService {
             return plannedCourseBeans;
         } else {
             return null;
+        }
+    }
+
+    /**
+     * 计算学分绩
+     *
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @param year    学年(例：2020-2021,null:入学至今)
+     * @return
+     */
+    public static float calculateGrades(Context context, String cookie, String year) {
+        List<ExamScoreBean> examScoreBeans = getExamScore(context, cookie);
+        List<PlannedCourse> plannedCourses = getPlannedCourses(context, cookie);
+        if (examScoreBeans != null && plannedCourses != null) {
+            //筛选年度
+            List<ExamScoreBean> examScoreBeansSelect1 = new ArrayList<>();
+            for (ExamScoreBean examScoreBean : examScoreBeans) {
+                if (year != null) {
+                    if (examScoreBean.getTerm().contains(year)) {
+                        examScoreBeansSelect1.add(examScoreBean);
+                    }
+                } else {
+                    examScoreBeansSelect1 = examScoreBeans;
+                }
+            }
+            //筛选重复成绩
+            List<ExamScoreBean> examScoreBeansSelect2 = new ArrayList<>();
+            List<String> cnos = new ArrayList<>();
+            Collections.sort(examScoreBeansSelect1, (examScoreBean12, t1) -> examScoreBean12.getCno().compareTo(t1.getCno()));
+            int i = 0;
+            for (ExamScoreBean examScoreBean1 : examScoreBeansSelect1) {
+                if (!cnos.contains(examScoreBean1.getCno())) {
+                    cnos.add(examScoreBean1.getCno());
+                    examScoreBeansSelect2.add(examScoreBean1);
+                    i++;
+                } else {
+                    if (examScoreBeansSelect2.get(i - 1).getTotalScore() < examScoreBean1.getTotalScore()) {
+                        examScoreBeansSelect2.get(i - 1).setTotalScore(examScoreBean1.getTotalScore()); //取最高总成绩
+                    }
+                }
+            }
+            //筛选有效成绩
+            float credits = 0;
+            float total = 0;
+            List<String> cnos1 = new ArrayList<>();
+            for (PlannedCourse plannedCourse : plannedCourses) {
+                cnos1.add(plannedCourse.getCourseid());
+            }
+            for (ExamScoreBean examScoreBean2 : examScoreBeansSelect2) {
+                if (cnos1.contains(examScoreBean2.getCno()) || examScoreBean2.getType().equals("XZ")) {
+                    credits += examScoreBean2.getCredit();
+                    total += (examScoreBean2.getCredit() * examScoreBean2.getTotalScore());
+                }
+            }
+            if (credits == 0) {
+                return 100;
+            } else {
+                return total / credits;
+            }
+        } else {
+            return -1;
         }
     }
 }
