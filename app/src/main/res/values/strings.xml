@@ -1,14 +1,5 @@
 <resources>
     <string name="app_name">桂电课程表</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <!--  数据库  -->
-    <string name="data_General_table_name">tableGeneral</string>
-
-    <!-- 老版本教务系统 -->
-    <string name="url_login">http://bkjw2.guet.edu.cn/student/public/login.asp</string>
-    <string name="url_course">http://bkjw2.guet.edu.cn/student/coursetable.asp</string>
-    <string name="url_info">http://bkjw2.guet.edu.cn/student/info.asp</string>
 
     <!-- 新版教务系统 -->
     <string name="lan_get_checkcode_url">http://172.16.13.22/login/GetValidateCode?id=0.7060164569272753</string>
@@ -43,6 +34,11 @@
     <string name="lan_get_avg_thacher_data">http://172.16.13.22/student/jxpgdata</string>
     <string name="lan_save_avg_teacher_data">http://172.16.13.22/student/SaveJxpg</string>
     <string name="lan_commit_avg_teacher_data">http://172.16.13.22/student/SaveJxpgJg/1</string>
+
+    <!--毕业课程-->
+    <string name="lan_update_effective_credits">http://172.16.13.22/student/genyxxf</string>
+    <string name="lan_get_effective_credits">http://172.16.13.22/student/Getyxxf</string>
+    <string name="lan_get_planned_credits">http://172.16.13.22/student/getplancj</string>
 
     <string name="smart_campus">http://icampus.guet.edu.cn/</string>
     <string name="url_vpn">https://v.guet.edu.cn/</string>

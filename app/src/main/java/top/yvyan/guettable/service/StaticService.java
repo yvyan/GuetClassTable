@@ -9,6 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import top.yvyan.guettable.Gson.AvgTeacher;
@@ -20,6 +22,8 @@ import top.yvyan.guettable.Gson.CET;
 import top.yvyan.guettable.Gson.CETOuter;
 import top.yvyan.guettable.Gson.ClassTable;
 import top.yvyan.guettable.Gson.ClassTableOuter;
+import top.yvyan.guettable.Gson.EffectiveCredit;
+import top.yvyan.guettable.Gson.EffectiveCreditsOuter;
 import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamInfoOuter;
 import top.yvyan.guettable.Gson.ExamScore;
@@ -28,6 +32,8 @@ import top.yvyan.guettable.Gson.ExperimentScore;
 import top.yvyan.guettable.Gson.ExperimentScoreOuter;
 import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.LabTableOuter;
+import top.yvyan.guettable.Gson.PlannedCourse;
+import top.yvyan.guettable.Gson.PlannedCoursesOuter;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
@@ -36,6 +42,7 @@ import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
+import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.service.fetch.LAN;
 
 public class StaticService {
@@ -366,6 +373,75 @@ public class StaticService {
             }
         } else {
             return -2;
+        }
+    }
+
+    /**
+     * 获取有效学分
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        有效学分列表
+     */
+    public static List<EffectiveCredit> getEffectiveCredits(Context context, String cookie) {
+        HttpConnectionAndCode updateResult = LAN.updateEffectiveCredits(context, cookie);
+        if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
+            HttpConnectionAndCode getResult = LAN.getEffectiveCredits(context, cookie);
+            if (getResult.code == 0) {
+                EffectiveCreditsOuter effectiveCreditsOuter = new Gson().fromJson(getResult.comment, EffectiveCreditsOuter.class);
+                return new ArrayList<>(effectiveCreditsOuter.getData());
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取计划课程
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        计划课程列表
+     */
+    public static List<PlannedCourse> getPlannedCourses(Context context, String cookie) {
+        HttpConnectionAndCode updateResult = LAN.updateEffectiveCredits(context, cookie);
+        if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
+            HttpConnectionAndCode getResult = LAN.getPlannedCourses(context, cookie);
+            if (getResult.code == 0) {
+                PlannedCoursesOuter plannedCoursesOuter = new Gson().fromJson(getResult.comment, PlannedCoursesOuter.class);
+                return new ArrayList<>(plannedCoursesOuter.getData());
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取计划课程(含限选、任选和通识)
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        计划课程列表(含限选、任选和通识)
+     */
+    public static List<PlannedCourseBean> getPlannedCourseBeans(Context context, String cookie) {
+        List<EffectiveCredit> effectiveCredits = getEffectiveCredits(context, cookie);
+        List<PlannedCourse> plannedCourses = getPlannedCourses(context, cookie);
+        List<PlannedCourseBean> plannedCourseBeans = new ArrayList<>();
+        if (effectiveCredits != null &&  plannedCourses != null) {
+            for (PlannedCourse plannedCourse : plannedCourses) {
+                plannedCourseBeans.add(plannedCourse.toPlannedCourseBean());
+            }
+            Collections.sort(effectiveCredits, (effectiveCredit, t1) -> effectiveCredit.getStp().compareTo(t1.getStp()));
+            for (EffectiveCredit effectiveCredit : effectiveCredits) {
+                String stp = effectiveCredit.getStp();
+                if (effectiveCredit.getCname() != null && !"BG".equals(stp) && !"BJ".equals(stp) && !"BS".equals(stp) && !"BT".equals(stp)) {
+                    plannedCourseBeans.add(effectiveCredit.toPlannedCourseBean());
+                }
+            }
+            return plannedCourseBeans;
+        } else {
+            return null;
         }
     }
 }
