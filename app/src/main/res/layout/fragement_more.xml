@@ -281,46 +281,6 @@
                                 android:layout_weight="1">
 
                                 <RelativeLayout
-                                    android:id="@+id/more_graduation_requirement"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_marginTop="6dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:id="@+id/more_graduation_requirement_picture"
-                                        android:layout_width="34dp"
-                                        android:layout_height="34dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:layout_weight="1"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_biyeguanli" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_graduation_requirement_picture"
-                                        android:layout_centerInParent="true"
-                                        android:layout_weight="1"
-                                        android:text="毕业要求"
-                                        android:textSize="13dp" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_weight="1">
-
-                                <RelativeLayout
                                     android:id="@+id/more_plan_courses"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -382,6 +342,46 @@
                                         android:layout_centerInParent="true"
                                         android:layout_weight="1"
                                         android:text="CET成绩"
+                                        android:textSize="13dp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:id="@+id/more_graduation_requirement"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/more_graduation_requirement_picture"
+                                        android:layout_width="34dp"
+                                        android:layout_height="34dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_weight="1"
+                                        android:baselineAlignBottom="false"
+                                        android:src="@drawable/m_biyeguanli" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/more_graduation_requirement_picture"
+                                        android:layout_centerInParent="true"
+                                        android:layout_weight="1"
+                                        android:text="毕业要求"
                                         android:textSize="13dp" />
 
                                 </RelativeLayout>

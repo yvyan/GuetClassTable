@@ -2,6 +2,7 @@ package top.yvyan.guettable.service;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -10,7 +11,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import top.yvyan.guettable.Gson.AvgTeacher;
@@ -469,7 +469,7 @@ public class StaticService {
      * @param context context
      * @param cookie  登录后的cookie
      * @param year    学年(例：2020-2021,null:入学至今)
-     * @return
+     * @return        学分绩
      */
     public static float calculateGrades(Context context, String cookie, String year) {
         List<ExamScoreBean> examScoreBeans = getExamScore(context, cookie);
@@ -511,8 +511,10 @@ public class StaticService {
             }
             for (ExamScoreBean examScoreBean2 : examScoreBeansSelect2) {
                 if (cnos1.contains(examScoreBean2.getCno()) || examScoreBean2.getType().equals("XZ")) {
-                    credits += examScoreBean2.getCredit();
-                    total += (examScoreBean2.getCredit() * examScoreBean2.getTotalScore());
+                    if (examScoreBean2.getTotalScore() >= 60) {
+                        credits += examScoreBean2.getCredit();
+                        total += (examScoreBean2.getCredit() * examScoreBean2.getTotalScore());
+                    }
                 }
             }
             if (credits == 0) {

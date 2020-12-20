@@ -63,7 +63,7 @@ public class MoreFunService {
      * 22 : 课内实验更新成功
      * 23 : 考试安排更新成功
      *
-     * 91 : 登录状态检查
+     * 91 : 尝试更新
      * 92 : 正在登录
      * 93 : 正在更新
      *
@@ -81,7 +81,7 @@ public class MoreFunService {
                 hint = "网络错误";
                 break;
             case 91:
-                hint = "登录状态检查";
+                hint = "尝试更新";
                 break;
             case 92:
                 hint = "正在登录";

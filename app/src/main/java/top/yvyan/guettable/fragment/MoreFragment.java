@@ -56,6 +56,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
         graduationRequirement = view.findViewById(R.id.more_graduation_requirement);
         graduationRequirement.setOnClickListener(this);
+        graduationRequirement.setVisibility(View.GONE);
         planCourses = view.findViewById(R.id.more_plan_courses);
         planCourses.setOnClickListener(this);
         cet = view.findViewById(R.id.more_cet);
@@ -76,6 +77,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         evaluatingTeachers.setOnClickListener(this);
         evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
         evaluatingTextbooks.setOnClickListener(this);
+        evaluatingTextbooks.setVisibility(View.GONE);
 
         return view;
     }

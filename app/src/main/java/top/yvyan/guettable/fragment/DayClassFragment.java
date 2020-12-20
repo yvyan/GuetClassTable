@@ -28,6 +28,7 @@ import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
+import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.service.AutoUpdate;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.TimeUtil;
@@ -155,6 +156,10 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.day_test_scores:
                 intent = new Intent(getContext(), ExamScoreActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.day_credits:
+                intent = new Intent(getContext(), GradesActivity.class);
                 startActivity(intent);
                 break;
             default:

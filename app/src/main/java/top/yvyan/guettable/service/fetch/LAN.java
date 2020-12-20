@@ -216,7 +216,7 @@ public class LAN {
                 null,
                 null,
                 null,
-                null
+                10000
         );
     }
 
@@ -452,7 +452,7 @@ public class LAN {
                 null,
                 null,
                 null,
-                null
+                10000
         );
     }
 }

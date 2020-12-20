@@ -25,6 +25,7 @@ public class MoreDate {
     private static final String EXAM_SCORE_STRING = "EXAM_SCORE_STRING";
     private static final String EXPERIMENT_SCORE_STRING = "EXPERIMENT_SCORE_STRING";
     private static final String PLANNED_COURSE_STRING = "plannedCourseString";
+    private static final String GRADES_STRING = "gradesString";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -34,6 +35,7 @@ public class MoreDate {
     private List<ExamScoreBean> examScoreBeans;
     private List<ExperimentScoreBean> experimentScoreBeans;
     private List<PlannedCourseBean> plannedCourseBeans;
+    private float grades[];
 
     private MoreDate(Activity activity) {
         sharedPreferences = activity.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -53,13 +55,12 @@ public class MoreDate {
         String examScoreString = sharedPreferences.getString(EXAM_SCORE_STRING,null);
         String experimentScoreString = sharedPreferences.getString(EXPERIMENT_SCORE_STRING,null);
         String plannedCourseString = sharedPreferences.getString(PLANNED_COURSE_STRING, null);
+        String gradesString = sharedPreferences.getString(GRADES_STRING, null);
 
         if (examString != null) {
             try {
                 examBeans1 = (ExamBean[]) SerializeUtil.serializeToObject(examString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             if (examBeans1 != null) {
@@ -69,9 +70,7 @@ public class MoreDate {
         if (cetString != null) {
             try {
                 cetBeans1 = (CETBean[]) SerializeUtil.serializeToObject(cetString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             if (cetBeans1 != null) {
@@ -81,9 +80,7 @@ public class MoreDate {
         if(examScoreString != null) {
             try {
                 examScoreBeans1 = (ExamScoreBean[]) SerializeUtil.serializeToObject(examScoreString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             if (examScoreBeans1 != null) {
@@ -93,9 +90,7 @@ public class MoreDate {
         if(experimentScoreString != null) {
             try {
                 experimentScoreBeans1 = (ExperimentScoreBean[]) SerializeUtil.serializeToObject(experimentScoreString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             if (experimentScoreBeans1 != null) {
@@ -105,13 +100,18 @@ public class MoreDate {
         if (plannedCourseString != null) {
             try {
                 plannedCourseBeans1 = (PlannedCourseBean[]) SerializeUtil.serializeToObject(plannedCourseString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             if (plannedCourseBeans1 != null) {
                 plannedCourseBeans = Arrays.asList(plannedCourseBeans1);
+            }
+        }
+        if (gradesString != null) {
+            try {
+                grades = (float[]) SerializeUtil.serializeToObject(gradesString);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -258,6 +258,31 @@ public class MoreDate {
         }
         if (plannedCourseString != null) {
             editor.putString(PLANNED_COURSE_STRING, plannedCourseString);
+            editor.apply();
+        }
+    }
+
+    public float[] getGrades() {
+        if (grades == null) {
+            grades = new float[]{100, 100, 100, 100, 100, 100, 100};
+        }
+        return grades;
+    }
+
+    public void setGrades(float[] grades) {
+        this.grades = grades;
+        saveGrades();
+    }
+
+    private void saveGrades() {
+        String gradesString = null;
+        try {
+            gradesString = SerializeUtil.serialize(grades);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (gradesString != null) {
+            editor.putString(GRADES_STRING, gradesString);
             editor.apply();
         }
     }
