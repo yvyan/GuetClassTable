@@ -50,12 +50,268 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/grades_not_find"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="没有查询到等级考试成绩信息!"
-        android:textSize="25dp"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="45dp"
+                    android:text="入学至今"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:id="@+id/grades_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="200dp"
+                    android:text="100"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginLeft="53dp"
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="45dp"
+                    android:text="大一学年"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:id="@+id/grades_year_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="200dp"
+                    android:text="100"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginLeft="53dp"
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="45dp"
+                    android:text="大二学年"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:id="@+id/grades_year_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="200dp"
+                    android:text="100"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginLeft="53dp"
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="45dp"
+                    android:text="大三学年"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:id="@+id/grades_year_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="200dp"
+                    android:text="100"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginLeft="53dp"
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="45dp"
+                    android:text="大四学年"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:id="@+id/grades_year_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="200dp"
+                    android:text="100"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginLeft="53dp"
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="45dp"
+                    android:text="大五学年"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:id="@+id/grades_year_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="200dp"
+                    android:text="100"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginLeft="53dp"
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="45dp"
+                    android:text="大六学年"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:id="@+id/grades_year_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="200dp"
+                    android:text="100"
+                    android:textColor="@color/app_black"
+                    android:textSize="16dp"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginLeft="53dp"
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <ImageView
+
+                    android:layout_width="29dp"
+                    android:layout_height="29dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/p_bangzhu"
+                    android:layout_marginLeft="4dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="45dp"
+                    android:text="学分绩查询属于公测阶段，正在逐步优化，目前计算方法为只统计对应年度及格的必修和限选课程，若您有更好的计算方法，欢迎进群反馈，我们一起让它变好！"
+                    android:textSize="13dp"/>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
 
 </LinearLayout>
