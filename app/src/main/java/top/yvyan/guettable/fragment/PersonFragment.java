@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.xiaomi.market.sdk.UpdateStatus;
+import com.xiaomi.market.sdk.XiaomiUpdateAgent;
+
 import top.yvyan.guettable.AboutActivity;
 import top.yvyan.guettable.HelperActivity;
 import top.yvyan.guettable.LoginActivity;
@@ -20,6 +23,7 @@ import top.yvyan.guettable.MySettingActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
 import top.yvyan.guettable.ShareActivity;
+import top.yvyan.guettable.UpdateActivity;
 import top.yvyan.guettable.WebViewActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
@@ -46,7 +50,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private TextView person_week;
     private TextView profileVersion;
 
-//    private View info;
+    //    private View info;
     private View help;
     private View share;
     private View update;
@@ -100,9 +104,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         profileVersion = view.findViewById(R.id.tv_profile_version);
         profileVersion.setText(AppUtil.getAppVersionName(getContext()));
 
-//        info = view.findViewById(R.id.person_detail_info);
-//        info.setOnClickListener(this);
-
         help = view.findViewById(R.id.person_help);
         help.setOnClickListener(this);
         share = view.findViewById(R.id.person_share);
@@ -154,7 +155,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 accountData.logoff();
                 updateView();
                 break;
-            case  R.id.person_setting:
+            case R.id.person_setting:
                 intent = new Intent(getContext(), MySettingActivity.class);
                 startActivity(intent);
                 break;
@@ -167,11 +168,8 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.person_update:
-                Uri uri = Uri.parse(getContext().getResources().getString(R.string.downloadApp_url));
-                intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                intent.setData(uri);
-                startActivity(intent);
+                ToastUtil.showToast(getContext(), "正在检查更新……");
+                checkUpdate();
                 break;
             case R.id.person_about:
                 intent = new Intent(getContext(), AboutActivity.class);
@@ -194,5 +192,31 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 
     public void setOnButtonClick(OnButtonClick onButtonClick) {
         this.onButtonClick = onButtonClick;
+    }
+
+    private void checkUpdate() {
+        XiaomiUpdateAgent.update(getContext());
+        XiaomiUpdateAgent.setUpdateAutoPopup(false);
+        XiaomiUpdateAgent.setUpdateListener((i, updateResponse) -> {
+            switch (i) {
+                case UpdateStatus.STATUS_UPDATE: //有更新
+                    Intent intent = new Intent(getContext(), UpdateActivity.class);
+                    startActivity(intent);
+                    break;
+                case UpdateStatus.STATUS_NO_UPDATE:
+                    ToastUtil.showToast(getContext(), "已是最新版本！");
+                    break;
+                case UpdateStatus.STATUS_NO_NET:
+                    ToastUtil.showToast(getContext(), "网络未连接！");
+                    break;
+                case UpdateStatus.STATUS_FAILED:
+                    ToastUtil.showToast(getContext(), "服务器错误，请稍后重试！");
+                    break;
+                case UpdateStatus.STATUS_LOCAL_APP_FAILED:
+                    ToastUtil.showToast(getContext(), "应用信息检查失败，请前往QQ群重新！");
+                default:
+                    break;
+            }
+        });
     }
 }

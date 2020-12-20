@@ -1,7 +1,8 @@
 package top.yvyan.guettable.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleSupport;
@@ -26,18 +26,22 @@ import top.yvyan.guettable.data.ClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SettingData;
+import top.yvyan.guettable.moreFun.ExamActivity;
+import top.yvyan.guettable.moreFun.ExamScoreActivity;
+import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.service.AutoUpdate;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.TimeUtil;
+import top.yvyan.guettable.util.ToastUtil;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private static DayClassFragment dayClassFragment;
 
-    private ViewPager viewPager;
     private View view;
     private TextView textView;
     private RecyclerView recyclerView;
+    private View testSchedule, urlBkjw, testScores, credits;
 
     private DayClassAdapter dayClassAdapter;
     private AutoUpdate autoUpdate;
@@ -64,11 +68,22 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_day_class, container, false);
 
-        Log.d("test:", "create");
+        View tools = view.findViewById(R.id.day_class_tools);
+        if (! SettingData.newInstance(getContext()).isShowTools()) {
+            tools.setVisibility(View.GONE);
+        }
 
-        viewPager = view.findViewById(R.id.vp);
         textView = view.findViewById(R.id.day_class_hint);
         textView.setOnClickListener(this);
+        testSchedule = view.findViewById(R.id.day_test_schedule);
+        testSchedule.setOnClickListener(this);
+        urlBkjw = view.findViewById(R.id.day_url_bkjw);
+        urlBkjw.setOnClickListener(this);
+        testScores = view.findViewById(R.id.day_test_scores);
+        testScores.setOnClickListener(this);
+        credits = view.findViewById(R.id.day_credits);
+        credits.setOnClickListener(this);
+
         accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
         settingData = SettingData.newInstance(getActivity());
@@ -77,7 +92,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         if (accountData.getIsLogin()) {
             autoUpdate.start();
         }
-
         recyclerView = view.findViewById(R.id.day_class_detail_recycleView);
         updateView();
 
@@ -114,7 +128,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
         autoUpdate.updateView();
-        Log.d("test:", "start");
     }
 
     /**
@@ -123,13 +136,40 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     @Override
     public void onClick(View view) {
-        if ("去登录".equals(textView.getText())) {
-            if (onButtonClick != null) {
-                onButtonClick.onClick(3);
-            }
-            return;
+        Intent intent;
+        Intent webIntent = new Intent();
+        webIntent.setAction("android.intent.action.VIEW");
+        Uri uri;
+        switch (view.getId()) {
+            case R.id.day_class_hint:
+                if ("去登录".equals(textView.getText())) {
+                    if (onButtonClick != null) {
+                        onButtonClick.onClick(3);
+                    }
+                    return;
+                }
+                autoUpdate.update();
+                break;
+            case R.id.day_test_schedule:
+                intent = new Intent(getContext(), ExamActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.day_url_bkjw:
+                uri = Uri.parse(getContext().getResources().getString(R.string.url_bkjw));
+                webIntent.setData(uri);
+                startActivity(webIntent);
+                break;
+            case R.id.day_test_scores:
+                intent = new Intent(getContext(), ExamScoreActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.day_credits:
+                intent = new Intent(getContext(), GradesActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                ToastUtil.showToast(getContext(), "敬请期待！");
         }
-        autoUpdate.update();
     }
 
     public void updateText(String text) {

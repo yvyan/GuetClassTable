@@ -14,18 +14,25 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
+import com.xiaomi.market.sdk.UpdateStatus;
+import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.OnButtonClick;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
+import top.yvyan.guettable.util.NotificationUtil;
+import top.yvyan.guettable.util.TimeUtil;
 
 public class MainActivity extends AppCompatActivity implements OnButtonClick {
 
@@ -37,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
     private ViewPagerAdapter viewPagerAdapter;
     private ViewPager viewPager;
     private MenuItem menuItem;
+
+    private GeneralData generalData;
 
     private DayClassFragment dayClassFragment;
     private PersonFragment personFragment;
@@ -67,6 +76,13 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
             }
         };
         Logger.setLogger(this, newLogger);
+        //检查更新
+        generalData = GeneralData.newInstance(this);
+        if (SettingData.newInstance(this).isAppCheckUpdate()) {
+            if (generalData.getAppLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getAppLastUpdateTime()), new Date()) >= 3) {
+                checkUpdate();
+            }
+        }
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemReselectedListener);
@@ -106,6 +122,22 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         dayClassFragment.setOnButtonClick(this);
         personFragment = PersonFragment.newInstance();
         personFragment.setOnButtonClick(this);
+    }
+
+    private void checkUpdate() {
+        XiaomiUpdateAgent.update(this);
+        XiaomiUpdateAgent.setUpdateAutoPopup(false);
+        XiaomiUpdateAgent.setUpdateListener((i, updateResponse) -> {
+            switch (i) {
+                case UpdateStatus.STATUS_UPDATE: //有更新
+                    NotificationUtil.showMessage(this, UpdateActivity.class, "课程表有新版本了", updateResponse.updateLog, 101);
+                case UpdateStatus.STATUS_NO_UPDATE:
+                    generalData.setAppLastUpdateTime(System.currentTimeMillis());
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
 

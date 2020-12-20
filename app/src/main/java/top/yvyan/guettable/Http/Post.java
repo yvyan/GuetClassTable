@@ -86,8 +86,8 @@ public class Post {
             }else {
                 cnt.setInstanceFollowRedirects(redirect);
             }
-            cnt.setReadTimeout(4000);
-            cnt.setConnectTimeout(2000);
+            cnt.setReadTimeout(8000);
+            cnt.setConnectTimeout(4000);
             cnt.connect();
         } catch (Exception e) {
             e.printStackTrace();
