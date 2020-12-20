@@ -35,6 +35,10 @@ public class SettingData {
         return sharedPreferences.getBoolean(SettingFragment.SHOW_EXAM_ON_TABLE, true);
     }
 
+    public boolean isShowTools() {
+        return sharedPreferences.getBoolean(SettingFragment.SHOW_TOOLS_ON_DAY_CLASS, true);
+    }
+
     public int getClassLength() {
         return Integer.parseInt(sharedPreferences.getString(SettingFragment.CLASS_LENGTH, "60"));
     }

@@ -468,62 +468,80 @@ public class StaticService {
      *
      * @param context context
      * @param cookie  登录后的cookie
-     * @param year    学年(例：2020-2021,null:入学至今)
-     * @return        学分绩
+     * @param year    年级(例：2018)
+     * @return 学分绩
      */
-    public static float calculateGrades(Context context, String cookie, String year) {
-        List<ExamScoreBean> examScoreBeans = getExamScore(context, cookie);
-        List<PlannedCourse> plannedCourses = getPlannedCourses(context, cookie);
-        if (examScoreBeans != null && plannedCourses != null) {
-            //筛选年度
-            List<ExamScoreBean> examScoreBeansSelect1 = new ArrayList<>();
-            for (ExamScoreBean examScoreBean : examScoreBeans) {
-                if (year != null) {
-                    if (examScoreBean.getTerm().contains(year)) {
-                        examScoreBeansSelect1.add(examScoreBean);
+    public static float[] calculateGrades(Context context, String cookie, int year) {
+        List<ExamScoreBean> examScoreBeansGet = getExamScore(context, cookie);
+        List<PlannedCourse> plannedCoursesGet = getPlannedCourses(context, cookie);
+        float grades[] = new float[]{0, 0, 0, 0, 0, 0, 0};
+        List<String> terms = new ArrayList<>();
+        terms.add("");
+        for (int i = 0; i < 6; i++) {
+            terms.add((year + i) + "-" + (year + i + 1));
+        }
+        if (examScoreBeansGet != null && plannedCoursesGet != null) {
+            int y = 0;
+            for (String term : terms) {
+                List<ExamScoreBean> examScoreBeans = new ArrayList<>();
+                Collections.addAll(examScoreBeans, new ExamScoreBean[examScoreBeansGet.size()]);
+                Collections.copy(examScoreBeans, examScoreBeansGet);
+                List<PlannedCourse> plannedCourses = new ArrayList<>();
+                Collections.addAll(plannedCourses, new PlannedCourse[plannedCoursesGet.size()]);
+                Collections.copy(plannedCourses, plannedCoursesGet);
+
+                //筛选年度
+                List<ExamScoreBean> examScoreBeansSelect1 = new ArrayList<>();
+                for (ExamScoreBean examScoreBean : examScoreBeans) {
+                    if (term != null) {
+                        if (examScoreBean.getTerm().contains(term)) {
+                            examScoreBeansSelect1.add(examScoreBean);
+                        }
+                    } else {
+                        examScoreBeansSelect1 = examScoreBeans;
                     }
+                }
+                //筛选重复成绩
+                List<ExamScoreBean> examScoreBeansSelect2 = new ArrayList<>();
+                List<String> cnos = new ArrayList<>();
+                Collections.sort(examScoreBeansSelect1, (examScoreBean12, t1) -> examScoreBean12.getCno().compareTo(t1.getCno()));
+                int i = 0;
+                for (ExamScoreBean examScoreBean1 : examScoreBeansSelect1) {
+                    if (!cnos.contains(examScoreBean1.getCno())) {
+                        cnos.add(examScoreBean1.getCno());
+                        examScoreBeansSelect2.add(examScoreBean1);
+                        i++;
+                    } else {
+                        if (examScoreBeansSelect2.get(i - 1).getTotalScore() < examScoreBean1.getTotalScore()) {
+                            examScoreBeansSelect2.get(i - 1).setTotalScore(examScoreBean1.getTotalScore()); //取最高总成绩
+                        }
+                    }
+                }
+                //筛选有效成绩
+                float credits = 0;
+                float total = 0;
+                List<String> cnos1 = new ArrayList<>();
+                for (PlannedCourse plannedCourse : plannedCourses) {
+                    cnos1.add(plannedCourse.getCourseid());
+                }
+                for (ExamScoreBean examScoreBean2 : examScoreBeansSelect2) {
+                    if (cnos1.contains(examScoreBean2.getCno()) || examScoreBean2.getType().equals("XZ")) {
+                        if (examScoreBean2.getTotalScore() >= 60) {
+                            credits += examScoreBean2.getCredit();
+                            total += (examScoreBean2.getCredit() * examScoreBean2.getTotalScore());
+                        }
+                    }
+                }
+                if (credits == 0) {
+                    grades[y] = 100;
                 } else {
-                    examScoreBeansSelect1 = examScoreBeans;
+                    grades[y] = total / credits;
                 }
+                y++;
             }
-            //筛选重复成绩
-            List<ExamScoreBean> examScoreBeansSelect2 = new ArrayList<>();
-            List<String> cnos = new ArrayList<>();
-            Collections.sort(examScoreBeansSelect1, (examScoreBean12, t1) -> examScoreBean12.getCno().compareTo(t1.getCno()));
-            int i = 0;
-            for (ExamScoreBean examScoreBean1 : examScoreBeansSelect1) {
-                if (!cnos.contains(examScoreBean1.getCno())) {
-                    cnos.add(examScoreBean1.getCno());
-                    examScoreBeansSelect2.add(examScoreBean1);
-                    i++;
-                } else {
-                    if (examScoreBeansSelect2.get(i - 1).getTotalScore() < examScoreBean1.getTotalScore()) {
-                        examScoreBeansSelect2.get(i - 1).setTotalScore(examScoreBean1.getTotalScore()); //取最高总成绩
-                    }
-                }
-            }
-            //筛选有效成绩
-            float credits = 0;
-            float total = 0;
-            List<String> cnos1 = new ArrayList<>();
-            for (PlannedCourse plannedCourse : plannedCourses) {
-                cnos1.add(plannedCourse.getCourseid());
-            }
-            for (ExamScoreBean examScoreBean2 : examScoreBeansSelect2) {
-                if (cnos1.contains(examScoreBean2.getCno()) || examScoreBean2.getType().equals("XZ")) {
-                    if (examScoreBean2.getTotalScore() >= 60) {
-                        credits += examScoreBean2.getCredit();
-                        total += (examScoreBean2.getCredit() * examScoreBean2.getTotalScore());
-                    }
-                }
-            }
-            if (credits == 0) {
-                return 100;
-            } else {
-                return total / credits;
-            }
+            return grades;
         } else {
-            return -1;
+            return null;
         }
     }
 }

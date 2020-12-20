@@ -44,12 +44,13 @@
     <string name="url_vpn">https://v.guet.edu.cn/</string>
     <string name="url_bkjw">http://172.16.13.22/?mCode=000708</string>
     <string name="url_xsgl">https://xsgl.guet.edu.cn/</string>
+    <string name="url_lijiang">http://www.gxljxt.cn/</string>
     <string name="guet_yvyan_top">http://guet.yvyan.top/</string>
-    <string name="downloadApp_url">https://cloud.yvyan.top/index.php/s/mzF5nkCLfikHnjs</string>
+    <string name="downloadApp_url">https://www.coolapk.com/apk/279989</string>
     <string name="privacy_url">http://privacy.guet.yvyan.top/</string>
 
     <string name="share_hint">建议直接将此APP发给同学，若您没有找不到安装包，可以复制下面的信息发给同学或者群聊，同学点击链接即可下载最新版桂电课程表：</string>
-    <string name="share_text">新的桂电课程表，挺好用的，分享给你，点击链接下载：https://cloud.yvyan.top/index.php/s/mzF5nkCLfikHnjs \n(同学自己的服务器，人数多时下载较慢，请耐心等待)</string>
+    <string name="share_text">新的桂电课程表，挺好用的，分享给你，点击链接下载：https://www.coolapk.com/apk/279989 \n(酷安市场链接，请放心访问)</string>
     <string name="help_1">点击“我的”页面的“点击登录”按钮，输入学号和教务密码即可登录，设置学期和星期即可自动导入课表。</string>
     <string name="help_2">点击“周课表”上方的“第x周”即可滑动点击切换周次；点击课程可以查看详情。</string>
     <string name="help_3">周课表和一些查询页面右上角有设置按钮，可以进行个性化设置。</string>
@@ -57,7 +58,7 @@
     <string name="help_more_2">加入课程表交流群，最快体验新功能，还等什么 ↓</string>
     <string name="first_about">该项目与学校官方无关。个人开发者作品，不含广告，永久免费。</string>
     <string name="about_1">仍然记得刚入学时看到同学发来的“桂电课程表”时的激动，一个简单的APP，却能够给桂电学子带来切实的便利，自己又何尝不想成为这样一个人...</string>
-    <string name="about_2">两年过去了，学长的那个课程表已经有点儿跟不上时代，学校正在逐步废弃老版的教务系统，并最终关闭这个APP，20级及以后的学弟学妹就已经没法使用那个系统，学长的课程表接入的正是这个系统，所以自然也无法使用；我也借Android课设的机会，完成自己的一个愿望，也是对学长的致敬。</string>
+    <string name="about_2">两年过去了，学长的那个课程表已经跟不上时代了，近期，学校关停了老版的教务系统，学长的课程表接入的正是这个系统，所以自然也无法使用；我也借Android课设的机会，完成自己的一个愿望，也是对学长的致敬。</string>
     <string name="github_url">https://github.com/yvyan/GuetClassTable</string>
     <string name="thanks_1">课程表控件: https://github.com/zfman/TimetableView</string>
     <string name="thanks_2">GUET课程表: https://github.com/Telephone2019/CourseTable</string>
