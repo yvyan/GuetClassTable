@@ -8,8 +8,8 @@ android {
         applicationId "top.yvyan.guettable"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 15
-        versionName "2.6.4"
+        versionCode 16
+        versionName "2.7.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         dataBinding.enabled = true
@@ -54,4 +54,7 @@ dependencies {
     implementation 'com.github.xuexiangjys:XUI:1.1.5'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    //小米检查更新
+    implementation 'mi-appstore:xiaomi-update-sdk:4.0.3'
 }

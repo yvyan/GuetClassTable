@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UpdateActivity"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="109dp">
+
+        <ImageView
+            android:id="@+id/update_back"
+            android:onClick="onClick"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:tint="@color/app_white"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="18dp"
+            android:text="检查更新"
+            android:textColor="@color/app_white"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dp"
+            app:layout_constraintStart_toStartOf="@id/update_back"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/update_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="正在检查更新"
+        android:textSize="25dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/update_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="课程表有新版本了"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2">
+
+            <TextView
+                android:id="@+id/update_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text=""
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+
+        <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+            android:id="@+id/roundButton"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:onClick="onClick"
+            android:text="返回"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="23dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rb_backgroundColor="@color/tab_unchecked" />
+
+        <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:text="更新"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="23dp"
+            android:onClick="updateApp"
+            app:rb_backgroundColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/roundButton"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp" >
+
+            <TextView
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="升级失败？点击"
+                android:textSize="23dp"/>
+
+            <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:text="去酷安下载"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="23dp"
+                android:onClick="updateAppCoolApk"
+                app:rb_backgroundColor="@color/colorAccent" />
+
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

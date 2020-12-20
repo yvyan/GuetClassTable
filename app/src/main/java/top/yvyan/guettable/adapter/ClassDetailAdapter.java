@@ -36,9 +36,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ClassDetailViewHolder holder, int position) {
-        if (schedules.get(position).getWeekList().contains(week)) {
-            holder.card.setBackgroundColor(0xCF94D6F9);
-        }
+
         if ((int)schedules.get(position).getExtras().get(ExamBean.TYPE) == 2) { //考试安排
             ExamBean examBean = new ExamBean();
             examBean.setFromSchedule(schedules.get(position));
@@ -78,6 +76,9 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
                 holder.textView6.setVisibility(View.GONE);
                 holder.textView7.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
             }
+        }
+        if (schedules.get(position).getWeekList().contains(week)) {
+            holder.card.setBackgroundColor(0xCF94D6F9);
         }
     }
 

@@ -48,7 +48,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             holder.textView7.setVisibility(View.GONE);
 
             holder.textView1.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-            holder.textView1.setTextSize(23);
+            holder.textView1.setTextSize(20);
             int size;
             String text;
             if (position == 0) {

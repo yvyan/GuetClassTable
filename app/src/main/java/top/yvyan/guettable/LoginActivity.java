@@ -9,8 +9,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.CookieData;
@@ -22,7 +25,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText etPwd;
     private EditText etAccount;
     private CheckBox cbRememberPwd;
-    private Button button;
+    private SuperButton button;
 
     private AccountData accountData;
 
@@ -104,7 +107,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
     private void setEnClick() {
         button.setText("登录");
-        button.setBackgroundColor(0xFF03A9F4);
         button.setEnabled(true);
     }
 
@@ -112,7 +114,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 设置按钮不可点击
      */
     private void setUnClick() {
-        button.setBackgroundColor(0x44444444);
         button.setText("正在登录");
         button.setEnabled(false);
     }
