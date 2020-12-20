@@ -17,7 +17,9 @@ public class GeneralData {
     private static final String GRADE = "grade";
     private static final String TERM = "term";
     private static final String LAST_UPDATE_TIME = "lastUpdateTime";
+    private static final String APP_LAST_UPDATE_TIME = "appLastUpdateTime";
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     private String name;
     private String number;
@@ -26,9 +28,12 @@ public class GeneralData {
     private String grade;
     private String term;
     private long lastUpdateTime;
+    //控制检查更新频率
+    private long appLastUpdateTime;
 
     private GeneralData(Context context) {
         sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         load();
     }
 
@@ -40,6 +45,7 @@ public class GeneralData {
         grade = sharedPreferences.getString(GRADE, null);
         term = sharedPreferences.getString(TERM, null);
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
+        appLastUpdateTime = sharedPreferences.getLong(APP_LAST_UPDATE_TIME, -1);
     }
 
     public static GeneralData newInstance(Context context) {
@@ -60,7 +66,6 @@ public class GeneralData {
     }
 
     private void saveName() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(NAME, name);
         editor.apply();
     }
@@ -75,7 +80,6 @@ public class GeneralData {
     }
 
     private void saveNumber() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(NUMBER, number);
         editor.apply();
     }
@@ -95,7 +99,6 @@ public class GeneralData {
     }
 
     private void saveWeek() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(TIME, time);
         editor.putInt(WEEK, week);
         editor.apply();
@@ -112,7 +115,6 @@ public class GeneralData {
     }
 
     private void saveGrade() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(GRADE, grade);
         editor.apply();
     }
@@ -127,7 +129,6 @@ public class GeneralData {
     }
 
     private void saveTerm() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(TERM, term);
         editor.apply();
     }
@@ -144,6 +145,20 @@ public class GeneralData {
     private void saveLastUpdateTime() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(LAST_UPDATE_TIME, lastUpdateTime);
+        editor.apply();
+    }
+
+    public long getAppLastUpdateTime() {
+        return appLastUpdateTime;
+    }
+
+    public void setAppLastUpdateTime(long appLastUpdateTime) {
+        this.appLastUpdateTime = appLastUpdateTime;
+        saveAppLastUpdateTime();
+    }
+
+    private void saveAppLastUpdateTime() {
+        editor.putLong(APP_LAST_UPDATE_TIME, appLastUpdateTime);
         editor.apply();
     }
 }

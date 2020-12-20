@@ -53,8 +53,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/colorPrimary"
-            android:src="@drawable/table" />
+            android:src="@drawable/p_huiyuan" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

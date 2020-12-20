@@ -13,9 +13,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".MyApp"
@@ -26,7 +26,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".moreFun.GradesActivity"></activity>
+        <activity android:name=".UpdateActivity"></activity>
+        <activity android:name=".moreFun.GradesActivity" />
         <activity android:name=".moreFun.PlannedCoursesActivity" />
         <activity android:name=".WebViewActivity" />
         <activity android:name=".LaunchActivity">
@@ -98,7 +99,16 @@
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.ERROR" />
             </intent-filter>
-        </receiver>
+        </receiver> <!-- 小米检查更新SDK -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="top.yvyan.guettable.selfupdate.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/xiaomi_update_sdk_file_paths" />
+        </provider>
     </application>
 
 </manifest>
