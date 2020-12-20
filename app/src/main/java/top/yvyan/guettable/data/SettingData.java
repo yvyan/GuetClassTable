@@ -39,6 +39,10 @@ public class SettingData {
         return sharedPreferences.getBoolean(SettingFragment.SHOW_TOOLS_ON_DAY_CLASS, true);
     }
 
+    public boolean isAppCheckUpdate() {
+        return sharedPreferences.getBoolean(SettingFragment.APP_CHECK_UPDATE, true);
+    }
+
     public int getClassLength() {
         return Integer.parseInt(sharedPreferences.getString(SettingFragment.CLASS_LENGTH, "60"));
     }
