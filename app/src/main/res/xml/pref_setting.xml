@@ -18,7 +18,7 @@
             android:title="课表自动更新" />
 
         <ListPreference
-            android:defaultValue="3"
+            android:defaultValue="1"
             android:dependency="refresh_data"
             android:dialogTitle="选择课表更新频率"
             android:entries="@array/day_entities"
@@ -44,6 +44,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="高级设置">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="show_tools_on_day_class"
+            android:summary="首页显示快捷工具栏，包含常用工具和链接"
+            android:title="首页显示快捷工具栏" />
 
         <ListPreference
             android:defaultValue="62"

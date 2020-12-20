@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
@@ -53,13 +55,14 @@ public class GradesActivity extends AppCompatActivity implements IMoreFun {
 
     private void updateView() {
         float grades[] = moreDate.getGrades();
-        gradesMain.setText(grades[0] + "");
-        gradesYear1.setText(grades[1] + "");
-        gradesYear2.setText(grades[2] + "");
-        gradesYear3.setText(grades[3] + "");
-        gradesYear4.setText(grades[4] + "");
-        gradesYear5.setText(grades[5] + "");
-        gradesYear6.setText(grades[6] + "");
+        DecimalFormat format = new DecimalFormat( "0.00");
+        gradesMain.setText(format.format(grades[0]));
+        gradesYear1.setText(format.format(grades[1]));
+        gradesYear2.setText(format.format(grades[2]));
+        gradesYear3.setText(format.format(grades[3]));
+        gradesYear4.setText(format.format(grades[4]));
+        gradesYear5.setText(format.format(grades[5]));
+        gradesYear6.setText(format.format(grades[6]));
     }
 
     public void onClick(View view) {
@@ -68,13 +71,8 @@ public class GradesActivity extends AppCompatActivity implements IMoreFun {
 
     @Override
     public int updateData(String cookie) {
-        float grades[] = new float[]{0, 0, 0, 0, 0, 0, 0};
-        grades[0] = StaticService.calculateGrades(this, cookie, null);
-        if (grades[0] != -1) {
-            int year = Integer.parseInt(generalData.getGrade());
-            for (int i = 0; i < 6; i++) {
-                grades[i + 1] = StaticService.calculateGrades(this, cookie, (year + i) + "-" + (year + i + 1));
-            }
+        float grades[] = StaticService.calculateGrades(this, cookie, Integer.parseInt(generalData.getGrade()));
+        if (grades != null) {
             moreDate.setGrades(grades);
             return 5;
         } else {

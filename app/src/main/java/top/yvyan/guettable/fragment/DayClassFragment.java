@@ -68,6 +68,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_day_class, container, false);
 
+        View tools = view.findViewById(R.id.day_class_tools);
+        if (! SettingData.newInstance(getContext()).isShowTools()) {
+            tools.setVisibility(View.GONE);
+        }
+
         textView = view.findViewById(R.id.day_class_hint);
         textView.setOnClickListener(this);
         testSchedule = view.findViewById(R.id.day_test_schedule);
