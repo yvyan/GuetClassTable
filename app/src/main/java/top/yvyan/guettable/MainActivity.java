@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
             switch (i) {
                 case UpdateStatus.STATUS_UPDATE: //有更新
                     NotificationUtil.showMessage(this, UpdateActivity.class, "课程表有新版本了", updateResponse.updateLog, 101);
-                case UpdateStatus.STATUS_NO_UPDATE:
                     generalData.setAppLastUpdateTime(System.currentTimeMillis());
                     break;
                 default:
