@@ -15,25 +15,19 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
-import com.xiaomi.market.sdk.UpdateStatus;
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.OnButtonClick;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
-import top.yvyan.guettable.util.NotificationUtil;
-import top.yvyan.guettable.util.TimeUtil;
 
 public class MainActivity extends AppCompatActivity implements OnButtonClick {
 

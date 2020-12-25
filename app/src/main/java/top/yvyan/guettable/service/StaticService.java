@@ -2,7 +2,6 @@ package top.yvyan.guettable.service;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -474,7 +473,7 @@ public class StaticService {
     public static float[] calculateGrades(Context context, String cookie, int year) {
         List<ExamScoreBean> examScoreBeansGet = getExamScore(context, cookie);
         List<PlannedCourse> plannedCoursesGet = getPlannedCourses(context, cookie);
-        float grades[] = new float[]{0, 0, 0, 0, 0, 0, 0};
+        float[] grades = new float[]{0, 0, 0, 0, 0, 0, 0};
         List<String> terms = new ArrayList<>();
         terms.add("");
         for (int i = 0; i < 6; i++) {
@@ -526,8 +525,23 @@ public class StaticService {
                 }
                 for (ExamScoreBean examScoreBean2 : examScoreBeansSelect2) {
                     if (cnos1.contains(examScoreBean2.getCno()) || examScoreBean2.getType().equals("XZ")) {
-                        if (examScoreBean2.getTotalScore() >= 60) {
-                            credits += examScoreBean2.getCredit();
+                        credits += examScoreBean2.getCredit();
+                        if (examScoreBean2.getType().equals("BS")) {
+                            int score = 0;
+                            String scoreStr = examScoreBean2.getScore();
+                            if (scoreStr.equals("优")) {
+                                score = 95;
+                            } else if (scoreStr.equals("良")) {
+                                score = 85;
+                            } else if (scoreStr.equals("中")) {
+                                score = 75;
+                            } else if (scoreStr.equals("及格")) {
+                                score = 65;
+                            } else if (scoreStr.equals("不及格")) {
+                                score = 40;
+                            }
+                            total += examScoreBean2.getCredit() * score;
+                        } else {
                             total += (examScoreBean2.getCredit() * examScoreBean2.getTotalScore());
                         }
                     }
