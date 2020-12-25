@@ -320,6 +320,43 @@
                     android:layout_height="0.1dp"
                     android:background="@color/xui_config_color_gray_9" />
 
+                <LinearLayout
+                    android:id="@+id/person_download"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_margin="8dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/p_xiazai"
+                            android:layout_marginLeft="2.6dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="45dp"
+                            android:text="酷安下载"
+                            android:textColor="@color/app_black"
+                            android:textSize="16dp"/>
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_marginLeft="53dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.1dp"
+                        android:background="@color/xui_config_color_gray_9" />
+
+                </LinearLayout>
+
                 <RelativeLayout
                     android:id="@+id/person_about"
                     android:layout_width="match_parent"

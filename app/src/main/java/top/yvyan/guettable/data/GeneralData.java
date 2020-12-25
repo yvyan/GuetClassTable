@@ -18,6 +18,7 @@ public class GeneralData {
     private static final String TERM = "term";
     private static final String LAST_UPDATE_TIME = "lastUpdateTime";
     private static final String APP_LAST_UPDATE_TIME = "appLastUpdateTime";
+    private static final String RENEWABLE = "renewable";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -30,6 +31,7 @@ public class GeneralData {
     private long lastUpdateTime;
     //控制检查更新频率
     private long appLastUpdateTime;
+    private boolean renewable;
 
     private GeneralData(Context context) {
         sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -46,6 +48,7 @@ public class GeneralData {
         term = sharedPreferences.getString(TERM, null);
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
         appLastUpdateTime = sharedPreferences.getLong(APP_LAST_UPDATE_TIME, -1);
+        renewable = sharedPreferences.getBoolean(RENEWABLE, false);
     }
 
     public static GeneralData newInstance(Context context) {
@@ -62,10 +65,6 @@ public class GeneralData {
 
     public void setName(String name) {
         this.name = name;
-        saveName();
-    }
-
-    private void saveName() {
         editor.putString(NAME, name);
         editor.apply();
     }
@@ -76,10 +75,6 @@ public class GeneralData {
 
     public void setNumber(String number) {
         this.number = number;
-        saveNumber();
-    }
-
-    private void saveNumber() {
         editor.putString(NUMBER, number);
         editor.apply();
     }
@@ -95,15 +90,10 @@ public class GeneralData {
     public void setWeek(int week) {
         this.time = System.currentTimeMillis();
         this.week = week;
-        saveWeek();
-    }
-
-    private void saveWeek() {
         editor.putLong(TIME, time);
         editor.putInt(WEEK, week);
         editor.apply();
     }
-
 
     public String getGrade() {
         return grade;
@@ -111,10 +101,6 @@ public class GeneralData {
 
     public void setGrade(String grade) {
         this.grade = grade;
-        saveGrade();
-    }
-
-    private void saveGrade() {
         editor.putString(GRADE, grade);
         editor.apply();
     }
@@ -125,10 +111,6 @@ public class GeneralData {
 
     public void setTerm(String term) {
         this.term = term;
-        saveTerm();
-    }
-
-    private void saveTerm() {
         editor.putString(TERM, term);
         editor.apply();
     }
@@ -139,10 +121,6 @@ public class GeneralData {
 
     public void setLastUpdateTime(long lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
-        saveLastUpdateTime();
-    }
-
-    private void saveLastUpdateTime() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(LAST_UPDATE_TIME, lastUpdateTime);
         editor.apply();
@@ -154,11 +132,17 @@ public class GeneralData {
 
     public void setAppLastUpdateTime(long appLastUpdateTime) {
         this.appLastUpdateTime = appLastUpdateTime;
-        saveAppLastUpdateTime();
+        editor.putLong(APP_LAST_UPDATE_TIME, appLastUpdateTime);
+        editor.apply();
     }
 
-    private void saveAppLastUpdateTime() {
-        editor.putLong(APP_LAST_UPDATE_TIME, appLastUpdateTime);
+    public boolean isRenewable() {
+        return renewable;
+    }
+
+    public void setRenewable(boolean renewable) {
+        this.renewable = renewable;
+        editor.putBoolean(RENEWABLE, renewable);
         editor.apply();
     }
 }
