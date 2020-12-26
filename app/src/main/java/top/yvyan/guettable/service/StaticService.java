@@ -512,7 +512,8 @@ public class StaticService {
                         i++;
                     } else {
                         if (examScoreBeansSelect2.get(i - 1).getTotalScore() < examScoreBean1.getTotalScore()) {
-                            examScoreBeansSelect2.get(i - 1).setTotalScore(examScoreBean1.getTotalScore()); //取最高总成绩
+                            examScoreBeansSelect2.remove(i - 1);
+                            examScoreBeansSelect2.add(examScoreBean1);
                         }
                     }
                 }
@@ -524,21 +525,29 @@ public class StaticService {
                     cnos1.add(plannedCourse.getCourseid());
                 }
                 for (ExamScoreBean examScoreBean2 : examScoreBeansSelect2) {
-                    if (cnos1.contains(examScoreBean2.getCno()) || examScoreBean2.getType().equals("XZ")) {
+                    if (!examScoreBean2.getScore().equals("旷考") && !examScoreBean2.getScore().equals("取消") && (cnos1.contains(examScoreBean2.getCno()) || examScoreBean2.getType().equals("XZ"))) {
                         credits += examScoreBean2.getCredit();
                         if (examScoreBean2.getType().equals("BS")) {
                             int score = 0;
                             String scoreStr = examScoreBean2.getScore();
-                            if (scoreStr.equals("优")) {
-                                score = 95;
-                            } else if (scoreStr.equals("良")) {
-                                score = 85;
-                            } else if (scoreStr.equals("中")) {
-                                score = 75;
-                            } else if (scoreStr.equals("及格")) {
-                                score = 65;
-                            } else if (scoreStr.equals("不及格")) {
-                                score = 40;
+                            switch (scoreStr) {
+                                case "优":
+                                    score = 95;
+                                    break;
+                                case "良":
+                                    score = 85;
+                                    break;
+                                case "中":
+                                    score = 75;
+                                    break;
+                                case "及格":
+                                    score = 65;
+                                    break;
+                                case "不及格":
+                                    score = 40;
+                                    break;
+                                default:
+                                    break;
                             }
                             total += examScoreBean2.getCredit() * score;
                         } else {
