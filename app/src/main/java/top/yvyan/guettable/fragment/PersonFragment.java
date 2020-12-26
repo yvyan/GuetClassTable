@@ -33,7 +33,6 @@ import top.yvyan.guettable.MySettingActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
 import top.yvyan.guettable.ShareActivity;
-import top.yvyan.guettable.WebViewActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SettingData;
@@ -67,7 +66,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private View update;
     private View download;
     private View about;
-    private View privacy;
 
     private AccountData accountData;
     private GeneralData generalData;
@@ -134,8 +132,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         }
         about = view.findViewById(R.id.person_about);
         about.setOnClickListener(this);
-        privacy = view.findViewById(R.id.person_privacy);
-        privacy.setOnClickListener(this);
     }
 
     public void updateView() {
@@ -198,12 +194,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.person_about:
                 intent = new Intent(getContext(), AboutActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.person_privacy:
-                intent = new Intent(getContext(), WebViewActivity.class);
-                intent.putExtra(WebViewActivity.WEB_URL, getContext().getResources().getString(R.string.privacy_url));
-                intent.putExtra(WebViewActivity.WEB_TITLE, "隐私政策");
                 startActivity(intent);
                 break;
             default:
@@ -297,7 +287,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         // *** 主要就是在这里实现这种效果的.
         // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
         Window window = dialog.getWindow();
-        window.setContentView(R.layout.auto_dialog);
+        window.setContentView(R.layout.update_dialog);
         TextView tv_scan_number = (TextView) window
                 .findViewById(R.id.tv_dialoghint);
         tv_scan_number.setText(text);
