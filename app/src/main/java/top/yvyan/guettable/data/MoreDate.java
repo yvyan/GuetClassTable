@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import top.yvyan.guettable.bean.CETBean;
-import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
@@ -20,7 +19,6 @@ import top.yvyan.guettable.util.SerializeUtil;
 public class MoreDate {
     private static MoreDate moreDate;
     private static final String SHP_NAME = "MoreData";
-    private static final String EXAM_STRING = "examString";
     private static final String RESIT_STRING = "resitString";
     private static final String CET_STRING = "CET_STRING";
     private static final String EXAM_SCORE_STRING = "EXAM_SCORE_STRING";
@@ -31,7 +29,6 @@ public class MoreDate {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-    private List<ExamBean> examBeans;
     private List<ResitBean> resitBeans;
     private List<CETBean> cetBeans;
     private List<ExamScoreBean> examScoreBeans;
@@ -46,14 +43,12 @@ public class MoreDate {
     }
 
     private void load() {
-        ExamBean[] examBeans1 = null;
         ResitBean[] resitBeans1 = null;
         CETBean[] cetBeans1 = null;
         ExamScoreBean[] examScoreBeans1 = null;
         ExperimentScoreBean[] experimentScoreBeans1 = null;
         PlannedCourseBean[] plannedCourseBeans1 = null;
 
-        String examString = sharedPreferences.getString(EXAM_STRING, null);
         String resitString = sharedPreferences.getString(RESIT_STRING, null);
         String cetString = sharedPreferences.getString(CET_STRING, null);
         String examScoreString = sharedPreferences.getString(EXAM_SCORE_STRING,null);
@@ -61,16 +56,6 @@ public class MoreDate {
         String plannedCourseString = sharedPreferences.getString(PLANNED_COURSE_STRING, null);
         String gradesString = sharedPreferences.getString(GRADES_STRING, null);
 
-        if (examString != null) {
-            try {
-                examBeans1 = (ExamBean[]) SerializeUtil.serializeToObject(examString);
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            if (examBeans1 != null) {
-                examBeans = Arrays.asList(examBeans1);
-            }
-        }
         if (resitString != null) {
             try {
                 resitBeans1 = (ResitBean[]) SerializeUtil.serializeToObject(resitString);
@@ -137,30 +122,6 @@ public class MoreDate {
             moreDate = new MoreDate(activity);
         }
         return moreDate;
-    }
-
-    //考试安排
-    public List<ExamBean> getExamBeans() {
-        if (examBeans == null) {
-            examBeans = new ArrayList<>();
-        }
-        return examBeans;
-    }
-
-    public void setExamBeans(List<ExamBean> examBeans) {
-        this.examBeans = examBeans;
-        String examString = null;
-        ExamBean[] examBeans1 = new ExamBean[examBeans.size()];
-        examBeans.toArray(examBeans1);
-        try {
-            examString = SerializeUtil.serialize(examBeans1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (examString != null) {
-            editor.putString(EXAM_STRING, examString);
-            editor.apply();
-        }
     }
 
     public List<ResitBean> getResitBeans() {

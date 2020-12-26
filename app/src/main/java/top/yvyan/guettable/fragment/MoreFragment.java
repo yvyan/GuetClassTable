@@ -16,6 +16,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
+import top.yvyan.guettable.moreFun.LibActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
 import top.yvyan.guettable.util.ToastUtil;
@@ -24,7 +25,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private static MoreFragment moreFragment;
 
     private View view;
-    private View testSchedule, credits, testScores, libScores, resitSchedule;
+    private View testSchedule, credits, testScores, libScores, resitSchedule, libSchedule;
     private View graduationRequirement, planCourses, cet;
     private View urlBkjw, urlVPN, urlCampus, urlStaff, urlLiJiang, urlMore;
     private View evaluatingTeachers, evaluatingTextbooks;
@@ -56,6 +57,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         libScores.setOnClickListener(this);
         resitSchedule = view.findViewById(R.id.more_resit_schedule);
         resitSchedule.setOnClickListener(this);
+        libSchedule = view.findViewById(R.id.more_lib_schedule);
+        libSchedule.setOnClickListener(this);
 
         graduationRequirement = view.findViewById(R.id.more_graduation_requirement);
         graduationRequirement.setOnClickListener(this);
@@ -112,6 +115,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.more_resit_schedule:
                 intent = new Intent(getContext(), ResitActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.more_lib_schedule:
+                intent = new Intent(getContext(), LibActivity.class);
                 startActivity(intent);
                 break;
 

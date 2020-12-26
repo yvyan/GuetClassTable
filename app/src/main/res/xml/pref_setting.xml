@@ -29,6 +29,12 @@
 
         <SwitchPreference
             android:defaultValue="true"
+            android:key="show_lib_on_table"
+            android:summary="开启后课内实验将在日课表和周课表显示"
+            android:title="课表显示课内实验" />
+
+        <SwitchPreference
+            android:defaultValue="true"
             android:key="show_exam_on_table"
             android:summary="开启后考试安排将在日课表和周课表显示"
             android:title="课表显示考试安排" />
