@@ -26,6 +26,7 @@
     <string name="lan_get_cet_url">http://172.16.13.22/student/GetLvlScore</string>
     <string name="lan_get_examscore_url">http://172.16.13.22/Student/GetStuScore</string>
     <string name="lan_get_experimentscore_url">http://172.16.13.22/student/getstulab</string>
+    <string name="lan_get_resit_url">http://172.16.13.22/student/getbk</string>
 
     <!-- 评价教师 -->
     <string name="lan_get_this_term">http://172.16.13.22/student/temsterm</string>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".moreFun.ExamActivity"
+    tools:context=".moreFun.ResitActivity"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -15,7 +15,6 @@
         tools:layout_editor_absoluteX="109dp">
 
         <ImageView
-            android:id="@+id/exam_back"
             android:onClick="onClick"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -28,7 +27,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:textSize="18dp"
-            android:text="考试安排"
+            android:text="补考安排"
             android:textColor="@color/app_white"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -36,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/exam_state"
+            android:id="@+id/resit_state"
             android:layout_width="wrap_content"
             android:textSize="18dp"
             android:text="正在更新"
@@ -47,27 +46,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/exam_more"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/attribute"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/resit_more"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_marginRight="15dp"-->
+<!--            android:src="@drawable/attribute"/>-->
 
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/exam_not_find"
+        android:id="@+id/resit_not_find"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="没有查询到符合条件的考试安排信息!"
+        android:text="没有查询到符合条件的补考安排信息!"
         android:textSize="25dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/exam_info_recycler_view"
+        android:id="@+id/resit_info_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

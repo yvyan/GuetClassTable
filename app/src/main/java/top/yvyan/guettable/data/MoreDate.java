@@ -3,7 +3,6 @@ package top.yvyan.guettable.data;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.ArrayAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,12 +14,14 @@ import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
+import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.util.SerializeUtil;
 
 public class MoreDate {
     private static MoreDate moreDate;
     private static final String SHP_NAME = "MoreData";
     private static final String EXAM_STRING = "examString";
+    private static final String RESIT_STRING = "resitString";
     private static final String CET_STRING = "CET_STRING";
     private static final String EXAM_SCORE_STRING = "EXAM_SCORE_STRING";
     private static final String EXPERIMENT_SCORE_STRING = "EXPERIMENT_SCORE_STRING";
@@ -31,6 +32,7 @@ public class MoreDate {
     private SharedPreferences.Editor editor;
 
     private List<ExamBean> examBeans;
+    private List<ResitBean> resitBeans;
     private List<CETBean> cetBeans;
     private List<ExamScoreBean> examScoreBeans;
     private List<ExperimentScoreBean> experimentScoreBeans;
@@ -45,12 +47,14 @@ public class MoreDate {
 
     private void load() {
         ExamBean[] examBeans1 = null;
+        ResitBean[] resitBeans1 = null;
         CETBean[] cetBeans1 = null;
         ExamScoreBean[] examScoreBeans1 = null;
         ExperimentScoreBean[] experimentScoreBeans1 = null;
         PlannedCourseBean[] plannedCourseBeans1 = null;
 
         String examString = sharedPreferences.getString(EXAM_STRING, null);
+        String resitString = sharedPreferences.getString(RESIT_STRING, null);
         String cetString = sharedPreferences.getString(CET_STRING, null);
         String examScoreString = sharedPreferences.getString(EXAM_SCORE_STRING,null);
         String experimentScoreString = sharedPreferences.getString(EXPERIMENT_SCORE_STRING,null);
@@ -65,6 +69,18 @@ public class MoreDate {
             }
             if (examBeans1 != null) {
                 examBeans = Arrays.asList(examBeans1);
+            }
+        }
+        if (resitString != null) {
+            try {
+                resitBeans1 = (ResitBean[]) SerializeUtil.serializeToObject(resitString);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (resitBeans1 != null) {
+                resitBeans = Arrays.asList(resitBeans1);
             }
         }
         if (cetString != null) {
@@ -133,10 +149,6 @@ public class MoreDate {
 
     public void setExamBeans(List<ExamBean> examBeans) {
         this.examBeans = examBeans;
-        saveExamBeans();
-    }
-
-    private void saveExamBeans() {
         String examString = null;
         ExamBean[] examBeans1 = new ExamBean[examBeans.size()];
         examBeans.toArray(examBeans1);
@@ -151,6 +163,29 @@ public class MoreDate {
         }
     }
 
+    public List<ResitBean> getResitBeans() {
+        if (resitBeans  == null) {
+            resitBeans = new ArrayList<>();
+        }
+        return resitBeans;
+    }
+
+    public void setResitBeans(List<ResitBean> resitBeans) {
+        this.resitBeans = resitBeans;
+        String resitString = null;
+        ResitBean[] resitBeans1 = new ResitBean[resitBeans.size()];
+        resitBeans.toArray(resitBeans1);
+        try {
+            resitString = SerializeUtil.serialize(resitBeans1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (resitString != null) {
+            editor.putString(RESIT_STRING, resitString);
+            editor.apply();
+        }
+    }
+
     //CET成绩
     public List<CETBean> getCetBeans() {
         if (cetBeans == null) {
@@ -161,10 +196,6 @@ public class MoreDate {
 
     public void setCetBeans(List<CETBean> cetBeans) {
         this.cetBeans = cetBeans;
-        saveCETBeans();
-    }
-
-    private void saveCETBeans() {
         String cetString = null;
         CETBean[] cetBeans1 = new CETBean[cetBeans.size()];
         cetBeans.toArray(cetBeans1);
@@ -189,10 +220,6 @@ public class MoreDate {
 
     public void setExamScoreBeans(List<ExamScoreBean> examScoreBeans) {
         this.examScoreBeans = examScoreBeans;
-        saveExamScoreBeans();
-    }
-
-    private void saveExamScoreBeans() {
         String examScoreString = null;
         ExamScoreBean[] examScoreBeans1 = new ExamScoreBean[examScoreBeans.size()];
         examScoreBeans.toArray(examScoreBeans1);
@@ -217,10 +244,6 @@ public class MoreDate {
 
     public void setExperimentScoreBeans(List<ExperimentScoreBean> experimentScoreBeans) {
         this.experimentScoreBeans = experimentScoreBeans;
-        saveExperimentScoreBeans();
-    }
-
-    private void saveExperimentScoreBeans() {
         String experimentScoreString = null;
         ExperimentScoreBean[] experimentScoreBeans1 = new ExperimentScoreBean[experimentScoreBeans.size()];
         experimentScoreBeans.toArray(experimentScoreBeans1);
@@ -244,10 +267,6 @@ public class MoreDate {
 
     public void setPlannedCourseBeans(List<PlannedCourseBean> plannedCourseBeans) {
         this.plannedCourseBeans = plannedCourseBeans;
-        savePlannedCourseBeans();
-    }
-
-    private void savePlannedCourseBeans() {
         String plannedCourseString = null;
         PlannedCourseBean[] plannedCourseBeans1 = new PlannedCourseBean[plannedCourseBeans.size()];
         plannedCourseBeans.toArray(plannedCourseBeans1);
@@ -271,10 +290,6 @@ public class MoreDate {
 
     public void setGrades(float[] grades) {
         this.grades = grades;
-        saveGrades();
-    }
-
-    private void saveGrades() {
         String gradesString = null;
         try {
             gradesString = SerializeUtil.serialize(grades);
