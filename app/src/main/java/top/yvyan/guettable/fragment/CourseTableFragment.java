@@ -177,7 +177,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         for (CourseBean courseBean : classData.getCourseBeans()) {
             schedules.add(courseBean.getSchedule());
         }
-        if (settingData.getShowExamOnTable()) {
+        if (settingData.getShowExamOnTable() && !"2019-2020_2".equals(generalData.getTerm())) {
             for (ExamBean examBean : ExamUtil.combineExam(moreDate.getExamBeans())) {
                 schedules.add(examBean.getSchedule());
             }

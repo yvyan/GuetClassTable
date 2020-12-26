@@ -188,7 +188,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         } else {
             list = new ArrayList<>();
         }
-        if (settingData.getShowExamOnTable()) {
+        if (settingData.getShowExamOnTable() && !"2019-2020_2".equals(generalData.getTerm())) {
             for (ExamBean examBean : ExamUtil.combineExam(MoreDate.newInstance(getActivity()).getExamBeans())) {
                 if (examBean != null) {
                     list.add(examBean.getSchedule());
