@@ -12,9 +12,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import top.yvyan.guettable.Gson.Resit;
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.adapter.ExamAdapter;
 import top.yvyan.guettable.adapter.ResitAdapter;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.data.MoreDate;

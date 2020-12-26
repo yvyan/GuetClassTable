@@ -22,9 +22,8 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.DayClassAdapter;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.data.ClassData;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
@@ -182,14 +181,18 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     private List<Schedule> getData() {
         List<Schedule> list;
-        if(!ClassData.newInstance(getActivity()).getCourseBeans().isEmpty()) {
-            list = ScheduleSupport.transform(ClassData.newInstance(getActivity()).getCourseBeans());
-            list = ScheduleSupport.getColorReflect(list);//分配颜色
+        ScheduleData scheduleData = ScheduleData.newInstance(getActivity());
+        if(!ScheduleData.newInstance(getActivity()).getCourseBeans().isEmpty()) {
+            list = ScheduleSupport.transform(scheduleData.getCourseBeans());
         } else {
             list = new ArrayList<>();
         }
+        if (settingData.getShowLibOnTable()) {
+            List<Schedule> labList = ScheduleSupport.transform(scheduleData.getLibBeans());
+            list.addAll(labList);
+        }
         if (settingData.getShowExamOnTable() && !"2019-2020_2".equals(generalData.getTerm())) {
-            for (ExamBean examBean : ExamUtil.combineExam(MoreDate.newInstance(getActivity()).getExamBeans())) {
+            for (ExamBean examBean : ExamUtil.combineExam(scheduleData.getExamBeans())) {
                 if (examBean != null) {
                     list.add(examBean.getSchedule());
                 }

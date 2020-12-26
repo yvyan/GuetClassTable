@@ -42,6 +42,8 @@ public class CourseBean implements ScheduleEnable, Serializable {
     private String teacher;
     //（实验）备注
     private String remarks;
+    //实验id
+    private long labId;
 
     //一个随机数，用于对应课程的颜色
     private int colorRandom = 0;
@@ -67,7 +69,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     //设置为实验课
-    public void setLab(String name, String libName, int batch, String room, int weekStart, int day, int time, String teacher, String remarks) {
+    public void setLab(String name, String libName, int batch, String room, int weekStart, int day, int time, String teacher, String remarks, long labId) {
         this.isLab = true;
         this.name = "(实验)" + name;
         this.libName = libName + "(" + batch + "批次)";
@@ -80,6 +82,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         this.time = time;
         this.teacher = teacher;
         this.remarks = remarks;
+        this.labId = labId;
     }
 
     public void setFromSchedule(Schedule schedule) {
@@ -253,5 +256,13 @@ public class CourseBean implements ScheduleEnable, Serializable {
                 ", remarks='" + remarks + '\'' +
                 ", colorRandom=" + colorRandom +
                 '}';
+    }
+
+    public long getLabId() {
+        return labId;
+    }
+
+    public void setLabId(long labId) {
+        this.labId = labId;
     }
 }
