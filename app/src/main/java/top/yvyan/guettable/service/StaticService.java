@@ -33,6 +33,8 @@ import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.LabTableOuter;
 import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.PlannedCoursesOuter;
+import top.yvyan.guettable.Gson.Resit;
+import top.yvyan.guettable.Gson.ResitOuter;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
@@ -42,6 +44,7 @@ import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
+import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.service.fetch.LAN;
 
 public class StaticService {
@@ -169,7 +172,7 @@ public class StaticService {
      * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期
-     * @return 考试安排列表
+     * @return        考试安排列表
      */
     public static List<ExamBean> getExam(Context context, String cookie, String term) {
         List<ExamBean> examBeans = new ArrayList<>();
@@ -180,6 +183,27 @@ public class StaticService {
                 examBeans.add(examInfo1.toExamBean());
             }
             return examBeans;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取补考安排
+     *
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        补考安排列表
+     */
+    public static List<ResitBean> getResit(Context context, String cookie) {
+        List<ResitBean> resitBeans = new ArrayList<>();
+        HttpConnectionAndCode resitInfo = LAN.getResit(context, cookie);
+        if (resitInfo.code == 0) {
+            ResitOuter resitOuter = new Gson().fromJson(resitInfo.comment, ResitOuter.class);
+            for (Resit resit : resitOuter.getData()) {
+                resitBeans.add(resit.toResitBean());
+            }
+            return resitBeans;
         } else {
             return null;
         }

@@ -173,6 +173,30 @@ public class LAN {
     }
 
     /**
+     * 获取补考安排
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        gson格式的补考安排
+     */
+    public static HttpConnectionAndCode getResit(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Get.get(
+                resources.getString(R.string.lan_get_resit_url),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_login_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_table_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
      * 获取等级考试成绩
      * @param context context
      * @param cookie  登录后的cookie
