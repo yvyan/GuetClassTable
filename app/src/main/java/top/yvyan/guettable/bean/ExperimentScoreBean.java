@@ -48,7 +48,9 @@ public class ExperimentScoreBean implements Serializable, BeanAttribute {
 
     @Override
     public long getOrder() {
-        return Integer.parseInt(number) * (-1);
+        int year = Integer.parseInt(term.substring(0, 4));
+        year = year * 10 + Integer.parseInt(term.substring(10, 11));
+        return year * (-1);
     }
 
     public void setTerm(String term) {
