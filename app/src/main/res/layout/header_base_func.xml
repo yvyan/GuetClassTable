@@ -37,9 +37,9 @@
 
         <ImageView
             android:id="@+id/deltaIcon"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="6dp"
             android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_height="15dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/delta"/>
 
