@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -14,27 +15,17 @@ import java.util.List;
 
 import top.yvyan.guettable.Gson.AvgTeacher;
 import top.yvyan.guettable.Gson.AvgTeacherFormGet;
-import top.yvyan.guettable.Gson.AvgTeacherFormGetOuter;
 import top.yvyan.guettable.Gson.AvgTeacherFormSend;
-import top.yvyan.guettable.Gson.AvgTeacherOuter;
+import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.CET;
-import top.yvyan.guettable.Gson.CETOuter;
 import top.yvyan.guettable.Gson.ClassTable;
-import top.yvyan.guettable.Gson.ClassTableOuter;
 import top.yvyan.guettable.Gson.EffectiveCredit;
-import top.yvyan.guettable.Gson.EffectiveCreditsOuter;
 import top.yvyan.guettable.Gson.ExamInfo;
-import top.yvyan.guettable.Gson.ExamInfoOuter;
 import top.yvyan.guettable.Gson.ExamScore;
-import top.yvyan.guettable.Gson.ExamScoreOuter;
 import top.yvyan.guettable.Gson.ExperimentScore;
-import top.yvyan.guettable.Gson.ExperimentScoreOuter;
 import top.yvyan.guettable.Gson.LabTable;
-import top.yvyan.guettable.Gson.LabTableOuter;
 import top.yvyan.guettable.Gson.PlannedCourse;
-import top.yvyan.guettable.Gson.PlannedCoursesOuter;
 import top.yvyan.guettable.Gson.Resit;
-import top.yvyan.guettable.Gson.ResitOuter;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.OCR.OCR;
@@ -130,8 +121,8 @@ public class StaticService {
         HttpConnectionAndCode classTable = LAN.getClassTable(context, cookie, term);
         if (classTable.code == 0) {
             List<CourseBean> courseBeans = new ArrayList<>();
-            ClassTableOuter classTableOuter = new Gson().fromJson(classTable.comment, ClassTableOuter.class);
-            for (ClassTable classTable1 : classTableOuter.getData()) {
+            BaseResponse<List<ClassTable>> baseResponse = new Gson().fromJson(classTable.comment, new TypeToken<BaseResponse<List<ClassTable>>>(){}.getType());
+            for (ClassTable classTable1 : baseResponse.getData()) {
                 courseBeans.add(classTable1.toCourseBean());
             }
             return courseBeans;
@@ -152,8 +143,8 @@ public class StaticService {
         HttpConnectionAndCode labTable = LAN.getLabTable(context, cookie, term);
         if (labTable.code == 0) {
             List<CourseBean> courseBeans = new ArrayList<>();
-            LabTableOuter labTableOuter = new Gson().fromJson(labTable.comment, LabTableOuter.class);
-            for (LabTable labTable1 : labTableOuter.getData()) {
+            BaseResponse<List<LabTable>> baseResponse = new Gson().fromJson(labTable.comment, new TypeToken<BaseResponse<List<LabTable>>>(){}.getType());
+            for (LabTable labTable1 : baseResponse.getData()) {
                 CourseBean courseBean = labTable1.toCourseBean();
                 if (courseBean.getTime() == 0) {
                     courseBean.setTime(7);
@@ -178,8 +169,8 @@ public class StaticService {
         List<ExamBean> examBeans = new ArrayList<>();
         HttpConnectionAndCode examInfo = LAN.getExam(context, cookie, term);
         if (examInfo.code == 0) {
-            ExamInfoOuter examInfoOuter = new Gson().fromJson(examInfo.comment, ExamInfoOuter.class);
-            for (ExamInfo examInfo1 : examInfoOuter.getData()) {
+            BaseResponse<List<ExamInfo>> baseResponse = new Gson().fromJson(examInfo.comment, new TypeToken<BaseResponse<List<ExamInfo>>>(){}.getType());
+            for (ExamInfo examInfo1 : baseResponse.getData()) {
                 examBeans.add(examInfo1.toExamBean());
             }
             return examBeans;
@@ -199,8 +190,8 @@ public class StaticService {
         List<ResitBean> resitBeans = new ArrayList<>();
         HttpConnectionAndCode resitInfo = LAN.getResit(context, cookie);
         if (resitInfo.code == 0) {
-            ResitOuter resitOuter = new Gson().fromJson(resitInfo.comment, ResitOuter.class);
-            for (Resit resit : resitOuter.getData()) {
+            BaseResponse<List<Resit>> baseResponse = new Gson().fromJson(resitInfo.comment, new TypeToken<BaseResponse<List<Resit>>>(){}.getType());
+            for (Resit resit : baseResponse.getData()) {
                 resitBeans.add(resit.toResitBean());
             }
             return resitBeans;
@@ -220,8 +211,8 @@ public class StaticService {
         List<CETBean> cetBeans = new ArrayList<>();
         HttpConnectionAndCode cetInfo = LAN.getCET(context, cookie);
         if (cetInfo.code == 0) {
-            CETOuter cetOuter = new Gson().fromJson(cetInfo.comment, CETOuter.class);
-            for (CET cet : cetOuter.getData()) {
+            BaseResponse<List<CET>> baseResponse = new Gson().fromJson(cetInfo.comment, new TypeToken<BaseResponse<List<CET>>>(){}.getType());
+            for (CET cet : baseResponse.getData()) {
                 cetBeans.add(cet.toCETBean());
             }
             return cetBeans;
@@ -241,9 +232,9 @@ public class StaticService {
         List<ExamScoreBean> examScoreBeans = new ArrayList<>();
         HttpConnectionAndCode examScoreInfo = LAN.getExamScore(context, cookie);
         if (examScoreInfo.code == 0) {
-            ExamScoreOuter examScoreOuter = new Gson().fromJson(examScoreInfo.comment, ExamScoreOuter.class);
-            for (ExamScore examscore1 : examScoreOuter.getData()) {
-                examScoreBeans.add(examscore1.toExamScoreBean());
+            BaseResponse<List<ExamScore>> baseResponse = new Gson().fromJson(examScoreInfo.comment, new TypeToken<BaseResponse<List<ExamScore>>>(){}.getType());
+            for (ExamScore examScore : baseResponse.getData()) {
+                examScoreBeans.add(examScore.toExamScoreBean());
             }
             return examScoreBeans;
         } else {
@@ -262,9 +253,9 @@ public class StaticService {
         List<ExperimentScoreBean> experimentScoreBeans = new ArrayList<>();
         HttpConnectionAndCode experimentScoreInfo = LAN.getExperimentScore(context, cookie);
         if (experimentScoreInfo.code == 0) {
-            ExperimentScoreOuter experimentScoreOuter = new Gson().fromJson(experimentScoreInfo.comment, ExperimentScoreOuter.class);
-            for (ExperimentScore experimentscore1 : experimentScoreOuter.getData()) {
-                experimentScoreBeans.add(experimentscore1.toExperimentScoreBean());
+            BaseResponse<List<ExperimentScore>> baseResponse = new Gson().fromJson(experimentScoreInfo.comment, new TypeToken<BaseResponse<List<ExperimentScore>>>(){}.getType());
+            for (ExperimentScore experimentScore : baseResponse.getData()) {
+                experimentScoreBeans.add(experimentScore.toExperimentScoreBean());
             }
             return experimentScoreBeans;
         } else {
@@ -307,8 +298,8 @@ public class StaticService {
         }
         HttpConnectionAndCode teacherList = LAN.getTeacherList(context, cookie, term);
         if (teacherList.code == 0) {
-            AvgTeacherOuter avgTeacherOuter = new Gson().fromJson(teacherList.comment, AvgTeacherOuter.class);
-            return new ArrayList<>(avgTeacherOuter.getData());
+            BaseResponse<List<AvgTeacher>> baseResponse = new Gson().fromJson(teacherList.comment, new TypeToken<BaseResponse<List<AvgTeacher>>>(){}.getType());
+            return new ArrayList<>(baseResponse.getData());
         } else {
             return null;
         }
@@ -325,8 +316,8 @@ public class StaticService {
     public static List<AvgTeacherFormGet> getAvgTeacherForm(Context context, String cookie, AvgTeacher avgTeacher) {
         HttpConnectionAndCode httpConnectionAndCode = LAN.getAvgTeacherForm(context, cookie, avgTeacher.getTerm(), avgTeacher.getCourseno(), avgTeacher.getTeacherno());
         if (httpConnectionAndCode.code == 0) {
-            AvgTeacherFormGetOuter avgTeacherFormGetOuter = new Gson().fromJson(httpConnectionAndCode.comment, AvgTeacherFormGetOuter.class);
-            return new ArrayList<>(avgTeacherFormGetOuter.getData());
+            BaseResponse<List<AvgTeacherFormGet>> baseResponse = new Gson().fromJson(httpConnectionAndCode.comment, new TypeToken<BaseResponse<List<AvgTeacherFormGet>>>(){}.getType());
+            return new ArrayList<>(baseResponse.getData());
         } else {
             return null;
         }
@@ -426,8 +417,8 @@ public class StaticService {
         if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
             HttpConnectionAndCode getResult = LAN.getEffectiveCredits(context, cookie);
             if (getResult.code == 0) {
-                EffectiveCreditsOuter effectiveCreditsOuter = new Gson().fromJson(getResult.comment, EffectiveCreditsOuter.class);
-                return new ArrayList<>(effectiveCreditsOuter.getData());
+                BaseResponse<List<EffectiveCredit>> baseResponse = new Gson().fromJson(getResult.comment, new TypeToken<BaseResponse<List<EffectiveCredit>>>(){}.getType());
+                return new ArrayList<>(baseResponse.getData());
             } else {
                 return null;
             }
@@ -448,8 +439,8 @@ public class StaticService {
         if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
             HttpConnectionAndCode getResult = LAN.getPlannedCourses(context, cookie);
             if (getResult.code == 0) {
-                PlannedCoursesOuter plannedCoursesOuter = new Gson().fromJson(getResult.comment, PlannedCoursesOuter.class);
-                return new ArrayList<>(plannedCoursesOuter.getData());
+                BaseResponse<List<PlannedCourse>> baseResponse = new Gson().fromJson(getResult.comment, new TypeToken<BaseResponse<List<PlannedCourse>>>(){}.getType());
+                return new ArrayList<>(baseResponse.getData());
             } else {
                 return null;
             }
