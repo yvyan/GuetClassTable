@@ -62,24 +62,19 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
         android:background="#FFFFFF"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/set_term_textView1"
+        <com.xuexiang.xui.widget.textview.label.LabelButtonView
+            style="@style/Button.Blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:background="#009688"
-            android:text="设置年度："
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="normal" />
+            android:layout_margin="10dp"
+            android:text="设置年度"
+            android:textSize="20sp"
+            android:clickable="false"
+            />
 
         <Spinner
             android:id="@+id/spinner_year"
@@ -90,19 +85,15 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp" />
 
-        <TextView
-            android:id="@+id/set_term_textView2"
+        <com.xuexiang.xui.widget.textview.label.LabelButtonView
+            style="@style/Button.Blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="#009688"
-            android:text="设置学期："
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="normal" />
+            android:layout_margin="10dp"
+            android:text="设置学期"
+            android:textSize="20sp"
+            android:clickable="false"
+            />
 
         <Spinner
             android:id="@+id/spinner_term"
@@ -114,71 +105,72 @@
             android:layout_marginBottom="20dp"
             android:entries="@array/spinnerterm" />
 
+        <com.xuexiang.xui.widget.textview.label.LabelButtonView
+            style="@style/Button.Blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="设置周次"
+            android:textSize="20sp"
+            android:clickable="false"
+            />
+
         <TextView
-            android:id="@+id/set_term_textView3"
+            android:id="@+id/week_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="第X周"
+            android:layout_margin="5dp"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <com.xuexiang.xui.widget.picker.XSeekBar
+            android:id="@+id/seekBar_week"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:background="#009688"
-            android:text="设置周次："
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="normal" />
+            app:xsb_insideRangeLineColor="#00B1FF"
+            app:xsb_insideRangeLineStrokeWidth="10dp"
+            app:xsb_isShowNumber="false"
+            app:xsb_numberTextSize="14sp"
+            app:xsb_max="200"
+            app:xsb_min="10"
+            app:xsb_outsideRangeLineStrokeWidth="10dp" />
 
-        <Spinner
-            android:id="@+id/spinner_weeks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            android:entries="@array/spinnerWeeks" />
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        android:background="#E6E6E6">
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <Button
+        <com.xuexiang.xui.widget.button.ButtonView
             android:id="@+id/back"
-            android:layout_width="130dp"
+            style="@style/ButtonView.Gray"
+            android:layout_width="140dp"
             android:layout_height="40dp"
-            android:background="#FB004F"
+            android:layout_margin="20dp"
             android:text="退出登录"
-            android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/input"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="14sp"
+            app:textSelectedSolidColor="@color/app_red2"
+            app:textSolidColor="@color/xui_config_color_red" />
 
-        <Button
+        <com.xuexiang.xui.widget.button.ButtonView
             android:id="@+id/input"
-            android:layout_width="130dp"
+            style="@style/ButtonView.Blue"
+            android:layout_width="140dp"
             android:layout_height="40dp"
-            android:background="#00B1FF"
+            android:layout_margin="20dp"
             android:text="立即导入"
-            android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/back"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="14sp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </LinearLayout>
