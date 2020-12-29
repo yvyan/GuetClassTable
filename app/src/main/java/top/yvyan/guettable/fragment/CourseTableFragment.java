@@ -50,6 +50,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private ImageView moreButton;
     private LinearLayout linearLayout;
     private TextView titleTextView;
+    private ImageView deltaImg;
 
     private View view;
 
@@ -103,6 +104,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         //获取控件
         mWeekView = view.findViewById(R.id.id_weekview);
         mTimetableView = view.findViewById(R.id.id_timetableView);
+        deltaImg = view.findViewById(R.id.deltaIcon);
 
         //设置周次选择属性
         mWeekView.curWeek(generalData.getWeek())
@@ -242,6 +244,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 //否则，显示
                 if (mWeekView.isShowing()) {
                     mWeekView.isShow(false);
+                    deltaImg.setImageResource(R.drawable.delta);
                     titleTextView.setTextColor(getResources().getColor(R.color.app_white));
                     int cur = mTimetableView.curWeek();
                     mTimetableView.onDateBuildListener()
@@ -249,6 +252,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     mTimetableView.changeWeekOnly(cur);
                     target = cur;
                 } else {
+                    deltaImg.setImageResource(R.drawable.delta_pressed);
                     mWeekView.isShow(true);
                     titleTextView.setTextColor(getResources().getColor(R.color.app_red));
                 }
