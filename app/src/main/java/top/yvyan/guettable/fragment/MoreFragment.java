@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.moreFun.AverageTeacherActivity;
 import top.yvyan.guettable.moreFun.AverageTextbookActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
-import top.yvyan.guettable.R;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
@@ -26,9 +26,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private static MoreFragment moreFragment;
 
     private View view;
-    private View testSchedule, credits, testScores, libScores;
+    private View testSchedule, credits, testScores, libScores, resitSchedule, libSchedule;
     private View graduationRequirement, planCourses, cet;
-    private View urlBkjw, urlVPN, urlCampus, urlStaff, urlMore;
+    private View urlBkjw, urlVPN, urlCampus, urlStaff, urlMore, urlLiJiang;
     private View evaluatingTeachers, evaluatingTextbooks;
 
 
