@@ -39,7 +39,7 @@
         <TextView
             android:id="@+id/experimentscore_state"
             android:layout_width="wrap_content"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:text="正在更新"
             android:textColor="@color/app_white"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                 android:text="实验名称"
                 android:textColor="@color/app_white"
                 android:gravity="center"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/experimentScoreCheck"
@@ -99,7 +99,7 @@
                 android:text="考核"
                 android:textColor="@color/app_white"
                 android:gravity="center"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/experimentScoreUsually"
@@ -109,7 +109,7 @@
                 android:text="平时"
                 android:textColor="@color/app_white"
                 android:gravity="center"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/experimentScoreFinal"
@@ -119,7 +119,7 @@
                 android:text="成绩"
                 android:textColor="@color/app_white"
                 android:gravity="center"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
         </LinearLayout>
 

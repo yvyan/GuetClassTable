@@ -18,8 +18,8 @@ import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ExamAdapter;
 import top.yvyan.guettable.bean.ExamBean;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.service.IMoreFun;
@@ -33,7 +33,7 @@ import static com.xuexiang.xui.XUI.getContext;
 public class ExamActivity extends AppCompatActivity implements IMoreFun {
 
     private GeneralData generalData;
-    private MoreDate moreDate;
+    private ScheduleData scheduleData;
     private SingleSettingData singleSettingData;
 
     @BindView(R.id.exam_state) TextView examState;
@@ -48,7 +48,7 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
         ButterKnife.bind(this);
 
         generalData = GeneralData.newInstance(this);
-        moreDate = MoreDate.newInstance(this);
+        scheduleData = ScheduleData.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
 
         examMore.setOnClickListener(view -> showPopMenu());
@@ -62,7 +62,7 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
      * 更新考试安排视图
      */
     public void updateView() {
-        List<ExamBean> examBeans = moreDate.getExamBeans();
+        List<ExamBean> examBeans = scheduleData.getExamBeans();
         if (singleSettingData.isCombineExam()) {
             examBeans = ExamUtil.combineExam(examBeans);
         }
@@ -132,7 +132,7 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
         if (examBeans != null) {
             ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
             Collections.sort(examBeans, comparatorBeanAttribute);
-            moreDate.setExamBeans(examBeans);
+            scheduleData.setExamBeans(examBeans);
             return 5;
         }
         return 1;

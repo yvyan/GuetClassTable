@@ -3,6 +3,8 @@ package top.yvyan.guettable.bean;
 import java.io.Serializable;
 
 public class ExamScoreBean implements Serializable, BeanAttribute {
+    //课程序号
+    private String cno;
     //课程名称
     private String name;
     //课号
@@ -21,10 +23,13 @@ public class ExamScoreBean implements Serializable, BeanAttribute {
     private float checkScore;
     //学分
     private float credit;
+    //类型
+    private String type;
 
     public ExamScoreBean() {}
 
-    public ExamScoreBean(String name, String number, String term, String score, float totalScore, float usuallyScore, float experimentScore, float checkScore, float credit) {
+    public ExamScoreBean(String cno, String name, String number, String term, String score, float totalScore, float usuallyScore, float experimentScore, float checkScore, float credit, String type) {
+        this.cno = cno;
         this.name = name;
         this.number = number;
         this.term = term;
@@ -34,6 +39,7 @@ public class ExamScoreBean implements Serializable, BeanAttribute {
         this.experimentScore = experimentScore;
         this.checkScore = checkScore;
         this.credit = credit;
+        this.type = type;
     }
 
     public String getName() {
@@ -51,7 +57,9 @@ public class ExamScoreBean implements Serializable, BeanAttribute {
 
     @Override
     public long getOrder() {
-        return Integer.parseInt(number) * (-1);
+        int year = Integer.parseInt(term.substring(0, 4));
+        year = year * 10 + Integer.parseInt(term.substring(10, 11));
+        return year * (-1);
     }
 
     public void setTerm(String term) {
@@ -112,5 +120,21 @@ public class ExamScoreBean implements Serializable, BeanAttribute {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getCno() {
+        return cno;
+    }
+
+    public void setCno(String cno) {
+        this.cno = cno;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

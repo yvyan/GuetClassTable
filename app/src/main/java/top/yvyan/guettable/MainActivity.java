@@ -2,6 +2,7 @@ package top.yvyan.guettable;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Process;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
     private ViewPagerAdapter viewPagerAdapter;
     private ViewPager viewPager;
     private MenuItem menuItem;
+
+    private GeneralData generalData;
 
     private DayClassFragment dayClassFragment;
     private PersonFragment personFragment;
@@ -108,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         personFragment.setOnButtonClick(this);
     }
 
-
     @Override
     public void onClick(int n) {
         viewPager.setCurrentItem(n);
@@ -156,5 +159,14 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
             }
         }
         return false;
+    }
+
+    // 只显示一次启动页
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
     }
 }

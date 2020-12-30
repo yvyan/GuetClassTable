@@ -13,7 +13,10 @@ public class SettingFragment extends PreferenceFragment {
     public static final String BASE_SETTINGS = "basic_settings";
     public static final String REFRESH_DATA = "refresh_data";
     public static final String REFRESH_DATA_FREQUENCY = "refresh_data_frequency";
+    public static final String SHOW_LIB_ON_TABLE = "show_lib_on_table";
     public static final String SHOW_EXAM_ON_TABLE = "show_exam_on_table";
+    public static final String SHOW_TOOLS_ON_DAY_CLASS = "show_tools_on_day_class";
+    public static final String APP_CHECK_UPDATE = "app_check_update";
     public static final String CLASS_LENGTH = "class_length";
 
 

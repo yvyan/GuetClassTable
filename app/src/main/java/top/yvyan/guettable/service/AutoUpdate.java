@@ -2,7 +2,6 @@ package top.yvyan.guettable.service;
 
 import android.app.Activity;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -10,10 +9,9 @@ import java.util.List;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.data.ClassData;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.CookieData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
@@ -27,7 +25,7 @@ public class AutoUpdate {
     private Activity activity;
 
     private AccountData accountData;
-    private ClassData classData;
+    private ScheduleData scheduleData;
     private GeneralData generalData;
     private CookieData cookieData;
     private SettingData settingData;
@@ -37,7 +35,7 @@ public class AutoUpdate {
     private AutoUpdate(Activity activity) {
         this.activity = activity;
         accountData = AccountData.newInstance(activity);
-        classData = ClassData.newInstance(activity);
+        scheduleData = ScheduleData.newInstance(activity);
         generalData = GeneralData.newInstance(activity);
         cookieData = CookieData.newInstance(activity);
         settingData = SettingData.newInstance(activity);
@@ -174,7 +172,7 @@ public class AutoUpdate {
             updateView(cookieData.refresh());
             if (state == 0) {
                 String cookie = cookieData.getCookie();
-                List<CourseBean> courseBeans = new ArrayList<>();
+                List<CourseBean> courseBeans;
                 // 获取理论课
                 updateView(6);
                 List<CourseBean> getClass = StaticService.getClass(
@@ -184,6 +182,7 @@ public class AutoUpdate {
                         );
                 if (getClass != null) {
                     courseBeans = getClass;
+                    scheduleData.setCourseBeans(courseBeans);
                     updateView(9);
                 } else {
                     updateView(3);
@@ -198,7 +197,7 @@ public class AutoUpdate {
                 if (examBeans != null) {
                     ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
                     Collections.sort(examBeans, comparatorBeanAttribute);
-                    MoreDate.newInstance(activity).setExamBeans(examBeans);
+                    scheduleData.setExamBeans(examBeans);
                     updateView(7);
                 } else {
                     updateView(3);
@@ -213,8 +212,7 @@ public class AutoUpdate {
                 );
                 if (getLab != null) {
                     updateView(8);
-                    courseBeans.addAll(getLab);
-                    classData.setCourseBeans(courseBeans);
+                    scheduleData.setLibBeans(getLab);
                     generalData.setLastUpdateTime(System.currentTimeMillis());
                     activity.runOnUiThread(() -> {
                         CourseTableFragment.newInstance().updateTable();

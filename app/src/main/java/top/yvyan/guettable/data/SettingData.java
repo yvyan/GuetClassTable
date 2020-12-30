@@ -31,8 +31,20 @@ public class SettingData {
         return Integer.parseInt(sharedPreferences.getString(SettingFragment.REFRESH_DATA_FREQUENCY, "3"));
     }
 
+    public boolean getShowLibOnTable() {
+        return sharedPreferences.getBoolean(SettingFragment.SHOW_LIB_ON_TABLE, true);
+    }
+
     public boolean getShowExamOnTable() {
         return sharedPreferences.getBoolean(SettingFragment.SHOW_EXAM_ON_TABLE, true);
+    }
+
+    public boolean isShowTools() {
+        return sharedPreferences.getBoolean(SettingFragment.SHOW_TOOLS_ON_DAY_CLASS, true);
+    }
+
+    public boolean isAppCheckUpdate() {
+        return sharedPreferences.getBoolean(SettingFragment.APP_CHECK_UPDATE, true);
     }
 
     public int getClassLength() {

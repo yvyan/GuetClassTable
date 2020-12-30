@@ -9,13 +9,17 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import top.yvyan.guettable.R;
 import top.yvyan.guettable.moreFun.AverageTeacherActivity;
 import top.yvyan.guettable.moreFun.AverageTextbookActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
+import top.yvyan.guettable.moreFun.GradesActivity;
+import top.yvyan.guettable.moreFun.LibActivity;
+import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
+import top.yvyan.guettable.moreFun.ResitActivity;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
@@ -52,9 +56,14 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         testScores.setOnClickListener(this);
         libScores = view.findViewById(R.id.more_lib_scores);
         libScores.setOnClickListener(this);
+        resitSchedule = view.findViewById(R.id.more_resit_schedule);
+        resitSchedule.setOnClickListener(this);
+        libSchedule = view.findViewById(R.id.more_lib_schedule);
+        libSchedule.setOnClickListener(this);
 
         graduationRequirement = view.findViewById(R.id.more_graduation_requirement);
         graduationRequirement.setOnClickListener(this);
+        graduationRequirement.setVisibility(View.GONE);
         planCourses = view.findViewById(R.id.more_plan_courses);
         planCourses.setOnClickListener(this);
         cet = view.findViewById(R.id.more_cet);
@@ -68,6 +77,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         urlCampus.setOnClickListener(this);
         urlStaff = view.findViewById(R.id.more_url_staff);
         urlStaff.setOnClickListener(this);
+        urlLiJiang = view.findViewById(R.id.more_url_lijiang);
+        urlLiJiang.setOnClickListener(this);
         urlMore = view.findViewById(R.id.more_url_more);
         urlMore.setOnClickListener(this);
 
@@ -75,6 +86,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         evaluatingTeachers.setOnClickListener(this);
         evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
         evaluatingTextbooks.setOnClickListener(this);
+        evaluatingTextbooks.setVisibility(View.GONE);
 
         return view;
     }
@@ -90,6 +102,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getContext(), ExamActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.more_credits:
+                intent = new Intent(getContext(), GradesActivity.class);
+                startActivity(intent);
+                break;
             case R.id.more_test_scores:
                 intent = new Intent(getContext(), ExamScoreActivity.class);
                 startActivity(intent);
@@ -98,7 +114,19 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getContext(), ExperimentScoreActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.more_resit_schedule:
+                intent = new Intent(getContext(), ResitActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.more_lib_schedule:
+                intent = new Intent(getContext(), LibActivity.class);
+                startActivity(intent);
+                break;
 
+            case R.id.more_plan_courses:
+                intent = new Intent(getContext(), PlannedCoursesActivity.class);
+                startActivity(intent);
+                break;
             case R.id.more_cet:
                 intent = new Intent(getContext(), CETActivity.class);
                 startActivity(intent);
@@ -124,11 +152,17 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;
+            case R.id.more_url_lijiang:
+                uri = Uri.parse(getContext().getResources().getString(R.string.url_lijiang));
+                webIntent.setData(uri);
+                startActivity(webIntent);
+                break;
             case R.id.more_url_more:
                 uri = Uri.parse(getContext().getResources().getString(R.string.guet_yvyan_top));
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;
+
             case R.id.more_evaluating_teachers:
                 intent = new Intent(getContext(), AverageTeacherActivity.class);
                 startActivity(intent);

@@ -91,7 +91,12 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
                     if (n == 0) {
                         avgTeacherBeans.get(index).setHint("已评教");
                     } else {
-                        avgTeacherBeans.get(index).setHint("失败");
+                        n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
+                        if (n != 0) {
+                            avgTeacherBeans.get(index).setHint("失败");
+                        } else {
+                            avgTeacherBeans.get(index).setHint("已评教");
+                        }
                     }
                 }
                 runOnUiThread(() -> {
