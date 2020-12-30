@@ -108,8 +108,14 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
 
             if(courseBean.isLab()) { //课内实验
                 holder.textView2.setText("名称：" + courseBean.getLibName());
-                holder.textView6.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
-                holder.textView7.setText(courseBean.getRemarks());
+                if ("".equals(courseBean.getRemarks())) {
+                    holder.textView6.setVisibility(View.GONE);
+                    holder.textView7.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
+                } else {
+                    holder.textView6.setVisibility(View.VISIBLE);
+                    holder.textView6.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
+                    holder.textView7.setText(courseBean.getRemarks());
+                }
             } else { //理论课
                 holder.textView2.setText("课号：" + courseBean.getNumber());
                 holder.textView6.setVisibility(View.GONE);

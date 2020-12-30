@@ -51,7 +51,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="8dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -72,7 +72,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="8dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -228,6 +228,111 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="8dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:id="@+id/more_resit_schedule"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/more_resit_schedule_picture"
+                                        android:layout_width="30dp"
+                                        android:layout_height="34dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_weight="1"
+                                        android:baselineAlignBottom="false"
+                                        android:src="@drawable/m_bukao" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/more_resit_schedule_picture"
+                                        android:layout_centerInParent="true"
+                                        android:layout_weight="1"
+                                        android:text="补考安排"
+                                        android:textSize="13dp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:id="@+id/more_lib_schedule"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/more_lib_schedule_picture"
+                                        android:layout_width="30dp"
+                                        android:layout_height="34dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_weight="1"
+                                        android:baselineAlignBottom="false"
+                                        android:src="@drawable/m_shiyanping" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/more_lib_schedule_picture"
+                                        android:layout_centerInParent="true"
+                                        android:layout_weight="1"
+                                        android:text="实验安排"
+                                        android:textSize="13dp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_weight="1">
+
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -251,7 +356,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="8dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -273,46 +378,6 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_marginTop="10dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_weight="1">
-
-                                <RelativeLayout
-                                    android:id="@+id/more_graduation_requirement"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_marginTop="6dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:id="@+id/more_graduation_requirement_picture"
-                                        android:layout_width="34dp"
-                                        android:layout_height="34dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:layout_weight="1"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_biyeguanli" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_graduation_requirement_picture"
-                                        android:layout_centerInParent="true"
-                                        android:layout_weight="1"
-                                        android:text="毕业要求"
-                                        android:textSize="13dp" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -394,6 +459,46 @@
                                 android:orientation="vertical"
                                 android:layout_weight="1">
 
+                                <RelativeLayout
+                                    android:id="@+id/more_graduation_requirement"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/more_graduation_requirement_picture"
+                                        android:layout_width="34dp"
+                                        android:layout_height="34dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_weight="1"
+                                        android:baselineAlignBottom="false"
+                                        android:src="@drawable/m_biyeguanli" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/more_graduation_requirement_picture"
+                                        android:layout_centerInParent="true"
+                                        android:layout_weight="1"
+                                        android:text="毕业要求"
+                                        android:textSize="13dp" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_weight="1">
+
                             </LinearLayout>
 
 
@@ -422,7 +527,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="8dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -444,7 +549,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="8dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -607,7 +712,48 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="8dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:id="@+id/more_url_lijiang"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/more_url_lijiang_picture"
+                                        android:layout_width="34dp"
+                                        android:layout_height="34dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_weight="1"
+                                        android:baselineAlignBottom="false"
+                                        android:src="@drawable/m_xuexiao" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/more_url_lijiang_picture"
+                                        android:layout_centerInParent="true"
+                                        android:layout_weight="1"
+                                        android:text="漓江学堂"
+                                        android:textSize="13dp" />
+
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -665,14 +811,6 @@
 
                             </LinearLayout>
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_weight="1">
-
-                            </LinearLayout>
-
 
                         </LinearLayout>
 
@@ -699,7 +837,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="8dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -720,7 +858,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="8dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
