@@ -16,7 +16,6 @@ import java.util.List;
 import top.yvyan.guettable.Gson.AvgTeacher;
 import top.yvyan.guettable.Gson.AvgTeacherFormGet;
 import top.yvyan.guettable.Gson.AvgTeacherFormSend;
-import top.yvyan.guettable.Gson.AvgTeacherOuter;
 import top.yvyan.guettable.Gson.AvgTextbook;
 import top.yvyan.guettable.Gson.AvgTextbookDataOuter;
 import top.yvyan.guettable.Gson.AvgTextbookFormGetOuter;
@@ -58,6 +57,27 @@ public class StaticService {
             return ocr;
         }
         return null;
+    }
+
+    /**
+     * 获取补考安排
+     *
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        补考安排列表
+     */
+    public static List<ResitBean> getResit(Context context, String cookie) {
+        List<ResitBean> resitBeans = new ArrayList<>();
+        HttpConnectionAndCode resitInfo = LAN.getResit(context, cookie);
+        if (resitInfo.code == 0) {
+            BaseResponse<List<Resit>> baseResponse = new Gson().fromJson(resitInfo.comment, new TypeToken<BaseResponse<List<Resit>>>(){}.getType());
+            for (Resit resit : baseResponse.getData()) {
+                resitBeans.add(resit.toResitBean());
+            }
+            return resitBeans;
+        } else {
+            return null;
+        }
     }
 
     /**
