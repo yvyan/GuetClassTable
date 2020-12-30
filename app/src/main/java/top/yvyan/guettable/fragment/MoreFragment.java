@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import top.yvyan.guettable.WebViewActivity;
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.moreFun.AverageTeacherActivity;
+import top.yvyan.guettable.moreFun.AverageTextbookActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
-import top.yvyan.guettable.R;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
 import top.yvyan.guettable.util.ToastUtil;
@@ -129,12 +129,14 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;
-
             case R.id.more_evaluating_teachers:
                 intent = new Intent(getContext(), AverageTeacherActivity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.more_evaluating_textbooks_picture:
+                intent = new Intent(getContext(), AverageTextbookActivity.class);
+                startActivity(intent);
+                break;
             default:
                 ToastUtil.showToast(getContext(), "敬请期待！");
         }

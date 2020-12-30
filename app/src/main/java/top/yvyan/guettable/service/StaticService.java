@@ -16,6 +16,10 @@ import top.yvyan.guettable.Gson.AvgTeacherFormGet;
 import top.yvyan.guettable.Gson.AvgTeacherFormGetOuter;
 import top.yvyan.guettable.Gson.AvgTeacherFormSend;
 import top.yvyan.guettable.Gson.AvgTeacherOuter;
+import top.yvyan.guettable.Gson.AvgTextbook;
+import top.yvyan.guettable.Gson.AvgTextbookDataOuter;
+import top.yvyan.guettable.Gson.AvgTextbookFormGetOuter;
+import top.yvyan.guettable.Gson.AvgTextbookOuter;
 import top.yvyan.guettable.Gson.CET;
 import top.yvyan.guettable.Gson.CETOuter;
 import top.yvyan.guettable.Gson.ClassTable;
@@ -42,8 +46,9 @@ public class StaticService {
 
     /**
      * 刷新验证码(后台)
+     *
      * @param context context
-     * @return        cookie
+     * @return cookie
      */
     public static String changeCode(Context context, StringBuilder cookie_builder) {
         final HttpConnectionAndCode res = LAN.checkCode(context);
@@ -57,15 +62,16 @@ public class StaticService {
 
     /**
      * 自动登录
-     * @param context  context
-     * @param account  学号
-     * @param password 密码
+     *
+     * @param context        context
+     * @param account        学号
+     * @param password       密码
      * @param cookie_builder cookie
-     * @return         state记录当前状态
-     *                 0 : 登录成功
-     *                -1 : 密码错误
-     *                -2 : 网络错误/未知错误
-     *                -3 : 验证码连续错误
+     * @return state记录当前状态
+     * 0 : 登录成功
+     * -1 : 密码错误
+     * -2 : 网络错误/未知错误
+     * -3 : 验证码连续错误
      */
     public static int autoLogin(Context context, String account, String password, StringBuilder cookie_builder) {
         int state = 1;
@@ -93,9 +99,10 @@ public class StaticService {
 
     /**
      * 获取基本的学生信息
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        基本学生信息
+     * @return 基本学生信息
      */
     public static StudentInfo getStudentInfo(Context context, String cookie) {
         HttpConnectionAndCode studentInfo = LAN.studentInfo(context, cookie);
@@ -108,10 +115,11 @@ public class StaticService {
 
     /**
      * 获取理论课程
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期
-     * @return        理论课程列表
+     * @return 理论课程列表
      */
     public static List<CourseBean> getClass(Context context, String cookie, String term) {
         HttpConnectionAndCode classTable = LAN.getClassTable(context, cookie, term);
@@ -129,10 +137,11 @@ public class StaticService {
 
     /**
      * 获取课内实验
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期
-     * @return        课内实验列表
+     * @return 课内实验列表
      */
     public static List<CourseBean> getLab(Context context, String cookie, String term) {
         HttpConnectionAndCode labTable = LAN.getLabTable(context, cookie, term);
@@ -154,10 +163,11 @@ public class StaticService {
 
     /**
      * 获取考试安排
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期
-     * @return        考试安排列表
+     * @return 考试安排列表
      */
     public static List<ExamBean> getExam(Context context, String cookie, String term) {
         List<ExamBean> examBeans = new ArrayList<>();
@@ -175,9 +185,10 @@ public class StaticService {
 
     /**
      * 获取等级考试成绩
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        等级考试成绩列表
+     * @return 等级考试成绩列表
      */
     public static List<CETBean> getCET(Context context, String cookie) {
         List<CETBean> cetBeans = new ArrayList<>();
@@ -195,9 +206,10 @@ public class StaticService {
 
     /**
      * 获取普通考试成绩
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        普通考试成绩列表
+     * @return 普通考试成绩列表
      */
     public static List<ExamScoreBean> getExamScore(Context context, String cookie) {
         List<ExamScoreBean> examScoreBeans = new ArrayList<>();
@@ -215,9 +227,10 @@ public class StaticService {
 
     /**
      * 获取实验考试成绩
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        验考试成绩列表
+     * @return 验考试成绩列表
      */
     public static List<ExperimentScoreBean> getExperimentScore(Context context, String cookie) {
         List<ExperimentScoreBean> experimentScoreBeans = new ArrayList<>();
@@ -235,9 +248,10 @@ public class StaticService {
 
     /**
      * 获取当前学期
+     *
      * @param context context
      * @param cookie  登录后的cookie
-     * @return        当前学期字符串(例:2020-2021_1)
+     * @return 当前学期字符串(例 : 2020 - 2021_1)
      */
     public static String getThisTerm(Context context, String cookie) {
         HttpConnectionAndCode termInfo = LAN.getThisTerm(context, cookie);
@@ -252,10 +266,11 @@ public class StaticService {
 
     /**
      * 获取评价教师列表
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期（格式：2020-2021_1，不输入默认当前学期）
-     * @return        教师列表
+     * @return 教师列表
      */
     public static List<AvgTeacher> getTeacherList(Context context, String cookie, String term) {
         if (term == null) {
@@ -275,10 +290,11 @@ public class StaticService {
 
     /**
      * 获取某个老师的评价表单
+     *
      * @param context    context
      * @param cookie     登录后的cookie
      * @param avgTeacher 教师信息类
-     * @return           老师评价表单
+     * @return 老师评价表单
      */
     public static List<AvgTeacherFormGet> getAvgTeacherForm(Context context, String cookie, AvgTeacher avgTeacher) {
         HttpConnectionAndCode httpConnectionAndCode = LAN.getAvgTeacherForm(context, cookie, avgTeacher.getTerm(), avgTeacher.getCourseno(), avgTeacher.getTeacherno());
@@ -292,10 +308,11 @@ public class StaticService {
 
     /**
      * 提交老师评价表单
+     *
      * @param context             context
      * @param cookie              登录后的cookie
      * @param avgTeacherFormSends 评价表单集合
-     * @return                    结果
+     * @return 结果
      */
     public static String saveTeacherForm(Context context, String cookie, List<AvgTeacherFormSend> avgTeacherFormSends) {
         String postBody = new Gson().toJson(avgTeacherFormSends);
@@ -308,6 +325,7 @@ public class StaticService {
 
     /**
      * 提交评价老师总评
+     *
      * @param context             context
      * @param cookie              登录后的cookie
      * @param avgTeacherFormSends 评价表单
@@ -315,7 +333,7 @@ public class StaticService {
      * @param courseName          课程名称
      * @param teacherName         教师名称
      * @param teacherNumber       教师编号
-     * @return                    操作结果
+     * @return 操作结果
      */
     public static String commitTeacherForm(Context context, String cookie, List<AvgTeacherFormSend> avgTeacherFormSends, String studentId, String courseName, String teacherName, String teacherNumber) {
         AvgTeacherFormSend avgTeacherFormSend = avgTeacherFormSends.get(0);
@@ -338,14 +356,15 @@ public class StaticService {
 
     /**
      * 自动评价一个教师
+     *
      * @param context    context
      * @param cookie     登录后的cookie
      * @param avgTeacher 教师信息类
      * @param number     学号
-     * @return           0 : 操作成功
-     *                  -1 : 获取评价表单失败
-     *                  -2 : 提交评价表单失败
-     *                  -3 : 提交总评失败
+     * @return 0 : 操作成功
+     * -1 : 获取评价表单失败
+     * -2 : 提交评价表单失败
+     * -3 : 提交总评失败
      */
     public static int averageTeacher(Context context, String cookie, AvgTeacher avgTeacher, String number) {
         List<AvgTeacherFormGet> avgTeacherFormGets = getAvgTeacherForm(context, cookie, avgTeacher);
@@ -368,4 +387,80 @@ public class StaticService {
             return -2;
         }
     }
+
+    /**
+     *
+     * @param context    context
+     * @param cookie     登陆后cookie
+     * @return           待评价教材列表
+     */
+    public static List<AvgTextbook> getTextbookList(Context context, String cookie) {
+        HttpConnectionAndCode textbookList = LAN.getTextbookList(context, cookie);
+        if (textbookList.code == 0) {
+            System.out.println(textbookList.comment);
+            AvgTextbookOuter avgTextbookOuter = new Gson().fromJson(textbookList.comment, AvgTextbookOuter.class);
+            return new ArrayList<>(avgTextbookOuter.getData());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param context     context
+     * @param cookie      登陆后cookie
+     * @param avgTextbook 课程实体
+     * @return            操作结果
+     */
+    public static AvgTextbookFormGetOuter getAvgTextbookForm(Context context, String cookie, AvgTextbook avgTextbook) {
+        HttpConnectionAndCode textbookFormGet = LAN.getAvgTextbookFormOuter(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh());
+        if (textbookFormGet.code == 0) {
+            return new Gson().fromJson(textbookFormGet.comment, AvgTextbookFormGetOuter.class);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param context     context
+     * @param cookie      登陆后cookie
+     * @param avgTextbook 课程实体
+     * @return
+     */
+    public static AvgTextbookDataOuter getAvgTextbookData(Context context, String cookie, AvgTextbook avgTextbook) {
+        HttpConnectionAndCode textbookFormState = LAN.getAvgTextbookFormState(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh());
+        if (textbookFormState.code == 0) {
+            return new Gson().fromJson(textbookFormState.comment, AvgTextbookDataOuter.class);
+        } else {
+            return null;
+        }
+    }
+
+
+    /*
+    public static int averageTextbook(Context context, String cookie, AvgTeacher avgTeacher, String number) {
+        List<AvgTextbookFormGet> avgTextbookFormGets = getAvgTeacherForm(context, cookie, avgTeacher);
+        if (avgTeacherFormGets == null) {
+            return -1;
+        }
+        List<AvgTeacherFormSend> avgTeacherFormSends = new ArrayList<>();
+        for (AvgTeacherFormGet avgTeacherFormGet : avgTeacherFormGets) {
+            avgTeacherFormSends.add(new AvgTeacherFormSend(avgTeacherFormGet, avgTeacher.getCourseid(), avgTeacher.getCourseno(), avgTeacher.getTeacherno(), avgTeacher.getTerm()));
+        }
+        String str = StaticService.saveTeacherForm(context, cookie, avgTeacherFormSends);
+        if (str != null) {
+            str = StaticService.commitTeacherForm(context, cookie, avgTeacherFormSends, number, avgTeacher.getCname(), avgTeacher.getName(), avgTeacher.getTeacherno());
+            if (str != null) {
+                return 0;
+            } else {
+                return -3;
+            }
+        } else {
+            return -2;
+        }
+        return 0;
+    }
+
+     */
 }
