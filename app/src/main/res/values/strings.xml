@@ -2,48 +2,45 @@
     <string name="app_name">桂电课程表</string>
 
     <!-- 新版教务系统 -->
-    <string name="lan_get_checkcode_url">http://172.16.13.22/login/GetValidateCode?id=0.7060164569272753</string>
-    <string name="lan_get_checkcode_referer">http://172.16.13.22/</string>
+    <string name="lan_get_checkcode_url">/login/GetValidateCode?id=0.7060164569272753</string>
+    <string name="lan_get_checkcode_referer">/</string>
 
-    <string name="lan_login_url">http://172.16.13.22/Login/SubmitLogin</string>
-    <string name="lan_login_referer">http://172.16.13.22/</string>
+    <string name="lan_login_url">/Login/SubmitLogin</string>
+    <string name="lan_referer">/</string>
     <string name="lan_login_success_contain_response_text">\"success\":true</string>
 
-    <string name="lan_get_student_url">http://172.16.13.22/student/StuInfo</string>
-    <string name="lan_get_student_referer">http://172.16.13.22</string>
+    <string name="lan_get_student_url">/student/StuInfo</string>
     <string name="lan_get_student_success_contain_response_text">\"name\"</string>
 
-    <string name="lan_get_terms_url">http://172.16.13.22/Comm/GetTerm</string>
-    <string name="lan_get_terms_referer">http://172.16.13.22</string>
+    <string name="lan_get_terms_url">/Comm/GetTerm</string>
     <string name="lan_get_terms_success_contain_response_text">\"success\":true</string>
 
-    <string name="lan_get_table_url">http://172.16.13.22/student/getstutable</string>
-    <string name="lan_get_table_referer">http://172.16.13.22</string>
+    <string name="lan_get_table_url">/student/getstutable</string>
     <string name="lan_get_table_success_contain_response_text">\"success\":true</string>
 
-    <string name="lan_get_lab_table_url">http://172.16.13.22/student/getlabtable</string>
-    <string name="lan_get_exam_url">http://172.16.13.22/student/getexamap</string>
-    <string name="lan_get_cet_url">http://172.16.13.22/student/GetLvlScore</string>
-    <string name="lan_get_examscore_url">http://172.16.13.22/Student/GetStuScore</string>
-    <string name="lan_get_experimentscore_url">http://172.16.13.22/student/getstulab</string>
-    <string name="lan_get_resit_url">http://172.16.13.22/student/getbk</string>
+    <string name="lan_get_lab_table_url">/student/getlabtable</string>
+    <string name="lan_get_exam_url">/student/getexamap</string>
+    <string name="lan_get_cet_url">/student/GetLvlScore</string>
+    <string name="lan_get_examscore_url">/Student/GetStuScore</string>
+    <string name="lan_get_experimentscore_url">/student/getstulab</string>
+    <string name="lan_get_resit_url">/student/getbk</string>
 
     <!-- 评价教师 -->
-    <string name="lan_get_this_term">http://172.16.13.22/student/temsterm</string>
-    <string name="lan_get_teacher_referer">http://172.16.13.22/Login/MainDesktop</string>
-    <string name="lan_get_teacher_list">http://172.16.13.22/student/getpjcno</string>
-    <string name="lan_get_avg_thacher_data">http://172.16.13.22/student/jxpgdata</string>
-    <string name="lan_save_avg_teacher_data">http://172.16.13.22/student/SaveJxpg</string>
-    <string name="lan_commit_avg_teacher_data">http://172.16.13.22/student/SaveJxpgJg/1</string>
+    <string name="lan_get_this_term">/student/temsterm</string>
+    <string name="lan_get_teacher_referer">/Login/MainDesktop</string>
+    <string name="lan_get_teacher_list">/student/getpjcno</string>
+    <string name="lan_get_avg_thacher_data">/student/jxpgdata</string>
+    <string name="lan_save_avg_teacher_data">/student/SaveJxpg</string>
+    <string name="lan_commit_avg_teacher_data">/student/SaveJxpgJg/1</string>
 
     <!--毕业课程-->
-    <string name="lan_update_effective_credits">http://172.16.13.22/student/genyxxf</string>
-    <string name="lan_get_effective_credits">http://172.16.13.22/student/Getyxxf</string>
-    <string name="lan_get_planned_credits">http://172.16.13.22/student/getplancj</string>
+    <string name="lan_update_effective_credits">/student/genyxxf</string>
+    <string name="lan_get_effective_credits">/student/Getyxxf</string>
+    <string name="lan_get_planned_credits">/student/getplancj</string>
 
     <string name="smart_campus">http://icampus.guet.edu.cn/</string>
     <string name="url_vpn">https://v.guet.edu.cn/</string>
-    <string name="url_bkjw">http://172.16.13.22/?mCode=000708</string>
+    <string name="url_bkjw">/</string>
     <string name="url_xsgl">https://xsgl.guet.edu.cn/</string>
     <string name="url_lijiang">http://www.gxljxt.cn/</string>
     <string name="guet_yvyan_top">http://guet.yvyan.top/</string>

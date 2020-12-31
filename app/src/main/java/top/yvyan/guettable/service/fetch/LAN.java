@@ -11,6 +11,8 @@ import top.yvyan.guettable.Http.GetBitmap;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.Http.Post;
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.util.UrlReplaceUtil;
 
 public class LAN {
 
@@ -22,7 +24,7 @@ public class LAN {
     public static HttpConnectionAndCode checkCode(Context context) {
         Resources resources = context.getResources();
         return GetBitmap.get(
-                resources.getString(R.string.lan_get_checkcode_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_checkcode_url)),
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.lan_get_checkcode_referer),
@@ -45,7 +47,7 @@ public class LAN {
         Resources resources = context.getResources();
         String body = "us=" + account + "&pwd=" + pwd + "&ck=" + checkCode;
         HttpConnectionAndCode login_res = Post.post(
-                resources.getString(R.string.lan_login_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_login_url)),
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.lan_login_url),
@@ -80,10 +82,10 @@ public class LAN {
     public static HttpConnectionAndCode studentInfo(Context context, String cookie) {
         Resources resources = context.getResources();
         return Post.post(
-                resources.getString(R.string.lan_get_student_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_student_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 null,
                 cookie,
                 "}",
@@ -105,10 +107,10 @@ public class LAN {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                resources.getString(R.string.lan_get_table_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_table_url)),
                 param,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_table_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -131,10 +133,10 @@ public class LAN {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                resources.getString(R.string.lan_get_lab_table_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_lab_table_url)),
                 param,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_table_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -157,10 +159,10 @@ public class LAN {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                resources.getString(R.string.lan_get_exam_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_exam_url)),
                 param,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_login_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -181,10 +183,10 @@ public class LAN {
     public static HttpConnectionAndCode getResit(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_resit_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_resit_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_login_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -205,10 +207,10 @@ public class LAN {
     public static HttpConnectionAndCode getCET(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_cet_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_cet_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -229,10 +231,10 @@ public class LAN {
     public static HttpConnectionAndCode getExamScore(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_examscore_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_examscore_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -253,10 +255,10 @@ public class LAN {
     public static HttpConnectionAndCode getExperimentScore(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_experimentscore_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_experimentscore_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -277,10 +279,10 @@ public class LAN {
     public static HttpConnectionAndCode getThisTerm(Context context, String cookie) {
         Resources resources = context.getResources();
         return Post.post(
-                resources.getString(R.string.lan_get_this_term),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_this_term)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 null,
                 cookie,
                 null,
@@ -303,10 +305,10 @@ public class LAN {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                resources.getString(R.string.lan_get_teacher_list),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_teacher_list)),
                 param,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -335,10 +337,10 @@ public class LAN {
                 "teacherno=" + teacherNo
         };
         return Get.get(
-                resources.getString(R.string.lan_get_avg_thacher_data),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_avg_thacher_data)),
                 params,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_table_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -368,10 +370,10 @@ public class LAN {
                 "teacherno" + teacherNo
         };
         return Post.post(
-                resources.getString(R.string.lan_save_avg_teacher_data),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_save_avg_teacher_data)),
                 params,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 postBody,
                 cookie,
                 "}",
@@ -393,10 +395,10 @@ public class LAN {
     public static HttpConnectionAndCode commitTeacherForm(Context context, String cookie, String postBody) {
         Resources resources = context.getResources();
         return Post.post(
-                resources.getString(R.string.lan_commit_avg_teacher_data),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_commit_avg_teacher_data)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 postBody,
                 cookie,
                 "}",
@@ -417,10 +419,10 @@ public class LAN {
     public static HttpConnectionAndCode updateEffectiveCredits(Context context, String cookie) {
         Resources resources = context.getResources();
         return Post.post(
-                resources.getString(R.string.lan_update_effective_credits),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_update_effective_credits)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 null,
                 cookie,
                 "}",
@@ -441,10 +443,10 @@ public class LAN {
     public static HttpConnectionAndCode getEffectiveCredits(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_effective_credits),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_effective_credits)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_table_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -465,10 +467,10 @@ public class LAN {
     public static HttpConnectionAndCode getPlannedCourses(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_planned_credits),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_planned_credits)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_table_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
