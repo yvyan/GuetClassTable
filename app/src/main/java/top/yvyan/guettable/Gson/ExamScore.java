@@ -16,7 +16,7 @@ public class ExamScore {
     private String courseno;
     private String cname;
     private String courselevel;
-    private int score;
+    private float score;
     private String zpxs;
     private String kctype;
     private String typeno;
@@ -26,7 +26,7 @@ public class ExamScore {
     private float qzcj;
     private float pscj;
     private float khcj;
-    private int zpcj;
+    private float zpcj;
     private String kslb;
     private String cjlb;
     private int kssj;
@@ -135,10 +135,10 @@ public class ExamScore {
         return courselevel;
     }
 
-    public void setScore(int score) {
+    public void setScore(float score) {
         this.score = score;
     }
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
@@ -205,10 +205,10 @@ public class ExamScore {
         return khcj;
     }
 
-    public void setZpcj(int zpcj) {
+    public void setZpcj(float zpcj) {
         this.zpcj = zpcj;
     }
-    public int getZpcj() {
+    public float getZpcj() {
         return zpcj;
     }
 

@@ -90,7 +90,12 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         nowYear = nowYear - num;
         spinnerYear.setSelection(nowYear);
         //自动选择学期
-        int nowTerm = Integer.parseInt(term.substring(10, 11));
+        int nowTerm;
+        if (generalData.isInternational()) { //国院系统
+            nowTerm = Integer.parseInt(term.substring(4, 5));
+        } else {
+            nowTerm = Integer.parseInt(term.substring(10, 11));
+        }
         spinnerTerm.setSelection(nowTerm - 1);
         //自动选择星期
         int week = generalData.getWeek();
@@ -128,7 +133,11 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 //保存学年
                 int year = Integer.parseInt(generalData.getGrade()) + (int) spinnerYear.getSelectedItemId();
                 int num = (int) spinnerTerm.getSelectedItemId() + 1;
-                generalData.setTerm(year + "-" + (year + 1) + "_" + num);
+                if (generalData.isInternational()) {
+                    generalData.setTerm(year + "" + num);
+                } else {
+                    generalData.setTerm(year + "-" + (year + 1) + "_" + num);
+                }
                 //保存星期
                 int week = seekBar.getSelectedNumber() / 10;
                 generalData.setWeek(week);
