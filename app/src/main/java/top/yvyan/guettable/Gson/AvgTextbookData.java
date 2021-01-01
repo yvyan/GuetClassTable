@@ -1,6 +1,5 @@
 package top.yvyan.guettable.Gson;
 
-// 教材评价数据
 public class AvgTextbookData {
     private String term;
     private String userid;

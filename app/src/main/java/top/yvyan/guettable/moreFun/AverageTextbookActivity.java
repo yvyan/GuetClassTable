@@ -15,6 +15,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import top.yvyan.guettable.Gson.AvgTextbook;
+import top.yvyan.guettable.Gson.AvgTextbookDataOuter;
+import top.yvyan.guettable.Gson.AvgTextbookFormGetOuter;
+import top.yvyan.guettable.Gson.AvgTextbookOuter;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.AvgTextbookAdapter;
 import top.yvyan.guettable.bean.AvgTextbookBean;
@@ -25,7 +28,6 @@ import top.yvyan.guettable.util.ToastUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
-// 未完成
 public class AverageTextbookActivity extends AppCompatActivity implements View.OnClickListener, IMoreFun {
 
     @BindView(R.id.average_textbook_state)
@@ -37,7 +39,9 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
     @BindView(R.id.avg_textbook_start)
     Button start;
 
-    private List<AvgTextbook> avgTextbooks;
+    private AvgTextbookOuter avgTextbookOuter;
+    private List<AvgTextbookFormGetOuter> formGetOuters;
+    private List<AvgTextbookDataOuter> dataOuters;
     private String cookie;
     private List<AvgTextbookBean> avgTextbookBeans;
     int index = 0;
@@ -54,10 +58,9 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
 
     private void start() {
         new Thread(() -> {
-            for (AvgTextbook avgTextbook : avgTextbooks) {
-                if (avgTextbook == null) {
-//                    int n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
-                    int n = 0;
+            for (int i = 0; i < dataOuters.size(); i++) {
+                if (dataOuters.get(i).getData() == null) {
+                    int n = StaticService.averageTextbook(this, cookie, formGetOuters.get(i), avgTextbookOuter.getData().get(i));
                     if (n == 0) {
                         avgTextbookBeans.get(index).setHint("已评");
                     } else {
@@ -91,12 +94,22 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
     @Override
     public int updateData(String cookie) {
         this.cookie = cookie;
-        avgTextbooks = StaticService.getTextbookList(this, cookie);
-        if (avgTextbooks != null) {
+        // 获取课表列表
+        avgTextbookOuter = StaticService.getTextbookOuter(this, cookie);
+        if (avgTextbookOuter != null) {
             avgTextbookBeans = new ArrayList<>();
-            for (AvgTextbook avgTextbook : avgTextbooks) {
-//                avgTextbookBeans.add(new AvgTextbookBean(avgTextbook.getCname(), avgTextbook.getName(), ((avgTextbook.getChk() == 1) ? "已评教" : "")));
-                // 需要判断是否已经评教并且对avgTextbookBeans进行数据填充
+            formGetOuters = new ArrayList<>();
+            dataOuters = new ArrayList<>();
+            // 获取评价表
+            for (AvgTextbook avgTextbook : avgTextbookOuter.getData()) {
+                formGetOuters.add(StaticService.getAvgTextbookFormOuter(this, cookie, avgTextbook));
+                dataOuters.add(StaticService.getAvgTextbookDataOuter(this, cookie, avgTextbook));
+            }
+            for (int i = 0; i < dataOuters.size(); i++) {
+                String courseName = avgTextbookOuter.getData().get(i).getCname();
+                String textbookName = avgTextbookOuter.getData().get(i).getName();
+                String hint = dataOuters.get(i).getData() == null ? "未评价" : "已评价";
+                avgTextbookBeans.add(new AvgTextbookBean(courseName, textbookName, hint));
             }
             return 5;
         }

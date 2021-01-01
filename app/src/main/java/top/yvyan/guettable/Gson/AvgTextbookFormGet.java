@@ -1,6 +1,5 @@
 package top.yvyan.guettable.Gson;
 
-// 教材评价表单信息
 public class AvgTextbookFormGet {
     private String term;
     private String courseid;

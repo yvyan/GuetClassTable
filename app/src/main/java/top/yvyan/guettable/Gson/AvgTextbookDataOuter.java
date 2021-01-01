@@ -1,6 +1,5 @@
 package top.yvyan.guettable.Gson;
 
-// 教材评价状态信息
 public class AvgTextbookDataOuter {
     private boolean success;
     private int total;

@@ -40,8 +40,7 @@
     <string name="lan_get_textbook_list">http://172.16.13.22/student/GetText</string>
     <string name="lan_get_textbook_form">http://172.16.13.22/student/GetTextzb</string>
     <string name="lan_get_textbook_avg_state">http://172.16.13.22/student/gettextjg</string>
-    <string name="lan_fill_textbook_avg_form">http://172.16.13.22/student/savetextpj</string>
-    <string name="lan_save_avg_textbook_data">http://172.16.13.22/student/Savepx</string>
+    <string name="lan_save_avg_textbook_data">http://172.16.13.22/student/savetextpj</string>
     <string name="lan_commit_avg_textbook_data">http://172.16.13.22/student/Savepx/1</string>
 
 

@@ -86,7 +86,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         evaluatingTeachers.setOnClickListener(this);
         evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
         evaluatingTextbooks.setOnClickListener(this);
-        evaluatingTextbooks.setVisibility(View.GONE);
 
         return view;
     }
@@ -162,12 +161,11 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;
-
             case R.id.more_evaluating_teachers:
                 intent = new Intent(getContext(), AverageTeacherActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.more_evaluating_textbooks_picture:
+            case R.id.more_evaluating_textbooks:
                 intent = new Intent(getContext(), AverageTextbookActivity.class);
                 startActivity(intent);
                 break;
