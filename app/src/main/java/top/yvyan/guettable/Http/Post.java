@@ -92,8 +92,8 @@ public class Post {
             }else {
                 cnt.setInstanceFollowRedirects(redirect);
             }
-            cnt.setReadTimeout(8000);
-            cnt.setConnectTimeout(4000);
+            cnt.setReadTimeout(4000);
+            cnt.setConnectTimeout(2000);
             if (cnt instanceof HttpsURLConnection) { // 判断是否为https请求
                 SSLContext sslContext = SSLUtils.getSSLContextWithoutCer();
                 if (sslContext != null) {

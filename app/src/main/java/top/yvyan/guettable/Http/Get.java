@@ -1,6 +1,7 @@
 package top.yvyan.guettable.Http;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,8 +48,8 @@ public class Get {
                                             @Nullable final String[] accept_encodings,
                                             @Nullable final Boolean redirect,
                                             @Nullable final Integer connect_timeout,
-                                            @Nullable final Integer read_timeout
-                                            ){
+                                            @Nullable final Integer read_timeout,
+                                            @Nullable final String content_type){
         URL url = null;
         HttpURLConnection cnt = null;
         DataOutputStream dos = null;
@@ -62,6 +63,7 @@ public class Get {
                 u_bulider.append("?").append(TextUtils.join("&", parms));
             }
             url = new URL(u_bulider.toString());
+            Log.d("1586", "url: " + u_bulider.toString());
             cnt = (HttpURLConnection) url.openConnection();
             cnt.setDoOutput(true);
             cnt.setDoInput(true);
@@ -84,6 +86,9 @@ public class Get {
                 cnt.setInstanceFollowRedirects(true);
             }else {
                 cnt.setInstanceFollowRedirects(redirect);
+            }
+            if (content_type != null) {
+                cnt.setRequestProperty("Content-Type", content_type);
             }
             if (read_timeout == null) {
                 cnt.setReadTimeout(4000);
@@ -158,6 +163,7 @@ public class Get {
                 List<String> cookieStringList = new LinkedList<>();
                 for (HttpCookie httpCookie : cookieList){
                     String str = httpCookie.getName() + "=" + httpCookie.getValue();
+                    Log.d("1586", "cookie:" + str);
                     cookieStringList.add(str);
                 }
                 String cookie_join = TextUtils.join(cookie_delimiter, cookieStringList);
