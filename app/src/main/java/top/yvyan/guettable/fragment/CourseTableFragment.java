@@ -28,7 +28,7 @@ import top.yvyan.guettable.DetailActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
-import top.yvyan.guettable.data.ClassData;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
@@ -50,11 +50,12 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private ImageView moreButton;
     private LinearLayout linearLayout;
     private TextView titleTextView;
+    private ImageView deltaImg;
 
     private View view;
 
     private GeneralData generalData;
-    private ClassData classData;
+    private ScheduleData scheduleData;
     private SingleSettingData singleSettingData;
     private DetailClassData detailClassData;
     private MoreDate moreDate;
@@ -81,7 +82,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         moreButton.setOnClickListener(view -> showPopMenu());
 
         generalData = GeneralData.newInstance(getActivity());
-        classData = ClassData.newInstance(getActivity());
+        scheduleData = ScheduleData.newInstance(getActivity());
         singleSettingData = SingleSettingData.newInstance(getActivity());
         detailClassData = DetailClassData.newInstance();
         moreDate = MoreDate.newInstance(getActivity());
@@ -103,6 +104,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         //获取控件
         mWeekView = view.findViewById(R.id.id_weekview);
         mTimetableView = view.findViewById(R.id.id_timetableView);
+        deltaImg = view.findViewById(R.id.deltaIcon);
 
         //设置周次选择属性
         mWeekView.curWeek(generalData.getWeek())
@@ -174,11 +176,16 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
     public void updateTable() {
         List<Schedule> schedules = new ArrayList<>();
-        for (CourseBean courseBean : classData.getCourseBeans()) {
+        for (CourseBean courseBean : scheduleData.getCourseBeans()) {
             schedules.add(courseBean.getSchedule());
         }
-        if (settingData.getShowExamOnTable()) {
-            for (ExamBean examBean : ExamUtil.combineExam(moreDate.getExamBeans())) {
+        if (settingData.getShowLibOnTable()) {
+            for (CourseBean courseBean : scheduleData.getLibBeans()) {
+                schedules.add(courseBean.getSchedule());
+            }
+        }
+        if (settingData.getShowExamOnTable() && !"2019-2020_2".equals(generalData.getTerm())) {
+            for (ExamBean examBean : ExamUtil.combineExam(scheduleData.getExamBeans())) {
                 schedules.add(examBean.getSchedule());
             }
         }
@@ -237,6 +244,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 //否则，显示
                 if (mWeekView.isShowing()) {
                     mWeekView.isShow(false);
+                    deltaImg.setImageResource(R.drawable.delta);
                     titleTextView.setTextColor(getResources().getColor(R.color.app_white));
                     int cur = mTimetableView.curWeek();
                     mTimetableView.onDateBuildListener()
@@ -244,6 +252,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     mTimetableView.changeWeekOnly(cur);
                     target = cur;
                 } else {
+                    deltaImg.setImageResource(R.drawable.delta_pressed);
                     mWeekView.isShow(true);
                     titleTextView.setTextColor(getResources().getColor(R.color.app_red));
                 }

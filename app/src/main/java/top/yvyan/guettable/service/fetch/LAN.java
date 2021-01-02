@@ -11,18 +11,21 @@ import top.yvyan.guettable.Http.GetBitmap;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.Http.Post;
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.util.UrlReplaceUtil;
 
 public class LAN {
 
     /**
      * 获取验证码
+     *
      * @param context context
      * @return        验证码图片
      */
     public static HttpConnectionAndCode checkCode(Context context) {
         Resources resources = context.getResources();
         return GetBitmap.get(
-                resources.getString(R.string.lan_get_checkcode_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_checkcode_url)),
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.lan_get_checkcode_referer),
@@ -45,7 +48,7 @@ public class LAN {
         Resources resources = context.getResources();
         String body = "us=" + account + "&pwd=" + pwd + "&ck=" + checkCode;
         HttpConnectionAndCode login_res = Post.post(
-                resources.getString(R.string.lan_login_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_login_url)),
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.lan_login_url),
@@ -80,10 +83,10 @@ public class LAN {
     public static HttpConnectionAndCode studentInfo(Context context, String cookie) {
         Resources resources = context.getResources();
         return Post.post(
-                resources.getString(R.string.lan_get_student_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_student_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 null,
                 cookie,
                 "}",
@@ -105,10 +108,10 @@ public class LAN {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                resources.getString(R.string.lan_get_table_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_table_url)),
                 param,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_table_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -131,10 +134,10 @@ public class LAN {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                resources.getString(R.string.lan_get_lab_table_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_lab_table_url)),
                 param,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_table_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -157,10 +160,34 @@ public class LAN {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                resources.getString(R.string.lan_get_exam_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_exam_url)),
                 param,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_login_referer),
+                resources.getString(R.string.lan_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_table_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 获取补考安排
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return        gson格式的补考安排
+     */
+    public static HttpConnectionAndCode getResit(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Get.get(
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_resit_url)),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -181,10 +208,10 @@ public class LAN {
     public static HttpConnectionAndCode getCET(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_cet_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_cet_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -205,10 +232,10 @@ public class LAN {
     public static HttpConnectionAndCode getExamScore(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_examscore_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_examscore_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -229,10 +256,10 @@ public class LAN {
     public static HttpConnectionAndCode getExperimentScore(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_experimentscore_url),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_experimentscore_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -253,10 +280,10 @@ public class LAN {
     public static HttpConnectionAndCode getThisTerm(Context context, String cookie) {
         Resources resources = context.getResources();
         return Post.post(
-                resources.getString(R.string.lan_get_this_term),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_this_term)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 null,
                 cookie,
                 null,
@@ -279,10 +306,10 @@ public class LAN {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                resources.getString(R.string.lan_get_teacher_list),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_teacher_list)),
                 param,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -311,10 +338,10 @@ public class LAN {
                 "teacherno=" + teacherNo
         };
         return Get.get(
-                resources.getString(R.string.lan_get_avg_thacher_data),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_avg_thacher_data)),
                 params,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_table_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -344,10 +371,10 @@ public class LAN {
                 "teacherno" + teacherNo
         };
         return Post.post(
-                resources.getString(R.string.lan_save_avg_teacher_data),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_save_avg_teacher_data)),
                 params,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 postBody,
                 cookie,
                 "}",
@@ -369,10 +396,10 @@ public class LAN {
     public static HttpConnectionAndCode commitTeacherForm(Context context, String cookie, String postBody) {
         Resources resources = context.getResources();
         return Post.post(
-                resources.getString(R.string.lan_commit_avg_teacher_data),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_commit_avg_teacher_data)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 postBody,
                 cookie,
                 "}",
@@ -393,10 +420,10 @@ public class LAN {
     public static HttpConnectionAndCode updateEffectiveCredits(Context context, String cookie) {
         Resources resources = context.getResources();
         return Post.post(
-                resources.getString(R.string.lan_update_effective_credits),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_update_effective_credits)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_student_referer),
+                resources.getString(R.string.lan_referer),
                 null,
                 cookie,
                 "}",
@@ -417,10 +444,10 @@ public class LAN {
     public static HttpConnectionAndCode getEffectiveCredits(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_effective_credits),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_effective_credits)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_table_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -441,10 +468,10 @@ public class LAN {
     public static HttpConnectionAndCode getPlannedCourses(Context context, String cookie) {
         Resources resources = context.getResources();
         return Get.get(
-                resources.getString(R.string.lan_get_planned_credits),
+                UrlReplaceUtil.getUrl(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_planned_credits)),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_table_referer),
+                resources.getString(R.string.lan_referer),
                 cookie,
                 "]}",
                 null,
@@ -455,4 +482,153 @@ public class LAN {
                 10000
         );
     }
+
+    /**
+     * 获取待评教材列表
+     *
+     * @param context context
+     * @param cookie  登陆后cookie
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode getTextbookList(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Get.get(
+                resources.getString(R.string.lan_get_textbook_list),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null,
+                10000
+        );
+    }
+
+    /**
+     * 获取教材评价信息表
+     *
+     * @param context  context
+     * @param cookie   登录后cookie
+     * @param term     学期
+     * @param courseid 课程代码
+     * @param lsh      参数
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode getAvgTextbookFormOuter(Context context, String cookie, String term, String courseid, int lsh) {
+        Resources resources = context.getResources();
+        String[] params = {
+                "term=".concat(term),
+                "courseid=".concat(courseid),
+                "lsh=".concat(String.valueOf(lsh))
+        };
+        return Get.get(
+                resources.getString(R.string.lan_get_textbook_form),
+                params,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 获取教材评价状态
+     *
+     * @param context  context
+     * @param cookie   登录后cookie
+     * @param term     学期
+     * @param courseid 课程代码
+     * @param lsh      参数
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode getAvgTextbookFormState(Context context, String cookie, String term, String courseid, int lsh) {
+        Resources resources = context.getResources();
+        String postBody = "term=" + term + "&courseid=" + courseid + "&lsh=" + lsh;
+        return Post.post(
+                resources.getString(R.string.lan_get_textbook_avg_state),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
+                postBody,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 保存教材评价表单
+     *
+     * @param context  context
+     * @param cookie   cookie
+     * @param term     学期
+     * @param courseid 课程代码
+     * @param lsh      参数
+     * @param postBody 请求体参数
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode saveTextbookForm(Context context, String cookie, String term, String courseid, int lsh, String postBody) {
+        Resources resources = context.getResources();
+        String[] params = {
+                "term=".concat(term),
+                "courseid=".concat(courseid),
+                "lsh=".concat(String.valueOf(lsh))
+        };
+        return Post.post(
+                resources.getString(R.string.lan_save_avg_textbook_data),
+                params,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
+                postBody,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                "application/json"
+        );
+    }
+
+    /**
+     * 提交教材评价
+     *
+     * @param context  context
+     * @param cookie   cookie
+     * @param postBody 请求体参数
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode commitTextbookForm(Context context, String cookie, String postBody) {
+        Resources resources = context.getResources();
+        return Post.post(
+                resources.getString(R.string.lan_commit_avg_textbook_data),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
+                postBody,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null
+        );
+    }
+
+
 }

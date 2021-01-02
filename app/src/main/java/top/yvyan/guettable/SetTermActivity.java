@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.xuexiang.xui.widget.button.ButtonView;
+import com.xuexiang.xui.widget.picker.XSeekBar;
 
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.data.AccountData;
@@ -23,11 +25,12 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
 
     private TextView stuId;
     private TextView stuName;
+    private TextView week_text;
     private Spinner spinnerYear;
     private Spinner spinnerTerm;
-    private Spinner spinnerWeek;
-    private Button back;
-    private Button input;
+    private ButtonView back;
+    private ButtonView input;
+    private XSeekBar seekBar;
 
     private GeneralData generalData;
     private StudentInfo studentInfo;
@@ -62,16 +65,16 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
             fromLogin = true;
         }
 
+        seekBar = findViewById(R.id.seekBar_week);
         stuId = findViewById(R.id.stu_id);
         stuName = findViewById(R.id.stu_name);
         spinnerYear = findViewById(R.id.spinner_year);
         spinnerTerm = findViewById(R.id.spinner_term);
-        spinnerWeek = findViewById(R.id.spinner_weeks);
         back = findViewById(R.id.back);
         input = findViewById(R.id.input);
+        week_text = findViewById(R.id.week_text);
         back.setOnClickListener(this);
         input.setOnClickListener(this);
-
         generalData = GeneralData.newInstance(this);
     }
 
@@ -87,15 +90,23 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         nowYear = nowYear - num;
         spinnerYear.setSelection(nowYear);
         //自动选择学期
-        int nowTerm = Integer.parseInt(term.substring(10, 11));
+        int nowTerm;
+        if (generalData.isInternational()) { //国院系统
+            nowTerm = Integer.parseInt(term.substring(4, 5));
+        } else {
+            nowTerm = Integer.parseInt(term.substring(10, 11));
+        }
         spinnerTerm.setSelection(nowTerm - 1);
         //自动选择星期
         int week = generalData.getWeek();
-        spinnerWeek.setSelection(week - 1);
+        week_text.setText("第" + week + "周");
+        seekBar.setDefaultValue(week * 10);
+        seekBar.setOnSeekBarListener((seekBar, newValue) -> week_text.setText("第" + (newValue / 10) + "周")
+        );
     }
 
     private void setYearSpinner(int num) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item);
         adapter.add(num + "-" + (num + 1) + "(大一)");
         num++;
         adapter.add(num + "-" + (num + 1) + "(大二)");
@@ -121,11 +132,15 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.input:
                 //保存学年
-                int year = Integer.parseInt(generalData.getGrade()) + (int)spinnerYear.getSelectedItemId();
-                int num = (int)spinnerTerm.getSelectedItemId() + 1;
-                generalData.setTerm(year + "-" + (year + 1) + "_" + num);
+                int year = Integer.parseInt(generalData.getGrade()) + (int) spinnerYear.getSelectedItemId();
+                int num = (int) spinnerTerm.getSelectedItemId() + 1;
+                if (generalData.isInternational()) {
+                    generalData.setTerm(year + "" + num);
+                } else {
+                    generalData.setTerm(year + "-" + (year + 1) + "_" + num);
+                }
                 //保存星期
-                int week = (int)spinnerWeek.getSelectedItemId() + 1;
+                int week = seekBar.getSelectedNumber() / 10;
                 generalData.setWeek(week);
 
                 GeneralData.newInstance(this).setLastUpdateTime(-1);
