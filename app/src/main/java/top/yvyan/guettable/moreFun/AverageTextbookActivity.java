@@ -62,7 +62,7 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
                 if (dataOuters.get(i).getData() == null) {
                     int n = StaticService.averageTextbook(this, cookie, formGetOuters.get(i), avgTextbookOuter.getData().get(i));
                     if (n == 0) {
-                        avgTextbookBeans.get(index).setHint("已评");
+                        avgTextbookBeans.get(index).setHint("已评价");
                     } else {
                         avgTextbookBeans.get(index).setHint("失败");
                     }
