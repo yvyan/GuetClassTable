@@ -196,7 +196,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="wing  |  tank  |  uuin  |  ssbird"/>
+                    android:text="wing  |  ssbird  |  tank  |  uuin"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -229,7 +229,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Casual  |  就这  |  ୧⍤⃝ⓍⓅ乏了  |  我终究不是个好人"/>
+                    android:text="Casual  |  就这  |  ୧⍤⃝ⓍⓅ乏了  |  我终究不是个好人  |  🍓"/>
 
                 <View
                     android:layout_width="match_parent"
