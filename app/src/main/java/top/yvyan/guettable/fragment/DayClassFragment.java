@@ -30,8 +30,10 @@ import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.service.AutoUpdate;
 import top.yvyan.guettable.util.ExamUtil;
+import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
+import top.yvyan.guettable.util.UrlReplaceUtil;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
@@ -154,7 +156,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.day_url_bkjw:
-                uri = Uri.parse(getContext().getResources().getString(R.string.url_bkjw));
+                uri = Uri.parse(UrlReplaceUtil.getUrl(generalData.isInternational(), getContext().getResources().getString(R.string.url_bkjw)));
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;
@@ -163,8 +165,12 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.day_credits:
-                intent = new Intent(getContext(), GradesActivity.class);
-                startActivity(intent);
+                if (generalData.isInternational()) {
+                    TextDialog.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                } else {
+                    intent = new Intent(getContext(), GradesActivity.class);
+                    startActivity(intent);
+                }
                 break;
             default:
                 ToastUtil.showToast(getContext(), "敬请期待！");
