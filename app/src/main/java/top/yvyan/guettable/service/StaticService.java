@@ -2,6 +2,7 @@ package top.yvyan.guettable.service;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,8 +38,96 @@ import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.service.fetch.LAN;
+import top.yvyan.guettable.util.RegularUtil;
 
 public class StaticService {
+
+    /**
+     * 获取SSO登录TGT令牌
+     *
+     * @param context  context
+     * @param account  学号
+     * @param password 密码
+     * @param isVPN    是否为外网登录
+     * @return TGT令牌或者ERROR0:网络错误；ERROR1:密码错误
+     */
+    public static String SSOLogin(Context context, String account, String password, boolean isVPN) {
+        HttpConnectionAndCode login_res = LAN.getTGT(context, account, password, isVPN);
+        if (login_res.code != 0) {
+            return "ERROR0";
+        } else {
+            String html = login_res.comment;
+            if (html.contains("TGT-")) {
+                ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(html, "TGT-(.*?)\"");
+                return listExp.get(0).substring(0, listExp.get(0).length() - 1);
+            } else {
+                return "ERROR1";
+            }
+        }
+    }
+
+    /**
+     * 获取SSO ST令牌
+     *
+     * @param context context
+     * @param TGT     TGT令牌
+     * @param service ST令牌的服务端
+     * @param isVPN   是否为外网登录
+     * @return ST令牌或者ERROR0:网络错误；ERROR1:TGT失效
+     */
+    public static String SSOGetST(Context context, String TGT, String service, boolean isVPN) {
+        HttpConnectionAndCode res = LAN.getST(context, TGT, service, isVPN);
+        if (res.code != 0) {
+            return res.toString();
+        } else {
+            String html = res.comment;
+            if (html.contains("ST")) {
+                return html;
+            }
+            return "ERROR1";
+        }
+    }
+
+    /**
+     * 通过ST令牌登录VPN
+     *
+     * @param context context
+     * @param ST      ST令牌
+     * @param session 用于接收登录后的cookie
+     * @return        登录状态
+     */
+    public static int loginVPN(Context context, String ST, StringBuilder session) {
+        int state;
+        HttpConnectionAndCode login_res = LAN.loginVPN(context, ST, session);
+        if (login_res.code != 0) { //登录失败
+            session.delete(0, session.length());
+            state = -1;
+        } else { //登录成功
+            state = 0;
+        }
+        return state;
+    }
+
+    /**
+     * 通过ST令牌登录教务系统
+     *
+     * @param context context
+     * @param ST      ST令牌
+     * @param VPNSession VPN登录认证session，留空则使用内网
+     * @param session 用于接收登录后的cookie
+     * @return        登录状态
+     */
+    public static int loginBkjw(Context context, String ST, String VPNSession, StringBuilder session) {
+        int state;
+        HttpConnectionAndCode login_res = LAN.loginBkjw(context, ST,  VPNSession, session, VPNSession != null);
+        if (login_res.code != 0) { //登录失败
+            session.delete(0, session.length());
+            state = -1;
+        } else { //登录成功
+            state = 0;
+        }
+        return state;
+    }
 
     /**
      * 刷新验证码(后台)

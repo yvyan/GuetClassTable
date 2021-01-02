@@ -156,7 +156,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.day_url_bkjw:
-                uri = Uri.parse(UrlReplaceUtil.getUrl(generalData.isInternational(), getContext().getResources().getString(R.string.url_bkjw)));
+                uri = Uri.parse(UrlReplaceUtil.getUrlByInternational(generalData.isInternational(), getContext().getResources().getString(R.string.url_bkjw)));
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;

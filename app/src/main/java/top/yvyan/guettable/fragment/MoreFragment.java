@@ -20,6 +20,7 @@ import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.moreFun.LibActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
+import top.yvyan.guettable.moreFun.TestActivity;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
@@ -91,7 +92,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         evaluatingTeachers.setOnClickListener(this);
         evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
         evaluatingTextbooks.setOnClickListener(this);
-        evaluatingTextbooks.setVisibility(View.GONE);
+        //evaluatingTextbooks.setVisibility(View.GONE);
 
         return view;
     }
@@ -142,7 +143,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.more_url_bkjw:
-                uri = Uri.parse(UrlReplaceUtil.getUrl(generalData.isInternational(), getContext().getResources().getString(R.string.url_bkjw)));
+                uri = Uri.parse(UrlReplaceUtil.getUrlByInternational(generalData.isInternational(), getContext().getResources().getString(R.string.url_bkjw)));
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;
@@ -177,6 +178,14 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                     TextDialog.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
                 } else {
                     intent = new Intent(getContext(), AverageTeacherActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.more_evaluating_textbooks:
+                if (generalData.isInternational()) {
+                    TextDialog.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                } else {
+                    intent = new Intent(getContext(), TestActivity.class);
                     startActivity(intent);
                 }
                 break;

@@ -5,18 +5,16 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.data.CookieData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.util.ToastUtil;
@@ -92,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             if (state == 0) {
                 accountData.setUser(account, pwd, cbRememberPwd.isChecked());
-                CookieData.newInstance(this).refresh();
+                TokenData.newInstance(this).refresh();
                 Intent intent = new Intent(this, SetTermActivity.class);
                 intent.putExtra("fromLogin", ""); //便于识别启动类
                 startActivity(intent);
