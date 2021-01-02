@@ -71,7 +71,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void open(View view) {
-        TextDialog.showScanNumberDialog(this, getResources().getString(R.string.thanks_1) + "\r\n\r\n" + getResources().getString(R.string.thanks_2));
+        TextDialog.showScanNumberDialog(this, getResources().getString(R.string.thanks_1) + "\r\n\r\n" + getResources().getString(R.string.thanks_2)+ "\r\n\r\n和一些常用依赖，在此表示感谢！");
     }
 
     public void privacy(View view) {

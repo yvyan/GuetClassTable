@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ClassDetailAdapter;
+import top.yvyan.guettable.adapter.LibAdapter;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
@@ -64,9 +65,9 @@ public class LibActivity extends AppCompatActivity implements IMoreFun {
             recyclerView.setVisibility(View.GONE);
         }
         Collections.sort(libBeans, (courseBean, t1) -> (int) ((courseBean.getLabId() * 100 + courseBean.getWeekStart()) - (t1.getLabId() * 100 + t1.getWeekStart())));
-        ClassDetailAdapter classDetailAdapter = new ClassDetailAdapter(ScheduleSupport.transform(libBeans), generalData.getWeek());
+        LibAdapter libAdapter = new LibAdapter(ScheduleSupport.transform(libBeans), generalData.getWeek());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(classDetailAdapter);
+        recyclerView.setAdapter(libAdapter);
     }
 
     public void onClick(View view) {
