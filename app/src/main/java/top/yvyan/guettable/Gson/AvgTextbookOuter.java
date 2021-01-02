@@ -2,28 +2,32 @@ package top.yvyan.guettable.Gson;
 
 import java.util.List;
 
-public class CETOuter {
+public class AvgTextbookOuter {
     private boolean success;
     private int total;
-    private List<CET> data;
+    private List<AvgTextbook> data;
+
+    public boolean isSuccess() {
+        return success;
+    }
+
     public void setSuccess(boolean success) {
         this.success = success;
     }
-    public boolean getSuccess() {
-        return success;
+
+    public int getTotal() {
+        return total;
     }
 
     public void setTotal(int total) {
         this.total = total;
     }
-    public int getTotal() {
-        return total;
+
+    public List<AvgTextbook> getData() {
+        return data;
     }
 
-    public void setData(List<CET> data) {
+    public void setData(List<AvgTextbook> data) {
         this.data = data;
-    }
-    public List<CET> getData() {
-        return data;
     }
 }

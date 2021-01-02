@@ -22,17 +22,18 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.DayClassAdapter;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.data.ClassData;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.service.AutoUpdate;
 import top.yvyan.guettable.util.ExamUtil;
+import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
+import top.yvyan.guettable.util.UrlReplaceUtil;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
@@ -155,7 +156,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.day_url_bkjw:
-                uri = Uri.parse(getContext().getResources().getString(R.string.url_bkjw));
+                uri = Uri.parse(UrlReplaceUtil.getUrl(generalData.isInternational(), getContext().getResources().getString(R.string.url_bkjw)));
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;
@@ -164,8 +165,12 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.day_credits:
-                intent = new Intent(getContext(), GradesActivity.class);
-                startActivity(intent);
+                if (generalData.isInternational()) {
+                    TextDialog.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                } else {
+                    intent = new Intent(getContext(), GradesActivity.class);
+                    startActivity(intent);
+                }
                 break;
             default:
                 ToastUtil.showToast(getContext(), "敬请期待！");
@@ -182,14 +187,18 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     private List<Schedule> getData() {
         List<Schedule> list;
-        if(!ClassData.newInstance(getActivity()).getCourseBeans().isEmpty()) {
-            list = ScheduleSupport.transform(ClassData.newInstance(getActivity()).getCourseBeans());
-            list = ScheduleSupport.getColorReflect(list);//分配颜色
+        ScheduleData scheduleData = ScheduleData.newInstance(getActivity());
+        if(!ScheduleData.newInstance(getActivity()).getCourseBeans().isEmpty()) {
+            list = ScheduleSupport.transform(scheduleData.getCourseBeans());
         } else {
             list = new ArrayList<>();
         }
-        if (settingData.getShowExamOnTable()) {
-            for (ExamBean examBean : ExamUtil.combineExam(MoreDate.newInstance(getActivity()).getExamBeans())) {
+        if (settingData.getShowLibOnTable()) {
+            List<Schedule> labList = ScheduleSupport.transform(scheduleData.getLibBeans());
+            list.addAll(labList);
+        }
+        if (settingData.getShowExamOnTable() && !"2019-2020_2".equals(generalData.getTerm())) {
+            for (ExamBean examBean : ExamUtil.combineExam(scheduleData.getExamBeans())) {
                 if (examBean != null) {
                     list.add(examBean.getSchedule());
                 }

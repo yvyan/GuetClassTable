@@ -26,7 +26,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UpdateActivity"></activity>
+        <activity android:name=".moreFun.LibActivity" />
+        <activity android:name=".moreFun.ResitActivity" />
         <activity android:name=".moreFun.GradesActivity" />
         <activity android:name=".moreFun.PlannedCoursesActivity" />
         <activity android:name=".WebViewActivity" />
@@ -38,6 +39,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".moreFun.AverageTeacherActivity" />
+        <activity android:name=".moreFun.AverageTextbookActivity" />
         <activity android:name=".HelperActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".MySettingActivity" />

@@ -17,6 +17,7 @@ import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.CookieData;
+import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -70,12 +71,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String account = etAccount.getText().toString();
         String pwd = etPwd.getText().toString();
         new Thread(() -> {
+            GeneralData.newInstance(this).setInternational(false);
             int state = StaticService.autoLogin(
                     this,
                     account,
                     pwd,
                     cookieBuilder
             );
+            if (state == -1) {
+                GeneralData.newInstance(this).setInternational(true);
+                state = StaticService.autoLogin(
+                        this,
+                        account,
+                        pwd,
+                        cookieBuilder
+                );
+                if (state == -1) {
+                    GeneralData.newInstance(this).setInternational(false);
+                }
+            }
             if (state == 0) {
                 accountData.setUser(account, pwd, cbRememberPwd.isChecked());
                 CookieData.newInstance(this).refresh();
@@ -84,8 +98,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(intent);
                 finish();
             } else {
+                int finalState = state;
                 runOnUiThread(() -> {
-                    switch (state) {
+                    switch (finalState) {
                         case -1:
                             ToastUtil.showToast(this, getResources().getString(R.string.lan_login_fail_pwd));
                             break;

@@ -231,7 +231,7 @@ public class LabTable {
 
     public CourseBean toCourseBean() {
         CourseBean courseBean = new CourseBean();
-        courseBean.setLab(cname, itemname, bno, srdd, zc, xq, jc, name, comm);
+        courseBean.setLab(cname, itemname, bno, srdd, zc, xq, jc, name, comm, Integer.parseInt(labid));
         return courseBean;
     }
 
