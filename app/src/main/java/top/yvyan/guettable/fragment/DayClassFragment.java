@@ -85,9 +85,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         credits = view.findViewById(R.id.day_credits);
         credits.setOnClickListener(this);
 
-        accountData = AccountData.newInstance(getActivity());
-        generalData = GeneralData.newInstance(getActivity());
-        settingData = SettingData.newInstance(getActivity());
+        initData();
 
         autoUpdate = AutoUpdate.newInstance(getActivity());
         if (accountData.getIsLogin()) {
@@ -97,6 +95,12 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         updateView();
 
         return view;
+    }
+
+    private void initData() {
+        accountData = AccountData.newInstance(getActivity());
+        generalData = GeneralData.newInstance(getActivity());
+        settingData = SettingData.newInstance(getActivity());
     }
 
     /**
@@ -128,6 +132,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+        initData();
         autoUpdate.updateView();
     }
 

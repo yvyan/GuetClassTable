@@ -88,8 +88,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         Log.d(TAG, "createPersonFragmentView");
         view = inflater.inflate(R.layout.fragement_preson, container, false);
-        accountData = AccountData.newInstance(getContext());
-        generalData = GeneralData.newInstance(getContext());
+        initData();
         initView();
         updateView();
         person_setting = view.findViewById(R.id.person_setting);
@@ -97,6 +96,11 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         // 检查更新
         checkUpdate(1);
         return view;
+    }
+
+    private void initData() {
+        accountData = AccountData.newInstance(getContext());
+        generalData = GeneralData.newInstance(getContext());
     }
 
     private void initView() {
@@ -154,6 +158,12 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
             buttonQuit.setVisibility(View.GONE);
             person_login.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initData();
     }
 
     @Override
