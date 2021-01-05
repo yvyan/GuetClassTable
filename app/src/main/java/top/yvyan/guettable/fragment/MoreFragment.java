@@ -52,7 +52,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragement_more, container, false);
 
-        generalData = GeneralData.newInstance(getContext());
+        initData();
 
         testSchedule = view.findViewById(R.id.more_test_schedule);
         testSchedule.setOnClickListener(this);
@@ -94,6 +94,16 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         evaluatingTextbooks.setOnClickListener(this);
 
         return view;
+    }
+
+    private void initData() {
+        generalData = GeneralData.newInstance(getContext());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initData();
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleSupport;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import top.yvyan.guettable.R;
@@ -42,6 +43,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private View view;
     private TextView textView;
     private RecyclerView recyclerView;
+    private View showExam;
+    private TextView showExamDay;
     private View testSchedule, urlBkjw, testScores, credits;
 
     private DayClassAdapter dayClassAdapter;
@@ -51,6 +54,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private AccountData accountData;
     private GeneralData generalData;
     private SettingData settingData;
+    private ScheduleData scheduleData;
 
     public DayClassFragment() {
         // Required empty public constructor
@@ -76,6 +80,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
         textView = view.findViewById(R.id.day_class_hint);
         textView.setOnClickListener(this);
+        showExam = view.findViewById(R.id.day_show_exam);
+        showExamDay = view.findViewById(R.id.day_show_exam_day);
         testSchedule = view.findViewById(R.id.day_test_schedule);
         testSchedule.setOnClickListener(this);
         urlBkjw = view.findViewById(R.id.day_url_bkjw);
@@ -85,18 +91,22 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         credits = view.findViewById(R.id.day_credits);
         credits.setOnClickListener(this);
 
-        accountData = AccountData.newInstance(getActivity());
-        generalData = GeneralData.newInstance(getActivity());
-        settingData = SettingData.newInstance(getActivity());
+        initData();
 
         autoUpdate = AutoUpdate.newInstance(getActivity());
         if (accountData.getIsLogin()) {
             autoUpdate.start();
         }
         recyclerView = view.findViewById(R.id.day_class_detail_recycleView);
-        updateView();
 
         return view;
+    }
+
+    private void initData() {
+        accountData = AccountData.newInstance(getActivity());
+        generalData = GeneralData.newInstance(getActivity());
+        settingData = SettingData.newInstance(getActivity());
+        scheduleData = ScheduleData.newInstance(getActivity());
     }
 
     /**
@@ -123,12 +133,30 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         dayClassAdapter = new DayClassAdapter(getContext(), todayList, tomorrowList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(dayClassAdapter);
+
+        //更新考试剩余时间信息
+        List<ExamBean> examBeans = scheduleData.getExamBeans();
+        examBeans = ExamUtil.combineExam(examBeans);
+        examBeans = ExamUtil.ridOfOutdatedExam(examBeans);
+        if (examBeans.size() != 0) {
+            showExam.setVisibility(View.VISIBLE);
+            int n = TimeUtil.calcDayOffset(new Date(), examBeans.get(0).getDate());
+            if (n >= 1) {
+                showExamDay.setText("您" + n + "天后有考试");
+            } else {
+                showExamDay.setText("您今天有考试");
+            }
+        } else {
+            showExam.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        initData();
         autoUpdate.updateView();
+        updateView();
     }
 
     /**
@@ -187,7 +215,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     private List<Schedule> getData() {
         List<Schedule> list;
-        ScheduleData scheduleData = ScheduleData.newInstance(getActivity());
         if(!ScheduleData.newInstance(getActivity()).getCourseBeans().isEmpty()) {
             list = ScheduleSupport.transform(scheduleData.getCourseBeans());
         } else {
