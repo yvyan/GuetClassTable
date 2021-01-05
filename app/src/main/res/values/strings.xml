@@ -53,6 +53,7 @@
     <string name="url_lijiang">http://www.gxljxt.cn/</string>
     <string name="guet_yvyan_top">http://guet.yvyan.top/</string>
     <string name="downloadApp_url">https://www.coolapk.com/apk/279989</string>
+    <string name="downloadAll_url">https://cloud.yvyan.top/index.php/s/8EczotKAbSjfXPk</string>
     <string name="privacy_url">http://privacy.guet.yvyan.top/</string>
 
     <string name="share_hint">建议直接将此APP发给同学，若您没有找到安装包，可以复制下面的信息发给同学或者群聊，同学点击链接即可下载最新版桂电课程表：</string>
