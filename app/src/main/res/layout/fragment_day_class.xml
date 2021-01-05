@@ -71,6 +71,29 @@
                         android:textColor="@color/app_black"
                         android:textSize="20dp" />
 
+                    <LinearLayout
+                        android:id="@+id/day_show_exam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="  |  "
+                            android:textSize="17dp" />
+
+                        <TextView
+                            android:id="@+id/day_show_exam_day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="您3天后有考试"
+                            android:textSize="16dp" />
+
+                    </LinearLayout>
+
+
 
                     <TextView
                         android:layout_width="wrap_content"

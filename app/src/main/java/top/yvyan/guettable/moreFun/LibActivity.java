@@ -22,6 +22,7 @@ import top.yvyan.guettable.adapter.LibAdapter;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
+import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
@@ -89,6 +90,7 @@ public class LibActivity extends AppCompatActivity implements IMoreFun {
         libHint.setText(hint);
         if (state == 5) {
             updateView();
+            CourseTableFragment.newInstance().updateTable();
         }
     }
 }
