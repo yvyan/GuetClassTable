@@ -7,6 +7,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -14,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import top.yvyan.guettable.Gson.AvgTeacher;
 import top.yvyan.guettable.Gson.AvgTeacherFormGet;
 import top.yvyan.guettable.Gson.AvgTeacherFormSend;
@@ -98,19 +103,74 @@ public class StaticService {
      *
      * @param context context
      * @param ST      ST令牌
-     * @param session 用于接收登录后的cookie
+     * @param token   用于接收登录后的cookie
      * @return        登录状态
      */
-    public static int loginVPN(Context context, String ST, StringBuilder session) {
-        int state;
-        HttpConnectionAndCode login_res = LAN.loginVPN(context, ST, session);
-        if (login_res.code != 0) { //登录失败
-            session.delete(0, session.length());
-            state = -1;
-        } else { //登录成功
-            state = 0;
+    public static int loginVPN(Context context, String ST, String token) {
+
+        String url = "https://v.guet.edu.cn/https/77726476706e69737468656265737421e6b94689222426557a1dc7af96/login?cas_login=true&ticket=";
+        url = url + ST;
+        OkHttpClient okHttpClient = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Cookie", token)
+                .build();
+        final Call call = okHttpClient.newCall(request);
+
+        try {
+            Response response = call.execute();
+            //Log.d("1586", response.body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return state;
+        return 0;
+//        int state;
+//        HttpConnectionAndCode login_res = LAN.loginVPN(context, ST, token);
+//        Log.d("1586", login_res.comment);
+//        if (login_res.code != 0) { //登录失败
+//            state = -1;
+//        } else { //登录成功
+//            state = 0;
+//        }
+//        return state;
+    }
+
+    /**
+     * 通过ST令牌登录教务系统(VPN)
+     *
+     * @param context  context
+     * @param ST       ST令牌
+     * @param VPNToken VPNToken
+     * @return         登录状态
+     */
+    public static int loginBkjwVPN(Context context, String ST, String VPNToken) {
+
+        String url = "https://v.guet.edu.cn/http/77726476706e69737468656265737421a1a013d2766626012d46dbfe/?ticket=";
+        url = url + ST;
+        OkHttpClient okHttpClient = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Cookie", VPNToken)
+                .build();
+        final Call call = okHttpClient.newCall(request);
+
+        try {
+            Response response = call.execute();
+            //Log.d("1586", response.body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+
+//        int state;
+//        HttpConnectionAndCode login_res = LAN.loginBkjwVPN(context, ST,  VPNToken);
+//        Log.d("1586", login_res.comment);
+//        if (login_res.code != 0) { //登录失败
+//            state = -1;
+//        } else { //登录成功
+//            state = 0;
+//        }
+//        return state;
     }
 
     /**

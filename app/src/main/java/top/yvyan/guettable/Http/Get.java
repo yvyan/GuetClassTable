@@ -62,8 +62,8 @@ public class Get {
             if (parms != null && parms.length > 0) {
                 u_bulider.append("?").append(TextUtils.join("&", parms));
             }
+            Log.d("1586", u_bulider.toString());
             url = new URL(u_bulider.toString());
-            Log.d("1586", "url: " + u_bulider.toString());
             cnt = (HttpURLConnection) url.openConnection();
             cnt.setDoOutput(true);
             cnt.setDoInput(true);
@@ -163,7 +163,6 @@ public class Get {
                 List<String> cookieStringList = new LinkedList<>();
                 for (HttpCookie httpCookie : cookieList){
                     String str = httpCookie.getName() + "=" + httpCookie.getValue();
-                    Log.d("1586", "cookie:" + str);
                     cookieStringList.add(str);
                 }
                 String cookie_join = TextUtils.join(cookie_delimiter, cookieStringList);

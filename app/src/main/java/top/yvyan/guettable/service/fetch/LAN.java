@@ -19,6 +19,32 @@ import top.yvyan.guettable.util.UrlReplaceUtil;
 public class LAN {
 
     /**
+     * 获取VPNToken
+     *
+     * @param context context
+     * @return        VPNToken
+     */
+    public static String getVPNToken(Context context) {
+        Resources resources = context.getResources();
+        HttpConnectionAndCode get_res = Get.get(
+                resources.getString(R.string.vpn_url),
+                null,
+                resources.getString(R.string.user_agent),
+                null,
+                null,
+                null,
+                resources.getString(R.string.cookie_delimiter),
+                null,
+                null,
+                true,
+                null,
+                5000,
+                null
+        );
+        return get_res.cookie;
+    }
+
+    /**
      * 获取SSO TGT令牌
      *
      * @param context  context
@@ -80,33 +106,56 @@ public class LAN {
      *
      * @param context context
      * @param ST      ST令牌
-     * @param session 用于接收登录后的cookie
+     * @param token   用于接收登录后的cookie
      * @return        登录状态
      */
-    public static HttpConnectionAndCode loginVPN(Context context, String ST, StringBuilder session) {
+    public static HttpConnectionAndCode loginVPN(Context context, String ST, String token) {
         Resources resources = context.getResources();
         String[] param = {"cas_login=true&ticket=" + ST};
         HttpConnectionAndCode login_res = Get.get(
                 resources.getString(R.string.SSO_vpn),
                 param,
                 resources.getString(R.string.user_agent),
+                null,
+                token,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                5000,
+                null
+        );
+        return login_res;
+    }
+
+    /**
+     * 通过ST令牌登录教务系统(VPN)
+     *
+     * @param context  context
+     * @param ST       ST令牌
+     * @param VPNToken VPNToken
+     * @return         登录状态
+     */
+    public static HttpConnectionAndCode loginBkjwVPN(Context context, String ST, String VPNToken) {
+        Resources resources = context.getResources();
+        String[] param = {"ticket=" + ST};
+        HttpConnectionAndCode login_res = Get.get(
+                UrlReplaceUtil.getUrlByVPN(true, resources.getString(R.string.SSO_bkjw)),
+                param,
+                resources.getString(R.string.user_agent),
                 resources.getString(R.string.SSO_referer),
-                null,
-                null,
+                VPNToken,
+                "]}",
                 resources.getString(R.string.cookie_delimiter),
                 null,
                 null,
-                true,
+                null,
                 null,
                 5000,
                 resources.getString(R.string.SSO_context_type)
         );
-        if (login_res.code == 0) {
-            if (session.length() != 0) {
-                session.append(resources.getString(R.string.cookie_delimiter));
-            }
-            session.append(login_res.cookie);
-        }
         return login_res;
     }
 
@@ -645,7 +694,8 @@ public class LAN {
                 null,
                 null,
                 null,
-                10000
+                10000,
+                null
         );
     }
 
@@ -675,6 +725,7 @@ public class LAN {
                 "]}",
                 null,
                 resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
                 null,
                 null,
                 null,
