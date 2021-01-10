@@ -26,7 +26,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".moreFun.TestActivity"/>
         <activity android:name=".moreFun.LibActivity" />
         <activity android:name=".moreFun.ResitActivity" />
         <activity android:name=".moreFun.GradesActivity" />
