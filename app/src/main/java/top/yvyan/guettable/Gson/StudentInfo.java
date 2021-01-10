@@ -44,4 +44,18 @@ public class StudentInfo {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "StudentInfo{" +
+                "term='" + term + '\'' +
+                ", grade='" + grade + '\'' +
+                ", dptno='" + dptno + '\'' +
+                ", dptname='" + dptname + '\'' +
+                ", spno='" + spno + '\'' +
+                ", spname='" + spname + '\'' +
+                ", stid='" + stid + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

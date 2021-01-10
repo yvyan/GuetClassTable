@@ -1,7 +1,6 @@
 package top.yvyan.guettable.Http;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,7 +61,6 @@ public class Get {
             if (parms != null && parms.length > 0) {
                 u_bulider.append("?").append(TextUtils.join("&", parms));
             }
-            Log.d("1586", u_bulider.toString());
             url = new URL(u_bulider.toString());
             cnt = (HttpURLConnection) url.openConnection();
             cnt.setDoOutput(true);

@@ -169,7 +169,11 @@ public class AutoUpdate {
         new Thread(() -> {
             updateView(92);
             // 刷新cookie
-            updateView(tokenData.refresh());
+            int n = tokenData.refresh();
+            if (n == -8 || n == -2) {
+                n = tokenData.refresh();
+            }
+            updateView(n);
             if (state == 0) {
                 String cookie = tokenData.getCookie();
                 List<CourseBean> courseBeans;
