@@ -81,12 +81,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         moreButton = view.findViewById(R.id.id_more);
         moreButton.setOnClickListener(view -> showPopMenu());
 
-        generalData = GeneralData.newInstance(getActivity());
-        scheduleData = ScheduleData.newInstance(getActivity());
-        singleSettingData = SingleSettingData.newInstance(getActivity());
-        detailClassData = DetailClassData.newInstance();
-        moreDate = MoreDate.newInstance(getActivity());
-        settingData = SettingData.newInstance(getActivity());
+        initData();
 
         target = generalData.getWeek();
 
@@ -95,6 +90,15 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         linearLayout.setOnClickListener(this);
         initTimetableView();
         return view;
+    }
+
+    private void initData() {
+        generalData = GeneralData.newInstance(getActivity());
+        scheduleData = ScheduleData.newInstance(getActivity());
+        singleSettingData = SingleSettingData.newInstance(getActivity());
+        detailClassData = DetailClassData.newInstance();
+        moreDate = MoreDate.newInstance(getActivity());
+        settingData = SettingData.newInstance(getActivity());
     }
 
     /**
@@ -170,6 +174,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
+        initData();
         mTimetableView.onDateBuildListener()
                 .onHighLight();
     }

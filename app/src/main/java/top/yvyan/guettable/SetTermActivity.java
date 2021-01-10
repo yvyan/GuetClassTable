@@ -99,6 +99,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         spinnerTerm.setSelection(nowTerm - 1);
         //自动选择星期
         int week = generalData.getWeek();
+        week_text.setText("第" + week + "周");
         seekBar.setDefaultValue(week * 10);
         seekBar.setOnSeekBarListener((seekBar, newValue) -> week_text.setText("第" + (newValue / 10) + "周")
         );
