@@ -65,28 +65,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         setUnClick();
-        StringBuilder cookieBuilder = new StringBuilder();
         String account = etAccount.getText().toString();
         String pwd = etPwd.getText().toString();
         new Thread(() -> {
             GeneralData.newInstance(this).setInternational(false);
-            int state = StaticService.autoLogin(
+            int state = StaticService.loginTest(
                     this,
                     account,
-                    pwd,
-                    cookieBuilder
+                    pwd
             );
-            if (state == -1) {
-                GeneralData.newInstance(this).setInternational(true);
-                state = StaticService.autoLogin(
+            if (state == -2) {
+                TokenData.isVPN = true;
+                state = StaticService.loginTest(
                         this,
                         account,
-                        pwd,
-                        cookieBuilder
+                        pwd
                 );
-                if (state == -1) {
-                    GeneralData.newInstance(this).setInternational(false);
-                }
             }
             if (state == 0) {
                 accountData.setUser(account, pwd, cbRememberPwd.isChecked());

@@ -23,16 +23,16 @@ public class TestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
         new Thread(() -> {
             String VPNToken = LAN.getVPNToken(this);
-            String str = "TGT-683400-fDMTIdxbxbYHycliBUIjrJ-pw-dK4CPky0PNQSuMMU8BbQPRYtMzFzL6qrjcfIaOdgg-f67414573db3";
+            String str = "TGT-686614-0NcBV5MSb4ZBvc0FPYJDIEgpAgTDYukndmtAKhxg3TPTHSafjXiLDfK9FOCz-srODyc-f67414573db3";
             Log.d("1586", str);
             String string = StaticService.SSOGetST(this, str, getResources().getString(R.string.service_vpn), true);
             String string2 = StaticService.SSOGetST(this, str, getResources().getString(R.string.service_bkjw), true);
             Log.d("1586", "vpn_st:" + string);
             Log.d("1586", "vpn_session:" + VPNToken);
-            StaticService.loginVPN(this, string, VPNToken);
+            StaticService.loginVPN(string, VPNToken);
 
 
-            int n = StaticService.loginBkjwVPN(this, string2, VPNToken);
+            int n = StaticService.loginBkjwVPN(string2, VPNToken);
 
             HttpConnectionAndCode httpConnectionAndCode = Get.get(
                     "https://v.guet.edu.cn/http/77726476706e69737468656265737421a1a013d2766626012d46dbfe/Student/GetPerson",

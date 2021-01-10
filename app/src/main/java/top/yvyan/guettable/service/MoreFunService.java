@@ -26,13 +26,15 @@ public class MoreFunService {
             if (accountData.getIsLogin()) {
                 setView(91); //显示：登录状态检查
                 int state = iMoreFun.updateData(tokenData.getCookie());
-                Log.d("MoreFunService", "state" + state);
                 if (state == 5 || state == -2) { //更新成功或网络错误
                     setView(state);
                     return;
                 }
                 setView(92); //显示：正在登录
                 state = tokenData.refresh();
+                if (state == -8 || state == -2) {
+                    state = tokenData.refresh();
+                }
                 if (state != 0) {
                     setView(state);
                     return;
