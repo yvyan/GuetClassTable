@@ -21,7 +21,6 @@ import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.moreFun.LibActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
-import top.yvyan.guettable.moreFun.TestActivity;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
@@ -33,7 +32,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private View testSchedule, credits, testScores, libScores, resitSchedule, libSchedule;
     private View graduationRequirement, planCourses, cet;
     private View urlBkjw, urlVPN, urlCampus, urlStaff, urlLiJiang, urlMore;
-    private View evaluatingTeachers, evaluatingTextbooks, test;
+    private View evaluatingTeachers, evaluatingTextbooks;
 
     private GeneralData generalData;
 
@@ -93,8 +92,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         evaluatingTeachers.setOnClickListener(this);
         evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
         evaluatingTextbooks.setOnClickListener(this);
-        test = view.findViewById(R.id.more_test);
-        test.setOnClickListener(this);
 
         return view;
     }
@@ -190,10 +187,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.more_evaluating_textbooks:
                 intent = new Intent(getContext(), AverageTextbookActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.more_test:
-                intent = new Intent(getContext(), TestActivity.class);
                 startActivity(intent);
                 break;
             default:
