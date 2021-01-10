@@ -2,6 +2,7 @@ package top.yvyan.guettable;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -49,7 +50,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
 
         init();
 
-        if (generalData.getTerm() == null || fromLogin) {
+        if (fromLogin) {
             MoreFunService moreFunService = new MoreFunService(this, this);
             moreFunService.update();
         } else {
@@ -148,7 +149,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 personFragment.updateView();
                 personFragment.getOnButtonClick().onClick(0); //切换页面0
 
-                ToastUtil.showLongToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待");
+                ToastUtil.showLongToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待，不要滑动页面");
                 finish();
                 break;
         }

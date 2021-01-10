@@ -1,18 +1,24 @@
 package top.yvyan.guettable.service;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import top.yvyan.guettable.Gson.AvgTeacher;
 import top.yvyan.guettable.Gson.AvgTeacherFormGet;
 import top.yvyan.guettable.Gson.AvgTeacherFormSend;
@@ -33,7 +39,6 @@ import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
-import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
@@ -41,24 +46,172 @@ import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.bean.ResitBean;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.LAN;
+import top.yvyan.guettable.util.RegularUtil;
 
 public class StaticService {
 
     /**
-     * 刷新验证码(后台)
+     * 获取SSO登录TGT令牌
+     *
+     * @param context  context
+     * @param account  学号
+     * @param password 密码
+     * @param isVPN    是否为外网登录
+     * @return TGT令牌或者ERROR0:网络错误；ERROR1:密码错误
+     */
+    public static String SSOLogin(Context context, String account, String password, boolean isVPN) {
+        HttpConnectionAndCode login_res = LAN.getTGT(context, account, password, isVPN);
+        if (login_res.code != 0) {
+            return "ERROR0";
+        } else {
+            String html = login_res.comment;
+            if (html.contains("TGT-")) {
+                ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(html, "TGT-(.*?)\"");
+                return listExp.get(0).substring(0, listExp.get(0).length() - 1);
+            } else {
+                return "ERROR1";
+            }
+        }
+    }
+
+    /**
+     * 获取SSO ST令牌
      *
      * @param context context
-     * @return cookie
+     * @param TGT     TGT令牌
+     * @param service ST令牌的服务端
+     * @param isVPN   是否为外网登录
+     * @return ST令牌或者ERROR0:网络错误；ERROR1:TGT失效
      */
-    public static String changeCode(Context context, StringBuilder cookie_builder) {
-        final HttpConnectionAndCode res = LAN.checkCode(context);
-        if (res.obj != null) {
-            final String ocr = OCR.getTextFromBitmap(context, (Bitmap) res.obj, "telephone");
-            cookie_builder.append(res.cookie);
-            return ocr;
+    public static String SSOGetST(Context context, String TGT, String service, boolean isVPN) {
+        HttpConnectionAndCode res = LAN.getST(context, TGT, service, isVPN);
+        if (res.code != 0) {
+            return res.toString();
+        } else {
+            String html = res.comment;
+            if (html.contains("ST")) {
+                return html;
+            }
+            return "ERROR1";
         }
-        return null;
+    }
+
+    /**
+     * 测试登录密码
+     *
+     * @param context  context
+     * @param account  学号
+     * @param password 密码
+     * @return         0 -- 成功
+     *                -1 -- 密码错误
+     *                -2 -- 网络错误
+     */
+    public static int loginTest(Context context, String account, String password) {
+        TokenData tokenData = TokenData.newInstance(context);
+        if (TokenData.isVPN) {
+            String VPNTokenStr = LAN.getVPNToken(context);
+            tokenData.setVPNToken(VPNTokenStr);
+        }
+        String TGTTokenStr = StaticService.SSOLogin(context, account, password, TokenData.isVPN);
+        if (TGTTokenStr.contains("ERROR0")) {
+            return -2;
+        } else if (TGTTokenStr.contains("ERROR1")) {
+            return -1;
+        }
+        TokenData.newInstance(context).setTGTToken(TGTTokenStr);
+        return 0;
+    }
+
+    /**
+     * 通过ST令牌登录VPN
+     *
+     * @param ST      ST令牌
+     * @param token   用于接收登录后的cookie
+     * @return        登录状态
+     */
+    public static int loginVPN(String ST, String token) {
+
+        String url = "https://v.guet.edu.cn/https/77726476706e69737468656265737421e6b94689222426557a1dc7af96/login?cas_login=true&ticket=";
+        url = url + ST;
+        OkHttpClient okHttpClient = new OkHttpClient();
+        if (token == null) {
+            token = "";
+        }
+        final Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Cookie", token)
+                .build();
+        final Call call = okHttpClient.newCall(request);
+
+        try {
+            Response response = call.execute();
+            response.close();
+            if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("html lang=\"zh-cmn\"")) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -2;
+        }
+    }
+
+    /**
+     * 通过ST令牌登录教务系统(VPN)
+     *
+     * @param ST       ST令牌
+     * @param VPNToken VPNToken
+     * @return         登录状态
+     */
+    public static int loginBkjwVPN(String ST, String VPNToken) {
+
+        String url = "https://v.guet.edu.cn/http/77726476706e69737468656265737421a1a013d2766626012d46dbfe/?ticket=";
+        url = url + ST;
+        if (VPNToken == null) {
+            VPNToken = "";
+        }
+        OkHttpClient okHttpClient = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Cookie", VPNToken)
+                .build();
+        final Call call = okHttpClient.newCall(request);
+
+        try {
+            Response response = call.execute();
+            response.close();
+            if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("统一身份认证平台")) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -2;
+        }
+    }
+
+    /**
+     * 通过ST令牌登录教务系统(内网)
+     *
+     * @param context context
+     * @param ST      ST令牌
+     * @param session 用于接收登录后的cookie
+     * @return        登录状态
+     */
+    public static int loginBkjw(Context context, String ST, StringBuilder session) {
+        int state;
+        HttpConnectionAndCode login_res = LAN.loginBkjw(context, ST, session);
+        if (login_res.code != 0) { //登录失败
+            session.delete(0, session.length());
+            state = -2;
+        } else { //登录成功
+            state = 0;
+        }
+        return state;
     }
 
     /**
@@ -70,7 +223,7 @@ public class StaticService {
      */
     public static List<ResitBean> getResit(Context context, String cookie) {
         List<ResitBean> resitBeans = new ArrayList<>();
-        HttpConnectionAndCode resitInfo = LAN.getResit(context, cookie);
+        HttpConnectionAndCode resitInfo = LAN.getResit(context, cookie, TokenData.isVPN);
         if (resitInfo.code == 0) {
             BaseResponse<List<Resit>> baseResponse = new Gson().fromJson(resitInfo.comment, new TypeToken<BaseResponse<List<Resit>>>() {
             }.getType());
@@ -84,43 +237,6 @@ public class StaticService {
     }
 
     /**
-     * 自动登录
-     *
-     * @param context        context
-     * @param account        学号
-     * @param password       密码
-     * @param cookie_builder cookie
-     * @return state记录当前状态
-     * 0 : 登录成功
-     * -1 : 密码错误
-     * -2 : 网络错误/未知错误
-     * -3 : 验证码连续错误
-     */
-    public static int autoLogin(Context context, String account, String password, StringBuilder cookie_builder) {
-        int state = 1;
-        for (int i = 0; i < 4; i++) {
-            String checkCode = changeCode(context, cookie_builder);
-            HttpConnectionAndCode login_res = LAN.login(context, account, password, checkCode, cookie_builder.toString(), cookie_builder);
-            if (login_res.code != 0) { //登录失败
-                cookie_builder.delete(0, cookie_builder.length());
-                if (login_res.comment != null && login_res.comment.contains("验证码")) {
-                    state = -3;
-                } else if (login_res.comment != null && login_res.comment.contains("密码")) {
-                    state = -1;
-                    break;
-                } else { //请连接校园网
-                    state = -2;
-                    break;
-                }
-            } else { //登录成功
-                state = 0;
-                break;
-            }
-        }
-        return state;
-    }
-
-    /**
      * 获取基本的学生信息
      *
      * @param context context
@@ -128,7 +244,8 @@ public class StaticService {
      * @return 基本学生信息
      */
     public static StudentInfo getStudentInfo(Context context, String cookie) {
-        HttpConnectionAndCode studentInfo = LAN.studentInfo(context, cookie);
+        HttpConnectionAndCode studentInfo = LAN.studentInfo(context, cookie, TokenData.isVPN);
+        Log.d("1586", studentInfo.comment);
         if (studentInfo.code == 0) {
             return new Gson().fromJson(studentInfo.comment, StudentInfo.class);
         } else {
@@ -145,7 +262,7 @@ public class StaticService {
      * @return 理论课程列表
      */
     public static List<CourseBean> getClass(Context context, String cookie, String term) {
-        HttpConnectionAndCode classTable = LAN.getClassTable(context, cookie, term);
+        HttpConnectionAndCode classTable = LAN.getClassTable(context, cookie, term, TokenData.isVPN);
         if (classTable.code == 0) {
             List<CourseBean> courseBeans = new ArrayList<>();
             BaseResponse<List<ClassTable>> baseResponse = new Gson().fromJson(classTable.comment, new TypeToken<BaseResponse<List<ClassTable>>>() {
@@ -168,7 +285,7 @@ public class StaticService {
      * @return 课内实验列表
      */
     public static List<CourseBean> getLab(Context context, String cookie, String term) {
-        HttpConnectionAndCode labTable = LAN.getLabTable(context, cookie, term);
+        HttpConnectionAndCode labTable = LAN.getLabTable(context, cookie, term, TokenData.isVPN);
         if (labTable.code == 0) {
             List<CourseBean> courseBeans = new ArrayList<>();
             BaseResponse<List<LabTable>> baseResponse = new Gson().fromJson(labTable.comment, new TypeToken<BaseResponse<List<LabTable>>>() {
@@ -196,7 +313,7 @@ public class StaticService {
      */
     public static List<ExamBean> getExam(Context context, String cookie, String term) {
         List<ExamBean> examBeans = new ArrayList<>();
-        HttpConnectionAndCode examInfo = LAN.getExam(context, cookie, term);
+        HttpConnectionAndCode examInfo = LAN.getExam(context, cookie, term, TokenData.isVPN);
         if (examInfo.code == 0) {
             BaseResponse<List<ExamInfo>> baseResponse = new Gson().fromJson(examInfo.comment, new TypeToken<BaseResponse<List<ExamInfo>>>() {
             }.getType());
@@ -218,7 +335,7 @@ public class StaticService {
      */
     public static List<CETBean> getCET(Context context, String cookie) {
         List<CETBean> cetBeans = new ArrayList<>();
-        HttpConnectionAndCode cetInfo = LAN.getCET(context, cookie);
+        HttpConnectionAndCode cetInfo = LAN.getCET(context, cookie, TokenData.isVPN);
         if (cetInfo.code == 0) {
             BaseResponse<List<CET>> baseResponse = new Gson().fromJson(cetInfo.comment, new TypeToken<BaseResponse<List<CET>>>() {
             }.getType());
@@ -240,7 +357,7 @@ public class StaticService {
      */
     public static List<ExamScoreBean> getExamScore(Context context, String cookie) {
         List<ExamScoreBean> examScoreBeans = new ArrayList<>();
-        HttpConnectionAndCode examScoreInfo = LAN.getExamScore(context, cookie);
+        HttpConnectionAndCode examScoreInfo = LAN.getExamScore(context, cookie, TokenData.isVPN);
         if (examScoreInfo.code == 0) {
             BaseResponse<List<ExamScore>> baseResponse = new Gson().fromJson(examScoreInfo.comment, new TypeToken<BaseResponse<List<ExamScore>>>() {
             }.getType());
@@ -262,7 +379,7 @@ public class StaticService {
      */
     public static List<ExperimentScoreBean> getExperimentScore(Context context, String cookie) {
         List<ExperimentScoreBean> experimentScoreBeans = new ArrayList<>();
-        HttpConnectionAndCode experimentScoreInfo = LAN.getExperimentScore(context, cookie);
+        HttpConnectionAndCode experimentScoreInfo = LAN.getExperimentScore(context, cookie, TokenData.isVPN);
         if (experimentScoreInfo.code == 0) {
             BaseResponse<List<ExperimentScore>> baseResponse = new Gson().fromJson(experimentScoreInfo.comment, new TypeToken<BaseResponse<List<ExperimentScore>>>() {
             }.getType());
@@ -283,7 +400,7 @@ public class StaticService {
      * @return 当前学期字符串(例 : 2020 - 2021_1)
      */
     public static String getThisTerm(Context context, String cookie) {
-        HttpConnectionAndCode termInfo = LAN.getThisTerm(context, cookie);
+        HttpConnectionAndCode termInfo = LAN.getThisTerm(context, cookie, TokenData.isVPN);
         if (termInfo.code == 0) {
             String comment = termInfo.comment;
             int index = comment.indexOf("term");
@@ -308,7 +425,7 @@ public class StaticService {
         if (term == null) {
             return null;
         }
-        HttpConnectionAndCode teacherList = LAN.getTeacherList(context, cookie, term);
+        HttpConnectionAndCode teacherList = LAN.getTeacherList(context, cookie, term, TokenData.isVPN);
         if (teacherList.code == 0) {
             BaseResponse<List<AvgTeacher>> baseResponse = new Gson().fromJson(teacherList.comment, new TypeToken<BaseResponse<List<AvgTeacher>>>() {
             }.getType());
@@ -327,7 +444,7 @@ public class StaticService {
      * @return 老师评价表单
      */
     public static List<AvgTeacherFormGet> getAvgTeacherForm(Context context, String cookie, AvgTeacher avgTeacher) {
-        HttpConnectionAndCode httpConnectionAndCode = LAN.getAvgTeacherForm(context, cookie, avgTeacher.getTerm(), avgTeacher.getCourseno(), avgTeacher.getTeacherno());
+        HttpConnectionAndCode httpConnectionAndCode = LAN.getAvgTeacherForm(context, cookie, avgTeacher.getTerm(), avgTeacher.getCourseno(), avgTeacher.getTeacherno(), TokenData.isVPN);
         if (httpConnectionAndCode.code == 0) {
             BaseResponse<List<AvgTeacherFormGet>> baseResponse = new Gson().fromJson(httpConnectionAndCode.comment, new TypeToken<BaseResponse<List<AvgTeacherFormGet>>>() {
             }.getType());
@@ -347,7 +464,7 @@ public class StaticService {
      */
     public static String saveTeacherForm(Context context, String cookie, List<AvgTeacherFormSend> avgTeacherFormSends) {
         String postBody = new Gson().toJson(avgTeacherFormSends);
-        HttpConnectionAndCode httpConnectionAndCode = LAN.saveTeacherForm(context, cookie, avgTeacherFormSends.get(0).getTerm(), avgTeacherFormSends.get(0).getCourseno(), avgTeacherFormSends.get(0).getTeacherno(), postBody);
+        HttpConnectionAndCode httpConnectionAndCode = LAN.saveTeacherForm(context, cookie, avgTeacherFormSends.get(0).getTerm(), avgTeacherFormSends.get(0).getCourseno(), avgTeacherFormSends.get(0).getTeacherno(), postBody, TokenData.isVPN);
         if (httpConnectionAndCode.code == 0) {
             return httpConnectionAndCode.comment;
         }
@@ -378,7 +495,7 @@ public class StaticService {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        HttpConnectionAndCode httpConnectionAndCode = LAN.commitTeacherForm(context, cookie, postBody);
+        HttpConnectionAndCode httpConnectionAndCode = LAN.commitTeacherForm(context, cookie, postBody, TokenData.isVPN);
         if (httpConnectionAndCode.code == 0) {
             return httpConnectionAndCode.comment;
         }
@@ -427,7 +544,7 @@ public class StaticService {
      * @return 课程信息列表
      */
     public static AvgTextbookOuter getTextbookOuter(Context context, String cookie) {
-        HttpConnectionAndCode textbookList = LAN.getTextbookList(context, cookie);
+        HttpConnectionAndCode textbookList = LAN.getTextbookList(context, cookie, TokenData.isVPN);
         if (textbookList.code == 0) {
             return new Gson().fromJson(textbookList.comment, AvgTextbookOuter.class);
         } else {
@@ -444,7 +561,7 @@ public class StaticService {
      * @return 操作结果
      */
     public static AvgTextbookFormGetOuter getAvgTextbookFormOuter(Context context, String cookie, AvgTextbook avgTextbook) {
-        HttpConnectionAndCode textbookFormGet = LAN.getAvgTextbookFormOuter(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh());
+        HttpConnectionAndCode textbookFormGet = LAN.getAvgTextbookFormOuter(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh(), TokenData.isVPN);
         if (textbookFormGet.code == 0) {
             return new Gson().fromJson(textbookFormGet.comment, AvgTextbookFormGetOuter.class);
         } else {
@@ -458,10 +575,10 @@ public class StaticService {
      * @param context     context
      * @param cookie      登陆后cookie
      * @param avgTextbook 课程评价数据
-     * @return
+     * @return            教材评价状态信息
      */
     public static AvgTextbookDataOuter getAvgTextbookDataOuter(Context context, String cookie, AvgTextbook avgTextbook) {
-        HttpConnectionAndCode textbookFormState = LAN.getAvgTextbookFormState(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh());
+        HttpConnectionAndCode textbookFormState = LAN.getAvgTextbookFormState(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh(), TokenData.isVPN);
         if (textbookFormState.code == 0) {
             // 没有评价过
             if (!textbookFormState.comment.contains("comm")) {
@@ -495,7 +612,7 @@ public class StaticService {
             e.printStackTrace();
         }
         postBody = new Gson().toJson(data);
-        HttpConnectionAndCode result = LAN.saveTextbookForm(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh(), postBody);
+        HttpConnectionAndCode result = LAN.saveTextbookForm(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh(), postBody, TokenData.isVPN);
         if (result.comment.contains("操作成功")) {
             return 0;
         }
@@ -525,7 +642,7 @@ public class StaticService {
                     "&score=95" +
                     "&type=" +
                     "&comm=" + URLEncoder.encode("教材很不错", StandardCharsets.UTF_8.toString());
-            HttpConnectionAndCode httpConnectionAndCode = LAN.commitTextbookForm(context, cookie, postBody);
+            HttpConnectionAndCode httpConnectionAndCode = LAN.commitTextbookForm(context, cookie, postBody, TokenData.isVPN);
             if (httpConnectionAndCode.code == 0) {
                 return 0;
             }
@@ -543,9 +660,9 @@ public class StaticService {
      * @return 有效学分列表
      */
     public static List<EffectiveCredit> getEffectiveCredits(Context context, String cookie) {
-        HttpConnectionAndCode updateResult = LAN.updateEffectiveCredits(context, cookie);
+        HttpConnectionAndCode updateResult = LAN.updateEffectiveCredits(context, cookie, TokenData.isVPN);
         if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
-            HttpConnectionAndCode getResult = LAN.getEffectiveCredits(context, cookie);
+            HttpConnectionAndCode getResult = LAN.getEffectiveCredits(context, cookie, TokenData.isVPN);
             if (getResult.code == 0) {
                 BaseResponse<List<EffectiveCredit>> baseResponse = new Gson().fromJson(getResult.comment, new TypeToken<BaseResponse<List<EffectiveCredit>>>() {
                 }.getType());
@@ -566,9 +683,9 @@ public class StaticService {
      * @return 计划课程列表
      */
     public static List<PlannedCourse> getPlannedCourses(Context context, String cookie) {
-        HttpConnectionAndCode updateResult = LAN.updateEffectiveCredits(context, cookie);
+        HttpConnectionAndCode updateResult = LAN.updateEffectiveCredits(context, cookie, TokenData.isVPN);
         if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
-            HttpConnectionAndCode getResult = LAN.getPlannedCourses(context, cookie);
+            HttpConnectionAndCode getResult = LAN.getPlannedCourses(context, cookie, TokenData.isVPN);
             if (getResult.code == 0) {
                 BaseResponse<List<PlannedCourse>> baseResponse = new Gson().fromJson(getResult.comment, new TypeToken<BaseResponse<List<PlannedCourse>>>() {
                 }.getType());

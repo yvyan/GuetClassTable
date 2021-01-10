@@ -47,8 +47,8 @@ public class Get {
                                             @Nullable final String[] accept_encodings,
                                             @Nullable final Boolean redirect,
                                             @Nullable final Integer connect_timeout,
-                                            @Nullable final Integer read_timeout
-                                            ){
+                                            @Nullable final Integer read_timeout,
+                                            @Nullable final String content_type){
         URL url = null;
         HttpURLConnection cnt = null;
         DataOutputStream dos = null;
@@ -84,6 +84,9 @@ public class Get {
                 cnt.setInstanceFollowRedirects(true);
             }else {
                 cnt.setInstanceFollowRedirects(redirect);
+            }
+            if (content_type != null) {
+                cnt.setRequestProperty("Content-Type", content_type);
             }
             if (read_timeout == null) {
                 cnt.setReadTimeout(4000);

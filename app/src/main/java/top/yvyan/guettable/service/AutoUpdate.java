@@ -10,7 +10,7 @@ import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ScheduleData;
-import top.yvyan.guettable.data.CookieData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
@@ -27,7 +27,7 @@ public class AutoUpdate {
     private AccountData accountData;
     private ScheduleData scheduleData;
     private GeneralData generalData;
-    private CookieData cookieData;
+    private TokenData tokenData;
     private SettingData settingData;
 
     private int state;
@@ -37,7 +37,7 @@ public class AutoUpdate {
         accountData = AccountData.newInstance(activity);
         scheduleData = ScheduleData.newInstance(activity);
         generalData = GeneralData.newInstance(activity);
-        cookieData = CookieData.newInstance(activity);
+        tokenData = TokenData.newInstance(activity);
         settingData = SettingData.newInstance(activity);
         init();
     }
@@ -169,9 +169,13 @@ public class AutoUpdate {
         new Thread(() -> {
             updateView(92);
             // 刷新cookie
-            updateView(cookieData.refresh());
+            int n = tokenData.refresh();
+            if (n == -8 || n == -2) {
+                n = tokenData.refresh();
+            }
+            updateView(n);
             if (state == 0) {
-                String cookie = cookieData.getCookie();
+                String cookie = tokenData.getCookie();
                 List<CourseBean> courseBeans;
                 // 获取理论课
                 updateView(6);
