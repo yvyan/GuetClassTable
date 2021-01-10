@@ -4,20 +4,20 @@ import android.app.Activity;
 import android.util.Log;
 
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.data.CookieData;
+import top.yvyan.guettable.data.TokenData;
 
 public class MoreFunService {
     private Activity activity;
 
     private AccountData accountData;
-    private CookieData cookieData;
+    private TokenData tokenData;
     private IMoreFun iMoreFun;
 
     public MoreFunService(Activity activity, IMoreFun iMoreFun) {
         this.activity = activity;
         this.iMoreFun = iMoreFun;
         accountData = AccountData.newInstance(activity);
-        cookieData = CookieData.newInstance(activity);
+        tokenData = TokenData.newInstance(activity);
     }
 
     public void update() {
@@ -25,20 +25,22 @@ public class MoreFunService {
             String cookie;
             if (accountData.getIsLogin()) {
                 setView(91); //显示：登录状态检查
-                int state = iMoreFun.updateData(cookieData.getCookie());
-                Log.d("MoreFunService", "state" + state);
+                int state = iMoreFun.updateData(tokenData.getCookie());
                 if (state == 5 || state == -2) { //更新成功或网络错误
                     setView(state);
                     return;
                 }
                 setView(92); //显示：正在登录
-                state = cookieData.refresh();
+                state = tokenData.refresh();
+                if (state == -8 || state == -2) {
+                    state = tokenData.refresh();
+                }
                 if (state != 0) {
                     setView(state);
                     return;
                 }
                 setView(93); //显示：正在更新
-                state = iMoreFun.updateData(cookieData.getCookie());
+                state = iMoreFun.updateData(tokenData.getCookie());
                 setView(state);
 
             } else {

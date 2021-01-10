@@ -52,7 +52,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragement_more, container, false);
 
-        initData();
+        generalData = GeneralData.newInstance(getContext());
 
         testSchedule = view.findViewById(R.id.more_test_schedule);
         testSchedule.setOnClickListener(this);
@@ -152,7 +152,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.more_url_bkjw:
-                uri = Uri.parse(UrlReplaceUtil.getUrl(generalData.isInternational(), getContext().getResources().getString(R.string.url_bkjw)));
+                uri = Uri.parse(UrlReplaceUtil.getUrlByInternational(generalData.isInternational(), getContext().getResources().getString(R.string.url_bkjw)));
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;

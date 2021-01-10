@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.util.AppUtil;
+
 public class LaunchActivity extends AppCompatActivity {
 
     @Override
@@ -32,6 +35,9 @@ public class LaunchActivity extends AppCompatActivity {
             //透明导航栏
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+
+        ;
+        TokenData.isVPN = !AppUtil.isWifi(this);
 
         Integer time = 150;    //设置等待时间，单位为毫秒
         Handler handler = new Handler();
