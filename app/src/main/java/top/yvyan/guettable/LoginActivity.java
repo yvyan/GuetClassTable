@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String account = etAccount.getText().toString();
         String pwd = etPwd.getText().toString();
         new Thread(() -> {
+            TokenData.isVPN = true;
             GeneralData.newInstance(this).setInternational(false);
             int state = StaticService.loginTest(
                     this,
@@ -75,7 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     pwd
             );
             if (state == -2) {
-                TokenData.isVPN = true;
                 state = StaticService.loginTest(
                         this,
                         account,
