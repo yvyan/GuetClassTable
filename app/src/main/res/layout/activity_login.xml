@@ -79,7 +79,7 @@
                 android:layout_marginStart="56dp"
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="4dp"
-                android:hint="请输入教务系统密码"
+                android:hint="请输入智慧校园密码"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:textColorHint="@color/xui_config_color_50_pure_black"
@@ -121,5 +121,28 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="登录" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <ImageView
+
+            android:layout_width="29dp"
+            android:layout_height="29dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/p_bangzhu"
+            android:layout_marginLeft="4dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="45dp"
+            android:text="密码错误的同学请输入智慧校园的密码，智慧校园网站地址：http://icampus.guet.edu.cn/ ，也即统一登录平台，若不记得密码，请联系辅导员或加群寻求帮助。"
+            android:textSize="13dp"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

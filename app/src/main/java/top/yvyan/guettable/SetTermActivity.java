@@ -149,7 +149,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 personFragment.updateView();
                 personFragment.getOnButtonClick().onClick(0); //切换页面0
 
-                ToastUtil.showLongToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待");
+                ToastUtil.showLongToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待，不要滑动页面");
                 finish();
                 break;
         }
