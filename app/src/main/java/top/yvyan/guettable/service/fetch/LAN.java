@@ -148,6 +148,7 @@ public class LAN {
 
     /**
      * 获取验证码
+     *
      * @param context context
      * @return        验证码图片
      */
@@ -622,4 +623,153 @@ public class LAN {
                 null
         );
     }
+
+    /**
+     * 获取待评教材列表
+     *
+     * @param context context
+     * @param cookie  登陆后cookie
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode getTextbookList(Context context, String cookie) {
+        Resources resources = context.getResources();
+        return Get.get(
+                resources.getString(R.string.lan_get_textbook_list),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null,
+                10000
+        );
+    }
+
+    /**
+     * 获取教材评价信息表
+     *
+     * @param context  context
+     * @param cookie   登录后cookie
+     * @param term     学期
+     * @param courseid 课程代码
+     * @param lsh      参数
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode getAvgTextbookFormOuter(Context context, String cookie, String term, String courseid, int lsh) {
+        Resources resources = context.getResources();
+        String[] params = {
+                "term=".concat(term),
+                "courseid=".concat(courseid),
+                "lsh=".concat(String.valueOf(lsh))
+        };
+        return Get.get(
+                resources.getString(R.string.lan_get_textbook_form),
+                params,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 获取教材评价状态
+     *
+     * @param context  context
+     * @param cookie   登录后cookie
+     * @param term     学期
+     * @param courseid 课程代码
+     * @param lsh      参数
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode getAvgTextbookFormState(Context context, String cookie, String term, String courseid, int lsh) {
+        Resources resources = context.getResources();
+        String postBody = "term=" + term + "&courseid=" + courseid + "&lsh=" + lsh;
+        return Post.post(
+                resources.getString(R.string.lan_get_textbook_avg_state),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
+                postBody,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 保存教材评价表单
+     *
+     * @param context  context
+     * @param cookie   cookie
+     * @param term     学期
+     * @param courseid 课程代码
+     * @param lsh      参数
+     * @param postBody 请求体参数
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode saveTextbookForm(Context context, String cookie, String term, String courseid, int lsh, String postBody) {
+        Resources resources = context.getResources();
+        String[] params = {
+                "term=".concat(term),
+                "courseid=".concat(courseid),
+                "lsh=".concat(String.valueOf(lsh))
+        };
+        return Post.post(
+                resources.getString(R.string.lan_save_avg_textbook_data),
+                params,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
+                postBody,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                "application/json"
+        );
+    }
+
+    /**
+     * 提交教材评价
+     *
+     * @param context  context
+     * @param cookie   cookie
+     * @param postBody 请求体参数
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode commitTextbookForm(Context context, String cookie, String postBody) {
+        Resources resources = context.getResources();
+        return Post.post(
+                resources.getString(R.string.lan_commit_avg_textbook_data),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_referer),
+                postBody,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null
+        );
+    }
+
+
 }

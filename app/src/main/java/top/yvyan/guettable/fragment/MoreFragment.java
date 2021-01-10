@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.moreFun.AverageTeacherActivity;
+import top.yvyan.guettable.moreFun.AverageTextbookActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.R;
@@ -20,7 +21,6 @@ import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.moreFun.LibActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
-import top.yvyan.guettable.moreFun.TestActivity;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
@@ -92,9 +92,18 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         evaluatingTeachers.setOnClickListener(this);
         evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
         evaluatingTextbooks.setOnClickListener(this);
-        //evaluatingTextbooks.setVisibility(View.GONE);
 
         return view;
+    }
+
+    private void initData() {
+        generalData = GeneralData.newInstance(getContext());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initData();
     }
 
     @Override
@@ -172,22 +181,13 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;
-
             case R.id.more_evaluating_teachers:
-                if (generalData.isInternational()) {
-                    TextDialog.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
-                } else {
-                    intent = new Intent(getContext(), AverageTeacherActivity.class);
-                    startActivity(intent);
-                }
+                intent = new Intent(getContext(), AverageTeacherActivity.class);
+                startActivity(intent);
                 break;
             case R.id.more_evaluating_textbooks:
-                if (generalData.isInternational()) {
-                    TextDialog.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
-                } else {
-                    intent = new Intent(getContext(), TestActivity.class);
-                    startActivity(intent);
-                }
+                intent = new Intent(getContext(), AverageTextbookActivity.class);
+                startActivity(intent);
                 break;
             default:
                 ToastUtil.showToast(getContext(), "敬请期待！");

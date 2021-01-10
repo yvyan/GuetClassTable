@@ -65,6 +65,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private View share;
     private View update;
     private View download;
+    private View downloadAll;
     private View about;
 
     private AccountData accountData;
@@ -88,8 +89,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         Log.d(TAG, "createPersonFragmentView");
         view = inflater.inflate(R.layout.fragement_preson, container, false);
-        accountData = AccountData.newInstance(getContext());
-        generalData = GeneralData.newInstance(getContext());
+        initData();
         initView();
         updateView();
         person_setting = view.findViewById(R.id.person_setting);
@@ -97,6 +97,11 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         // 检查更新
         checkUpdate(1);
         return view;
+    }
+
+    private void initData() {
+        accountData = AccountData.newInstance(getContext());
+        generalData = GeneralData.newInstance(getContext());
     }
 
     private void initView() {
@@ -130,6 +135,8 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         } else {
             download.setVisibility(View.GONE);
         }
+        downloadAll = view.findViewById(R.id.person_download_all);
+        downloadAll.setOnClickListener(this);
         about = view.findViewById(R.id.person_about);
         about.setOnClickListener(this);
     }
@@ -154,6 +161,12 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
             buttonQuit.setVisibility(View.GONE);
             person_login.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initData();
     }
 
     @Override
@@ -191,6 +204,9 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.person_download:
                 updateAppCoolApk();
+                break;
+            case R.id.person_download_all:
+                downloadAllApk();
                 break;
             case R.id.person_about:
                 intent = new Intent(getContext(), AboutActivity.class);
@@ -356,6 +372,14 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 
     public void updateAppCoolApk() {
         Uri uri = Uri.parse(getContext().getResources().getString(R.string.downloadApp_url));
+        Intent webIntent = new Intent();
+        webIntent.setAction("android.intent.action.VIEW");
+        webIntent.setData(uri);
+        startActivity(webIntent);
+    }
+
+    public void downloadAllApk() {
+        Uri uri = Uri.parse(getContext().getResources().getString(R.string.downloadAll_url));
         Intent webIntent = new Intent();
         webIntent.setAction("android.intent.action.VIEW");
         webIntent.setData(uri);
