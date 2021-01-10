@@ -22,6 +22,7 @@ public class TokenData {
     private AccountData accountData;
 
     public static boolean isVPN = false;
+    private static boolean isWIFI;
 
     private String TGTToken;   //统一登录TGT令牌
     private String VPNToken;   //VPN认证Token
@@ -79,8 +80,13 @@ public class TokenData {
                     ST_VPN = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_vpn), isVPN);
                 }
                 String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), isVPN);
-                StaticService.loginVPN(ST_VPN, VPNToken);
-                StaticService.loginBkjwVPN(ST_BKJW, VPNToken);
+                if (StaticService.loginVPN(ST_VPN, VPNToken) != 0) {
+                    StaticService.loginVPN(ST_VPN, VPNToken);
+                }
+                int n;
+                if (StaticService.loginBkjwVPN(ST_BKJW, VPNToken) != 0) {
+                    n = StaticService.loginBkjwVPN(ST_BKJW, VPNToken);
+                }
                 return 0;
             } else { // 内网
                 StringBuilder cookie_builder = new StringBuilder();
@@ -90,6 +96,7 @@ public class TokenData {
                     String TGTTokenStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getPassword(), isVPN);
                     if (TGTTokenStr.contains("ERROR0")) {
                         isVPN = true;
+                        deleteToken();
                         return -2;
                     } else if (TGTTokenStr.contains("ERROR1")){
                         return -1;
@@ -98,6 +105,7 @@ public class TokenData {
                     ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), isVPN);
                     if (!ST_BKJW.contains("ST-")) { // 网络错误，切换为外网模式
                         isVPN = true;
+                        deleteToken();
                         return -8;
                     }
                 }
@@ -141,6 +149,13 @@ public class TokenData {
     public void setBkjwCookie(String bkjwCookie) {
         this.bkjwCookie = bkjwCookie;
         editor.putString(BKJW_COOKIE, bkjwCookie);
+        editor.apply();
+    }
+
+    public void deleteToken() {
+        editor.putString(TGT_TOKEN, null);
+        editor.putString(VPN_TOKEN, null);
+        editor.putString(BKJW_COOKIE,  null);
         editor.apply();
     }
 }
