@@ -36,9 +36,6 @@ public class LaunchActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
 
-        ;
-        TokenData.isVPN = !AppUtil.isWifi(this);
-
         Integer time = 150;    //设置等待时间，单位为毫秒
         Handler handler = new Handler();
         //当计时结束时，跳转至主界面

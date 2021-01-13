@@ -34,6 +34,7 @@ import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.OnButtonClick;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
+import top.yvyan.guettable.service.fetch.LAN;
 
 public class MainActivity extends AppCompatActivity implements OnButtonClick {
 
@@ -193,19 +194,16 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
                     switch (type2) {
                         case 0://移动 网络    2G 3G 4G 都是一样的 实测 mix2s 联通卡
                             Log.d("1586", "移动网络");
-                            TokenData.newInstance(getApplicationContext()).deleteToken();
+                            TokenData.isVPN = true;
                             break;
                         case 1: //wifi网络
                             Log.d("1586", "WIFI");
-                            break;
-                        case 9:  //网线连接
+                            TokenData.isVPN = LAN.testNet(context) != 0;
                             break;
                     }
-                } else {// 无网络
-                }
+                }  // 无网络
             }
         }
-
     };
 
     /**
