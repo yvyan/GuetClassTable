@@ -2,7 +2,6 @@ package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -19,6 +18,33 @@ import top.yvyan.guettable.util.UrlReplaceUtil;
 public class LAN {
 
     /**
+     * 测试连接
+     *
+     * @param context context
+     * @return        0 -- 内外
+     *             else -- 外网
+     */
+    public static int testNet(Context context) {
+        Resources resources = context.getResources();
+        HttpConnectionAndCode response =  Get.get(
+                "http://172.16.13.22/",
+                null,
+                resources.getString(R.string.user_agent),
+                "http://172.16.13.22/",
+                null,
+                "]}",
+                null,
+                null,
+                null,
+                null,
+                200,
+                200,
+                null
+        );
+        return response.code;
+    }
+
+    /**
      * 获取VPNToken
      *
      * @param context context
@@ -30,15 +56,15 @@ public class LAN {
                 resources.getString(R.string.vpn_url),
                 null,
                 resources.getString(R.string.user_agent),
-                null,
+                resources.getString(R.string.vpn_refer),
                 null,
                 null,
                 resources.getString(R.string.cookie_delimiter),
                 null,
                 null,
                 true,
-                null,
-                5000,
+                2000,
+                2000,
                 null
         );
         return get_res.cookie;
@@ -131,7 +157,66 @@ public class LAN {
             if (session != null) {
                 session.append(resources.getString(R.string.cookie_delimiter));
             }
+            assert session != null;
             session.append(login_res.cookie);
+        }
+        return login_res;
+    }
+
+    /**
+     * 获取验证码
+     *
+     * @param context context
+     * @return        验证码图片
+     */
+    public static HttpConnectionAndCode checkCode(Context context) {
+        Resources resources = context.getResources();
+        return GetBitmap.get(
+                UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_checkcode_url)),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.lan_get_checkcode_referer),
+                null,
+                resources.getString(R.string.cookie_delimiter)
+        );
+    }
+
+    /**
+     * 登录
+     * @param context   context
+     * @param account   学号
+     * @param pwd       密码
+     * @param checkCode 验证码
+     * @param cookie    获取验证码之后的cookie
+     * @param builder   用于接收登录后的cookie
+     * @return          登录状态
+     */
+    public static HttpConnectionAndCode login(Context context, String account, String pwd, String checkCode, String cookie, StringBuilder builder) {
+        Resources resources = context.getResources();
+        String body = "us=" + account + "&pwd=" + pwd + "&ck=" + checkCode;
+        HttpConnectionAndCode login_res = Post.post(
+                UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_login_url)),
+                null,
+                resources.getString(R.string.user_agent),
+                UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer)),
+                body,
+                cookie,
+                "}",
+                resources.getString(R.string.cookie_delimiter),
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null
+        );
+        if (login_res.code == 0) {
+            LoginResponse response = new Gson().fromJson(login_res.comment, LoginResponse.class);
+            login_res.comment = response.getMsg();
+        }
+        if (login_res.code == 0 && builder != null) {
+            if (!builder.toString().isEmpty()) {
+                builder.append(resources.getString(R.string.cookie_delimiter));
+            }
+            builder.append(login_res.cookie);
         }
         return login_res;
     }

@@ -22,9 +22,8 @@ public class MoreFunService {
 
     public void update() {
         new Thread(() -> {
-            String cookie;
             if (accountData.getIsLogin()) {
-                setView(91); //显示：登录状态检查
+                setView(91); //显示：尝试更新
                 int state = iMoreFun.updateData(tokenData.getCookie());
                 if (state == 5 || state == -2) { //更新成功或网络错误
                     setView(state);

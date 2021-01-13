@@ -1,6 +1,7 @@
 package top.yvyan.guettable.service;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -39,6 +40,7 @@ import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
+import top.yvyan.guettable.OCR.OCR;
 import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
@@ -59,14 +61,20 @@ public class StaticService {
      * @param account  学号
      * @param password 密码
      * @param isVPN    是否为外网登录
-     * @return TGT令牌或者ERROR0:网络错误；ERROR1:密码错误
+     * @return         TGT令牌
+     *                 ERROR0 : 网络错误
+     *                 ERROR1 : 密码错误
+     *                 ERROR2 : 需要使用外网网址进行访问
      */
     public static String SSOLogin(Context context, String account, String password, boolean isVPN) {
-        HttpConnectionAndCode login_res = LAN.getTGT(context, account, password, isVPN);
-        if (login_res.code != 0) {
+        HttpConnectionAndCode response = LAN.getTGT(context, account, password, isVPN);
+        if (response.code != 0) {
+            if (response.code == -5) {
+                return "ERROR2";
+            }
             return "ERROR0";
         } else {
-            String html = login_res.comment;
+            String html = response.comment;
             if (html.contains("TGT-")) {
                 ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(html, "TGT-(.*?)\"");
                 return listExp.get(0).substring(0, listExp.get(0).length() - 1);
@@ -83,14 +91,24 @@ public class StaticService {
      * @param TGT     TGT令牌
      * @param service ST令牌的服务端
      * @param isVPN   是否为外网登录
-     * @return ST令牌或者ERROR0:网络错误；ERROR1:TGT失效
+     * @return        ST令牌
+     *                ERROR0 : 网络错误
+     *                ERROR1 : TGT失效
+     *                ERROR2 : 需要使用外网网址进行访问 或 TGT失效(上层调用时，若内网返回此错误，
+     *                  则先尝试外网，若是TGT失效，则重新获取；若正常获取，则需要将全局网络设置为外网)
      */
     public static String SSOGetST(Context context, String TGT, String service, boolean isVPN) {
-        HttpConnectionAndCode res = LAN.getST(context, TGT, service, isVPN);
-        if (res.code != 0) {
-            return res.toString();
+        HttpConnectionAndCode response = LAN.getST(context, TGT, service, isVPN);
+        if (response.code != 0) {
+            if (response.code == -5) {
+                if (isVPN) {
+                    return "ERROR1";
+                }
+                return "ERROR2";
+            }
+            return "ERROR0";
         } else {
-            String html = res.comment;
+            String html = response.comment;
             if (html.contains("ST")) {
                 return html;
             }
@@ -99,37 +117,14 @@ public class StaticService {
     }
 
     /**
-     * 测试登录密码
-     *
-     * @param context  context
-     * @param account  学号
-     * @param password 密码
-     * @return         0 -- 成功
-     *                -1 -- 密码错误
-     *                -2 -- 网络错误
-     */
-    public static int loginTest(Context context, String account, String password) {
-        TokenData tokenData = TokenData.newInstance(context);
-        if (TokenData.isVPN) {
-            String VPNTokenStr = LAN.getVPNToken(context);
-            tokenData.setVPNToken(VPNTokenStr);
-        }
-        String TGTTokenStr = StaticService.SSOLogin(context, account, password, TokenData.isVPN);
-        if (TGTTokenStr.contains("ERROR0")) {
-            return -2;
-        } else if (TGTTokenStr.contains("ERROR1")) {
-            return -1;
-        }
-        TokenData.newInstance(context).setTGTToken(TGTTokenStr);
-        return 0;
-    }
-
-    /**
      * 通过ST令牌登录VPN
      *
      * @param ST      ST令牌
      * @param token   用于接收登录后的cookie
-     * @return        登录状态
+     * @return        登录结果
+     *                  0 -- 登录成功
+     *                 -1 -- 登录失败
+     *                 -2 -- 发生异常
      */
     public static int loginVPN(String ST, String token) {
 
@@ -164,7 +159,11 @@ public class StaticService {
      *
      * @param ST       ST令牌
      * @param VPNToken VPNToken
-     * @return         登录状态
+     * @return         登录结果
+     *                  0 -- 登录成功
+     *                 -1 -- VPN登录失败
+     *                 -2 -- 教务登录失败
+     *                 -3 -- 发生异常
      */
     public static int loginBkjwVPN(String ST, String VPNToken) {
 
@@ -183,14 +182,16 @@ public class StaticService {
         try {
             Response response = call.execute();
             response.close();
-            if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("统一身份认证平台")) {
+            if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("html lang=\"zh-cmn\"")) {
                 return -1;
+            } else if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("统一身份认证平台")) {
+                return -2;
             } else {
                 return 0;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return -2;
+            return -3;
         }
     }
 
@@ -200,7 +201,10 @@ public class StaticService {
      * @param context context
      * @param ST      ST令牌
      * @param session 用于接收登录后的cookie
-     * @return        登录状态
+     * @return        登录结果
+     *                  0 -- 登录成功
+     *                 -1 -- 登录失败
+     *                 -2 -- 网络错误
      */
     public static int loginBkjw(Context context, String ST, StringBuilder session) {
         int state;
@@ -209,7 +213,64 @@ public class StaticService {
             session.delete(0, session.length());
             state = -2;
         } else { //登录成功
-            state = 0;
+            if (login_res.comment.contains("统一身份认证平台")) {
+                state = -1;
+            } else {
+                state = 0;
+            }
+        }
+        return state;
+    }
+
+    /**
+     * 刷新验证码(后台)
+     *
+     * @param context context
+     * @return cookie
+     */
+    public static String refreshCode(Context context, StringBuilder cookie_builder) {
+        final HttpConnectionAndCode res = LAN.checkCode(context);
+        if (res.obj != null) {
+            final String ocr = OCR.getTextFromBitmap(context, (Bitmap) res.obj, "telephone");
+            cookie_builder.append(res.cookie);
+            return ocr;
+        }
+        return null;
+    }
+
+    /**
+     * 自动登录
+     *
+     * @param context        context
+     * @param account        学号
+     * @param password       密码
+     * @param cookie_builder cookie
+     * @return state记录当前状态
+     *                  0 : 登录成功
+     *                 -1 : 密码错误
+     *                 -2 : 网络错误/未知错误
+     *                 -3 : 验证码连续错误
+     */
+    public static int autoLogin(Context context, String account, String password, StringBuilder cookie_builder) {
+        int state = 1;
+        for (int i = 0; i < 4; i++) {
+            String checkCode = refreshCode(context, cookie_builder);
+            HttpConnectionAndCode login_res = LAN.login(context, account, password, checkCode, cookie_builder.toString(), cookie_builder);
+            if (login_res.code != 0) { //登录失败
+                cookie_builder.delete(0, cookie_builder.length());
+                if (login_res.comment != null && login_res.comment.contains("验证码")) {
+                    state = -3;
+                } else if (login_res.comment != null && login_res.comment.contains("密码")) {
+                    state = -1;
+                    break;
+                } else { //请连接校园网
+                    state = -2;
+                    break;
+                }
+            } else { //登录成功
+                state = 0;
+                break;
+            }
         }
         return state;
     }
