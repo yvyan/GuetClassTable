@@ -8,169 +8,182 @@
     android:orientation="vertical"
     tools:context=".SetTermActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="30dp"
-        android:background="#FFFFFF">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/stu_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text=""
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/stu_id"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/stu_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/stu_name"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="59dp"
-            android:layout_height="59dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/p_huiyuan" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        android:background="#FFFFFF"
-        android:orientation="vertical">
-
-        <com.xuexiang.xui.widget.textview.label.LabelButtonView
-            style="@style/Button.Blue"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="设置年度"
-            android:textSize="20sp"
-            android:clickable="false"
-            />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/spinner_year"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="30dp"
+                android:background="#FFFFFF">
 
-        <com.xuexiang.xui.widget.textview.label.LabelButtonView
-            style="@style/Button.Blue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="设置学期"
-            android:textSize="20sp"
-            android:clickable="false"
-            />
+                <TextView
+                    android:id="@+id/stu_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/stu_id"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/spinner_term"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            android:entries="@array/spinnerterm" />
+                <TextView
+                    android:id="@+id/stu_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/stu_name"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <com.xuexiang.xui.widget.textview.label.LabelButtonView
-            style="@style/Button.Blue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="设置周次"
-            android:textSize="20sp"
-            android:clickable="false"
-            />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="59dp"
+                    android:layout_height="59dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/p_huiyuan" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/week_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="第X周"
-            android:layout_margin="5dp"
-            android:textAlignment="center"
-            android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="30dp"
+                android:background="#FFFFFF"
+                android:orientation="vertical">
 
-        <com.xuexiang.xui.widget.picker.XSeekBar
-            android:id="@+id/seekBar_week"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            app:xsb_insideRangeLineColor="#00B1FF"
-            app:xsb_insideRangeLineStrokeWidth="10dp"
-            app:xsb_isShowNumber="false"
-            app:xsb_numberTextSize="14sp"
-            app:xsb_max="200"
-            app:xsb_min="10"
-            app:xsb_outsideRangeLineStrokeWidth="10dp" />
+                <com.xuexiang.xui.widget.textview.label.LabelButtonView
+                    style="@style/Button.Blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="设置年度"
+                    android:textSize="20sp"
+                    android:clickable="false"
+                    />
 
-    </LinearLayout>
+                <Spinner
+                    android:id="@+id/spinner_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+                <com.xuexiang.xui.widget.textview.label.LabelButtonView
+                    style="@style/Button.Blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="设置学期"
+                    android:textSize="20sp"
+                    android:clickable="false"
+                    />
 
-        <com.xuexiang.xui.widget.button.ButtonView
-            android:id="@+id/back"
-            style="@style/ButtonView.Gray"
-            android:layout_width="140dp"
-            android:layout_height="40dp"
-            android:layout_margin="20dp"
-            android:text="退出登录"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            app:textSelectedSolidColor="@color/app_red2"
-            app:textSolidColor="@color/xui_config_color_red" />
+                <Spinner
+                    android:id="@+id/spinner_term"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:entries="@array/spinnerterm" />
 
-        <com.xuexiang.xui.widget.button.ButtonView
-            android:id="@+id/input"
-            style="@style/ButtonView.Blue"
-            android:layout_width="140dp"
-            android:layout_height="40dp"
-            android:layout_margin="20dp"
-            android:text="立即导入"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp" />
+                <com.xuexiang.xui.widget.textview.label.LabelButtonView
+                    style="@style/Button.Blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="设置周次"
+                    android:textSize="20sp"
+                    android:clickable="false"
+                    />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/week_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="第X周"
+                    android:layout_margin="5dp"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <com.xuexiang.xui.widget.picker.XSeekBar
+                    android:id="@+id/seekBar_week"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:xsb_insideRangeLineColor="#00B1FF"
+                    app:xsb_insideRangeLineStrokeWidth="10dp"
+                    app:xsb_isShowNumber="false"
+                    app:xsb_numberTextSize="14sp"
+                    app:xsb_max="200"
+                    app:xsb_min="10"
+                    app:xsb_outsideRangeLineStrokeWidth="10dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.xuexiang.xui.widget.button.ButtonView
+                    android:id="@+id/back"
+                    style="@style/ButtonView.Gray"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="20dp"
+                    android:text="退出登录"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    app:textSelectedSolidColor="@color/app_red2"
+                    app:textSolidColor="@color/xui_config_color_red" />
+
+                <com.xuexiang.xui.widget.button.ButtonView
+                    android:id="@+id/input"
+                    style="@style/ButtonView.Blue"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="20dp"
+                    android:text="立即导入"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
