@@ -102,7 +102,10 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         int week = generalData.getWeek();
         week_text.setText("第" + week + "周");
         seekBar.setDefaultValue(week * 10);
-        seekBar.setOnSeekBarListener((seekBar, newValue) -> week_text.setText("第" + (newValue / 10) + "周")
+        seekBar.setOnSeekBarListener((seekBar, newValue) -> {
+//                    Log.d("newvalue: ", String.valueOf(newValue));
+                    week_text.setText("第" + (newValue / 10) + "周");
+                }
         );
     }
 

@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.xuexiang.xui.widget.tabbar.TabControlView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import top.yvyan.guettable.data.AccountData;
@@ -25,6 +27,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText etAccount;
     private CheckBox cbRememberPwd;
     private SuperButton button;
+    private RelativeLayout pasword_second;
+    private TabControlView tabControlView;
 
     private AccountData accountData;
     private int type; //登录方式选择
@@ -42,10 +46,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final ImageView ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
         button = findViewById(R.id.login);
         button.setOnClickListener(this);
+        pasword_second = findViewById(R.id.password_second);
+        pasword_second.setVisibility(View.GONE);
         etAccount = findViewById(R.id.et_account);
         etPwd = findViewById(R.id.et_pwd);
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
-
         cbRememberPwd.setChecked(true);
         ivPwdSwitch.setOnClickListener((View view) -> {
             bPwdSwitch = !bPwdSwitch;
@@ -63,6 +68,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             etAccount.setText(accountData.getUsername());
             etPwd.setText(accountData.getPassword());
         }
+        tabControlView = findViewById(R.id.TabControl);
+        tabControlView.setOnTabSelectionChangedListener((title, value) -> {
+            if ("教务登录".equals(title)) { // 切换第二个密码框的显示
+                pasword_second.setVisibility(View.VISIBLE);
+            } else {
+                pasword_second.setVisibility(View.GONE);
+            }
+            type = (type + 1) % 2;  // 切换登录方式0~1
+        });
     }
 
     @Override
@@ -79,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     TokenData.isVPN = true;
                     state = testLoginCAS(account, pwd);
                 }
-            } else if (type == 1){ //VPN + 教务登录
+            } else if (type == 1) { //VPN + 教务登录
                 state = testLoginBkjw(account, pwd);
             } else {
                 state = -2;
@@ -139,10 +153,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @param account  学号
      * @param password 密码
      * @return 操作结果
-     *          0 -- 登录成功
-     *         -1 -- 密码错误
-     *         -2 -- 网络错误/未知错误
-     *         -3 -- 验证码连续错误
+     * 0 -- 登录成功
+     * -1 -- 密码错误
+     * -2 -- 网络错误/未知错误
+     * -3 -- 验证码连续错误
      */
     public int testLoginBkjw(String account, String password) {
         TokenData tokenData = TokenData.newInstance(this);
