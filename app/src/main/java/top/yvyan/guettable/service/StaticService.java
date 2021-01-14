@@ -2,7 +2,6 @@ package top.yvyan.guettable.service;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -306,7 +305,6 @@ public class StaticService {
      */
     public static StudentInfo getStudentInfo(Context context, String cookie) {
         HttpConnectionAndCode studentInfo = LAN.studentInfo(context, cookie, TokenData.isVPN);
-        Log.d("1586", studentInfo.comment);
         if (studentInfo.code == 0) {
             return new Gson().fromJson(studentInfo.comment, StudentInfo.class);
         } else {

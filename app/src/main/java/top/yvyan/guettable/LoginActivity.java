@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import top.yvyan.guettable.data.AccountData;
+import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.util.ToastUtil;
@@ -26,6 +28,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private SuperButton button;
 
     private AccountData accountData;
+    private int type; //登录方式选择
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+        type = TokenData.newInstance(this).getLoginType();
+
         accountData = AccountData.newInstance(this);
         final ImageView ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
         button = findViewById(R.id.login);
@@ -66,15 +71,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setUnClick();
         String account = etAccount.getText().toString();
         String pwd = etPwd.getText().toString();
+
         new Thread(() -> {
-            int state = testLogin(account, pwd);
-            if (state == -2) {
-                TokenData.isVPN = true;
-                state = testLogin(account, pwd);
+            int state;
+            if (type == 0) { //CAS登录
+                state = testLoginCAS(account, pwd);
+                if (state == -2) {
+                    TokenData.isVPN = true;
+                    state = testLoginCAS(account, pwd);
+                }
+            } else if (type == 1){ //VPN + 教务登录
+                state = testLoginBkjw(account, pwd);
+            } else {
+                state = -2;
             }
             if (state == 0) {
+                TokenData tokenData = TokenData.newInstance(this);
+                tokenData.setLoginType(type);
                 accountData.setUser(account, pwd, cbRememberPwd.isChecked());
-                TokenData.newInstance(this).refresh();
+                tokenData.refresh();
                 Intent intent = new Intent(this, SetTermActivity.class);
                 intent.putExtra("fromLogin", ""); //便于识别启动类
                 startActivity(intent);
@@ -100,11 +115,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     * 测试登录
+     * 测试CAS登录
      *
+     * @param account  学号
+     * @param password 密码
      * @return 操作结果
      */
-    public int testLogin(String account, String password) {
+    public int testLoginCAS(String account, String password) {
         String TGTTokenStr = StaticService.SSOLogin(this, account, password, TokenData.isVPN);
         if (TGTTokenStr.equals("ERROR2")) {
             return -2;
@@ -115,6 +132,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             return -1;
         }
+    }
+
+    /**
+     * 测试教务登录
+     *
+     * @param account  学号
+     * @param password 密码
+     * @return 操作结果
+     *          0 -- 登录成功
+     *         -1 -- 密码错误
+     *         -2 -- 网络错误/未知错误
+     *         -3 -- 验证码连续错误
+     */
+    public int testLoginBkjw(String account, String password) {
+        StringBuilder cookie_builder = new StringBuilder();
+        int state = StaticService.autoLogin(
+                this,
+                accountData.getUsername(),
+                accountData.getPassword(),
+                cookie_builder
+        );
+        if (state == 0) {
+            TokenData.newInstance(this).setBkjwCookie(cookie_builder.toString());
+        }
+        return state;
     }
 
     /**
@@ -131,5 +173,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void setUnClick() {
         button.setText("正在登录");
         button.setEnabled(false);
+    }
+
+    public void chooseFun1(View view) {
+        //修改图标颜色
+        //修改相应的布局
+        //设置登录类型
+        type = 0;
+    }
+
+    public void chooseFun2(View view) {
+        //修改图标颜色
+        //修改相应的布局
+        //设置登录类型
+        type = 1;
     }
 }
