@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,6 +47,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     //控件
     private TimetableView mTimetableView;
     private WeekView mWeekView;
+    private ImageButton nextToWeekButton;
+    private ImageButton preToWeekButton;
 
     private ImageView moreButton;
     private LinearLayout linearLayout;
@@ -109,6 +112,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         mWeekView = view.findViewById(R.id.id_weekview);
         mTimetableView = view.findViewById(R.id.id_timetableView);
         deltaImg = view.findViewById(R.id.deltaIcon);
+        preToWeekButton=view.findViewById(R.id.pre_week);
+        nextToWeekButton=view.findViewById(R.id.next_week);
 
         //设置周次选择属性
         mWeekView.curWeek(generalData.getWeek())
@@ -165,6 +170,28 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         if (singleSettingData.isHideOtherWeek()) {
             hideNonThisWeek();
         }
+        nextToWeekButton.setOnClickListener(view -> {
+            int cur = mTimetableView.curWeek();
+            target = target + 1;
+            if (target > 20) {
+                target = 20;
+            }
+            //更新切换后的日期，从当前周cur->切换的周week
+            mTimetableView.onDateBuildListener()
+                    .onUpdateDate(cur, target);
+            mTimetableView.changeWeekOnly(target);
+        });
+        preToWeekButton.setOnClickListener(view -> {
+            int cur = mTimetableView.curWeek();
+            target = target -1;
+            if (target < 1) {
+                target = 1;
+            }
+            //更新切换后的日期，从当前周cur->切换的周week
+            mTimetableView.onDateBuildListener()
+                    .onUpdateDate(cur, target);
+            mTimetableView.changeWeekOnly(target);
+        });
         updateTable();
     }
 
