@@ -17,6 +17,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+
+import top.yvyan.guettable.util.SSLUtils;
+
 
 public class Get {
     /**
@@ -41,8 +47,8 @@ public class Get {
                                             @Nullable final String[] accept_encodings,
                                             @Nullable final Boolean redirect,
                                             @Nullable final Integer connect_timeout,
-                                            @Nullable final Integer read_timeout
-                                            ){
+                                            @Nullable final Integer read_timeout,
+                                            @Nullable final String content_type){
         URL url = null;
         HttpURLConnection cnt = null;
         DataOutputStream dos = null;
@@ -79,6 +85,9 @@ public class Get {
             }else {
                 cnt.setInstanceFollowRedirects(redirect);
             }
+            if (content_type != null) {
+                cnt.setRequestProperty("Content-Type", content_type);
+            }
             if (read_timeout == null) {
                 cnt.setReadTimeout(4000);
             }else {
@@ -88,6 +97,14 @@ public class Get {
                 cnt.setConnectTimeout(2000);
             }else {
                 cnt.setConnectTimeout(connect_timeout);
+            }
+            if (cnt instanceof HttpsURLConnection) { // 判断是否为https请求
+                SSLContext sslContext = SSLUtils.getSSLContextWithoutCer();
+                if (sslContext != null) {
+                    SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+                    ((HttpsURLConnection) cnt).setSSLSocketFactory(sslSocketFactory);
+                    ((HttpsURLConnection) cnt).setHostnameVerifier(SSLUtils.hostnameVerifier);
+                }
             }
             cnt.connect();
         } catch (Exception e) {

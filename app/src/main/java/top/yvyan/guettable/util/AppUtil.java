@@ -3,6 +3,8 @@ package top.yvyan.guettable.util;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 public class AppUtil {
@@ -41,5 +43,22 @@ public class AppUtil {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * 判断是否为WIFI
+     *
+     * @param context context
+     * @return        是否为WIFI
+     */
+    public static boolean isWifi(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetInfo != null
+                && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        }
+        return false;
     }
 }

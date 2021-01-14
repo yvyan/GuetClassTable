@@ -5,18 +5,16 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.data.CookieData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -66,26 +64,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         setUnClick();
-        StringBuilder cookieBuilder = new StringBuilder();
         String account = etAccount.getText().toString();
         String pwd = etPwd.getText().toString();
         new Thread(() -> {
-            int state = StaticService.autoLogin(
-                    this,
-                    account,
-                    pwd,
-                    cookieBuilder
-            );
+            int state = testLogin(account, pwd);
+            if (state == -2) {
+                TokenData.isVPN = true;
+                state = testLogin(account, pwd);
+            }
             if (state == 0) {
                 accountData.setUser(account, pwd, cbRememberPwd.isChecked());
-                CookieData.newInstance(this).refresh();
+                TokenData.newInstance(this).refresh();
                 Intent intent = new Intent(this, SetTermActivity.class);
                 intent.putExtra("fromLogin", ""); //便于识别启动类
                 startActivity(intent);
                 finish();
             } else {
+                int finalState = state;
                 runOnUiThread(() -> {
-                    switch (state) {
+                    switch (finalState) {
                         case -1:
                             ToastUtil.showToast(this, getResources().getString(R.string.lan_login_fail_pwd));
                             break;
@@ -100,6 +97,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
             }
         }).start();
+    }
+
+    /**
+     * 测试登录
+     *
+     * @return 操作结果
+     */
+    public int testLogin(String account, String password) {
+        String TGTTokenStr = StaticService.SSOLogin(this, account, password, TokenData.isVPN);
+        if (TGTTokenStr.equals("ERROR2")) {
+            return -2;
+        }
+        if (TGTTokenStr.contains("TGT-")) {
+            TokenData.newInstance(this).setTGTToken(TGTTokenStr);
+            return 0;
+        } else {
+            return -1;
+        }
     }
 
     /**

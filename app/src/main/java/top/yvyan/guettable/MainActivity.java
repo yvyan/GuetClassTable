@@ -1,8 +1,13 @@
 package top.yvyan.guettable;
 
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Process;
 import android.util.Log;
@@ -22,12 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.OnButtonClick;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
+import top.yvyan.guettable.service.fetch.LAN;
 
 public class MainActivity extends AppCompatActivity implements OnButtonClick {
 
@@ -71,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
             }
         };
         Logger.setLogger(this, newLogger);
+
+        initReceiver();
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemReselectedListener);
@@ -169,4 +178,46 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
     }
+
+    BroadcastReceiver netReceiver =new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isAvailable()) {
+                    int type2 = networkInfo.getType();
+
+                    switch (type2) {
+                        case 0://移动 网络    2G 3G 4G 都是一样的 实测 mix2s 联通卡
+                            Log.d("1586", "移动网络");
+                            TokenData.isVPN = true;
+                            break;
+                        case 1: //wifi网络
+                            Log.d("1586", "WIFI");
+                            TokenData.isVPN = LAN.testNet(context) != 0;
+                            break;
+                    }
+                }  // 无网络
+            }
+        }
+    };
+
+    /**
+     * 注册网络监听的广播
+     */
+    private void initReceiver() {
+        IntentFilter timeFilter = new IntentFilter();
+        timeFilter.addAction("android.net.ethernet.ETHERNET_STATE_CHANGED");
+        timeFilter.addAction("android.net.ethernet.STATE_CHANGE");
+        timeFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        timeFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        timeFilter.addAction("android.net.wifi.STATE_CHANGE");
+        timeFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        registerReceiver(netReceiver, timeFilter);
+    }
+
 }
