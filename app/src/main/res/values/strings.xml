@@ -2,7 +2,8 @@
     <string name="app_name">桂电课程表</string>
 
     <!-- 统一登录 -->
-    <string name="vpn_url">https://v.guet.edu.cn</string>
+    <string name="vpn_url">https://v.guet.edu.cn/login</string>
+    <string name="vpn_refer">https://v.guet.edu.cn</string>
 
     <string name="url_get_TGT">https://cas.guet.edu.cn/cas/v1/tickets</string>
     <string name="url_get_TGT_vpn">https://v.guet.edu.cn/https/77726476706e69737468656265737421f3f652d220256d44300d8db9d6562d/cas/v1/tickets</string>

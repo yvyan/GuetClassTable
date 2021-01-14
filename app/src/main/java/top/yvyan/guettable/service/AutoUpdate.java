@@ -98,30 +98,9 @@ public class AutoUpdate {
         }
     }
 
-    /**
-     * state记录当前状态
-     *  0 : 登录成功
-     *  1 : 登录失效
-     *  2 : 未登录
-     *
-     * -1 : 密码错误
-     * -2 : 网络错误/未知错误
-     * -3 : 验证码连续错误
-     *
-     *  6 : 正在更新理论课
-     *  7 : 正在更新课内实验
-     *  8 : 更新完成
-     *
-     * 21 : 理论课更新成功
-     * 22 : 课内实验更新成功
-     * 23 : 考试安排更新成功
-     *
-     * 92 : 正在登录
-     *
-     */
     private void updateView(int state) {
         this.state = state;
-        String text = "未知错误";
+        String text;
         switch (state) {
             case 0:
                 text = "已登录(点击更新)";
@@ -133,24 +112,28 @@ public class AutoUpdate {
                 text = "密码错误";
                 break;
             case -2:
-                text = "网络错误(点击重试)";
+                text = "网络错误";
                 break;
-            case -3:
-                text = "验证码识别失败";
-            case 6:
-                text = "正在更新理论课...";
-                break;
-            case 7:
-                text = "正在更新实验课...";
-                break;
-            case 8:
-                text = "更新成功(点击更新)";
-                break;
-            case 9:
-                text = "正在更新考试安排...";
+            case 91:
+                text = "尝试更新理论课";
                 break;
             case 92:
                 text = "正在登录";
+                break;
+            case 93:
+                text = "正在更新理论课";
+                break;
+            case 94:
+                text = "正在更新考试安排";
+                break;
+            case 95:
+                text = "正在更新课内实验";
+                break;
+            case 5:
+                text = "更新成功";
+                break;
+            default:
+                text = "未知错误";
                 break;
         }
         final String out = text;
@@ -167,18 +150,11 @@ public class AutoUpdate {
      */
     private void update_thread() {
         new Thread(() -> {
-            updateView(92);
-            // 刷新cookie
-            int n = tokenData.refresh();
-            if (n == -8 || n == -2) {
-                n = tokenData.refresh();
-            }
-            updateView(n);
-            if (state == 0) {
-                String cookie = tokenData.getCookie();
+            String cookie;
+            if (accountData.getIsLogin()) {
+                updateView(91); //显示：尝试更新理论课
+                cookie = tokenData.getCookie();
                 List<CourseBean> courseBeans;
-                // 获取理论课
-                updateView(6);
                 List<CourseBean> getClass = StaticService.getClass(
                         activity,
                         cookie,
@@ -187,12 +163,30 @@ public class AutoUpdate {
                 if (getClass != null) {
                     courseBeans = getClass;
                     scheduleData.setCourseBeans(courseBeans);
-                    updateView(9);
                 } else {
-                    updateView(3);
-                    return;
+                    updateView(92);
+                    state = tokenData.refresh();
+                    if (state != 0) {
+                        updateView(state);
+                        return;
+                    }
+                    updateView(93); //显示：正在更新理论课
+                    cookie = tokenData.getCookie();
+                    getClass = StaticService.getClass(
+                            activity,
+                            cookie,
+                            generalData.getTerm()
+                    );
+                    if (getClass != null) {
+                        courseBeans = getClass;
+                        scheduleData.setCourseBeans(courseBeans);
+                    }  else {
+                        updateView(3);
+                        return;
+                    }
                 }
                 //获取考试安排
+                updateView(94);
                 List<ExamBean> examBeans = StaticService.getExam(
                         activity,
                         cookie,
@@ -202,20 +196,19 @@ public class AutoUpdate {
                     ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
                     Collections.sort(examBeans, comparatorBeanAttribute);
                     scheduleData.setExamBeans(examBeans);
-                    updateView(7);
                 } else {
                     updateView(3);
                     return;
                 }
-
                 //获取实验课
+                updateView(95);
                 List<CourseBean> getLab = StaticService.getLab(
                         activity,
                         cookie,
                         generalData.getTerm()
                 );
                 if (getLab != null) {
-                    updateView(8);
+                    updateView(5);
                     scheduleData.setLibBeans(getLab);
                     generalData.setLastUpdateTime(System.currentTimeMillis());
                     activity.runOnUiThread(() -> {
@@ -223,10 +216,10 @@ public class AutoUpdate {
                         DayClassFragment.newInstance().updateView();
                         ToastUtil.showToast(activity, "更新成功");
                     });
-                } else {
-                    updateView(3);
-                    return;
                 }
+            } else {
+                updateView(2);
+                return;
             }
         }).start();
     }

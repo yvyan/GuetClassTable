@@ -8,8 +8,8 @@ android {
         applicationId "top.yvyan.guettable"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 21
-        versionName "2.9.0"
+        versionCode 22
+        versionName "2.9.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         dataBinding.enabled = true
@@ -36,6 +36,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0'
+    //图像识别
+    implementation 'com.rmtheis:tess-two:9.1.0'
 
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.google.code.gson:gson:2.8.6'
