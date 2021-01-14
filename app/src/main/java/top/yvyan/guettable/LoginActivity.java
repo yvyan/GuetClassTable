@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -15,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.xuexiang.xui.widget.tabbar.TabControlView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
+import org.jetbrains.annotations.NotNull;
+
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.StaticService;
@@ -23,12 +26,17 @@ import top.yvyan.guettable.util.ToastUtil;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Boolean bPwdSwitch = false;
+    private Boolean bPwdSwitch2 = false;
     private EditText etPwd;
     private EditText etAccount;
     private CheckBox cbRememberPwd;
     private SuperButton button;
-    private RelativeLayout pasword_second;
-    private TabControlView tabControlView;
+    private RelativeLayout passwordSecondView;
+    private EditText etPwd2;
+    private View passwordHelp;
+    private ImageView ivPwdSwitch;
+    private ImageView ivPwdSwitch2;
+
 
     private AccountData accountData;
     private int type; //登录方式选择
@@ -43,40 +51,72 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         type = TokenData.newInstance(this).getLoginType();
 
         accountData = AccountData.newInstance(this);
-        final ImageView ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
+
+        ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
+        ivPwdSwitch2 = findViewById(R.id.iv_pwd_switch_2);
         button = findViewById(R.id.login);
         button.setOnClickListener(this);
-        pasword_second = findViewById(R.id.password_second);
-        pasword_second.setVisibility(View.GONE);
+        passwordSecondView = findViewById(R.id.password_second);
+        passwordSecondView.setVisibility(View.GONE);
+        etPwd2 = findViewById(R.id.et_pwd_VPN);
         etAccount = findViewById(R.id.et_account);
         etPwd = findViewById(R.id.et_pwd);
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
         cbRememberPwd.setChecked(true);
-        ivPwdSwitch.setOnClickListener((View view) -> {
-            bPwdSwitch = !bPwdSwitch;
-            if (bPwdSwitch) {
-                ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_24);
-                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            } else {
-                ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_off_24);
-                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
-                etPwd.setTypeface(Typeface.DEFAULT);
-            }
-        });
+        passwordHelp = findViewById(R.id.password_help);
+        ivPwdSwitch.setOnClickListener(showPwdClickListener());
+        ivPwdSwitch2.setOnClickListener(showPwdClickListener());
 
         if (accountData.getIsSave()) {
             etAccount.setText(accountData.getUsername());
             etPwd.setText(accountData.getPassword());
+            etPwd2.setText(accountData.getPassword2());
         }
-        tabControlView = findViewById(R.id.TabControl);
+        TabControlView tabControlView = findViewById(R.id.TabControl);
+        try {
+            tabControlView.setDefaultSelection(type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (type == 1) {
+            passwordSecondView.setVisibility(View.VISIBLE);
+            etPwd.setHint("请输入教务密码");
+            passwordHelp.setVisibility(View.GONE);
+        }
         tabControlView.setOnTabSelectionChangedListener((title, value) -> {
             if ("教务登录".equals(title)) { // 切换第二个密码框的显示
-                pasword_second.setVisibility(View.VISIBLE);
+                passwordSecondView.setVisibility(View.VISIBLE);
+                etPwd.setHint("请输入教务密码");
+                passwordHelp.setVisibility(View.GONE);
+                type = 1;
             } else {
-                pasword_second.setVisibility(View.GONE);
+                passwordSecondView.setVisibility(View.GONE);
+                etPwd.setHint("请输入智慧校园密码");
+                passwordHelp.setVisibility(View.VISIBLE);
+                type = 0;
             }
-            type = (type + 1) % 2;  // 切换登录方式0~1
         });
+    }
+
+    @NotNull
+    private View.OnClickListener showPwdClickListener() {
+        return (View view) -> {
+            bPwdSwitch = !bPwdSwitch;
+            bPwdSwitch2 = !bPwdSwitch2;
+            if (bPwdSwitch) {
+                ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_24);
+                ivPwdSwitch2.setImageResource(R.drawable.ic_baseline_visibility_24);
+                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                etPwd2.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            } else {
+                ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_off_24);
+                ivPwdSwitch2.setImageResource(R.drawable.ic_baseline_visibility_off_24);
+                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                etPwd.setTypeface(Typeface.DEFAULT);
+                etPwd2.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                etPwd2.setTypeface(Typeface.DEFAULT);
+            }
+        };
     }
 
     @Override
@@ -84,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setUnClick();
         String account = etAccount.getText().toString();
         String pwd = etPwd.getText().toString();
-
+        String pwd2 = etPwd2.getText().toString();
         new Thread(() -> {
             int state;
             if (type == 0) { //CAS登录
@@ -94,14 +134,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     state = testLoginCAS(account, pwd);
                 }
             } else if (type == 1) { //VPN + 教务登录
-                state = testLoginBkjw(account, pwd);
+                state = testLoginBkjw(account, pwd, pwd2);
             } else {
                 state = -2;
             }
             if (state == 0) {
+                runOnUiThread(() -> {
+                    button.setText("获取个人信息");
+                });
                 TokenData tokenData = TokenData.newInstance(this);
                 tokenData.setLoginType(type);
                 accountData.setUser(account, pwd, cbRememberPwd.isChecked());
+                if (type == 1) {
+                    if (pwd2.isEmpty()) {
+                        accountData.setPassword2(pwd);
+                    } else {
+                        accountData.setPassword2(pwd2);
+                    }
+                }
                 tokenData.refresh();
                 Intent intent = new Intent(this, SetTermActivity.class);
                 intent.putExtra("fromLogin", ""); //便于识别启动类
@@ -136,6 +186,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
     public int testLoginCAS(String account, String password) {
         String TGTTokenStr = StaticService.SSOLogin(this, account, password, TokenData.isVPN);
+        runOnUiThread(() -> {
+            button.setText("正在认证");
+        });
         if (TGTTokenStr.equals("ERROR2")) {
             return -2;
         }
@@ -152,41 +205,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      *
      * @param account  学号
      * @param password 密码
+     * @param passwordVPN VPN密码
      * @return 操作结果
      * 0 -- 登录成功
      * -1 -- 密码错误
      * -2 -- 网络错误/未知错误
      * -3 -- 验证码连续错误
      */
-    public int testLoginBkjw(String account, String password) {
+    public int testLoginBkjw(String account, String password, String passwordVPN) {
+        Log.d("1586", "BKJW");
         TokenData tokenData = TokenData.newInstance(this);
+        String VPNToken = LAN.getVPNToken(this);
+        tokenData.setVPNToken(VPNToken);
+        if (passwordVPN.isEmpty()) {
+            passwordVPN = password;
+        }
+        runOnUiThread(() -> {
+            button.setText("验证VPN");
+        });
+        int n = StaticService.loginVPN(this, VPNToken, account, passwordVPN);
         if (TokenData.isVPN) {
-            String VPNToken = LAN.getVPNToken(this);
-            tokenData.setVPNToken(VPNToken);
-            int n = StaticService.loginVPN(this, VPNToken, accountData.getUsername(), accountData.getPassword());
             if (n == 0) {
-                n = StaticService.autoLoginV(this, accountData.getUsername(), accountData.getPassword(), VPNToken);
-                if (n == 0) {
-                    return 0;
-                } else {
-                    return n;
-                }
-            } else {
-                return n;
+                runOnUiThread(() -> {
+                    button.setText("验证教务");
+                });
+                n = StaticService.autoLoginV(this, account, password, VPNToken);
             }
         } else {
-            StringBuilder cookie_builder = new StringBuilder();
-            int state = StaticService.autoLogin(
-                    this,
-                    accountData.getUsername(),
-                    accountData.getPassword(),
-                    cookie_builder
-            );
-            if (state == 0) {
-                TokenData.newInstance(this).setBkjwCookie(cookie_builder.toString());
+            if (n == 0) {
+                StringBuilder cookie_builder = new StringBuilder();
+                int state = StaticService.autoLogin(
+                        this,
+                        accountData.getUsername(),
+                        accountData.getPassword(),
+                        cookie_builder
+                );
+                if (state == 0) {
+                    TokenData.newInstance(this).setBkjwCookie(cookie_builder.toString());
+                }
+                return state;
             }
-            return state;
         }
+        return n;
     }
 
     /**
@@ -203,19 +263,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void setUnClick() {
         button.setText("正在登录");
         button.setEnabled(false);
-    }
-
-    public void chooseFun1(View view) {
-        //修改图标颜色
-        //修改相应的布局
-        //设置登录类型
-        type = 0;
-    }
-
-    public void chooseFun2(View view) {
-        //修改图标颜色
-        //修改相应的布局
-        //设置登录类型
-        type = 1;
     }
 }
