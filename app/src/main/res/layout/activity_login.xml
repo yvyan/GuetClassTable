@@ -34,35 +34,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
-                android:onClick="chooseFun1"
-                android:layout_height="40dp"
+            <com.xuexiang.xui.widget.tabbar.TabControlView
+                android:id="@+id/TabControl"
+                app:tcv_defaultSelection="0"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="10dp"
-                app:sCornersRadius="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:textColor="@color/app_white"
-                app:sSelectorNormalColor="@color/app_green"
-                app:sSelectorPressedColor="@color/app_green"
-                android:layout_weight="1"
-                android:text="智慧校园" />
-
-            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
-                android:onClick="chooseFun2"
-                android:layout_height="40dp"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="50dp"
-                app:sCornersRadius="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:textColor="@color/app_white"
-                app:sSelectorNormalColor="@color/app_blue1"
-                app:sSelectorPressedColor="@color/app_blue1"
-                android:layout_weight="1"
-                android:text="教务登录" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:tcv_items="@array/loginType"
+                app:tcv_textSize="21sp"
+                app:tcv_strokeWidth="2dp"
+                app:tcv_selectedColor="@color/xui_btn_green_normal_color"
+                app:tcv_unselectedTextColor="@color/xui_btn_green_normal_color"/>
 
         </LinearLayout>
 
@@ -135,6 +117,49 @@
 
         </RelativeLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/password_second"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:layout_width="39dp"
+            android:layout_height="27dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="13dp"
+            android:src="@drawable/password" />
+
+        <EditText
+            android:id="@+id/et_pwd_jiaowu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="56dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="4dp"
+            android:hint="请输入教务系统密码"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColorHint="@color/xui_config_color_50_pure_black"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/iv_pwd_switch_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="17dp"
+            android:src="@drawable/ic_baseline_visibility_off_24" />
+
+    </RelativeLayout>
+
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -163,7 +188,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:layout_marginTop="30dp">
 
         <ImageView
 
