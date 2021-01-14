@@ -132,17 +132,11 @@ public class TokenData {
                     } else {
                         return -2;
                     }
-                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getPassword());
+                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getPassword2());
                     if (n == 0) {
                         n = StaticService.autoLoginV(context, accountData.getUsername(), accountData.getPassword(), VPNToken);
-                        if (n == 0) {
-                            return 0;
-                        } else {
-                            return n;
-                        }
-                    } else {
-                        return n;
                     }
+                    return n;
                 } else {
                     StringBuilder cookie_builder = new StringBuilder();
                     int state = StaticService.autoLogin(

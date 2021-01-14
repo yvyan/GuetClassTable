@@ -133,14 +133,14 @@
             android:src="@drawable/password" />
 
         <EditText
-            android:id="@+id/et_pwd_jiaowu"
+            android:id="@+id/et_pwd_VPN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="56dp"
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="4dp"
-            android:hint="请输入教务系统密码"
+            android:hint="VPN密码(相同可以忽略)"
             android:inputType="textPassword"
             android:maxLines="1"
             android:textColorHint="@color/xui_config_color_50_pure_black"
@@ -186,6 +186,7 @@
         android:text="登录" />
 
     <RelativeLayout
+        android:id="@+id/password_help"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp">

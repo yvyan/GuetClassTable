@@ -10,6 +10,7 @@ public class AccountData {
     private static final String IS_LOGIN = "isLogin";
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
+    private static final String PASSWORD2 = "password2";
     private static final String IS_SAVE_COURSE = "isCourseSave";
     private static final String COURSE = "course";
     private static final String UPDATE_COURSE = "updateCourse";
@@ -19,6 +20,7 @@ public class AccountData {
     private boolean isLogin;
     private String username;
     private String password;
+    private String password2;
 
     private AccountData(Context context) {
         sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -74,6 +76,7 @@ public class AccountData {
         isLogin = sharedPreferences.getBoolean(IS_LOGIN, false);
         username = sharedPreferences.getString(USERNAME, "");
         password = sharedPreferences.getString(PASSWORD, "");
+        password2 = sharedPreferences.getString(PASSWORD2, "");
     }
 
     private void saveUser() {
@@ -88,6 +91,17 @@ public class AccountData {
     private void clearUser() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
+        editor.apply();
+    }
+
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password2) {
+        this.password2 = password2;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PASSWORD2, password2);
         editor.apply();
     }
 }
