@@ -48,17 +48,25 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/lib_not_find"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="没有查询到符合条件的实验安排信息!"
-        android:textSize="25dp"/>
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lib_info_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/lib_not_find"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="没有查询到符合条件的实验安排信息!"
+            android:textSize="25dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lib_info_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </LinearLayout>
