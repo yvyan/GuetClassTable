@@ -16,6 +16,7 @@ public class GeneralData {
     private static final String TIME = "time";
     private static final String GRADE = "grade";
     private static final String TERM = "term";
+    private static final String IS_INTERNATIONAL = "isInternational";
     private static final String LAST_UPDATE_TIME = "lastUpdateTime";
     private static final String APP_LAST_UPDATE_TIME = "appLastUpdateTime";
     private static final String RENEWABLE = "renewable";
@@ -28,6 +29,7 @@ public class GeneralData {
     private long time;
     private String grade;
     private String term;
+    private boolean isInternational;
     private long lastUpdateTime;
     //控制检查更新频率
     private long appLastUpdateTime;
@@ -46,6 +48,7 @@ public class GeneralData {
         time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
         grade = sharedPreferences.getString(GRADE, null);
         term = sharedPreferences.getString(TERM, null);
+        isInternational = sharedPreferences.getBoolean(IS_INTERNATIONAL, false);
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
         appLastUpdateTime = sharedPreferences.getLong(APP_LAST_UPDATE_TIME, -1);
         renewable = sharedPreferences.getBoolean(RENEWABLE, false);
@@ -112,6 +115,16 @@ public class GeneralData {
     public void setTerm(String term) {
         this.term = term;
         editor.putString(TERM, term);
+        editor.apply();
+    }
+
+    public boolean isInternational() {
+        return isInternational;
+    }
+
+    public void setInternational(boolean international) {
+        isInternational = international;
+        editor.putBoolean(IS_INTERNATIONAL, isInternational);
         editor.apply();
     }
 

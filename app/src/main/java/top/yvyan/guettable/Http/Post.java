@@ -17,6 +17,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+
+import top.yvyan.guettable.util.SSLUtils;
+
 
 public class Post {
     /**
@@ -86,8 +92,16 @@ public class Post {
             }else {
                 cnt.setInstanceFollowRedirects(redirect);
             }
-            cnt.setReadTimeout(8000);
-            cnt.setConnectTimeout(4000);
+            cnt.setReadTimeout(4000);
+            cnt.setConnectTimeout(2000);
+            if (cnt instanceof HttpsURLConnection) { // 判断是否为https请求
+                SSLContext sslContext = SSLUtils.getSSLContextWithoutCer();
+                if (sslContext != null) {
+                    SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+                    ((HttpsURLConnection) cnt).setSSLSocketFactory(sslSocketFactory);
+                    ((HttpsURLConnection) cnt).setHostnameVerifier(SSLUtils.hostnameVerifier);
+                }
+            }
             cnt.connect();
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.util.AppUtil;
+
 public class LaunchActivity extends AppCompatActivity {
 
     @Override

@@ -76,4 +76,16 @@ public class HttpConnectionAndCode {
         cookie = cookie_;
         obj = null;
     }
+
+    @Override
+    public String toString() {
+        return "HttpConnectionAndCode{" +
+                "c=" + c +
+                ", code=" + code +
+                ", comment='" + comment + '\'' +
+                ", resp_code=" + resp_code +
+                ", cookie='" + cookie + '\'' +
+                ", obj=" + obj +
+                '}';
+    }
 }
