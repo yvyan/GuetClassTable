@@ -2,7 +2,6 @@ package top.yvyan.guettable.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.service.StaticService;
@@ -15,12 +14,14 @@ public class TokenData {
     private Context context;
 
     private static final String SHP_NAME = "tokenData";
+    private static final String LOGIN_TYPE = "loginType";
     private static final String TGT_TOKEN = "TGTToken";
     private static final String VPN_TOKEN = "VPNToken";
     private static final String BKJW_COOKIE = "bkjwCookie";
 
     private AccountData accountData;
 
+    private int loginType; //0 : CAS登录;  1 : VPN + 教务登录
     public static boolean isVPN = true;
 
     private String TGTToken;   //统一登录TGT令牌
@@ -41,6 +42,7 @@ public class TokenData {
         accountData = AccountData.newInstance(context);
         this.context = context;
 
+        loginType = sharedPreferences.getInt(LOGIN_TYPE, 0);
         TGTToken = sharedPreferences.getString(TGT_TOKEN, "TGT-");
         VPNToken = sharedPreferences.getString(VPN_TOKEN, null);
         bkjwCookie = sharedPreferences.getString(BKJW_COOKIE, null);
@@ -63,70 +65,87 @@ public class TokenData {
      */
     public int refresh() {
         if (accountData.getIsLogin()) {
-
-
-            if(LAN.testNet(context) != 0) {
-                isVPN = true;
-            } else {
-                isVPN = false;
-            }
-            Log.d("1586", isVPN + "");
-            if (isVPN) { //外网
-                String VPNTokenStr = LAN.getVPNToken(context);
-                if (VPNTokenStr != null) {
-                    setVPNToken(VPNTokenStr);
-                } else {
-                    return -2;
-                }
-                String ST_VPN = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_vpn), true);
-                if (ST_VPN.equals("ERROR0")) {
-                    return -2;
-                } else if (ST_VPN.equals("ERROR1")) { //TGT失效
-                    int n = refreshTGT(true);
-                    if (n == 0) {
-                        ST_VPN = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_vpn), true);
-                        if (!ST_VPN.contains("ST-")) {
-                            return -2;
-                        }
+            isVPN = LAN.testNet(context) != 0;
+            if (loginType == 0) {
+                if (isVPN) { //外网
+                    String VPNTokenStr = LAN.getVPNToken(context);
+                    if (VPNTokenStr != null) {
+                        setVPNToken(VPNTokenStr);
                     } else {
-                        return n;
-                    }
-                }
-                //登录教务
-                String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), true);
-                if (ST_BKJW.contains("ST-")) {
-                    if (StaticService.loginVPN(ST_VPN, VPNToken) != 0) {
-                        StaticService.loginVPN(ST_VPN, VPNToken);
-                    }
-                    int n;
-                    n = StaticService.loginBkjwVPN(ST_BKJW, VPNToken);
-                    if (n != 0) {
-                        n = StaticService.loginBkjwVPN(ST_BKJW, VPNToken);
-                    }
-                    return n;
-                } else {
-                    return -2;
-                }
-            } else { // 内网
-                StringBuilder cookie_builder = new StringBuilder();
-                String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), false);
-                if (!ST_BKJW.contains("ST-")) { // TGT失效
-                    int n = refreshTGT(false);
-                    if (n != 0) {
-                        return n;
-                    }
-                    ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), false);
-                    if (!ST_BKJW.contains("ST-")) { // 网络错误，切换为外网模式
                         return -2;
                     }
+                    String ST_VPN = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_vpn), true);
+                    if (ST_VPN.equals("ERROR0")) {
+                        return -2;
+                    } else if (ST_VPN.equals("ERROR1")) { //TGT失效
+                        int n = refreshTGT(true);
+                        if (n == 0) {
+                            ST_VPN = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_vpn), true);
+                            if (!ST_VPN.contains("ST-")) {
+                                return -2;
+                            }
+                        } else {
+                            return n;
+                        }
+                    }
+                    //登录教务
+                    String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), true);
+                    if (ST_BKJW.contains("ST-")) {
+                        if (StaticService.loginVPN(ST_VPN, VPNToken) != 0) {
+                            StaticService.loginVPN(ST_VPN, VPNToken);
+                        }
+                        int n;
+                        n = StaticService.loginBkjwVPN(ST_BKJW, VPNToken);
+                        if (n != 0) {
+                            n = StaticService.loginBkjwVPN(ST_BKJW, VPNToken);
+                        }
+                        return n;
+                    } else {
+                        return -2;
+                    }
+                } else { // 内网
+                    StringBuilder cookie_builder = new StringBuilder();
+                    String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), false);
+                    if (!ST_BKJW.contains("ST-")) { // TGT失效
+                        int n = refreshTGT(false);
+                        if (n != 0) {
+                            return n;
+                        }
+                        ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), false);
+                        if (!ST_BKJW.contains("ST-")) { // 网络错误，切换为外网模式
+                            return -2;
+                        }
+                    }
+                    int state = StaticService.loginBkjw(context, ST_BKJW, cookie_builder);
+                    if (state == 0) {
+                        setBkjwCookie(cookie_builder.toString());
+                        return 0;
+                    } else {
+                        return state;
+                    }
                 }
-                int state = StaticService.loginBkjw(context, ST_BKJW, cookie_builder);
-                if (state == 0) {
-                    setBkjwCookie(cookie_builder.toString());
-                    return 0;
+            } else if (loginType == 1){ //VPN+教务登录(目前只有内网)
+                //isVPN = false;
+                //TODO: 添加外网登录，若需要保存两个密码，可以在AccountData中添加
+                StringBuilder cookie_builder = new StringBuilder();
+                if (accountData.getIsLogin()) {
+                    int state = StaticService.autoLogin(
+                            context,
+                            accountData.getUsername(),
+                            accountData.getPassword(),
+                            cookie_builder
+                    );
+                    if (state == 0) {
+                        setBkjwCookie(cookie_builder.toString());
+                        return 0;
+                    } else {
+                        return state;
+                    }
                 } else {
-                    return state;
+                    return 2;
                 }
+            } else {
+                return 2;
             }
         } else {
             return 2;
@@ -150,6 +169,16 @@ public class TokenData {
         } else {
             return -1;
         }
+    }
+
+    public int getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(int loginType) {
+        this.loginType = loginType;
+        editor.putInt(LOGIN_TYPE, loginType);
+        editor.apply();
     }
 
     public String getTGTToken() {

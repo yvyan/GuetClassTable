@@ -2,6 +2,7 @@ package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -198,7 +199,7 @@ public class LAN {
                 UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_login_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer)),
+                resources.getString(R.string.lan_login_url),
                 body,
                 cookie,
                 "}",
