@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -15,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.service.fetch.LAN;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -146,17 +145,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      *         -3 -- 验证码连续错误
      */
     public int testLoginBkjw(String account, String password) {
-        StringBuilder cookie_builder = new StringBuilder();
-        int state = StaticService.autoLogin(
-                this,
-                accountData.getUsername(),
-                accountData.getPassword(),
-                cookie_builder
-        );
-        if (state == 0) {
-            TokenData.newInstance(this).setBkjwCookie(cookie_builder.toString());
+        TokenData tokenData = TokenData.newInstance(this);
+        if (TokenData.isVPN) {
+            String VPNToken = LAN.getVPNToken(this);
+            tokenData.setVPNToken(VPNToken);
+            int n = StaticService.loginVPN(this, VPNToken, accountData.getUsername(), accountData.getPassword());
+            if (n == 0) {
+                n = StaticService.autoLoginV(this, accountData.getUsername(), accountData.getPassword(), VPNToken);
+                if (n == 0) {
+                    return 0;
+                } else {
+                    return n;
+                }
+            } else {
+                return n;
+            }
+        } else {
+            StringBuilder cookie_builder = new StringBuilder();
+            int state = StaticService.autoLogin(
+                    this,
+                    accountData.getUsername(),
+                    accountData.getPassword(),
+                    cookie_builder
+            );
+            if (state == 0) {
+                TokenData.newInstance(this).setBkjwCookie(cookie_builder.toString());
+            }
+            return state;
         }
-        return state;
     }
 
     /**

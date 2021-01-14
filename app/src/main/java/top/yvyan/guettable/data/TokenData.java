@@ -91,13 +91,13 @@ public class TokenData {
                     //登录教务
                     String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), true);
                     if (ST_BKJW.contains("ST-")) {
-                        if (StaticService.loginVPN(ST_VPN, VPNToken) != 0) {
-                            StaticService.loginVPN(ST_VPN, VPNToken);
+                        if (StaticService.loginVPNST(ST_VPN, VPNToken) != 0) {
+                            StaticService.loginVPNST(ST_VPN, VPNToken);
                         }
                         int n;
-                        n = StaticService.loginBkjwVPN(ST_BKJW, VPNToken);
+                        n = StaticService.loginBkjwVPNST(ST_BKJW, VPNToken);
                         if (n != 0) {
-                            n = StaticService.loginBkjwVPN(ST_BKJW, VPNToken);
+                            n = StaticService.loginBkjwVPNST(ST_BKJW, VPNToken);
                         }
                         return n;
                     } else {
@@ -125,10 +125,26 @@ public class TokenData {
                     }
                 }
             } else if (loginType == 1){ //VPN+教务登录(目前只有内网)
-                //isVPN = false;
-                //TODO: 添加外网登录，若需要保存两个密码，可以在AccountData中添加
-                StringBuilder cookie_builder = new StringBuilder();
-                if (accountData.getIsLogin()) {
+                if (isVPN) {
+                    String VPNTokenStr = LAN.getVPNToken(context);
+                    if (VPNTokenStr != null) {
+                        setVPNToken(VPNTokenStr);
+                    } else {
+                        return -2;
+                    }
+                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getPassword());
+                    if (n == 0) {
+                        n = StaticService.autoLoginV(context, accountData.getUsername(), accountData.getPassword(), VPNToken);
+                        if (n == 0) {
+                            return 0;
+                        } else {
+                            return n;
+                        }
+                    } else {
+                        return n;
+                    }
+                } else {
+                    StringBuilder cookie_builder = new StringBuilder();
                     int state = StaticService.autoLogin(
                             context,
                             accountData.getUsername(),
@@ -141,8 +157,6 @@ public class TokenData {
                     } else {
                         return state;
                     }
-                } else {
-                    return 2;
                 }
             } else {
                 return 2;

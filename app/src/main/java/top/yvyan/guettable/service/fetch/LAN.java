@@ -2,7 +2,6 @@ package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -83,7 +82,7 @@ public class LAN {
     public static HttpConnectionAndCode getTGT(Context context, String account, String password, boolean isVPN) {
         Resources resources = context.getResources();
         password = new StringBuffer(password).reverse().toString(); //密码倒序
-        password = RSAUtil.encryption(password); //密码加密
+        password = RSAUtil.CASEncryption(password); //密码加密
         String body = "username=" + account + "&password=" + password + "&service=http%3A%2F%2Ficampus.guet.edu.cn%2FCampusPortal&loginType=";
         return Post.post(
                 isVPN? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_get_TGT),
@@ -136,7 +135,7 @@ public class LAN {
      * @param session 用于接收登录后的cookie
      * @return        登录状态
      */
-    public static HttpConnectionAndCode loginBkjw(Context context, String ST, StringBuilder session) {
+    public static HttpConnectionAndCode loginBkjwST(Context context, String ST, StringBuilder session) {
         Resources resources = context.getResources();
         String[] param = {"ticket=" + ST};
         HttpConnectionAndCode login_res = Get.get(
@@ -165,19 +164,49 @@ public class LAN {
     }
 
     /**
+     * 密码登录VPN
+     *
+     * @param context  context
+     * @param VPNToken VPNToken
+     * @param account  学号
+     * @param password 密码
+     * @return 操作返回数据
+     */
+    public static HttpConnectionAndCode loginVPN(Context context, String VPNToken, String account, String password) {
+        Resources resources = context.getResources();
+        password = RSAUtil.VPNEncryption(password); //密码加密
+        String body = "auth_type=local&username=" + account + "&sms_code=&password=" + password + "&captcha=&needCaptcha=false";
+        return Post.post(
+                resources.getString(R.string.VPN_login),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.VPN_referer),
+                body,
+                VPNToken,
+                "}",
+                resources.getString(R.string.cookie_delimiter),
+                null,
+                null,
+                null,
+                resources.getString(R.string.VPN_context_type)
+        );
+    }
+
+    /**
      * 获取验证码
      *
-     * @param context context
+     * @param context  context
+     * @param VPNToken VPNToken null表示内网
      * @return        验证码图片
      */
-    public static HttpConnectionAndCode checkCode(Context context) {
+    public static HttpConnectionAndCode checkCode(Context context, String VPNToken) {
         Resources resources = context.getResources();
         return GetBitmap.get(
-                UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_checkcode_url)),
+                UrlReplaceUtil.getUrlByVPN(VPNToken != null, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_checkcode_url))),
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.lan_get_checkcode_referer),
-                null,
+                VPNToken,
                 resources.getString(R.string.cookie_delimiter)
         );
     }
@@ -188,18 +217,19 @@ public class LAN {
      * @param account   学号
      * @param pwd       密码
      * @param checkCode 验证码
-     * @param cookie    获取验证码之后的cookie
+     * @param cookie    获取验证码之后的cookie / 外网:获取VPNToken
      * @param builder   用于接收登录后的cookie
+     * @param isVPN     是否为外网
      * @return          登录状态
      */
-    public static HttpConnectionAndCode login(Context context, String account, String pwd, String checkCode, String cookie, StringBuilder builder) {
+    public static HttpConnectionAndCode login(Context context, String account, String pwd, String checkCode, String cookie, StringBuilder builder, boolean isVPN) {
         Resources resources = context.getResources();
         String body = "us=" + account + "&pwd=" + pwd + "&ck=" + checkCode;
         HttpConnectionAndCode login_res = Post.post(
-                UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_login_url)),
+                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_login_url))),
                 null,
                 resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_login_url),
+                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_login_url))),
                 body,
                 cookie,
                 "}",
@@ -212,6 +242,9 @@ public class LAN {
         if (login_res.code == 0) {
             LoginResponse response = new Gson().fromJson(login_res.comment, LoginResponse.class);
             login_res.comment = response.getMsg();
+        }
+        if (login_res.code == 0 && isVPN) {
+            return login_res;
         }
         if (login_res.code == 0 && builder != null) {
             if (!builder.toString().isEmpty()) {

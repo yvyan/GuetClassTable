@@ -19,6 +19,12 @@
     <string name="SSO_bkjw">http://172.16.13.22/login/login</string>
     <string name="SSO_vpn">https://v.guet.edu.cn/https/77726476706e69737468656265737421e6b94689222426557a1dc7af96/login</string>
 
+    <!-- VPN直接登录 -->
+    <string name="VPN_login">https://v.guet.edu.cn/do-login</string>
+    <string name="VPN_referer">https://v.guet.edu.cn</string>
+    <string name="VPN_context_type">application/x-www-form-urlencoded; charset=UTF-8</string>
+    <string name="VPN_bkjw_referer">https://v.guet.edu.cn/http/77726476706e69737468656265737421a1a013d2766626012d46dbfe/</string>
+
     <!-- 新版教务系统 -->
     <string name="lan_get_checkcode_url">/login/GetValidateCode?id=0.7060164569272753</string>
     <string name="lan_get_checkcode_referer">/</string>

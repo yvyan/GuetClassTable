@@ -125,7 +125,7 @@ public class StaticService {
      *                 -1 -- 登录失败
      *                 -2 -- 发生异常
      */
-    public static int loginVPN(String ST, String token) {
+    public static int loginVPNST(String ST, String token) {
 
         String url = "https://v.guet.edu.cn/https/77726476706e69737468656265737421e6b94689222426557a1dc7af96/login?cas_login=true&ticket=";
         url = url + ST;
@@ -164,7 +164,7 @@ public class StaticService {
      *                 -2 -- 教务登录失败
      *                 -3 -- 发生异常
      */
-    public static int loginBkjwVPN(String ST, String VPNToken) {
+    public static int loginBkjwVPNST(String ST, String VPNToken) {
 
         String url = "https://v.guet.edu.cn/http/77726476706e69737468656265737421a1a013d2766626012d46dbfe/?ticket=";
         url = url + ST;
@@ -207,7 +207,7 @@ public class StaticService {
      */
     public static int loginBkjw(Context context, String ST, StringBuilder session) {
         int state;
-        HttpConnectionAndCode login_res = LAN.loginBkjw(context, ST, session);
+        HttpConnectionAndCode login_res = LAN.loginBkjwST(context, ST, session);
         if (login_res.code != 0) { //登录失败
             session.delete(0, session.length());
             state = -2;
@@ -222,13 +222,41 @@ public class StaticService {
     }
 
     /**
+     * 密码登录VPN
+     *
+     * @param context  context
+     * @param VPNToken VPNToken
+     * @param account  学号
+     * @param password 密码
+     * @return         登录结果
+     *                  0 -- 登录成功
+     *                 -1 -- 密码错误
+     *                 -2 -- 网络错误
+     *                 -3 -- 未知错误
+     */
+    public static int loginVPN(Context context, String VPNToken, String account, String password) {
+        HttpConnectionAndCode result = LAN.loginVPN(context, VPNToken, account, password);
+        if (result.code != 0) {
+            return -2;
+        } else {
+            if (result.comment.contains("\"success\": true") || result.comment.contains("WEEK_PASSWORD_CHECK")) {
+                return 0;
+            } else if (result.comment.contains("INVALID_ACCOUNT")) {
+                return -1;
+            } else {
+                return -3;
+            }
+        }
+    }
+
+    /**
      * 刷新验证码(后台)
      *
      * @param context context
-     * @return cookie
+     * @return 识别的验证码
      */
     public static String refreshCode(Context context, StringBuilder cookie_builder) {
-        final HttpConnectionAndCode res = LAN.checkCode(context);
+        final HttpConnectionAndCode res = LAN.checkCode(context, null);
         if (res.obj != null) {
             final String ocr = OCR.getTextFromBitmap(context, (Bitmap) res.obj, "telephone");
             cookie_builder.append(res.cookie);
@@ -254,9 +282,61 @@ public class StaticService {
         int state = 1;
         for (int i = 0; i < 4; i++) {
             String checkCode = refreshCode(context, cookie_builder);
-            HttpConnectionAndCode login_res = LAN.login(context, account, password, checkCode, cookie_builder.toString(), cookie_builder);
+            HttpConnectionAndCode login_res = LAN.login(context, account, password, checkCode, cookie_builder.toString(), cookie_builder, false);
             if (login_res.code != 0) { //登录失败
                 cookie_builder.delete(0, cookie_builder.length());
+                if (login_res.comment != null && login_res.comment.contains("验证码")) {
+                    state = -3;
+                } else if (login_res.comment != null && login_res.comment.contains("密码")) {
+                    state = -1;
+                    break;
+                } else { //请连接校园网
+                    state = -2;
+                    break;
+                }
+            } else { //登录成功
+                state = 0;
+                break;
+            }
+        }
+        return state;
+    }
+
+    /**
+     * 刷新验证码(后台)VPN
+     *
+     * @param context  context
+     * @param VPNToken VPNToken
+     * @return 识别的验证码
+     */
+    public static String refreshCodeV(Context context, String VPNToken) {
+        final HttpConnectionAndCode res = LAN.checkCode(context, VPNToken);
+        if (res.obj != null) {
+            final String ocr = OCR.getTextFromBitmap(context, (Bitmap) res.obj, "telephone");
+            return ocr;
+        }
+        return null;
+    }
+
+    /**
+     * 自动登录
+     *
+     * @param context  context
+     * @param account  学号
+     * @param password 密码
+     * @param VPNToken VPNToken
+     * @return state记录当前状态
+     *                  0 : 登录成功
+     *                 -1 : 密码错误
+     *                 -2 : 网络错误/未知错误
+     *                 -3 : 验证码连续错误
+     */
+    public static int autoLoginV(Context context, String account, String password, String VPNToken) {
+        int state = 1;
+        for (int i = 0; i < 4; i++) {
+            String checkCode = refreshCodeV(context, VPNToken);
+            HttpConnectionAndCode login_res = LAN.login(context, account, password, checkCode, VPNToken, null, true);
+            if (login_res.code != 0) { //登录失败
                 if (login_res.comment != null && login_res.comment.contains("验证码")) {
                     state = -3;
                 } else if (login_res.comment != null && login_res.comment.contains("密码")) {
