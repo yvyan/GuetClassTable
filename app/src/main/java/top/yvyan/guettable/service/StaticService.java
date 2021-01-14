@@ -23,10 +23,8 @@ import top.yvyan.guettable.Gson.AvgTeacher;
 import top.yvyan.guettable.Gson.AvgTeacherFormGet;
 import top.yvyan.guettable.Gson.AvgTeacherFormSend;
 import top.yvyan.guettable.Gson.AvgTextbook;
-import top.yvyan.guettable.Gson.AvgTextbookDataOuter;
+import top.yvyan.guettable.Gson.AvgTextbookData;
 import top.yvyan.guettable.Gson.AvgTextbookFormGet;
-import top.yvyan.guettable.Gson.AvgTextbookFormGetOuter;
-import top.yvyan.guettable.Gson.AvgTextbookOuter;
 import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.CET;
 import top.yvyan.guettable.Gson.ClassTable;
@@ -312,8 +310,7 @@ public class StaticService {
     public static String refreshCodeV(Context context, String VPNToken) {
         final HttpConnectionAndCode res = LAN.checkCode(context, VPNToken);
         if (res.obj != null) {
-            final String ocr = OCR.getTextFromBitmap(context, (Bitmap) res.obj, "telephone");
-            return ocr;
+            return OCR.getTextFromBitmap(context, (Bitmap) res.obj, "telephone");
         }
         return null;
     }
@@ -682,10 +679,11 @@ public class StaticService {
      * @param cookie  登陆后cookie
      * @return 课程信息列表
      */
-    public static AvgTextbookOuter getTextbookOuter(Context context, String cookie) {
+    public static BaseResponse<List<AvgTextbook>> getTextbookOuter(Context context, String cookie) {
         HttpConnectionAndCode textbookList = LAN.getTextbookList(context, cookie, TokenData.isVPN);
         if (textbookList.code == 0) {
-            return new Gson().fromJson(textbookList.comment, AvgTextbookOuter.class);
+            return new Gson().fromJson(textbookList.comment, new TypeToken<BaseResponse<List<AvgTextbook>>>() {
+            }.getType());
         } else {
             return null;
         }
@@ -699,10 +697,10 @@ public class StaticService {
      * @param avgTextbook 课程评价表单
      * @return 操作结果
      */
-    public static AvgTextbookFormGetOuter getAvgTextbookFormOuter(Context context, String cookie, AvgTextbook avgTextbook) {
+    public static BaseResponse<AvgTextbookFormGet> getAvgTextbookFormOuter(Context context, String cookie, AvgTextbook avgTextbook) {
         HttpConnectionAndCode textbookFormGet = LAN.getAvgTextbookFormOuter(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh(), TokenData.isVPN);
         if (textbookFormGet.code == 0) {
-            return new Gson().fromJson(textbookFormGet.comment, AvgTextbookFormGetOuter.class);
+            return new Gson().fromJson(textbookFormGet.comment, new BaseResponse<AvgTextbookFormGet>().getClass());
         } else {
             return null;
         }
@@ -714,16 +712,18 @@ public class StaticService {
      * @param context     context
      * @param cookie      登陆后cookie
      * @param avgTextbook 课程评价数据
-     * @return            教材评价状态信息
+     * @return 教材评价状态信息
      */
-    public static AvgTextbookDataOuter getAvgTextbookDataOuter(Context context, String cookie, AvgTextbook avgTextbook) {
+    public static BaseResponse<AvgTextbookData> getAvgTextbookDataOuter(Context context, String cookie, AvgTextbook avgTextbook) {
         HttpConnectionAndCode textbookFormState = LAN.getAvgTextbookFormState(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh(), TokenData.isVPN);
         if (textbookFormState.code == 0) {
             // 没有评价过
             if (!textbookFormState.comment.contains("comm")) {
-                return new Gson().fromJson(textbookFormState.comment, AvgTextbookDataOuter.class);
+                return new Gson().fromJson(textbookFormState.comment, new TypeToken<BaseResponse<AvgTextbookData>>() {
+                }.getType());
             } else {
-                return new Gson().fromJson(textbookFormState.comment + "}", AvgTextbookDataOuter.class);
+                return new Gson().fromJson(textbookFormState.comment + "}", new TypeToken<BaseResponse<AvgTextbookData>>() {
+                }.getType());
             }
         } else {
             return null;
@@ -768,9 +768,9 @@ public class StaticService {
      * -1 评价失败
      * 0 评价成功
      */
-    public static int averageTextbook(Context context, String cookie, AvgTextbookFormGetOuter avgTextbookFormGetOuter, AvgTextbook avgTextbook) {
-        AvgTextbookDataOuter avgTextbookDataOuter = getAvgTextbookDataOuter(context, cookie, avgTextbook);
-        int i = saveTextbookForm(context, cookie, avgTextbookFormGetOuter.getData(), avgTextbook);
+    public static int averageTextbook(Context context, String cookie, BaseResponse<AvgTextbookFormGet> avgTextbookFormGetOuter, AvgTextbook avgTextbook) {
+        BaseResponse<AvgTextbookData> avgTextbookDataOuter = getAvgTextbookDataOuter(context, cookie, avgTextbook);
+        int i = saveTextbookForm(context, cookie, (List<AvgTextbookFormGet>) avgTextbookFormGetOuter.getData(), avgTextbook);
         if (avgTextbookDataOuter == null && i == -1) {
             return -1;
         }

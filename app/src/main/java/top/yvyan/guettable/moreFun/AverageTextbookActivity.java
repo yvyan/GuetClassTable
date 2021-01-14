@@ -15,9 +15,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import top.yvyan.guettable.Gson.AvgTextbook;
-import top.yvyan.guettable.Gson.AvgTextbookDataOuter;
-import top.yvyan.guettable.Gson.AvgTextbookFormGetOuter;
-import top.yvyan.guettable.Gson.AvgTextbookOuter;
+import top.yvyan.guettable.Gson.AvgTextbookData;
+import top.yvyan.guettable.Gson.AvgTextbookFormGet;
+import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.AvgTextbookAdapter;
 import top.yvyan.guettable.bean.AvgTextbookBean;
@@ -39,9 +39,9 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
     @BindView(R.id.avg_textbook_start)
     Button start;
 
-    private AvgTextbookOuter avgTextbookOuter;
-    private List<AvgTextbookFormGetOuter> formGetOuters;
-    private List<AvgTextbookDataOuter> dataOuters;
+    private BaseResponse<List<AvgTextbook>> avgTextbookOuter;
+    private List<BaseResponse<AvgTextbookFormGet>> formGetOuters;
+    private List<BaseResponse<AvgTextbookData>> dataOuters;
     private String cookie;
     private List<AvgTextbookBean> avgTextbookBeans;
     int index = 0;
