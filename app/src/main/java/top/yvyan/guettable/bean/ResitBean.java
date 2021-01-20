@@ -1,6 +1,8 @@
 package top.yvyan.guettable.bean;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ResitBean implements Serializable, BeanAttribute {
@@ -16,13 +18,18 @@ public class ResitBean implements Serializable, BeanAttribute {
     //教室
     private String room;
 
-    public ResitBean() {}
-
-    public ResitBean(String number, String name, String time, Date date, String room) {
+    public ResitBean(String number, String name, String time, String date, String room) {
         this.number = number;
         this.name = name;
         this.time = time;
-        this.date = date;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+        if (date != null) {
+            try {
+                this.date = simpleDateFormat.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         this.room = room;
     }
 
