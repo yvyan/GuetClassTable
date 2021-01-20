@@ -1,9 +1,7 @@
 package top.yvyan.guettable.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.ISchedule;
 import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
-import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.view.WeekView;
 
@@ -42,7 +39,6 @@ import top.yvyan.guettable.util.ToastUtil;
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
 
     private static CourseTableFragment courseTableFragment;
-    private static final String TAG = "CourseTableFragment";
 
     //控件
     private TimetableView mTimetableView;
@@ -61,7 +57,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private ScheduleData scheduleData;
     private SingleSettingData singleSettingData;
     private DetailClassData detailClassData;
-    private MoreDate moreDate;
     private SettingData settingData;
 
     //记录切换的周次，不一定是当前周
@@ -78,8 +73,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Log.d(TAG, "createCourseTableFragmentView");
+        courseTableFragment = this;
         view = inflater.inflate(R.layout.fragment_base_func, container, false);
         moreButton = view.findViewById(R.id.id_more);
         moreButton.setOnClickListener(view -> showPopMenu());
@@ -100,7 +94,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         scheduleData = ScheduleData.newInstance(getActivity());
         singleSettingData = SingleSettingData.newInstance(getActivity());
         detailClassData = DetailClassData.newInstance();
-        moreDate = MoreDate.newInstance(getActivity());
         settingData = SettingData.newInstance(getActivity());
     }
 
@@ -201,7 +194,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
-        initData();
         mTimetableView.onDateBuildListener()
                 .onHighLight();
     }
@@ -293,35 +285,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     }
 
     /**
-     * 删除课程
-     * 内部使用集合维护课程数据，操作集合的方法来操作它即可
-     * 最后更新一下视图（全局更新）
-     */
-    protected void deleteSubject() {
-        int size = mTimetableView.dataSource().size();
-        int pos = (int) (Math.random() * size);
-        if (size > 0) {
-            mTimetableView.dataSource().remove(pos);
-            mTimetableView.updateView();
-        }
-    }
-
-    /**
-     * 添加课程
-     * 内部使用集合维护课程数据，操作集合的方法来操作它即可
-     * 最后更新一下视图（全局更新）
-     */
-    protected void addSubject() {
-        List<Schedule> dataSource = mTimetableView.dataSource();
-        int size = dataSource.size();
-        if (size > 0) {
-            Schedule schedule = dataSource.get(0);
-            dataSource.add(schedule);
-            mTimetableView.updateView();
-        }
-    }
-
-    /**
      * 隐藏非本周课程
      * 修改了内容的显示，所以必须更新全部（性能不高）
      * 建议：在初始化时设置该属性
@@ -339,82 +302,5 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
      */
     protected void showNonThisWeek() {
         mTimetableView.isShowNotCurWeek(true).updateView();
-    }
-
-    /**
-     * 设置侧边栏最大节次，只影响侧边栏的绘制，对课程内容无影响
-     *
-     * @param num
-     */
-    protected void setMaxItem(int num) {
-        mTimetableView.maxSlideItem(num).updateSlideView();
-    }
-
-    /**
-     * 显示时间
-     * 设置侧边栏构建监听，TimeSlideAdapter是控件实现的可显示时间的侧边栏
-     */
-    protected void showTime() {
-        String[] times = new String[]{
-                "8:00", "9:00", "10:10", "11:00",
-                "15:00", "16:00", "17:00", "18:00",
-                "19:30", "20:30", "21:30", "22:30"
-        };
-        OnSlideBuildAdapter listener = (OnSlideBuildAdapter) mTimetableView.onSlideBuildListener();
-        listener.setTimes(times)
-                .setTimeTextColor(Color.BLACK);
-        mTimetableView.updateSlideView();
-    }
-
-    /**
-     * 隐藏时间
-     * 将侧边栏监听置Null后，会默认使用默认的构建方法，即不显示时间
-     * 只修改了侧边栏的属性，所以只更新侧边栏即可（性能高），没有必要更新全部（性能低）
-     */
-    protected void hideTime() {
-        mTimetableView.callback((ISchedule.OnSlideBuildListener) null);
-        mTimetableView.updateSlideView();
-    }
-
-    /**
-     * 显示WeekView
-     */
-    protected void showWeekView() {
-        mWeekView.isShow(true);
-    }
-
-    /**
-     * 隐藏WeekView
-     */
-    protected void hideWeekView() {
-        mWeekView.isShow(false);
-    }
-
-    /**
-     * 设置月份宽度
-     */
-    private void setMonthWidth() {
-        mTimetableView.monthWidthDp(50).updateView();
-    }
-
-    /**
-     * 设置月份宽度,默认40dp
-     */
-    private void resetMonthWidth() {
-        mTimetableView.monthWidthDp(40).updateView();
-    }
-
-    /**
-     * 隐藏周末
-     */
-    private void hideWeekends() {
-        mTimetableView.isShowWeekends(false).updateView();
-    }
-
-    /**
-     * 显示周末
-     */
-    private void showWeekends() {
-        mTimetableView.isShowWeekends(true).updateView();
     }
 }

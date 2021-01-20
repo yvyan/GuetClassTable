@@ -3,6 +3,7 @@ package top.yvyan.guettable.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ import top.yvyan.guettable.util.UrlReplaceUtil;
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private static DayClassFragment dayClassFragment;
+    private static final String TAG = "DayClassFragment";
 
     private View view;
     private TextView textView;
@@ -71,6 +73,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        dayClassFragment = this;
         view = inflater.inflate(R.layout.fragment_day_class, container, false);
 
         View tools = view.findViewById(R.id.day_class_tools);
@@ -154,6 +157,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: ");
         initData();
         autoUpdate.updateView();
         updateView();
@@ -234,12 +238,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         return list;
     }
 
-    public OnButtonClick getOnButtonClick() {
-        return onButtonClick;
-    }
-
     public void setOnButtonClick(OnButtonClick onButtonClick) {
         this.onButtonClick = onButtonClick;
     }
-
 }
