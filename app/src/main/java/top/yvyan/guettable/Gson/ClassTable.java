@@ -156,7 +156,7 @@ public class ClassTable {
 
     public CourseBean toCourseBean() {
         CourseBean courseBean = new CourseBean();
-        courseBean.setCourse(courseno, cname, croomno, startweek, endweek, week, Integer.parseInt(seq), name);
+        courseBean.setCourse(courseno, cname, croomno, startweek, endweek, week, Integer.parseInt(seq), name, comm);
         return courseBean;
     }
 
