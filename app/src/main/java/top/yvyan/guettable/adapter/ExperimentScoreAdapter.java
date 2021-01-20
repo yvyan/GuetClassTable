@@ -39,7 +39,7 @@ public class ExperimentScoreAdapter extends RecyclerView.Adapter<ExperimentScore
         holder.experimentScoreName.setText(experimentScoreBeans.get(position).getName());
         holder.experimentScoreFinal.setText(String.valueOf(experimentScoreBeans.get(position).getFinalScore()));
         holder.experimentScoreUsually.setText(String.valueOf(experimentScoreBeans.get(position).getUsuallyScore()));
-        holder.experimentScoreExperiment.setVisibility(View.GONE);
+        holder.courseNo.setText(experimentScoreBeans.get(position).getNumber());
         holder.experimentScoreCheck.setText(String.valueOf(experimentScoreBeans.get(position).getCheckScore()));
     }
 
@@ -49,14 +49,14 @@ public class ExperimentScoreAdapter extends RecyclerView.Adapter<ExperimentScore
     }
 
     public class ExperimentScoreViewHolder extends RecyclerView.ViewHolder {
-        TextView headerTerm, experimentScoreName, experimentScoreFinal, experimentScoreUsually, experimentScoreExperiment, experimentScoreCheck;
+        TextView headerTerm, experimentScoreName, experimentScoreFinal, experimentScoreUsually, courseNo, experimentScoreCheck;
         public ExperimentScoreViewHolder(@NonNull View itemView) {
             super(itemView);
             headerTerm = itemView.findViewById(R.id.header_term);
             experimentScoreName = itemView.findViewById(R.id.ScoreName);
             experimentScoreFinal = itemView.findViewById(R.id.ScoreFinal);
             experimentScoreUsually = itemView.findViewById(R.id.ScoreUsually);
-            experimentScoreExperiment = itemView.findViewById(R.id.ScoreExperiment);
+            courseNo = itemView.findViewById(R.id.course_no);
             experimentScoreCheck = itemView.findViewById(R.id.ScoreCheck);
         }
     }

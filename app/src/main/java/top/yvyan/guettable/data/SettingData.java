@@ -28,7 +28,7 @@ public class SettingData {
     }
 
     public int getRefreshFrequency() {
-        return Integer.parseInt(sharedPreferences.getString(SettingFragment.REFRESH_DATA_FREQUENCY, "3"));
+        return Integer.parseInt(sharedPreferences.getString(SettingFragment.REFRESH_DATA_FREQUENCY, "1"));
     }
 
     public boolean getShowLibOnTable() {

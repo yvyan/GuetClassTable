@@ -29,7 +29,6 @@ import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.DensityUtil;
