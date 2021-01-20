@@ -51,6 +51,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        moreFragment = this;
         view = inflater.inflate(R.layout.fragement_more, container, false);
 
         generalData = GeneralData.newInstance(getContext());
