@@ -149,4 +149,10 @@ public class ScheduleData {
             editor.apply();
         }
     }
+
+    public void deleteAll() {
+        setCourseBeans(new ArrayList<>());
+        setLibBeans(new ArrayList<>());
+        setExamBeans(new ArrayList<>());
+    }
 }

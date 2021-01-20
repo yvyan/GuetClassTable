@@ -16,6 +16,7 @@ import com.xuexiang.xui.widget.picker.XSeekBar;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
@@ -139,8 +140,14 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 int year = Integer.parseInt(generalData.getGrade()) + (int) spinnerYear.getSelectedItemId();
                 int num = (int) spinnerTerm.getSelectedItemId() + 1;
                 if (generalData.isInternational()) {
+                    if (!(year + "" + num).equals(generalData.getTerm())) {
+                        ScheduleData.newInstance(getApplicationContext()).deleteAll();
+                    }
                     generalData.setTerm(year + "" + num);
                 } else {
+                    if (!(year + "-" + (year + 1) + "_" + num).equals(generalData.getTerm())) {
+                        ScheduleData.newInstance(getApplicationContext()).deleteAll();
+                    }
                     generalData.setTerm(year + "-" + (year + 1) + "_" + num);
                 }
                 //保存星期
