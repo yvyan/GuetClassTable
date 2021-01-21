@@ -60,7 +60,7 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="app_check_update"
-            android:summary="每三天检查一次更新"
+            android:summary="每天检查一次更新"
             android:title="自动检查更新" />
 
         <ListPreference

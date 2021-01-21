@@ -69,6 +69,21 @@
             android:background="#000" />
 
         <Button
+            android:id="@+id/btn_hint_addQQ"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:text="群内下载"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="#000" />
+
+        <Button
             android:id="@+id/btn_hint_yes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

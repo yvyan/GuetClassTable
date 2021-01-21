@@ -39,7 +39,7 @@ public class ExperimentScoreAdapter extends RecyclerView.Adapter<ExperimentScore
         holder.experimentScoreName.setText(experimentScoreBeans.get(position).getName());
         holder.experimentScoreFinal.setText(String.valueOf(experimentScoreBeans.get(position).getFinalScore()));
         holder.experimentScoreUsually.setText(String.valueOf(experimentScoreBeans.get(position).getUsuallyScore()));
-        holder.courseNo.setText(experimentScoreBeans.get(position).getNumber());
+        holder.courseNo.setText(experimentScoreBeans.get(position).getCourseId());
         holder.experimentScoreCheck.setText(String.valueOf(experimentScoreBeans.get(position).getCheckScore()));
     }
 

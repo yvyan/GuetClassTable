@@ -1,6 +1,5 @@
 package top.yvyan.guettable;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,12 +16,9 @@ import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.fragment.PersonFragment;
-import top.yvyan.guettable.service.IMoreFun;
-import top.yvyan.guettable.service.MoreFunService;
-import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.util.ToastUtil;
 
-public class SetTermActivity extends AppCompatActivity implements View.OnClickListener, IMoreFun {
+public class SetTermActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView stuId;
     private TextView stuName;
@@ -36,7 +32,6 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
     private GeneralData generalData;
     private StudentInfo studentInfo;
 
-    private boolean fromLogin = false;
     private String term;
     private String grade;
 
@@ -49,23 +44,10 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         init();
-
-        if (fromLogin) {
-            MoreFunService moreFunService = new MoreFunService(this, this);
-            moreFunService.update();
-        } else {
-            initView();
-        }
+        initView();
     }
 
     private void init() {
-        //判断启动类
-        Intent intent = getIntent();
-        String path = intent.getStringExtra("fromLogin");
-        if (path != null) {
-            fromLogin = true;
-        }
-
         seekBar = findViewById(R.id.seekBar_week);
         stuId = findViewById(R.id.stu_id);
         stuName = findViewById(R.id.stu_name);
@@ -161,26 +143,6 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 ToastUtil.showToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待，不要滑动页面");
                 finish();
                 break;
-        }
-    }
-
-    @Override
-    public int updateData(String cookie) {
-        studentInfo = StaticService.getStudentInfo(this, cookie);
-        if (studentInfo != null) {
-            generalData.setNumber(studentInfo.getStid());
-            generalData.setName(studentInfo.getName());
-            generalData.setTerm(studentInfo.getTerm());
-            generalData.setGrade(studentInfo.getGrade());
-            return 5;
-        }
-        return 1;
-    }
-
-    @Override
-    public void updateView(String hint, int state) {
-        if (state == 5) {
-            initView();
         }
     }
 }

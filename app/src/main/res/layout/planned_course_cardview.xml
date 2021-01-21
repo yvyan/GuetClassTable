@@ -54,7 +54,7 @@
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:text="计算机科学导论"
-            android:textColor="#AA000000"
+            android:textColor="#ff000000"
             android:textSize="16dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
