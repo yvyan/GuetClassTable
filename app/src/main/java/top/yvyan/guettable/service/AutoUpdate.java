@@ -72,11 +72,11 @@ public class AutoUpdate {
     }
 
     /**
-     * 启动更新
+     * 启动同步
      */
     public void update() {
         init();
-        // 判断状态是否符合；合适的状态：就绪 网络错误 更新成功(点击更新)
+        // 判断状态是否符合；合适的状态：就绪 网络错误 同步成功(点击同步)
         if (state == 0 || state == -2 || state == 8) {
             update_thread();
         }
@@ -103,7 +103,7 @@ public class AutoUpdate {
         String text;
         switch (state) {
             case 0:
-                text = "已登录(点击更新)";
+                text = "已登录(点击同步)";
                 break;
             case 2:
                 text = "去登录";
@@ -115,22 +115,22 @@ public class AutoUpdate {
                 text = "网络错误";
                 break;
             case 91:
-                text = "尝试更新理论课";
+                text = "尝试同步理论课";
                 break;
             case 92:
                 text = "正在登录";
                 break;
             case 93:
-                text = "正在更新理论课";
+                text = "正在同步理论课";
                 break;
             case 94:
-                text = "正在更新考试安排";
+                text = "正在同步考试安排";
                 break;
             case 95:
-                text = "正在更新课内实验";
+                text = "正在同步课内实验";
                 break;
             case 5:
-                text = "更新成功";
+                text = "同步成功";
                 break;
             default:
                 text = "未知错误";
@@ -146,13 +146,13 @@ public class AutoUpdate {
     }
 
     /**
-     * 自动更新线程
+     * 自动同步线程
      */
     private void update_thread() {
         new Thread(() -> {
             String cookie;
             if (accountData.getIsLogin()) {
-                updateView(91); //显示：尝试更新理论课
+                updateView(91); //显示：尝试同步理论课
                 cookie = tokenData.getCookie();
                 List<CourseBean> courseBeans;
                 List<CourseBean> getClass = StaticService.getClass(
@@ -170,7 +170,7 @@ public class AutoUpdate {
                         updateView(state);
                         return;
                     }
-                    updateView(93); //显示：正在更新理论课
+                    updateView(93); //显示：正在同步理论课
                     cookie = tokenData.getCookie();
                     getClass = StaticService.getClass(
                             activity,
@@ -214,7 +214,7 @@ public class AutoUpdate {
                     activity.runOnUiThread(() -> {
                         CourseTableFragment.newInstance().updateTable();
                         DayClassFragment.newInstance().updateView();
-                        ToastUtil.showToast(activity, "更新成功");
+                        ToastUtil.showToast(activity, "同步成功");
                     });
                 }
             } else {

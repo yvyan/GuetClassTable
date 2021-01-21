@@ -12,7 +12,7 @@ import com.xiaomi.mipush.sdk.PushMessageReceiver;
 
 import java.util.List;
 
-public class DemoMessageReceiver extends PushMessageReceiver {
+public class MiPushMessageReceiver extends PushMessageReceiver {
     private String mRegId;
     private long mResultCode = -1;
     private String mReason;
