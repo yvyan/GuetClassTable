@@ -105,5 +105,29 @@
     <string name="setting">设置</string>
     <string name="todo">TODO</string>
     <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²</string>
+    
+    
+    <string name="moreFun_titleBar"> 更多功能 </string>
+    <string name="moreFun_jiaowu"> 教务查询 </string>
+    <string name="moreFun_biye"> 毕业相关 </string>
+    <string name="moreFun_lianjie"> 常用链接 </string>
+    <string name="moreFun_pingjia"> 快速评价 </string>
+    <string name="moreFun_test_schedule"> 考试安排 </string>
+    <string name="moreFun_credits"> 学分绩 </string>
+    <string name="moreFun_test_scores"> 考试成绩 </string>
+    <string name="moreFun_lib_scores"> 实验成绩 </string>
+    <string name="moreFun_resit_schedule"> 补考安排 </string>
+    <string name="moreFun_lib_schedule"> 实验安排 </string>
+    <string name="moreFun_plan_courses"> 计划课程 </string>
+    <string name="moreFun_cet"> CET成绩 </string>
+    <string name="moreFun_graduation_requirement"> 毕业要求 </string>
+    <string name="moreFun_url_bkjw"> 教务系统 </string>
+    <string name="moreFun_url_vpn"> 校内VPN </string>
+    <string name="moreFun_url_campus"> 智慧校园 </string>
+    <string name="moreFun_url_staff"> 智慧学工 </string>
+    <string name="moreFun_url_lijiang"> 漓江学堂 </string>
+    <string name="moreFun_url_more"> 更多链接 </string>
+    <string name="moreFun_evaluating_teachers"> 评价教师 </string>
+    <string name="moreFun_evaluating_textbooks"> 评价教材 </string>
 
 </resources>
