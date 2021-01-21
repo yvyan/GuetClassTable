@@ -40,7 +40,7 @@ public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.Exam
         holder.examScoreName.setText(examScoreBeans.get(position).getName());
         holder.examScoreScore.setText(String.valueOf(examScoreBeans.get(position).getScore()));
         holder.examScoreUsually.setText(String.valueOf(examScoreBeans.get(position).getUsuallyScore()));
-        holder.courseNo.setText(examScoreBeans.get(position).getNumber());
+        holder.courseNo.setText(examScoreBeans.get(position).getCno());
         holder.examScoreCheck.setText(String.valueOf(examScoreBeans.get(position).getCheckScore()));
     }
 

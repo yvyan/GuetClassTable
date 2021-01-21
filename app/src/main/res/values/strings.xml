@@ -81,7 +81,8 @@
     <string name="privacy_url">http://privacy.guet.yvyan.top/</string>
 
     <string name="share_hint">建议直接将此APP发给同学，若您没有找到安装包，可以复制下面的信息发给同学或者群聊，同学点击链接即可下载最新版桂电课程表：</string>
-    <string name="share_text">新的桂电课程表，挺好用的，分享给你，点击链接下载：https://www.coolapk.com/apk/279989 \n(酷安市场链接，请放心访问)</string>
+    <string name="share_text">新的桂电课程表，简洁、好用，分享给你，点击链接下载：https://app.xiaomi.com/details?id=top.yvyan.guettable
+ \n(小米官方链接，请放心访问，建议使用浏览器打开)</string>
     <string name="help_1">点击“我的”页面的“点击登录”按钮，输入学号和教务密码即可登录，设置学期和星期即可自动导入课表。</string>
     <string name="help_2">点击“周课表”上方的“第x周”即可滑动点击切换周次；点击课程可以查看详情。</string>
     <string name="help_3">周课表和一些查询页面右上角有设置按钮，可以进行个性化设置。</string>

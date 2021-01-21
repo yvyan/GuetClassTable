@@ -31,6 +31,7 @@ import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.service.AutoUpdate;
+import top.yvyan.guettable.service.UpdateApp;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.TimeUtil;
@@ -95,6 +96,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         credits.setOnClickListener(this);
 
         initData();
+        // 检查更新
+        UpdateApp.checkUpdate(getContext(), 1);
 
         autoUpdate = AutoUpdate.newInstance(getActivity());
         if (accountData.getIsLogin()) {

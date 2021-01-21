@@ -6,7 +6,7 @@ public class ExperimentScoreBean implements Serializable, BeanAttribute {
     //实验名称
     private String name;
     //实验序号
-    private String number;
+    private String courseId;
     //学期
     private String term;
     //总评成绩
@@ -16,9 +16,9 @@ public class ExperimentScoreBean implements Serializable, BeanAttribute {
     //考核成绩
     private float checkScore;
 
-    public ExperimentScoreBean(String name, String number, String term, float finalScore, float usuallyScore, float checkScore) {
+    public ExperimentScoreBean(String name, String courseId, String term, float finalScore, float usuallyScore, float checkScore) {
         this.name = name;
-        this.number = number;
+        this.courseId = courseId;
         this.term = term;
         this.finalScore = finalScore;
         this.usuallyScore = usuallyScore;
@@ -33,12 +33,12 @@ public class ExperimentScoreBean implements Serializable, BeanAttribute {
         this.name = name;
     }
 
-    public String getNumber() {
-        return number;
+    public String getCourseId() {
+        return courseId;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 
     @Override
