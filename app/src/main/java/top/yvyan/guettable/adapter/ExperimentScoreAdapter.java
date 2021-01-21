@@ -53,7 +53,7 @@ public class ExperimentScoreAdapter extends RecyclerView.Adapter<ExperimentScore
         public ExperimentScoreViewHolder(@NonNull View itemView) {
             super(itemView);
             headerTerm = itemView.findViewById(R.id.header_term);
-            experimentScoreName = itemView.findViewById(R.id.ScoreName);
+            experimentScoreName = itemView.findViewById(R.id.course_name);
             experimentScoreFinal = itemView.findViewById(R.id.ScoreFinal);
             experimentScoreUsually = itemView.findViewById(R.id.ScoreUsually);
             courseNo = itemView.findViewById(R.id.course_no);

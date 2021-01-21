@@ -54,7 +54,7 @@ public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.Exam
         public ExamScoreViewHolder(@NonNull View itemView) {
             super(itemView);
             headerTerm = itemView.findViewById(R.id.header_term);
-            examScoreName = itemView.findViewById(R.id.ScoreName);
+            examScoreName = itemView.findViewById(R.id.course_name);
             examScoreScore = itemView.findViewById(R.id.ScoreFinal);
             examScoreUsually = itemView.findViewById(R.id.ScoreUsually);
             courseNo = itemView.findViewById(R.id.course_no);
