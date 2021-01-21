@@ -1,6 +1,7 @@
 package top.yvyan.guettable.moreFun;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.ComparatorBeanAttribute;
 import top.yvyan.guettable.util.BeanHideUtil;
 
@@ -34,6 +36,7 @@ public class ExamScoreActivity extends AppCompatActivity implements View.OnClick
     private MoreDate moreDate;
     private GeneralData generalData;
     private SingleSettingData singleSettingData;
+    private boolean update = false;
 
     @BindView(R.id.examscore_state) TextView examScoreState;
     @BindView(R.id.examscore_not_find) TextView examScoreNotFind;
@@ -110,8 +113,11 @@ public class ExamScoreActivity extends AppCompatActivity implements View.OnClick
         if (examScoreBeans != null) {
             ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
             Collections.sort(examScoreBeans, comparatorBeanAttribute);
-            moreDate.setExamScoreBeans(examScoreBeans);
-            return 5 ;
+            if (!AppUtil.equalList(examScoreBeans, moreDate.getExamScoreBeans())) {
+                moreDate.setExamScoreBeans(examScoreBeans);
+                update = true;
+            }
+            return 5;
         }
         return 1;
     }
@@ -119,7 +125,7 @@ public class ExamScoreActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void updateView(String hint, int state) {
         examScoreState.setText(hint);
-        if (state == 5) {
+        if (state == 5 && update) {
             updateView();
         }
     }
