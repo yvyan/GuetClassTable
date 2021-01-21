@@ -33,7 +33,7 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
     @BindView(R.id.average_textbook_state)
     TextView title;
     @BindView(R.id.textbook_wait)
-    TextView wait;
+    View wait;
     @BindView(R.id.textbook_info_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.avg_textbook_start)

@@ -20,6 +20,7 @@ import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.ComparatorBeanAttribute;
 
 import static com.xuexiang.xui.XUI.getContext;
@@ -27,9 +28,10 @@ import static com.xuexiang.xui.XUI.getContext;
 public class CETActivity extends AppCompatActivity implements IMoreFun {
 
     private MoreDate moreDate;
+    private boolean update = false;
 
     @BindView(R.id.CET_state) TextView CET_state;
-    @BindView(R.id.CET_not_find) TextView CET_not_find;
+    @BindView(R.id.CET_not_find) View CET_not_find;
     @BindView(R.id.CET_info_recycler_view) RecyclerView recyclerView;
 
     @Override
@@ -69,7 +71,10 @@ public class CETActivity extends AppCompatActivity implements IMoreFun {
         if (cetBeans != null) {
             ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
             Collections.sort(cetBeans, comparatorBeanAttribute);
-            moreDate.setCetBeans(cetBeans);
+            if (!AppUtil.equalList(cetBeans, moreDate.getCetBeans())) {
+                moreDate.setCetBeans(cetBeans);
+                update = true;
+            }
             return 5;
         }
         return 1;
@@ -78,7 +83,7 @@ public class CETActivity extends AppCompatActivity implements IMoreFun {
     @Override
     public void updateView(String hint, int state) {
         CET_state.setText(hint);
-        if (state == 5) {
+        if (state == 5 && update) {
             updateView();
         }
     }

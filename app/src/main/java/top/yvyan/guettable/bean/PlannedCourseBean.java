@@ -1,13 +1,38 @@
 package top.yvyan.guettable.bean;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class PlannedCourseBean implements Serializable {
+    private static final long serialVersionUID = -1789634455581353049L;
     private String name;
     private String credits;
     private String degree;
     private String type;
     private String typeName;
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null)
+            return false;
+        if (obj.getClass() != this.getClass())
+            return false;
+
+        PlannedCourseBean bean = (PlannedCourseBean) obj;
+        if (degree == null) {
+            if (bean.degree != null) {
+                return false;
+            }
+        } else {
+            if (!(bean.degree != null && degree.equals(bean.degree))) {
+                return false;
+            }
+        }
+        return name.equals(bean.name)
+                && credits.equals(bean.credits)
+                && type.equals(bean.type);
+    }
 
     public PlannedCourseBean(String name, String credits, String degree, String type, String typeName) {
         this.name = name;

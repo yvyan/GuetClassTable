@@ -1,7 +1,6 @@
 package top.yvyan.guettable.moreFun;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,7 +38,7 @@ public class ExamScoreActivity extends AppCompatActivity implements View.OnClick
     private boolean update = false;
 
     @BindView(R.id.examscore_state) TextView examScoreState;
-    @BindView(R.id.examscore_not_find) TextView examScoreNotFind;
+    @BindView(R.id.examscore_not_find) View examScoreNotFind;
     @BindView(R.id.exam_score_more) ImageView examScoreMore;
     @BindView(R.id.examscore_info_view) View examScoreInfoView;
     @BindView(R.id.examscore_info_recycler_view) RecyclerView recyclerView;

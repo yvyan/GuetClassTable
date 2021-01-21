@@ -1,5 +1,7 @@
 package top.yvyan.guettable.bean;
 
+import androidx.annotation.Nullable;
+
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleEnable;
 
@@ -9,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
+    private static final long serialVersionUID = -193709177883443178L;
     public static String NUMBER = "number";
     public static String TIME = "time";
     public static String DATE = "date";
@@ -32,6 +35,20 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
     private Date date;
     //教室
     private String room;
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null)
+            return false;
+        if (obj.getClass() != this.getClass())
+            return false;
+        ExamBean bean = (ExamBean) obj;
+        return number.equals(bean.number)
+                && week == bean.week
+                && day == bean.day
+                && time.equals(bean.time)
+                && room.equals(bean.room);
+    }
 
     public ExamBean() {}
 

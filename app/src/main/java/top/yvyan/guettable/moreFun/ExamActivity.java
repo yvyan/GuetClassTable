@@ -25,6 +25,7 @@ import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.ComparatorBeanAttribute;
 import top.yvyan.guettable.util.ExamUtil;
 
@@ -35,9 +36,10 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
     private GeneralData generalData;
     private ScheduleData scheduleData;
     private SingleSettingData singleSettingData;
+    private boolean update = false;
 
     @BindView(R.id.exam_state) TextView examState;
-    @BindView(R.id.exam_not_find) TextView examNotFind;
+    @BindView(R.id.exam_not_find) View examNotFind;
     @BindView(R.id.exam_more) ImageView examMore;
     @BindView(R.id.exam_info_recycler_view) RecyclerView recyclerView;
 
@@ -132,7 +134,10 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
         if (examBeans != null) {
             ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
             Collections.sort(examBeans, comparatorBeanAttribute);
-            scheduleData.setExamBeans(examBeans);
+            if (!AppUtil.equalList(examBeans, scheduleData.getExamBeans())) {
+                scheduleData.setExamBeans(examBeans);
+                update = true;
+            }
             return 5;
         }
         return 1;
@@ -141,12 +146,11 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
     @Override
     public void updateView(String hint, int state) {
         examState.setText(hint);
-        if (state == 5) {
+        if (state == 5 && update) {
             updateView();
             CourseTableFragment.newInstance().updateTable();
         }
     }
-
 
     public void onClick(View view) {
         finish();

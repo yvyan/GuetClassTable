@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import java.io.Serializable;
 
 public class ExamScoreBean implements Serializable, BeanAttribute {
+    private static final long serialVersionUID = 1033222523316336312L;
     //课程序号
     private String cno;
     //课程名称
