@@ -24,6 +24,7 @@ import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BeanHideUtil;
 import top.yvyan.guettable.util.ComparatorBeanAttribute;
 
@@ -34,9 +35,10 @@ public class ExperimentScoreActivity extends AppCompatActivity implements IMoreF
     private MoreDate moreDate;
     private GeneralData generalData;
     private SingleSettingData singleSettingData;
+    private boolean update = false;
 
     @BindView(R.id.experimentscore_state) TextView experimentScoreState;
-    @BindView(R.id.experimentscore_not_find) TextView experimentScoreNotFind;
+    @BindView(R.id.experimentscore_not_find) View experimentScoreNotFind;
     @BindView(R.id.experiment_score_more) ImageView experimentScoreMore;
     @BindView(R.id.experimentscore_info_view) View experimentScoreInfoView;
     @BindView(R.id.experimentscore_info_recycler_view) RecyclerView recyclerView;
@@ -114,7 +116,10 @@ public class ExperimentScoreActivity extends AppCompatActivity implements IMoreF
         if (experimentScoreBeans != null) {
             ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
             Collections.sort(experimentScoreBeans, comparatorBeanAttribute);
-            moreDate.setExperimentScoreBeans(experimentScoreBeans);
+            if (!AppUtil.equalList(experimentScoreBeans, moreDate.getExperimentScoreBeans())) {
+                moreDate.setExperimentScoreBeans(experimentScoreBeans);
+                update = true;
+            }
             return 5 ;
         }
         return 1;
@@ -123,7 +128,7 @@ public class ExperimentScoreActivity extends AppCompatActivity implements IMoreF
     @Override
     public void updateView(String hint, int state) {
         experimentScoreState.setText(hint);
-        if (state == 5) {
+        if (state == 5 && update) {
             updateView();
         }
     }

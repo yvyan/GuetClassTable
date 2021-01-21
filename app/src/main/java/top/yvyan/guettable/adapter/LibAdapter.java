@@ -64,7 +64,7 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
             n = 0;
         }
         holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + n + "大节");
-        holder.textView2.setText("名称：" + courseBean.getLibName());
+        holder.textView2.setText("名称：" + courseBean.getLabName());
         if ("".equals(courseBean.getRemarks())) {
             holder.textView6.setVisibility(View.GONE);
             holder.textView7.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
