@@ -25,7 +25,7 @@ public class ExperimentScore {
     private String comm;
 
     public ExperimentScoreBean toExperimentScoreBean() {
-        return new ExperimentScoreBean(cname, labid, term, zpcj, pscj, khcj);
+        return new ExperimentScoreBean(cname, courseid, term, zpcj, pscj, khcj);
     }
 
     public void setName(String name) {

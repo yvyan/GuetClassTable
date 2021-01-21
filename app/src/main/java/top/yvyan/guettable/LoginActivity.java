@@ -18,7 +18,9 @@ import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import org.jetbrains.annotations.NotNull;
 
+import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.data.AccountData;
+import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.service.fetch.LAN;
@@ -140,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             if (state == 0) {
                 runOnUiThread(() -> {
-                    button.setText("获取个人信息");
+                    button.setText("正在登录");
                 });
                 TokenData tokenData = TokenData.newInstance(this);
                 tokenData.setLoginType(type);
@@ -153,10 +155,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 }
                 tokenData.refresh();
-                Intent intent = new Intent(this, SetTermActivity.class);
-                intent.putExtra("fromLogin", ""); //便于识别启动类
-                startActivity(intent);
-                finish();
+                runOnUiThread(() -> {
+                    button.setText("获取个人信息");
+                });
+                StudentInfo studentInfo = StaticService.getStudentInfo(this, TokenData.newInstance(this).getCookie());
+                GeneralData generalData = GeneralData.newInstance(this);
+                if (studentInfo != null) {
+                    generalData.setNumber(studentInfo.getStid());
+                    generalData.setName(studentInfo.getName());
+                    generalData.setTerm(studentInfo.getTerm());
+                    generalData.setGrade(studentInfo.getGrade());
+                    Intent intent = new Intent(this, SetTermActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             } else {
                 int finalState = state;
                 runOnUiThread(() -> {
@@ -261,7 +273,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 设置按钮不可点击
      */
     private void setUnClick() {
-        button.setText("正在登录");
+        button.setText("网络初始化");
         button.setEnabled(false);
     }
 }

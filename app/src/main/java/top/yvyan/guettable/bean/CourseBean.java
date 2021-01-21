@@ -40,7 +40,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
     private int time;
     //老师
     private String teacher;
-    //（实验）备注
+    //备注
     private String remarks;
     //实验id
     private long labId;
@@ -52,7 +52,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     //设置为理论课
-    public void setCourse(String number, String name, String room, int weekStart, int weekEnd, int day, int time, String teacher) {
+    public void setCourse(String number, String name, String room, int weekStart, int weekEnd, int day, int time, String teacher, String remarks) {
         this.isLab = false;
         this.name = name;
         this.room = room;
@@ -66,6 +66,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         this.time = time;
         this.teacher = teacher;
         this.number = number;
+        this.remarks = remarks;
     }
 
     //设置为实验课
@@ -89,9 +90,9 @@ public class CourseBean implements ScheduleEnable, Serializable {
         isLab = (boolean)schedule.getExtras().get(IS_LAB);
         weekStart = (int) schedule.getExtras().get(WEEK_START);
         weekEnd = (int) schedule.getExtras().get(WEEK_END);
+        remarks = (String) schedule.getExtras().get(REMARKS);
         if (isLab) {
             libName = (String) schedule.getExtras().get(LIB_NAME);
-            remarks = (String) schedule.getExtras().get(REMARKS);
         }
 
         number = (String) schedule.getExtras().get(NUMBER);
@@ -238,6 +239,14 @@ public class CourseBean implements ScheduleEnable, Serializable {
         this.weekEnd = weekEnd;
     }
 
+    public long getLabId() {
+        return labId;
+    }
+
+    public void setLabId(long labId) {
+        this.labId = labId;
+    }
+
     @Override
     public String toString() {
         return "CourseBean{" +
@@ -256,13 +265,5 @@ public class CourseBean implements ScheduleEnable, Serializable {
                 ", remarks='" + remarks + '\'' +
                 ", colorRandom=" + colorRandom +
                 '}';
-    }
-
-    public long getLabId() {
-        return labId;
-    }
-
-    public void setLabId(long labId) {
-        this.labId = labId;
     }
 }

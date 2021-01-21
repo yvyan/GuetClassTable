@@ -23,7 +23,7 @@ public class Resit {
     private String courseno;
     private String stid;
     private String courseid;
-    private Date examdate;
+    private String examdate;
     private String examtime;
     private String croomno;
     private int seatno;
@@ -163,10 +163,10 @@ public class Resit {
         return courseid;
     }
 
-    public void setExamdate(Date examdate) {
+    public void setExamdate(String examdate) {
         this.examdate = examdate;
     }
-    public Date getExamdate() {
+    public String getExamdate() {
         return examdate;
     }
 
