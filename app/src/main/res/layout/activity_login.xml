@@ -204,7 +204,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="45dp"
-            android:text="密码错误的同学请输入智慧校园的密码，智慧校园网站地址：http://icampus.guet.edu.cn/ ，也即统一登录平台，若不记得密码，请联系辅导员或加群寻求帮助。"
+            android:text="密码错误的同学请输入智慧校园的密码，智慧校园网站地址：http://icampus.guet.edu.cn/ ，也即统一登录平台，,若之前没有登录过，需要先在网页上登录一次，成功后即可在APP上正常登录，若不记得密码，请联系辅导员或加群寻求帮助。"
             android:textSize="13dp"/>
 
     </RelativeLayout>

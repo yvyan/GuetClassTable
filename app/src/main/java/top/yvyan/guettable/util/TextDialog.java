@@ -12,8 +12,6 @@ import top.yvyan.guettable.R;
 
 public class TextDialog {
 
-    private static AlertDialog dialog;
-
     /**
      * 显示弹窗
      *
@@ -21,9 +19,11 @@ public class TextDialog {
      * @param text    自定义显示的文字
      */
     public static void showScanNumberDialog(final Context context, String text) {
+        AlertDialog dialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         dialog = builder.create();
         dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().clearFlags(
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);

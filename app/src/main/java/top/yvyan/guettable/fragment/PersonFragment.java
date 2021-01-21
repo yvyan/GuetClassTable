@@ -36,6 +36,7 @@ import top.yvyan.guettable.ShareActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SettingData;
+import top.yvyan.guettable.service.UpdateApp;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
@@ -64,15 +65,12 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private View help;
     private View share;
     private View update;
-    private View download;
     private View downloadAll;
     private View about;
 
     private AccountData accountData;
     private GeneralData generalData;
     private OnButtonClick onButtonClick;
-
-    private static AlertDialog dialog;
 
     public PersonFragment() {
     }
@@ -87,6 +85,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        personFragment = this;
         Log.d(TAG, "createPersonFragmentView");
         view = inflater.inflate(R.layout.fragement_preson, container, false);
         initData();
@@ -94,8 +93,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         updateView();
         person_setting = view.findViewById(R.id.person_setting);
         person_setting.setOnClickListener(this);
-        // 检查更新
-        checkUpdate(1);
         return view;
     }
 
@@ -128,13 +125,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         share.setOnClickListener(this);
         update = view.findViewById(R.id.person_update);
         update.setOnClickListener(this);
-        download = view.findViewById(R.id.person_download);
-        download.setOnClickListener(this);
-        if (generalData.isRenewable()) {
-            download.setVisibility(View.VISIBLE);
-        } else {
-            download.setVisibility(View.GONE);
-        }
         downloadAll = view.findViewById(R.id.person_download_all);
         downloadAll.setOnClickListener(this);
         about = view.findViewById(R.id.person_about);
@@ -200,10 +190,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.person_update:
                 ToastUtil.showToast(getContext(), "正在检查更新……");
-                checkUpdate(2);
-                break;
-            case R.id.person_download:
-                updateAppCoolApk();
+                UpdateApp.checkUpdate(getContext(), 2);
                 break;
             case R.id.person_download_all:
                 downloadAllApk();
@@ -223,159 +210,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 
     public void setOnButtonClick(OnButtonClick onButtonClick) {
         this.onButtonClick = onButtonClick;
-    }
-
-    /**
-     * 检查更新
-     * @param type 1: 自动事件; 2: 用户点击;
-     */
-    private void checkUpdate(int type) {
-        XiaomiUpdateAgent.update(getContext());
-        XiaomiUpdateAgent.setUpdateAutoPopup(false);
-        XiaomiUpdateAgent.setUpdateListener((i, updateResponse) -> {
-            switch (i) {
-                case UpdateStatus.STATUS_UPDATE: //有更新
-                    if (type == 2) {
-                        //显示弹窗
-                        showScanNumberDialog(getContext(), updateResponse.updateLog, R.drawable.d_shengji);
-                    } else {
-                        generalData.setRenewable(true);
-                        download.setVisibility(View.VISIBLE);
-                        if (SettingData.newInstance(getContext()).isAppCheckUpdate()) {
-                            if (generalData.getAppLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getAppLastUpdateTime()), new Date()) >= 3) {
-                                // 显示弹窗
-                                showScanNumberDialog(getContext(), updateResponse.updateLog, R.drawable.d_shengji);
-                                // 刷新时间
-                                generalData.setAppLastUpdateTime(System.currentTimeMillis());
-                            }
-                        }
-                    }
-                    break;
-                case UpdateStatus.STATUS_NO_UPDATE:
-                    if (type == 2) {
-                        ToastUtil.showToast(getContext(), "已是最新版本！");
-                    } else {
-                        generalData.setRenewable(false);
-                        download.setVisibility(View.GONE);
-                    }
-                    break;
-                case UpdateStatus.STATUS_NO_NET:
-                    if (type == 2) {
-                        ToastUtil.showToast(getContext(), "网络未连接！");
-                    }
-                    break;
-                case UpdateStatus.STATUS_FAILED:
-                    if (type == 2) {
-                        ToastUtil.showToast(getContext(), "服务器错误，请稍后重试！");
-                    }
-                    break;
-                case UpdateStatus.STATUS_LOCAL_APP_FAILED:
-                    if (type == 2) {
-                        ToastUtil.showToast(getContext(), "应用信息检查失败，请稍后重试！");
-                    }
-                default:
-                    break;
-            }
-        });
-    }
-
-    /**
-     * 显示弹窗
-     *
-     * @param context 上下文
-     * @param text    自定义显示的文字
-     * @param id      自定义图片资源
-     */
-    public void showScanNumberDialog(final Context context, String text, int id) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        // 创建对话框
-        dialog = builder.create();
-        // 没有下面这句代码会导致自定义对话框还存在原有的背景
-
-        // 弹出对话框
-        dialog.show();
-        // 以下两行代码是对话框的EditText点击后不能显示输入法的
-        dialog.getWindow().clearFlags(
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        dialog.getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        // *** 主要就是在这里实现这种效果的.
-        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
-        Window window = dialog.getWindow();
-        window.setContentView(R.layout.update_dialog);
-        TextView tv_scan_number = (TextView) window
-                .findViewById(R.id.tv_dialoghint);
-        tv_scan_number.setText(text);
-        // 实例化确定按钮
-        Button btn_hint_yes = (Button) window.findViewById(R.id.btn_hint_yes);
-        // 实例化取消按钮
-        Button btn_hint_no = (Button) window.findViewById(R.id.btn_hint_no);
-        // 实例化图片
-        ImageView iv_dialoghint = (ImageView) window
-                .findViewById(R.id.iv_dialoghint);
-        // 自定义图片的资源
-        iv_dialoghint.setImageResource(id);
-        btn_hint_yes.setOnClickListener(arg0 -> {
-            updateApp();
-            dialog.dismiss();
-        });
-        btn_hint_no.setOnClickListener(arg0 -> {
-            dialog.dismiss();
-        });
-    }
-
-    public void updateApp() {
-        if (!checkUnknownInstallPermission() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ToastUtil.showToast(getContext(), "请开启应用安装权限来安装应用！");
-            toInstallPermissionSettingIntent();
-        } else {
-            ToastUtil.showToast(getContext(), "正在更新，请稍后……");
-            XiaomiUpdateAgent.arrange();
-        }
-    }
-
-    /**
-     * 检查是否有未知应用安装权限
-     *
-     * @return 检查结果
-     */
-    private boolean checkUnknownInstallPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return getContext().getPackageManager().canRequestPackageInstalls();
-        } else {
-            return true;
-        }
-    }
-
-    //开启安装未知来源权限
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void toInstallPermissionSettingIntent() {
-        Uri packageURI = Uri.parse("package:" + getContext().getPackageName());
-        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
-        //系统将打开是未知来源应用的管理列表，需要用户手动设置未知来源应用安装权限
-        startActivityForResult(intent, 1);
-    }
-
-    //权限开启后的回调函数
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == getActivity().RESULT_OK && requestCode == 1) {
-            //权限开启成功，编写用户服务函数
-            ToastUtil.showToast(getContext(), "正在更新，请稍后……");
-            XiaomiUpdateAgent.arrange();
-        } else {
-            ToastUtil.showToast(getContext(), "未开启应用安装权限，无法安装更新！");
-        }
-    }
-
-    public void updateAppCoolApk() {
-        Uri uri = Uri.parse(getContext().getResources().getString(R.string.downloadApp_url));
-        Intent webIntent = new Intent();
-        webIntent.setAction("android.intent.action.VIEW");
-        webIntent.setData(uri);
-        startActivity(webIntent);
     }
 
     public void downloadAllApk() {

@@ -35,9 +35,9 @@ public class ResitAdapter extends RecyclerView.Adapter<ResitAdapter.ResitViewHol
         holder.textView2.setText("课号：" + resitBeans.get(position).getNumber());
         holder.textView3.setVisibility(View.GONE);
         holder.textView4.setText("教室：" + resitBeans.get(position).getRoom());
-        holder.textView5.setText("时间：" + resitBeans.get(position).getTime());
+        holder.textView5.setText("时间：" + resitBeans.get(position).getTime() == null? "未公布" : resitBeans.get(position).getTime());
         holder.textView6.setVisibility(View.GONE);
-        holder.textView7.setText("日期：" + TimeUtil.timeFormat(resitBeans.get(position).getDate()));
+        holder.textView7.setText("日期：" + resitBeans.get(position).getDate() == null? "未公布" : TimeUtil.timeFormat(resitBeans.get(position).getDate()));
     }
 
     @Override
