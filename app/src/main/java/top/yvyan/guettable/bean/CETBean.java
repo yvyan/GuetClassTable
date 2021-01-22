@@ -1,8 +1,11 @@
 package top.yvyan.guettable.bean;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class CETBean implements Serializable, BeanAttribute {
+    private static final long serialVersionUID = -4533762023709527528L;
     //等级名称 CET4 CET6
     private String name;
     //学期
@@ -15,6 +18,17 @@ public class CETBean implements Serializable, BeanAttribute {
     private String card;
     //推送时间
     private String postDate;
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null)
+            return false;
+        if (obj.getClass() != this.getClass())
+            return false;
+        CETBean cetBean = (CETBean) obj;
+        return this.card.equals(cetBean.card)
+                && this.stage == cetBean.stage;
+    }
 
     public CETBean() {}
 

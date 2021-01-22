@@ -27,7 +27,7 @@ public class ResitActivity extends AppCompatActivity implements IMoreFun {
     @BindView(R.id.resit_state)
     TextView resitHint;
     @BindView(R.id.resit_not_find)
-    TextView resitNotFind;
+    View resitNotFind;
     @BindView(R.id.resit_info_recycler_view)
     RecyclerView recyclerView;
 

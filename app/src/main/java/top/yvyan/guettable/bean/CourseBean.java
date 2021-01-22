@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseBean implements ScheduleEnable, Serializable {
+    private static final long serialVersionUID = 989531884520541236L;
     public static String IS_LAB = "isLab";
     public static String LIB_NAME = "libName";
     public static String REMARKS = "remarks";
@@ -25,7 +26,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
     //课程名称
     private String name;
     //（实验）名称
-    private String libName;
+    private String labName;
     //教室
     private String room;
     //开始周次
@@ -73,7 +74,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
     public void setLab(String name, String libName, int batch, String room, int weekStart, int day, int time, String teacher, String remarks, long labId) {
         this.isLab = true;
         this.name = "(实验)" + name;
-        this.libName = libName + "(" + batch + "批次)";
+        this.labName = libName + "(" + batch + "批次)";
         this.room = room;
         this.weekList = new ArrayList<>();
         this.weekList.add(weekStart);
@@ -92,7 +93,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         weekEnd = (int) schedule.getExtras().get(WEEK_END);
         remarks = (String) schedule.getExtras().get(REMARKS);
         if (isLab) {
-            libName = (String) schedule.getExtras().get(LIB_NAME);
+            labName = (String) schedule.getExtras().get(LIB_NAME);
         }
 
         number = (String) schedule.getExtras().get(NUMBER);
@@ -117,7 +118,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         schedule.setColorRandom(2);
 
         schedule.putExtras(IS_LAB, isLab);
-        schedule.putExtras(LIB_NAME, libName);
+        schedule.putExtras(LIB_NAME, labName);
         schedule.putExtras(REMARKS, remarks);
         schedule.putExtras(NUMBER, number);
         schedule.putExtras(WEEK_START, weekStart);
@@ -159,12 +160,12 @@ public class CourseBean implements ScheduleEnable, Serializable {
         this.name = name;
     }
 
-    public String getLibName() {
-        return libName;
+    public String getLabName() {
+        return labName;
     }
 
-    public void setLibName(String libName) {
-        this.libName = libName;
+    public void setLabName(String labName) {
+        this.labName = labName;
     }
 
     public String getRoom() {
@@ -254,7 +255,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
                 ", isLab=" + isLab +
                 ", number='" + number + '\'' +
                 ", name='" + name + '\'' +
-                ", libName='" + libName + '\'' +
+                ", libName='" + labName + '\'' +
                 ", room='" + room + '\'' +
                 ", weekStart=" + weekStart +
                 ", weekEnd=" + weekEnd +

@@ -9,6 +9,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
+import java.util.List;
+
 public class AppUtil {
     /**
      * 获取当前app version name
@@ -88,5 +90,16 @@ public class AppUtil {
     public static void addQQ(Context context) {
         String key = "b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP";
         joinQQGroup(key, context);
+    }
+
+    /**
+     * 比较两个list内容是否相同
+     *
+     * @param list1
+     * @param list2
+     * @return
+     */
+    public static boolean equalList(List list1, List list2) {
+        return (list1.size() == list2.size()) && list1.containsAll(list2);
     }
 }

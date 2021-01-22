@@ -1,8 +1,11 @@
 package top.yvyan.guettable.bean;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class ExamScoreBean implements Serializable, BeanAttribute {
+    private static final long serialVersionUID = 1033222523316336312L;
     //课程序号
     private String cno;
     //课程名称
@@ -139,5 +142,19 @@ public class ExamScoreBean implements Serializable, BeanAttribute {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null)
+            return false;
+        if (obj.getClass() != this.getClass())
+            return false;
+        ExamScoreBean examScoreBean = (ExamScoreBean) obj;
+        return this.number.equals(examScoreBean.number)
+                && this.score.equals(examScoreBean.score)
+                && this.usuallyScore == examScoreBean.usuallyScore
+                && this.checkScore == examScoreBean.checkScore
+                && this.credit == examScoreBean.credit;
     }
 }

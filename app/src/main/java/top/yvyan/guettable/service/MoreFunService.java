@@ -1,7 +1,6 @@
 package top.yvyan.guettable.service;
 
 import android.app.Activity;
-import android.util.Log;
 
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.TokenData;
@@ -23,9 +22,9 @@ public class MoreFunService {
     public void update() {
         new Thread(() -> {
             if (accountData.getIsLogin()) {
-                setView(91); //显示：尝试更新
+                setView(91); //显示：尝试同步
                 int state = iMoreFun.updateData(tokenData.getCookie());
-                if (state == 5 || state == -2) { //更新成功或网络错误
+                if (state == 5 || state == -2) { //同步成功或网络错误
                     setView(state);
                     return;
                 }
@@ -38,7 +37,7 @@ public class MoreFunService {
                     setView(state);
                     return;
                 }
-                setView(93); //显示：正在更新
+                setView(93); //显示：正在同步
                 state = iMoreFun.updateData(tokenData.getCookie());
                 setView(state);
 
@@ -60,13 +59,9 @@ public class MoreFunService {
      * -2 : 网络错误/未知错误
      * -3 : 验证码连续错误
      *
-     * 21 : 理论课更新成功
-     * 22 : 课内实验更新成功
-     * 23 : 考试安排更新成功
-     *
-     * 91 : 尝试更新
+     * 91 : 尝试同步
      * 92 : 正在登录
-     * 93 : 正在更新
+     * 93 : 正在同步
      *
      */
     private void setView(int state) {
@@ -82,16 +77,16 @@ public class MoreFunService {
                 hint = "网络错误";
                 break;
             case 91:
-                hint = "尝试更新";
+                hint = "尝试同步";
                 break;
             case 92:
                 hint = "正在登录";
                 break;
             case 93:
-                hint = "正在更新";
+                hint = "正在同步";
                 break;
             case 5:
-                hint = "更新成功";
+                hint = "同步成功";
                 break;
             default:
                 hint = "未知错误";
