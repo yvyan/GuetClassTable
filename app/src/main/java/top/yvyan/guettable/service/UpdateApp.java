@@ -3,8 +3,6 @@ package top.yvyan.guettable.service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -40,14 +38,13 @@ public class UpdateApp {
                 case UpdateStatus.STATUS_UPDATE: //有更新
                     if (type == 2) {
                         //显示弹窗
-                        showScanNumberDialog(context, updateResponse.updateLog, R.drawable.d_shengji, updateResponse.path);
+                        showScanNumberDialog(context, updateResponse.updateLog, R.drawable.d_shengji);
                     } else {
                         generalData.setRenewable(true);
-                        //download.setVisibility(View.VISIBLE);
                         if (SettingData.newInstance(context).isAppCheckUpdate()) {
                             if (generalData.getAppLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getAppLastUpdateTime()), new Date()) >= 1) {
                                 // 显示弹窗
-                                showScanNumberDialog(context, updateResponse.updateLog, R.drawable.d_shengji, updateResponse.path);
+                                showScanNumberDialog(context, updateResponse.updateLog, R.drawable.d_shengji);
                                 // 刷新时间
                                 generalData.setAppLastUpdateTime(System.currentTimeMillis());
                             }
@@ -59,7 +56,6 @@ public class UpdateApp {
                         ToastUtil.showToast(context, "已是最新版本！");
                     } else {
                         generalData.setRenewable(false);
-                        //download.setVisibility(View.GONE);
                     }
                     break;
                 case UpdateStatus.STATUS_NO_NET:
@@ -89,7 +85,7 @@ public class UpdateApp {
      * @param text    自定义显示的文字
      * @param id      自定义图片资源
      */
-    private static void showScanNumberDialog(final Context context, String text, int id, String path) {
+    private static void showScanNumberDialog(final Context context, String text, int id) {
         AlertDialog dialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         // 创建对话框
@@ -113,9 +109,9 @@ public class UpdateApp {
                 .findViewById(R.id.tv_dialoghint);
         tv_scan_number.setText(text);
         // 实例化确定按钮
-        Button btn_hint_yes = (Button) window.findViewById(R.id.btn_hint_yes);
+        Button btn_hint_yes = window.findViewById(R.id.btn_hint_yes);
         // 实例化取消按钮
-        Button btn_hint_no = (Button) window.findViewById(R.id.btn_hint_no);
+        ImageView btn_hint_no = window.findViewById(R.id.imageView_no);
         Button btn_hint_addQQ = window.findViewById(R.id.btn_hint_addQQ);
         // 实例化图片
         ImageView iv_dialoghint = (ImageView) window
@@ -123,7 +119,7 @@ public class UpdateApp {
         // 自定义图片的资源
         iv_dialoghint.setImageResource(id);
         btn_hint_yes.setOnClickListener(arg0 -> {
-            updateApp(context, path);
+            updateApp(context);
             dialog.dismiss();
         });
         btn_hint_no.setOnClickListener(arg0 -> {
@@ -135,9 +131,9 @@ public class UpdateApp {
         });
     }
 
-    private static void updateApp(Context context, String path) {
+    private static void updateApp(Context context) {
         ToastUtil.showToast(context, "正在打开下载链接，请下载后安装");
-        Uri uri = Uri.parse(path);
+        Uri uri = Uri.parse(context.getResources().getString(R.string.downloadApp_url));
         Intent webIntent = new Intent();
         webIntent.setAction("android.intent.action.VIEW");
         webIntent.setData(uri);
