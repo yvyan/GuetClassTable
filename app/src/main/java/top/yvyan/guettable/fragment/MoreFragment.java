@@ -8,13 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.moreFun.AverageTeacherActivity;
 import top.yvyan.guettable.moreFun.AverageTextbookActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
-import top.yvyan.guettable.R;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
@@ -69,9 +68,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         libSchedule = view.findViewById(R.id.more_lib_schedule);
         libSchedule.setOnClickListener(this);
 
-        graduationRequirement = view.findViewById(R.id.more_graduation_requirement);
-        graduationRequirement.setOnClickListener(this);
-        graduationRequirement.setVisibility(View.GONE);
+//        graduationRequirement = view.findViewById(R.id.more_graduation_requirement);
+//        graduationRequirement.setOnClickListener(this);
+//        graduationRequirement.setVisibility(View.GONE);
         planCourses = view.findViewById(R.id.more_plan_courses);
         planCourses.setOnClickListener(this);
         cet = view.findViewById(R.id.more_cet);
@@ -95,9 +94,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
         evaluatingTextbooks.setOnClickListener(this);
 
-        test = view.findViewById(R.id.more_test);
-        test.setOnClickListener(this);
-        test.setVisibility(View.GONE);
+//        test = view.findViewById(R.id.more_test);
+//        test.setOnClickListener(this);
+//        test.setVisibility(View.GONE);
 
         return view;
     }
