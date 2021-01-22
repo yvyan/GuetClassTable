@@ -78,7 +78,7 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
         recyclerView.setAdapter(avgTeacherAdapter);
         if (!"".equals(avgTeacherBeans.get(avgTeacherBeans.size() - 1).getHint()) && "正在评价，请稍后...".equals(start.getText())) {
             start.setText("开始自动评价教师");
-            ToastUtil.showToast(this, "评教已经完成！");
+            ToastUtil.showToast(this, "评价教师已经完成！");
         }
     }
 
@@ -114,7 +114,7 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
                 finish();
                 break;
             case R.id.avg_teacher_start:
-                if ("更新成功".equals(title.getText()) && "开始自动评价教师".equals(start.getText())) {
+                if ("开始自动评价教师".equals(start.getText())) {
                     start.setText("正在评价，请稍后...");
                     start();
                 }
