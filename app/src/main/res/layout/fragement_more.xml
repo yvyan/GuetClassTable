@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,930 +10,681 @@
         android:id="@+id/more_head"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/colorPrimary">
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="25dp"
-            android:text="更多功能"
+            android:text="@string/moreFun_titleBar"
             android:textColor="@color/app_white"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="18sp" />
     
     </RelativeLayout>
     
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:layout_weight="8"
+                app:cardCornerRadius="10dp">
                 
-                <androidx.cardview.widget.CardView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_weight="2"
-                    app:cardCornerRadius="10dp">
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp">
+                    
+                    <TextView
+                        android:id="@+id/moreFun_jiaowu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/moreFun_jiaowu"
+                        android:textColor="@color/app_black"
+                        android:textSize="20sp" />
                     
                     <LinearLayout
+                        android:id="@+id/container_jiaowu_1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:orientation="vertical">
+                        android:layout_height="55dp"
+                        android:layout_below="@id/moreFun_jiaowu"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
                         
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="教务查询"
-                            android:textColor="@color/app_black"
-                            android:textSize="20sp" />
+                        <FrameLayout
+                            android:id="@+id/more_test_schedule"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_test_schedule_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_qingjia"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_test_schedule"
+                                android:textSize="13sp" />
                         
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_test_schedule"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_test_schedule_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_qingjia" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_test_schedule_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="考试安排"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_credits"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_credits_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_chengchang" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_credits_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="学分绩"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_test_scores"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_test_scores_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_chengjihov" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_test_scores_picture"
-                                        android:layout_centerInParent="true"
-                                        android:layout_weight="1"
-                                        android:text="考试成绩"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_lib_scores"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_lib_scores_picture"
-                                        android:layout_width="32dp"
-                                        android:layout_height="32dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_shiyanshixun" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_lib_scores_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="实验成绩"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
+                        </FrameLayout>
                         
-                        
-                        </LinearLayout>
-                        
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
+                        <FrameLayout
+                            android:id="@+id/more_credits"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
                             
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            <ImageView
+                                android:id="@+id/more_credits_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_chengchang"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_resit_schedule"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="6dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_resit_schedule_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="34dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:layout_weight="1"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_bukao" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_resit_schedule_picture"
-                                        android:layout_centerInParent="true"
-                                        android:layout_weight="1"
-                                        android:text="补考安排"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_lib_schedule"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="6dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_lib_schedule_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="34dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:layout_weight="1"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_shiyanping" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_lib_schedule_picture"
-                                        android:layout_centerInParent="true"
-                                        android:layout_weight="1"
-                                        android:text="实验安排"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                            
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                            
-                            
-                            </LinearLayout>
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_credits"
+                                android:textSize="13sp" />
                         
+                        </FrameLayout>
                         
-                        </LinearLayout>
+                        <FrameLayout
+                            android:id="@+id/more_test_scores"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_test_scores_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_chengjihov"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_test_scores"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:id="@+id/more_lib_scores"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_lib_scores_picture"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="top|center"
+                                android:baselineAlignBottom="false"
+                                android:src="@drawable/m_shiyanshixun"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_lib_scores"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                    
+                    </LinearLayout>
+                    
+                    <LinearLayout
+                        android:id="@+id/container_jiaowu_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@id/container_jiaowu_1"
+                        android:layout_gravity="center"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+                        
+                        <FrameLayout
+                            android:id="@+id/more_resit_schedule"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_resit_schedule_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_bukao"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_resit_schedule"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:id="@+id/more_lib_schedule"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_lib_schedule_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_shiyanping"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_lib_schedule"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@color/app_white">
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@color/app_white">
+                        
+                        </FrameLayout>
                     
                     </LinearLayout>
                 
-                </androidx.cardview.widget.CardView>
+                </RelativeLayout>
             
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
             
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:layout_weight="4.5"
+                app:cardCornerRadius="10dp">
                 
-                <androidx.cardview.widget.CardView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_weight="2"
-                    app:cardCornerRadius="10dp">
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp">
+                    
+                    <TextView
+                        android:id="@+id/moreFun_biye"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/moreFun_biye"
+                        android:textColor="@color/app_black"
+                        android:textSize="20sp" />
                     
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/moreFun_biye"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
                         
-                        
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="毕业相关"
-                            android:textColor="@color/app_black"
-                            android:textSize="20sp" />
-                        
-                        
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="horizontal">
+                        <FrameLayout
+                            android:id="@+id/more_plan_courses"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
                             
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            <ImageView
+                                android:id="@+id/more_plan_courses_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:baselineAlignBottom="false"
+                                android:src="@drawable/m_zhizhou"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_plan_courses"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="0dp"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_plan_courses_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_zhizhou" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_plan_courses_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="计划课程"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_cet"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_cet_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_yingyu" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_cet_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="CET成绩"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_graduation_requirement"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="6dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_graduation_requirement_picture"
-                                        android:layout_width="34dp"
-                                        android:layout_height="34dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_biyeguanli" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_graduation_requirement_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="毕业要求"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                            
-                            </LinearLayout>
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_plan_courses"
+                                android:textSize="13sp" />
                         
+                        </FrameLayout>
                         
-                        </LinearLayout>
+                        <FrameLayout
+                            android:id="@+id/more_cet"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            
+                            <ImageView
+                                android:id="@+id/more_cet_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:baselineAlignBottom="false"
+                                android:src="@drawable/m_yingyu"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_cet"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:id="@+id/more_graduation_requirement"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:visibility="invisible">
+                            
+                            <ImageView
+                                android:id="@+id/more_graduation_requirement_picture"
+                                android:layout_width="34dp"
+                                android:layout_height="34dp"
+                                android:layout_gravity="top|center"
+                                android:baselineAlignBottom="false"
+                                android:src="@drawable/m_biyeguanli"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_graduation_requirement"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@color/app_white">
+                        
+                        </FrameLayout>
                     
                     </LinearLayout>
                 
-                </androidx.cardview.widget.CardView>
+                </RelativeLayout>
             
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
             
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:layout_weight="8"
+                app:cardCornerRadius="10dp">
                 
-                <androidx.cardview.widget.CardView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_weight="2"
-                    app:cardCornerRadius="10dp">
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp">
+                    
+                    <TextView
+                        android:id="@+id/moreFun_lianjie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/moreFun_lianjie"
+                        android:textColor="@color/app_black"
+                        android:textSize="20sp" />
+                    
+                    <LinearLayout
+                        android:id="@+id/container_links_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_below="@id/moreFun_lianjie"
+                        android:layout_marginEnd="5dp"
+                        android:baselineAligned="false">
+                        
+                        <FrameLayout
+                            android:id="@+id/more_url_bkjw"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_url_bkjw_picture"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_jiaowu"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_url_bkjw"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:id="@+id/more_url_vpn"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_url_vpn_picture"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_vpn"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_url_vpn"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:id="@+id/more_url_campus"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_url_campus_picture"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_jiaoyan"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_url_campus"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:id="@+id/more_url_staff"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_url_staff_picture"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_yuangong"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_url_staff"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                    
+                    </LinearLayout>
+                    
+                    <LinearLayout
+                        android:id="@+id/container_links_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_below="@id/container_links_1"
+                        android:baselineAligned="false">
+                        
+                        <FrameLayout
+                            android:id="@+id/more_url_lijiang"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_url_lijiang_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_xuexiao"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_url_lijiang"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:id="@+id/more_url_more"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_url_more_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_index"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_url_more"
+                                android:textSize="13sp" />
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@color/app_white">
+                        
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@color/app_white">
+                        
+                        </FrameLayout>
+                    
+                    </LinearLayout>
+                
+                </RelativeLayout>
+            
+            </androidx.cardview.widget.CardView>
+            
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:layout_weight="4.5"
+                app:cardCornerRadius="10dp">
+                
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp">
+                    
+                    <TextView
+                        android:id="@+id/moreFun_pingjia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/moreFun_pingjia"
+                        android:textColor="@color/app_black"
+                        android:textSize="20sp" />
                     
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/moreFun_pingjia"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
                         
-                        
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="常用链接"
-                            android:textColor="@color/app_black"
-                            android:textSize="20sp" />
-                        
-                        
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
+                        <FrameLayout
+                            android:id="@+id/more_evaluating_teachers"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
                             
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            <ImageView
+                                android:id="@+id/more_evaluating_teachers_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:baselineAlignBottom="false"
+                                android:src="@drawable/m_pingyu"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_url_bkjw"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="0dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_url_bkjw_picture"
-                                        android:layout_width="32dp"
-                                        android:layout_height="32dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_jiaowu" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_url_bkjw_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="教务系统"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_url_vpn"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="0dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_url_vpn_picture"
-                                        android:layout_width="32dp"
-                                        android:layout_height="32dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_vpn" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_url_vpn_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="校内VPN"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_url_campus"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_url_campus_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_jiaoyan" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_url_campus_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="智慧校园"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_url_staff"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_url_staff_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_yuangong" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_url_staff_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="智慧学工"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_evaluating_teachers"
+                                android:textSize="13sp" />
                         
+                        </FrameLayout>
                         
-                        </LinearLayout>
+                        <FrameLayout
+                            android:id="@+id/more_evaluating_textbooks"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+                            
+                            <ImageView
+                                android:id="@+id/more_evaluating_textbooks_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_pingjiao"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_evaluating_textbooks"
+                                android:textSize="13sp" />
                         
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_url_lijiang"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="6dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_url_lijiang_picture"
-                                        android:layout_width="34dp"
-                                        android:layout_height="34dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_xuexiao" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_url_lijiang_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="漓江学堂"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_url_more"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="0dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_url_more_picture"
-                                        android:layout_width="32dp"
-                                        android:layout_height="32dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_index" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_url_more_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="更多链接"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                            
-                            </LinearLayout>
+                        </FrameLayout>
                         
+                        <FrameLayout
+                            android:id="@+id/more_test"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:visibility="invisible">
+                            
+                            <ImageView
+                                android:id="@+id/more_test_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_pingjiao"
+                                tools:ignore="ContentDescription" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/text_test"
+                                android:textSize="13sp" />
                         
-                        </LinearLayout>
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@color/app_white">
+                        
+                        </FrameLayout>
                     
                     </LinearLayout>
                 
-                </androidx.cardview.widget.CardView>
+                </RelativeLayout>
             
-            </LinearLayout>
             
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_weight="2"
-                    app:cardCornerRadius="10dp">
-                    
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:orientation="vertical">
-                        
-                        
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="快速评价"
-                            android:textColor="@color/app_black"
-                            android:textSize="20sp" />
-                        
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:baselineAligned="false"
-                            android:orientation="horizontal">
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_evaluating_teachers"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="0dp"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_evaluating_teachers_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_pingyu" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_evaluating_teachers_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="评价教师"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_evaluating_textbooks"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="0dp"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_evaluating_textbooks_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_pingjiao" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_evaluating_textbooks_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="评价教材"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                
-                                <RelativeLayout
-                                    android:id="@+id/more_test"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="0dp"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    
-                                    <ImageView
-                                        android:id="@+id/more_test_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_centerHorizontal="true"
-                                        android:baselineAlignBottom="false"
-                                        android:src="@drawable/m_pingjiao" />
-                                    
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/more_test_picture"
-                                        android:layout_centerInParent="true"
-                                        android:text="测试"
-                                        android:textSize="13sp" />
-                                
-                                </RelativeLayout>
-                            
-                            </LinearLayout>
-                            
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                            
-                            </LinearLayout>
-                        
-                        
-                        </LinearLayout>
-                    
-                    </LinearLayout>
-                
-                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
             
-            </LinearLayout>
-    
-    
             <!-- 备用布局块 -->
             <View
                 android:layout_width="match_parent"
@@ -941,5 +693,5 @@
         </LinearLayout>
     
     </ScrollView>
-    
+
 </LinearLayout>
