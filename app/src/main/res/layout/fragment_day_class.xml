@@ -41,12 +41,11 @@
         android:id="@+id/day_class_tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
@@ -69,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:text="快捷工具"
                         android:textColor="@color/app_black"
-                        android:textSize="20dp" />
+                        android:textSize="18dp" />
 
                     <LinearLayout
                         android:id="@+id/day_show_exam"
@@ -93,31 +92,13 @@
 
                     </LinearLayout>
 
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="   |   "
-                        android:textSize="15dp"
-                        android:visibility="gone"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="必要信息速查"
-                        android:textSize="15dp"
-                        android:visibility="gone"/>
-
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="6dp">
+                    android:layout_marginTop="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
