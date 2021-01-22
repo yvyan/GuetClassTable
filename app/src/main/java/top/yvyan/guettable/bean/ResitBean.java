@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class ResitBean implements Serializable, BeanAttribute {
 
+    private static final long serialVersionUID = 311647067934662380L;
     //课号
     private String number;
     //课程名称

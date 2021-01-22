@@ -30,7 +30,7 @@ import static com.xuexiang.xui.XUI.getContext;
 public class AverageTeacherActivity extends AppCompatActivity implements View.OnClickListener, IMoreFun {
 
     @BindView(R.id.average_teacher_state) TextView title;
-    @BindView(R.id.teacher_waite) TextView waite;
+    @BindView(R.id.teacher_waite) View waite;
     @BindView(R.id.teacher_info_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.avg_teacher_start) Button start;
 

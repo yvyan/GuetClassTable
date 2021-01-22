@@ -77,7 +77,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
             }
 
             if(courseBean.isLab()) { //课内实验
-                holder.textView2.setText("名称：" + courseBean.getLibName());
+                holder.textView2.setText("名称：" + courseBean.getLabName());
             } else { //理论课
                 holder.textView2.setText("课号：" + courseBean.getNumber());
             }

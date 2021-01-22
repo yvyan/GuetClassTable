@@ -34,7 +34,7 @@ public class LibActivity extends AppCompatActivity implements IMoreFun {
     @BindView(R.id.lib_state)
     TextView libHint;
     @BindView(R.id.lib_not_find)
-    TextView libNotFind;
+    View libNotFind;
     @BindView(R.id.lib_info_recycler_view)
     RecyclerView recyclerView;
 

@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
     private ViewPager viewPager;
     private MenuItem menuItem;
 
-    private GeneralData generalData;
-
     private DayClassFragment dayClassFragment;
     private PersonFragment personFragment;
 
@@ -59,27 +57,6 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
             getSupportActionBar().hide();
         }
         setContentView(R.layout.activity_main);
-
-        if (shouldInit()) {
-            MiPushClient.registerPush(this, APP_ID, APP_KEY);
-        }
-        LoggerInterface newLogger = new LoggerInterface() {
-            @Override
-            public void setTag(String tag) {
-                // ignore
-            }
-            @Override
-            public void log(String content, Throwable t) {
-                Log.d(TAG, content, t);
-            }
-            @Override
-            public void log(String content) {
-                Log.d(TAG, content);
-            }
-        };
-        Logger.setLogger(this, newLogger);
-
-        initReceiver();
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemReselectedListener);
@@ -119,6 +96,27 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         dayClassFragment.setOnButtonClick(this);
         personFragment = PersonFragment.newInstance();
         personFragment.setOnButtonClick(this);
+
+        if (shouldInit()) {
+            MiPushClient.registerPush(this, APP_ID, APP_KEY);
+        }
+        LoggerInterface newLogger = new LoggerInterface() {
+            @Override
+            public void setTag(String tag) {
+                // ignore
+            }
+            @Override
+            public void log(String content, Throwable t) {
+                Log.d(TAG, content, t);
+            }
+            @Override
+            public void log(String content) {
+                Log.d(TAG, content);
+            }
+        };
+        Logger.setLogger(this, newLogger);
+
+        initReceiver();
     }
 
     @Override

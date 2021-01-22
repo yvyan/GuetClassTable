@@ -46,24 +46,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/resit_more"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:layout_marginRight="15dp"-->
-<!--            android:src="@drawable/attribute"/>-->
-
     </RelativeLayout>
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/resit_not_find"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="没有查询到符合条件的补考安排信息!"
-        android:textSize="25dp"/>
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4"
+            app:srcCompat="@drawable/d_kong"
+            app:tint="@color/colorPrimary" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/resit_info_recycler_view"

@@ -116,7 +116,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             }
 
             if(courseBean.isLab()) { //课内实验
-                holder.textView2.setText("名称：" + courseBean.getLibName());
+                holder.textView2.setText("名称：" + courseBean.getLabName());
             } else { //理论课
                 holder.textView2.setText("课号：" + courseBean.getNumber());
             }

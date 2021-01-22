@@ -22,17 +22,19 @@ import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.util.AppUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
 public class PlannedCoursesActivity extends AppCompatActivity implements IMoreFun {
 
     private MoreDate moreDate;
+    private boolean update = false;
 
     @BindView(R.id.planned_course_state)
     TextView plannedCourseState;
     @BindView(R.id.planned_course_loading)
-    TextView plannedCourseLoading;
+    View plannedCourseLoading;
     @BindView(R.id.planned_course_info_view)
     View infoView;
     @BindView(R.id.planned_course_info_recycler_view)
@@ -69,7 +71,10 @@ public class PlannedCoursesActivity extends AppCompatActivity implements IMoreFu
     public int updateData(String cookie) {
         List<PlannedCourseBean> plannedCourseBeans = StaticService.getPlannedCourseBeans(this, cookie);
         if (plannedCourseBeans != null) {
-            moreDate.setPlannedCourseBeans(plannedCourseBeans);
+            if (!AppUtil.equalList(plannedCourseBeans, moreDate.getPlannedCourseBeans())) {
+                moreDate.setPlannedCourseBeans(plannedCourseBeans);
+                update = true;
+            }
             return 5;
         } else {
             return 1;
@@ -79,7 +84,7 @@ public class PlannedCoursesActivity extends AppCompatActivity implements IMoreFu
     @Override
     public void updateView(String hint, int state) {
         plannedCourseState.setText(hint);
-        if (state == 5) {
+        if (state == 5 && update) {
             updateView();
         }
     }
