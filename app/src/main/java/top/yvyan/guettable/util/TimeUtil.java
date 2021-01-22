@@ -144,6 +144,9 @@ public class TimeUtil {
 
     public static String timeFormat(Date date) {
         DateFormat fmt = new SimpleDateFormat("yyyy年MM月dd日");
+        if (date == null) {
+            return "";
+        }
         return fmt.format(date); // 转换成 X年X月X日
     }
 }
