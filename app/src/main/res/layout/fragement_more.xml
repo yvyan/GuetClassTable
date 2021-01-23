@@ -519,18 +519,42 @@
                                 android:textSize="13sp" />
                         
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:id="@+id/more_url_more"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@color/app_white">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_more"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_url_more"
+                                android:textSize="13sp" />
+
+                        </FrameLayout>
+                        
+                        <FrameLayout
+                            android:id="@+id/more_url_index"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1">
                             
                             <ImageView
-                                android:id="@+id/more_url_more_picture"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
+                                android:layout_marginTop="1dp"
+                                android:layout_width="33dp"
+                                android:layout_height="33dp"
                                 android:layout_gravity="top|center"
                                 android:src="@drawable/m_index"
                                 tools:ignore="ContentDescription" />
@@ -539,17 +563,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
-                                android:text="@string/moreFun_url_more"
+                                android:text="@string/moreFun_url_index"
                                 android:textSize="13sp" />
-                        
-                        </FrameLayout>
-                        
-                        <FrameLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="@color/app_white">
                         
                         </FrameLayout>
                         

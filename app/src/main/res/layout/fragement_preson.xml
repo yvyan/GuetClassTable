@@ -416,10 +416,10 @@
                         tools:ignore="UselessParent">
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
                             android:layout_centerVertical="true"
-                            android:layout_marginStart="2.6dp"
+                            android:layout_marginStart="3.5dp"
                             android:src="@drawable/p_test"
                             tools:ignore="ContentDescription" />
 
