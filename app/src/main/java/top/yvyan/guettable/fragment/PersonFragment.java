@@ -1,30 +1,17 @@
 package top.yvyan.guettable.fragment;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-
-import com.xiaomi.market.sdk.UpdateStatus;
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
-
-import java.util.Date;
 
 import top.yvyan.guettable.AboutActivity;
 import top.yvyan.guettable.HelperActivity;
@@ -32,13 +19,10 @@ import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.MySettingActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
-import top.yvyan.guettable.ShareActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.service.UpdateApp;
 import top.yvyan.guettable.util.AppUtil;
-import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
@@ -185,8 +169,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.person_share:
-                intent = new Intent(getContext(), ShareActivity.class);
-                startActivity(intent);
+                shareText();
                 break;
             case R.id.person_update:
                 ToastUtil.showToast(getContext(), "正在检查更新……");
@@ -218,5 +201,14 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         webIntent.setAction("android.intent.action.VIEW");
         webIntent.setData(uri);
         startActivity(webIntent);
+    }
+
+    public void shareText() {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_text));
+        shareIntent.setType("text/plain");
+        //设置分享列表的标题，并且每次都显示分享列表
+        startActivity(Intent.createChooser(shareIntent, "分享给同学"));
     }
 }

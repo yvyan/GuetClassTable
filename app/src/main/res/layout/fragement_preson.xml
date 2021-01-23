@@ -16,22 +16,24 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
             android:layout_centerVertical="true"
-            android:text="个人信息与设置"
+            android:layout_marginStart="25dp"
+            android:text="@string/titleBar_4"
             android:textColor="@color/app_white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RelativeOverlap" />
 
         <ImageView
             android:id="@+id/person_setting"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/setting" />
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/setting"
+            tools:ignore="ContentDescription" />
 
     </RelativeLayout>
 
@@ -41,17 +43,20 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/person_userInfo_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardCornerRadius="10dp">
 
                 <LinearLayout
@@ -76,15 +81,16 @@
                             android:id="@+id/images_head"
                             android:layout_width="80dp"
                             android:layout_height="60dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/p_huiyuan" />
+                            android:src="@drawable/p_huiyuan"
+                            tools:ignore="ContentDescription" />
 
                         <LinearLayout
                             android:id="@+id/person_userNameAndNo"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
@@ -98,7 +104,7 @@
                                 android:layout_marginTop="8dp"
                                 android:text=""
                                 android:textColor="@color/app_black"
-                                android:textSize="18dp" />
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/person_number"
@@ -107,7 +113,7 @@
                                 android:layout_marginTop="4dp"
                                 android:text=""
                                 android:textColor="@color/app_black"
-                                android:textSize="18dp" />
+                                android:textSize="18sp" />
 
 
                         </LinearLayout>
@@ -118,8 +124,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
-                            android:text="点击登录"
-                            android:textSize="28dp"
+                            android:text="@string/person_login"
+                            android:textSize="28sp"
                             app:rb_backgroundColor="@color/colorPrimary" />
 
                     </LinearLayout>
@@ -147,8 +153,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="年级"
-                                android:textSize="15dp" />
+                                android:text="@string/person_grade"
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:id="@+id/person_grade"
@@ -156,7 +162,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text=""
-                                android:textSize="18dp" />
+                                android:textSize="18sp" />
 
                         </LinearLayout>
 
@@ -176,8 +182,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="学年"
-                                android:textSize="15dp" />
+                                android:text="@string/person_term"
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:id="@+id/person_term"
@@ -185,7 +191,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text=""
-                                android:textSize="18dp" />
+                                android:textSize="18sp" />
 
                         </LinearLayout>
 
@@ -205,8 +211,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="周数"
-                                android:textSize="15dp" />
+                                android:text="@string/person_week"
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:id="@+id/person_week"
@@ -214,13 +220,14 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text=""
-                                android:textSize="18dp" />
+                                android:textSize="18sp" />
 
                         </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
@@ -229,163 +236,210 @@
                 android:background="@color/app_white"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <FrameLayout
                     android:id="@+id/person_help"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_margin="8dp">
-
-                    <ImageView
-
-                        android:layout_width="29dp"
-                        android:layout_height="29dp"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/p_bangzhu"
-                        android:layout_marginLeft="4dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="45dp"
-                        android:text="帮助与进阶"
-                        android:textColor="@color/app_black"
-                        android:textSize="16dp"/>
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_marginLeft="53dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@color/xui_config_color_gray_9" />
-
-                <RelativeLayout
-                    android:id="@+id/person_share"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_margin="8dp">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/p_ziyuan"
-                        android:layout_marginLeft="6dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="45dp"
-                        android:text="分享给同学"
-                        android:textColor="@color/app_black"
-                        android:textSize="16dp"/>
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_marginLeft="53dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@color/xui_config_color_gray_9" />
-
-                <RelativeLayout
-                    android:id="@+id/person_update"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_margin="8dp">
-
-                    <ImageView
-                        android:layout_width="27dp"
-                        android:layout_height="27dp"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/p_shengji"
-                        android:layout_marginLeft="5dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="45dp"
-                        android:text="检查更新"
-                        android:textColor="@color/app_black"
-                        android:textSize="16dp"/>
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_marginLeft="53dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@color/xui_config_color_gray_9" />
-
-                <LinearLayout
-                    android:id="@+id/person_download_all"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
-                        android:layout_margin="8dp">
+                        android:layout_margin="8dp"
+                        tools:ignore="UselessParent">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="29dp"
+                            android:layout_height="29dp"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/p_cloud"
-                            android:layout_marginLeft="2.6dp"/>
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/p_bangzhu"
+                            tools:ignore="ContentDescription" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="45dp"
-                            android:text="所有版本下载"
+                            android:layout_marginStart="45dp"
+                            android:text="@string/person_help"
                             android:textColor="@color/app_black"
-                            android:textSize="16dp"/>
+                            android:textSize="16sp" />
 
                     </RelativeLayout>
 
-                    <View
-                        android:layout_marginLeft="53dp"
-                        android:layout_width="fill_parent"
-                        android:layout_height="0.1dp"
-                        android:background="@color/xui_config_color_gray_9" />
-
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:id="@+id/person_about"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_margin="8dp">
-
-                    <ImageView
-
-                        android:layout_width="29dp"
-                        android:layout_height="29dp"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/p_guanyu"
-                        android:layout_marginLeft="4dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="45dp"
-                        android:text="关于APP"
-                        android:textColor="@color/app_black"
-                        android:textSize="16dp"/>
-
-                </RelativeLayout>
+                </FrameLayout>
 
                 <View
-                    android:layout_marginLeft="53dp"
                     android:layout_width="fill_parent"
                     android:layout_height="0.1dp"
+                    android:layout_marginStart="53dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+                <FrameLayout
+                    android:id="@+id/person_share"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_margin="8dp"
+                        tools:ignore="UselessParent">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="6dp"
+                            android:src="@drawable/p_ziyuan"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="45dp"
+                            android:text="@string/person_share"
+                            android:textColor="@color/app_black"
+                            android:textSize="16sp" />
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="53dp"
+                    android:background="@color/xui_config_color_gray_9"
+                    tools:ignore="RtlHardcoded" />
+
+                <FrameLayout
+                    android:id="@+id/person_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_margin="8dp"
+                        tools:ignore="UselessParent">
+
+                        <ImageView
+                            android:layout_width="27dp"
+                            android:layout_height="27dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="5dp"
+                            android:src="@drawable/p_shengji"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="45dp"
+                            android:text="@string/person_update"
+                            android:textColor="@color/app_black"
+                            android:textSize="16sp" />
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="53dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+                <FrameLayout
+                    android:id="@+id/person_download_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_margin="8dp"
+                        tools:ignore="UselessParent">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="2.6dp"
+                            android:src="@drawable/p_cloud"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="45dp"
+                            android:text="@string/person_download_all"
+                            android:textColor="@color/app_black"
+                            android:textSize="16sp" />
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="53dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+                <FrameLayout
+                    android:id="@+id/person_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_margin="8dp"
+                        tools:ignore="UselessParent">
+
+                        <ImageView
+                            android:layout_width="29dp"
+                            android:layout_height="29dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/p_guanyu"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="45dp"
+                            android:text="@string/person_about"
+                            android:textColor="@color/app_black"
+                            android:textSize="16sp" />
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="53dp"
                     android:background="@color/xui_config_color_gray_9" />
 
                 <RelativeLayout
@@ -399,15 +453,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        tools:ignore="UselessParent">
 
                         <TextView
-                            android:layout_marginLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="版本:"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/person_version"
                             android:textColor="#000000"
-                            android:textSize="15dp" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/tv_profile_version"
@@ -416,6 +471,7 @@
                             android:textColor="#000000"
                             android:textSize="15sp" />
                     </LinearLayout>
+
                 </RelativeLayout>
 
             </LinearLayout>
@@ -424,15 +480,12 @@
                 android:id="@+id/btn_quit"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_below="@+id/login_btn_login"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="15dp"
-                android:text="退出登录"
+                android:layout_marginEnd="15dp"
+                android:text="@string/btn_quit"
                 android:textColor="@android:color/white"
-                android:textSize="23dp"
+                android:textSize="23sp"
                 app:rb_backgroundColor="@color/app_red" />
 
         </LinearLayout>

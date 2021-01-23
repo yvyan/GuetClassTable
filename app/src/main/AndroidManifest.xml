@@ -46,7 +46,6 @@
         <activity android:name=".HelperActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".MySettingActivity" />
-        <activity android:name=".ShareActivity" />
         <activity android:name=".moreFun.ExperimentScoreActivity" />
         <activity android:name=".moreFun.ExamScoreActivity" />
         <activity android:name=".moreFun.CETActivity" />

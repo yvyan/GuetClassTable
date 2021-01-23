@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="25dp"
-            android:text="日课表"
+            android:text="@string/titleBar_1"
             android:textColor="@color/app_white"
             android:textSize="18sp"
             app:layout_constraintTop_toTopOf="parent" />
