@@ -1,6 +1,9 @@
 package top.yvyan.guettable.fragment;
 
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +16,10 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 import top.yvyan.guettable.AboutActivity;
+import top.yvyan.guettable.HelpTestActivity;
 import top.yvyan.guettable.HelperActivity;
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.MySettingActivity;
@@ -21,8 +27,11 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.SettingData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.UpdateApp;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
@@ -33,24 +42,14 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 
     private View person_userNameAndNo;
     private View person_login;
-    private View person_setting;
     private Button buttonQuit;
     private View person_line_1;
     private View person_userInfo;
-    private View person_userInfo_card;
     private TextView person_name;
     private TextView person_number;
     private TextView person_grade;
     private TextView person_term;
     private TextView person_week;
-    private TextView profileVersion;
-
-    //    private View info;
-    private View help;
-    private View share;
-    private View update;
-    private View downloadAll;
-    private View about;
 
     private AccountData accountData;
     private GeneralData generalData;
@@ -75,7 +74,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         initData();
         initView();
         updateView();
-        person_setting = view.findViewById(R.id.person_setting);
+        View person_setting = view.findViewById(R.id.person_setting);
         person_setting.setOnClickListener(this);
         return view;
     }
@@ -95,24 +94,27 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         buttonQuit.setOnClickListener(this);
         person_line_1 = view.findViewById(R.id.person_line_1);
         person_userInfo = view.findViewById(R.id.person_userInfo);
-        person_userInfo_card = view.findViewById(R.id.person_userInfo_card);
+        View person_userInfo_card = view.findViewById(R.id.person_userInfo_card);
         person_userInfo_card.setOnClickListener(this);
         person_grade = view.findViewById(R.id.person_grade);
         person_term = view.findViewById(R.id.person_term);
         person_week = view.findViewById(R.id.person_week);
-        profileVersion = view.findViewById(R.id.tv_profile_version);
+        TextView profileVersion = view.findViewById(R.id.tv_profile_version);
         profileVersion.setText(AppUtil.getAppVersionName(getContext()));
 
-        help = view.findViewById(R.id.person_help);
+        //    private View info;
+        View help = view.findViewById(R.id.person_help);
         help.setOnClickListener(this);
-        share = view.findViewById(R.id.person_share);
+        View share = view.findViewById(R.id.person_share);
         share.setOnClickListener(this);
-        update = view.findViewById(R.id.person_update);
+        View update = view.findViewById(R.id.person_update);
         update.setOnClickListener(this);
-        downloadAll = view.findViewById(R.id.person_download_all);
+        View downloadAll = view.findViewById(R.id.person_download_all);
         downloadAll.setOnClickListener(this);
-        about = view.findViewById(R.id.person_about);
+        View about = view.findViewById(R.id.person_about);
         about.setOnClickListener(this);
+        View helpTest = view.findViewById(R.id.person_help_test);
+        helpTest.setOnClickListener(this);
     }
 
     public void updateView() {
@@ -178,6 +180,9 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
             case R.id.person_download_all:
                 downloadAllApk();
                 break;
+            case R.id.person_help_test:
+                helpTest();
+                break;
             case R.id.person_about:
                 intent = new Intent(getContext(), AboutActivity.class);
                 startActivity(intent);
@@ -210,5 +215,41 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         shareIntent.setType("text/plain");
         //设置分享列表的标题，并且每次都显示分享列表
         startActivity(Intent.createChooser(shareIntent, "分享给同学"));
+    }
+
+    public void helpTest() {
+        if (SettingData.newInstance(getContext()).isDevelopMode()) {
+            if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {
+                TextDialog.showScanNumberDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后进行测试。");
+            } else {
+                Intent intent = new Intent(getContext(), HelpTestActivity.class);
+                startActivity(intent);
+            }
+        } else {
+            if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {
+                TextDialog.showScanNumberDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后获取凭证。");
+            } else {
+                ToastUtil.showToast(getContext(), "请不要切换网络，正在获取凭证，请稍后！");
+                new Thread(() -> {
+                    TokenData tokenData = TokenData.newInstance(getContext());
+                    int n = tokenData.refresh();
+                    if (n == 0) {
+                        //获取剪贴板管理器：
+                        ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        // 创建普通字符型ClipData
+                        ClipData mClipData = ClipData.newPlainText("Label", tokenData.getCookie());
+                        // 将ClipData内容放到系统剪贴板里。
+                        cm.setPrimaryClip(mClipData);
+                        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                            TextDialog.showScanNumberDialog(getContext(), "感谢协助，凭证复制成功，您现在可以发送给开发者了！");
+                        });
+                    } else {
+                        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                            TextDialog.showScanNumberDialog(getContext(), "获取失败，请稍后重试。");
+                        });
+                    }
+                }).start();
+            }
+        }
     }
 }

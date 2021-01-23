@@ -103,7 +103,7 @@
     <string name="setting">设置</string>
     <string name="todo">TODO</string>
     <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²</string>
-    
+
     <string name="text_test"> 测试 </string>
 
     <string name="titleBar_1">日课表</string>
@@ -142,5 +142,7 @@
     <string name="person_version">版本:</string>
     <string name="btn_quit">退出登录</string>
     <string name="QQGroup">963908505</string>
+    <string name="person_help_test">协助测试</string>
+    <string name="first_login_help">输入智慧校园的密码，也即统一登录平台，若之前没有登录过，需要先在浏览器上登录一次，成功后即可在APP上正常登录，若不知道密码，请联系辅导员或加群寻求帮助；点击下方按钮进行首次登录。</string>
 
 </resources>

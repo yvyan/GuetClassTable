@@ -8,11 +8,9 @@ import top.yvyan.guettable.fragment.SettingFragment;
 
 public class SettingData {
     private static SettingData settingData;
-    private Context context;
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
     private SettingData(Context context) {
-        this.context = context;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
@@ -51,4 +49,7 @@ public class SettingData {
         return Integer.parseInt(sharedPreferences.getString(SettingFragment.CLASS_LENGTH, "60"));
     }
 
+    public boolean isDevelopMode() {
+        return sharedPreferences.getBoolean(SettingFragment.DEVELOPER_MODE, false);
+    }
 }
