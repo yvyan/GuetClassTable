@@ -31,7 +31,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private View view;
     private View testSchedule, credits, testScores, libScores, resitSchedule, libSchedule;
     private View graduationRequirement, planCourses, cet;
-    private View urlBkjw, urlVPN, urlCampus, urlStaff, urlLiJiang, urlMore;
+    private View urlBkjw, urlVPN, urlCampus, urlStaff, urlLiJiang, urlMore, urlIndex;
     private View evaluatingTeachers, evaluatingTextbooks, test;
 
     private GeneralData generalData;
@@ -88,6 +88,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         urlLiJiang.setOnClickListener(this);
         urlMore = view.findViewById(R.id.more_url_more);
         urlMore.setOnClickListener(this);
+        urlIndex = view.findViewById(R.id.more_url_index);
+        urlIndex.setOnClickListener(this);
 
         evaluatingTeachers = view.findViewById(R.id.more_evaluating_teachers);
         evaluatingTeachers.setOnClickListener(this);
@@ -181,7 +183,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;
-            case R.id.more_url_more:
+            case R.id.more_url_index:
                 uri = Uri.parse(getContext().getResources().getString(R.string.guet_yvyan_top));
                 webIntent.setData(uri);
                 startActivity(webIntent);
