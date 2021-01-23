@@ -1,5 +1,6 @@
 package top.yvyan.guettable.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceCategory;
@@ -7,6 +8,7 @@ import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.data.TokenData;
 
 public class SettingFragment extends PreferenceFragment {
 
@@ -18,10 +20,10 @@ public class SettingFragment extends PreferenceFragment {
     public static final String SHOW_TOOLS_ON_DAY_CLASS = "show_tools_on_day_class";
     public static final String APP_CHECK_UPDATE = "app_check_update";
     public static final String CLASS_LENGTH = "class_length";
+    public static final String DEVELOPER_MODE = "developer_mode";
 
 
     private PreferenceCategory basicSettings;
-    private SwitchPreference refreshData;
     private ListPreference refreshDataFrequency;
 
     @Override
@@ -31,7 +33,7 @@ public class SettingFragment extends PreferenceFragment {
 
         basicSettings = (PreferenceCategory) findPreference(BASE_SETTINGS);
 
-        refreshData = (SwitchPreference) findPreference(REFRESH_DATA);
+        SwitchPreference refreshData = (SwitchPreference) findPreference(REFRESH_DATA);
         refreshData.setOnPreferenceChangeListener((preference, newValue) -> {
             if((boolean)newValue) {
                 basicSettings.addPreference(refreshDataFrequency);
@@ -45,6 +47,20 @@ public class SettingFragment extends PreferenceFragment {
         refreshDataFrequency.setSummary("刷新频率：" + refreshDataFrequency.getValue() + "天");
         refreshDataFrequency.setOnPreferenceChangeListener((preference, newValue) -> {
             refreshDataFrequency.setSummary("刷新频率：" + newValue.toString() + "天");
+            return true;
+        });
+
+        SwitchPreference developMode = (SwitchPreference) findPreference(DEVELOPER_MODE);
+        developMode.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (!(boolean)newValue) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //尽可能自动关闭调试
+                    TokenData tokenData = TokenData.newInstance(getContext());
+                    if (tokenData.isDevelop()) {
+                        tokenData.setDevelop(false);
+                        tokenData.setVPNToken("");
+                    }
+                }
+            }
             return true;
         });
     }

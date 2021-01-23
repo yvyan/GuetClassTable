@@ -2,6 +2,7 @@ package top.yvyan.guettable;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -25,6 +26,8 @@ import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.service.fetch.LAN;
 import top.yvyan.guettable.util.ToastUtil;
+
+import static com.xuexiang.xui.XUI.getContext;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Boolean bPwdSwitch = false;
@@ -275,5 +278,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void setUnClick() {
         button.setText("网络初始化");
         button.setEnabled(false);
+    }
+
+    /**
+     * 打开智慧校园网址
+     *
+     * @param view view
+     */
+    public void firstLogin(View view) {
+        Intent webIntent = new Intent();
+        webIntent.setAction("android.intent.action.VIEW");
+        Uri uri = Uri.parse(getContext().getResources().getString(R.string.smart_campus));
+        webIntent.setData(uri);
+        startActivity(webIntent);
     }
 }

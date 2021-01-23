@@ -9,20 +9,23 @@ import top.yvyan.guettable.service.fetch.LAN;
 
 public class TokenData {
     private static TokenData tokenData;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
-    private Context context;
+    private final SharedPreferences.Editor editor;
+    private final Context context;
 
     private static final String SHP_NAME = "tokenData";
     private static final String LOGIN_TYPE = "loginType";
     private static final String TGT_TOKEN = "TGTToken";
     private static final String VPN_TOKEN = "VPNToken";
     private static final String BKJW_COOKIE = "bkjwCookie";
+    private static final String IS_DEVELOP = "isDevelop";
 
-    private AccountData accountData;
+    private final AccountData accountData;
 
     private int loginType; //0 : CAS登录;  1 : VPN + 教务登录
     public static boolean isVPN = true;
+
+    //开发者调试
+    private boolean isDevelop;
 
     private String TGTToken;   //统一登录TGT令牌
     private String VPNToken;   //VPN认证Token
@@ -37,7 +40,7 @@ public class TokenData {
     }
 
     private TokenData(Context context) {
-        sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         accountData = AccountData.newInstance(context);
         this.context = context;
@@ -46,6 +49,7 @@ public class TokenData {
         TGTToken = sharedPreferences.getString(TGT_TOKEN, "TGT-");
         VPNToken = sharedPreferences.getString(VPN_TOKEN, null);
         bkjwCookie = sharedPreferences.getString(BKJW_COOKIE, null);
+        isDevelop = sharedPreferences.getBoolean(IS_DEVELOP, false);
     }
 
     public static TokenData newInstance(Context context) {
@@ -64,6 +68,9 @@ public class TokenData {
      *                 2 : 未登录
      */
     public int refresh() {
+        if (isDevelop) { //调试模式不刷新凭证
+            return 0;
+        }
         if (accountData.getIsLogin()) {
             isVPN = LAN.testNet(context) != 0;
             if (loginType == 0) {
@@ -216,6 +223,16 @@ public class TokenData {
     public void setBkjwCookie(String bkjwCookie) {
         this.bkjwCookie = bkjwCookie;
         editor.putString(BKJW_COOKIE, bkjwCookie);
+        editor.apply();
+    }
+
+    public boolean isDevelop() {
+        return isDevelop;
+    }
+
+    public void setDevelop(boolean develop) {
+        isDevelop = develop;
+        editor.putBoolean(IS_DEVELOP, isDevelop);
         editor.apply();
     }
 }
