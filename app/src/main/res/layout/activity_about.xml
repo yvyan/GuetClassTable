@@ -18,20 +18,21 @@
             android:onClick="doBack"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:src="@drawable/back"
-            app:tint="@color/app_white" />
+            app:tint="@color/app_white"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
             android:text="关于"
             android:textColor="@color/app_white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintTop_toTopOf="parent" />
 
     </RelativeLayout>
@@ -42,14 +43,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/more_lib_schedule"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:orientation="vertical">
@@ -59,9 +60,9 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1"
                     android:baselineAlignBottom="false"
-                    android:src="@drawable/table" />
+                    android:src="@drawable/table"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -69,9 +70,8 @@
                     android:layout_below="@+id/about_picture"
                     android:layout_centerInParent="true"
                     android:textColor="@color/tab_unchecked"
-                    android:layout_weight="1"
-                    android:text="桂电课程表"
-                    android:textSize="20dp" />
+                    android:text="@string/app_name"
+                    android:textSize="20sp" />
 
             </RelativeLayout>
 
@@ -93,14 +93,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="版本"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textColor="@color/app_black"/>
 
                 <TextView
                     android:id="@+id/about_version"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1.7.5"/>
+                    android:layout_height="wrap_content" />
 
                 <View
                     android:layout_width="match_parent"
@@ -128,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="加入我们"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textColor="@color/app_black"/>
 
                 <View
@@ -157,13 +156,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="官方QQ交流群"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textColor="@color/app_black"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="963908505"/>
+                    android:text="@string/QQGroup"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -190,7 +189,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="作者"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textColor="@color/app_black"/>
 
                 <TextView
@@ -223,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="特别鸣谢"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textColor="@color/app_black"/>
 
                 <TextView
@@ -257,7 +256,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="开发者自语"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textColor="@color/app_black"/>
 
                 <View
@@ -286,7 +285,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="项目开源"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textColor="@color/app_black"/>
 
                 <View
@@ -315,7 +314,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="开源引用"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textColor="@color/app_black"/>
 
                 <View
@@ -344,7 +343,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="隐私政策"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textColor="@color/app_black"/>
 
                 <View
@@ -373,7 +372,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="声明"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textColor="@color/app_black"/>
 
                 <View
@@ -388,186 +387,6 @@
                 android:background="@color/xui_config_color_gray_9" />
 
         </LinearLayout>
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_margin="10dp"-->
-<!--            android:orientation="vertical">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="前言:"-->
-<!--                android:textColor="@color/colorPrimary"-->
-<!--                android:textSize="20dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/first_about"-->
-<!--                android:textSize="18dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="欢迎大家加入讨论群:"-->
-<!--                android:textColor="@color/colorPrimary"-->
-<!--                android:textSize="20dp" />-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="QQ群:"-->
-<!--                    android:textSize="18dp" />-->
-
-<!--                <EditText-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="963908505"-->
-<!--                    android:textColor="@color/app_black"-->
-<!--                    android:textSize="17dp" />-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="或"-->
-<!--                    android:textSize="18dp" />-->
-
-<!--                <com.xuexiang.xui.widget.button.roundbutton.RoundButton-->
-<!--                    android:id="@+id/btn_join"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_alignParentStart="true"-->
-<!--                    android:layout_alignParentLeft="true"-->
-<!--                    android:layout_marginLeft="15dp"-->
-<!--                    android:layout_marginRight="15dp"-->
-<!--                    android:text="一键加群"-->
-<!--                    android:textColor="@android:color/white"-->
-<!--                    android:textSize="18dp"-->
-<!--                    app:rb_backgroundColor="@color/app_blue1" />-->
-
-<!--            </LinearLayout>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="开发者："-->
-<!--                android:textColor="@color/colorPrimary"-->
-<!--                android:textSize="20dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="wing  |  tank  |  uuin  |  ssbird"-->
-<!--                android:textColor="@color/app_black"-->
-<!--                android:textSize="20dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="协助测试人员："-->
-<!--                android:textColor="@color/colorPrimary"-->
-<!--                android:textSize="20dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="就这 Casual"-->
-<!--                android:textSize="20dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="项目开源：(引用请注明)"-->
-<!--                android:textColor="@color/colorPrimary"-->
-<!--                android:textSize="20dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/github_url"-->
-<!--                android:textIsSelectable="true"-->
-<!--                android:textSize="18dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="特别鸣谢："-->
-<!--                android:textColor="@color/colorPrimary"-->
-<!--                android:textSize="20dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/thanks_1"-->
-<!--                android:textIsSelectable="true"-->
-<!--                android:textSize="18dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/thanks_2"-->
-<!--                android:textIsSelectable="true"-->
-<!--                android:textSize="18dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="开发者自语:"-->
-<!--                android:textColor="@color/colorPrimary"-->
-<!--                android:textSize="20dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/about_1"-->
-<!--                android:textSize="18dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/about_2"-->
-<!--                android:textSize="18dp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--        </LinearLayout>-->
 
     </ScrollView>
 

@@ -80,7 +80,6 @@
     <string name="downloadAll_url">https://cloud.yvyan.top/index.php/s/8EczotKAbSjfXPk</string>
     <string name="privacy_url">http://privacy.guet.yvyan.top/</string>
 
-    <string name="share_hint">建议直接将此APP发给同学，若您没有找到安装包，可以复制下面的信息发给同学或者群聊，同学点击链接即可下载最新版桂电课程表：</string>
     <string name="share_text">新的桂电课程表，简洁、好用，分享给你，点击链接下载：http://app.xiaomi.com/detail/1288502 \n(小米官方链接，请放心访问，建议使用浏览器打开)</string>
     <string name="help_1">点击“我的”页面的“点击登录”按钮，输入学号和教务密码即可登录，设置学期和星期即可自动导入课表。</string>
     <string name="help_2">点击“周课表”上方的“第x周”即可滑动点击切换周次；点击课程可以查看详情。</string>
@@ -106,8 +105,10 @@
     <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²</string>
     
     <string name="text_test"> 测试 </string>
-    
-    <string name="moreFun_titleBar"> 更多功能 </string>
+
+    <string name="titleBar_1">日课表</string>
+    <string name="titleBar_3">更多功能</string>
+    <string name="titleBar_4">个人信息</string>
     <string name="moreFun_jiaowu"> 教务查询 </string>
     <string name="moreFun_biye"> 毕业相关 </string>
     <string name="moreFun_lianjie"> 常用链接 </string>
@@ -129,5 +130,17 @@
     <string name="moreFun_url_more"> 更多链接 </string>
     <string name="moreFun_evaluating_teachers"> 评价教师 </string>
     <string name="moreFun_evaluating_textbooks"> 评价教材 </string>
+    <string name="person_login">点击登录</string>
+    <string name="person_grade">年级</string>
+    <string name="person_term">学年</string>
+    <string name="person_week">周数</string>
+    <string name="person_help">帮助与进阶</string>
+    <string name="person_share">分享给同学</string>
+    <string name="person_update">检查更新</string>
+    <string name="person_download_all">所有版本下载</string>
+    <string name="person_about">关于APP</string>
+    <string name="person_version">版本:</string>
+    <string name="btn_quit">退出登录</string>
+    <string name="QQGroup">963908505</string>
 
 </resources>

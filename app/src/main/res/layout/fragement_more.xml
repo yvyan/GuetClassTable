@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="25dp"
-            android:text="@string/moreFun_titleBar"
+            android:text="@string/titleBar_3"
             android:textColor="@color/app_white"
             android:textSize="18sp" />
     
