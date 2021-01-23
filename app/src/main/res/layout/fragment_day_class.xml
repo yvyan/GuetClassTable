@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.DayClassFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".fragment.DayClassFragment">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/colorPrimary">
@@ -15,23 +15,22 @@
         <TextView
             android:id="@+id/day_text"
             android:layout_width="wrap_content"
-            android:textSize="18dp"
-            android:text="日课表"
-            android:textColor="@color/app_white"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:text="日课表"
+            android:textColor="@color/app_white"
+            android:textSize="18sp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/day_class_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:text="点击更新"
-            android:textColor="@color/app_white"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="97dp"
+            android:layout_marginStart="97dp"
+            android:textColor="@color/app_white"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/day_text"
             app:layout_constraintTop_toTopOf="@id/day_text" />
 
@@ -45,17 +44,16 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:layout_marginTop="8dp"
             android:layout_marginRight="5dp"
-            android:layout_weight="2"
             app:cardCornerRadius="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -66,9 +64,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
                         android:text="快捷工具"
                         android:textColor="@color/app_black"
-                        android:textSize="18dp" />
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:id="@+id/day_show_exam"
@@ -81,14 +80,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="  |  "
-                            android:textSize="17dp" />
+                            android:textSize="17sp" />
 
                         <TextView
                             android:id="@+id/day_show_exam_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="您3天后有考试"
-                            android:textSize="16dp" />
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -96,161 +94,108 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="2dp">
+                    android:layout_height="55dp"
+                    android:layout_marginBottom="10dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                    <FrameLayout
+                        android:id="@+id/day_test_schedule"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:layout_weight="1">
 
-                        <RelativeLayout
-                            android:id="@+id/day_test_schedule"
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="top|center"
+                            android:baselineAlignBottom="false"
+                            android:src="@drawable/m_qingjia"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:layout_gravity="bottom|center"
+                            android:text="@string/moreFun_test_schedule"
+                            android:textSize="13sp" />
 
-                            <ImageView
-                                android:id="@+id/day_test_schedule_picture"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_centerHorizontal="true"
-                                android:layout_weight="1"
-                                android:baselineAlignBottom="false"
-                                android:src="@drawable/m_qingjia" />
+                    </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/day_test_schedule_picture"
-                                android:layout_centerInParent="true"
-                                android:layout_weight="1"
-                                android:text="考试安排"
-                                android:textSize="13dp" />
+                    <FrameLayout
+                        android:id="@+id/day_url_bkjw"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        </RelativeLayout>
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="top|center"
+                            android:baselineAlignBottom="false"
+                            android:src="@drawable/m_jiaowu"
+                            tools:ignore="ContentDescription" />
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <RelativeLayout
-                            android:id="@+id/day_url_bkjw"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginBottom="6dp"
-                            android:layout_marginLeft="6dp"
-                            android:layout_marginRight="6dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:layout_gravity="bottom|center"
+                            android:text="@string/moreFun_url_bkjw"
+                            android:textSize="13sp" />
 
-                            <ImageView
-                                android:id="@+id/day_url_bkjw_picture"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_centerHorizontal="true"
-                                android:layout_weight="1"
-                                android:baselineAlignBottom="false"
-                                android:src="@drawable/m_jiaowu" />
+                    </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/day_url_bkjw_picture"
-                                android:layout_centerInParent="true"
-                                android:layout_weight="1"
-                                android:text="教务系统"
-                                android:textSize="13dp" />
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                    <FrameLayout
+                        android:id="@+id/more_graduation_requirement"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:layout_weight="1">
 
-                        <RelativeLayout
+                        <ImageView
                             android:id="@+id/day_test_scores"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="top|center"
+                            android:baselineAlignBottom="false"
+                            android:src="@drawable/m_chengjihov"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:layout_gravity="bottom|center"
+                            android:text="@string/moreFun_test_scores"
+                            android:textSize="13sp" />
 
-                            <ImageView
-                                android:id="@+id/day_test_scores_picture"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_centerHorizontal="true"
-                                android:layout_weight="1"
-                                android:baselineAlignBottom="false"
-                                android:src="@drawable/m_chengjihov" />
+                    </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/day_test_scores_picture"
-                                android:layout_centerInParent="true"
-                                android:layout_weight="1"
-                                android:text="考试成绩"
-                                android:textSize="13dp" />
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                    <FrameLayout
+                        android:id="@+id/day_credits"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:layout_weight="1">
 
-                        <RelativeLayout
-                            android:id="@+id/day_credits"
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="top|center"
+                            android:baselineAlignBottom="false"
+                            android:src="@drawable/m_chengchang"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:layout_gravity="bottom|center"
+                            android:text="@string/moreFun_credits"
+                            android:textSize="13sp" />
 
-                            <ImageView
-                                android:id="@+id/day_credits_picture"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_centerHorizontal="true"
-                                android:layout_weight="1"
-                                android:baselineAlignBottom="false"
-                                android:src="@drawable/m_chengchang" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/day_credits_picture"
-                                android:layout_centerInParent="true"
-                                android:layout_weight="1"
-                                android:text="学分绩"
-                                android:textSize="13dp" />
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
+                    </FrameLayout>
 
                 </LinearLayout>
 
