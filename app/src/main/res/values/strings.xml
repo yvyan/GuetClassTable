@@ -148,7 +148,7 @@
     <string name="btn_quit">退出登录</string>
     <string name="QQGroup">963908505</string>
     <string name="person_help_test">协助测试</string>
-    <string name="first_login_help">输入智慧校园的密码，也即统一登录平台，若之前没有登录过，需要先在浏览器上登录一次，成功后即可在APP上正常登录，若不知道密码，请联系辅导员或加群寻求帮助；点击下方按钮进行首次登录。</string>
+    <string name="first_login_help">输入智慧校园的密码，也即统一登录平台，若之前没有登录过，需要先在浏览器上登录一次，成功后即可在APP上正常登录，若不知道密码，请联系辅导员或加群寻求帮助；点击下方按钮进行首次登录。(国际学院学生请使用教务登录方式)</string>
     <string name="moreFun_url_index">桂电导航</string>
 
 </resources>

@@ -99,7 +99,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
 //        test = view.findViewById(R.id.more_test);
 //        test.setOnClickListener(this);
-//        test.setVisibility(View.GONE);
+//        test.setVisibility(View.VISIBLE);
 
         return view;
     }
@@ -194,12 +194,20 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(webIntent);
                 break;
             case R.id.more_evaluating_teachers:
-                intent = new Intent(getContext(), AverageTeacherActivity.class);
-                startActivity(intent);
+                if (generalData.isInternational()) {
+                    TextDialog.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                } else {
+                    intent = new Intent(getContext(), AverageTeacherActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.more_evaluating_textbooks:
-                intent = new Intent(getContext(), AverageTextbookActivity.class);
-                startActivity(intent);
+                if (generalData.isInternational()) {
+                    TextDialog.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                } else {
+                    intent = new Intent(getContext(), AverageTextbookActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.more_test:
                 intent = new Intent(getContext(), TestActivity.class);
