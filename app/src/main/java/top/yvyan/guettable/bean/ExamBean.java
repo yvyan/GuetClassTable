@@ -43,11 +43,17 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         if (obj.getClass() != this.getClass())
             return false;
         ExamBean bean = (ExamBean) obj;
-        return number.equals(bean.number)
-                && week == bean.week
-                && day == bean.day
-                && time.equals(bean.time)
-                && room.equals(bean.room);
+        if (room == null && bean.room != null || room != null && bean.room == null) {
+            return false;
+        }
+        if (room == null && bean.room == null || room != null && room.equals(bean.room)) {
+            return number.equals(bean.number)
+                    && week == bean.week
+                    && day == bean.day
+                    && time.equals(bean.time);
+        } else {
+            return false;
+        }
     }
 
     public ExamBean() {}

@@ -1,5 +1,6 @@
 package top.yvyan.guettable;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -12,8 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.xuexiang.xui.widget.tabbar.TabControlView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
@@ -25,11 +24,12 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.StaticService;
 import top.yvyan.guettable.service.fetch.LAN;
+import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends Activity implements View.OnClickListener {
     private Boolean bPwdSwitch = false;
     private Boolean bPwdSwitch2 = false;
     private EditText etPwd;
@@ -44,18 +44,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private AccountData accountData;
+    private GeneralData generalData;
     private int type; //登录方式选择
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
         type = TokenData.newInstance(this).getLoginType();
 
-        accountData = AccountData.newInstance(this);
+        accountData = AccountData.newInstance(getContext());
+        generalData = GeneralData.newInstance(getContext());
 
         ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
         ivPwdSwitch2 = findViewById(R.id.iv_pwd_switch_2);
@@ -132,7 +131,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String pwd2 = etPwd2.getText().toString();
         new Thread(() -> {
             int state;
+            generalData.setInternational(isInternational(account));
             if (type == 0) { //CAS登录
+                if (generalData.isInternational()) {
+                    runOnUiThread(() -> {
+                        TextDialog.showScanNumberDialog(this, "国际学院同学目前只支持教务登录，请点击上方切换教务登录重试！");
+                        setEnClick();
+                    });
+                    return;
+                }
                 state = testLoginCAS(account, pwd);
                 if (state == -2) {
                     TokenData.isVPN = true;
@@ -190,6 +197,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
             }
         }).start();
+    }
+
+    /**
+     * 确定是否为国际学院账号
+     *
+     * @param account 学号
+     * @return 是否为国际学院账号
+     */
+    private boolean isInternational(String account) {
+        if (account.isEmpty()) {
+            return false;
+        } else return account.length() == 10 && account.startsWith("611", 2);
     }
 
     /**
