@@ -80,6 +80,11 @@
     <string name="downloadAll_url">https://cloud.yvyan.top/index.php/s/8EczotKAbSjfXPk</string>
     <string name="privacy_url">http://privacy.guet.yvyan.top/</string>
 
+    <string name="text_school_song">桂电校歌 (我们从东西南北走过来)</string>
+    <string name="url_school_song">https://music.163.com/#/song?id=469744200</string>
+    <string name="text_resource_center">教学资源中心 (网课群号)</string>
+    <string name="url_resource_center">https://www.guet.edu.cn/jxzyzx/</string>
+
     <string name="share_text">新的桂电课程表，简洁、好用，分享给你，点击链接下载：http://app.xiaomi.com/detail/1288502 \n(小米官方链接，请放心访问，建议使用浏览器打开)</string>
     <string name="help_1">点击“我的”页面的“点击登录”按钮，输入学号和教务密码即可登录，设置学期和星期即可自动导入课表。</string>
     <string name="help_2">点击“周课表”上方的“第x周”即可滑动点击切换周次；点击课程可以查看详情。</string>

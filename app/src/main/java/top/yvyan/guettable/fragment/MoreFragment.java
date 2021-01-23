@@ -18,6 +18,7 @@ import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.moreFun.LibActivity;
+import top.yvyan.guettable.moreFun.MoreUrlActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
 import top.yvyan.guettable.moreFun.TestActivity;
@@ -182,6 +183,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 uri = Uri.parse(getContext().getResources().getString(R.string.url_lijiang));
                 webIntent.setData(uri);
                 startActivity(webIntent);
+                break;
+            case R.id.more_url_more:
+                intent = new Intent(getContext(), MoreUrlActivity.class);
+                startActivity(intent);
                 break;
             case R.id.more_url_index:
                 uri = Uri.parse(getContext().getResources().getString(R.string.guet_yvyan_top));
