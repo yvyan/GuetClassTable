@@ -20,6 +20,7 @@ public class GeneralData {
     private static final String LAST_UPDATE_TIME = "lastUpdateTime";
     private static final String APP_LAST_UPDATE_TIME = "appLastUpdateTime";
     private static final String RENEWABLE = "renewable";
+    private static final String APPLY_PRIVACY = "applyPrivacy";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -34,6 +35,8 @@ public class GeneralData {
     //控制检查更新频率
     private long appLastUpdateTime;
     private boolean renewable;
+    //隐私协议
+    private boolean applyPrivacy;
 
     private GeneralData(Context context) {
         sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -52,6 +55,7 @@ public class GeneralData {
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
         appLastUpdateTime = sharedPreferences.getLong(APP_LAST_UPDATE_TIME, -1);
         renewable = sharedPreferences.getBoolean(RENEWABLE, false);
+        applyPrivacy = sharedPreferences.getBoolean(APPLY_PRIVACY, false);
     }
 
     public static GeneralData newInstance(Context context) {
@@ -157,5 +161,14 @@ public class GeneralData {
         this.renewable = renewable;
         editor.putBoolean(RENEWABLE, renewable);
         editor.apply();
+    }
+
+    public boolean isApplyPrivacy() {
+        return applyPrivacy;
+    }
+
+    public void setApplyPrivacy(boolean applyPrivacy) {
+        this.applyPrivacy = applyPrivacy;
+        editor.putBoolean(APPLY_PRIVACY, applyPrivacy);
     }
 }

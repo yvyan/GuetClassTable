@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.util.TextDialog;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -36,12 +36,33 @@ public class LaunchActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
 
-        Integer time = 150;    //设置等待时间，单位为毫秒
+        int time = 150;    //设置等待时间，单位为毫秒
         Handler handler = new Handler();
         //当计时结束时，跳转至主界面
         handler.postDelayed(() -> {
-            startActivity(new Intent(LaunchActivity.this, MainActivity.class));
-            LaunchActivity.this.finish();
+            GeneralData generalData = GeneralData.newInstance(getApplicationContext());
+            if (!generalData.isApplyPrivacy()) {
+
+                TextDialog.IDialogService service = new TextDialog.IDialogService() {
+                    @Override
+                    public int onClickYes() {
+                        generalData.setApplyPrivacy(true);
+                        startActivity(new Intent(LaunchActivity.this, MainActivity.class));
+                        LaunchActivity.this.finish();
+                        return 0;
+                    }
+
+                    @Override
+                    public int onClickBack() {
+                        finish();
+                        return 0;
+                    }
+                };
+                TextDialog.showDialog(this, "隐私协议", false, "同意", "拒绝", getString(R.string.privacy_text), service);
+            } else {
+                startActivity(new Intent(LaunchActivity.this, MainActivity.class));
+                LaunchActivity.this.finish();
+            }
         }, time);
     }
 }
