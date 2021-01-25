@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    
+
     <RelativeLayout
         android:id="@+id/more_head"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/colorPrimary">
-        
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,13 +20,13 @@
             android:text="@string/titleBar_3"
             android:textColor="@color/app_white"
             android:textSize="18sp" />
-    
+
     </RelativeLayout>
-    
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                         android:id="@+id/moreFun_jiaowu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
+                        android:layout_margin="5dp"
                         android:text="@string/moreFun_jiaowu"
                         android:textColor="@color/app_black"
                         android:textSize="18sp" />
@@ -59,7 +59,7 @@
                         android:id="@+id/container_jiaowu_1"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="15dp"
                         android:baselineAligned="false"
                         android:orientation="horizontal">
 
@@ -99,6 +99,7 @@
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="top|center"
+                                android:layout_marginTop="2dp"
                                 android:src="@drawable/m_chengchang"
                                 tools:ignore="ContentDescription" />
 
@@ -123,6 +124,7 @@
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="top|center"
+                                android:layout_marginTop="2dp"
                                 android:src="@drawable/m_chengjihov"
                                 tools:ignore="ContentDescription" />
 
@@ -144,8 +146,8 @@
 
                             <ImageView
                                 android:id="@+id/more_lib_scores_picture"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                                android:layout_width="33dp"
+                                android:layout_height="33dp"
                                 android:layout_gravity="top|center"
                                 android:baselineAlignBottom="false"
                                 android:src="@drawable/m_shiyanshixun"
@@ -167,7 +169,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="15dp"
                         android:baselineAligned="false"
                         android:orientation="horizontal">
 
@@ -242,42 +244,42 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-            
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:cardCornerRadius="10dp">
-                
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:orientation="vertical">
-                    
+
                     <TextView
                         android:id="@+id/moreFun_biye"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
+                        android:layout_margin="5dp"
                         android:text="@string/moreFun_biye"
                         android:textColor="@color/app_black"
                         android:textSize="18sp" />
-                    
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="15dp"
                         android:baselineAligned="false"
                         android:orientation="horizontal">
-                        
+
                         <FrameLayout
                             android:id="@+id/more_plan_courses"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1">
-                            
+
                             <ImageView
                                 android:id="@+id/more_plan_courses_picture"
                                 android:layout_width="30dp"
@@ -286,16 +288,16 @@
                                 android:baselineAlignBottom="false"
                                 android:src="@drawable/m_zhizhou"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_plan_courses"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:id="@+id/more_cet"
                             android:layout_width="0dp"
@@ -303,7 +305,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:orientation="vertical">
-                            
+
                             <ImageView
                                 android:id="@+id/more_cet_picture"
                                 android:layout_width="30dp"
@@ -312,14 +314,14 @@
                                 android:baselineAlignBottom="false"
                                 android:src="@drawable/m_yingyu"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_cet"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
 
                         <FrameLayout
@@ -331,9 +333,10 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="29dp"
-                                android:layout_height="29dp"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
                                 android:layout_gravity="top|center"
+                                android:layout_marginTop="2dp"
                                 android:baselineAlignBottom="false"
                                 android:src="@drawable/m_innovation_score"
                                 tools:ignore="ContentDescription" />
@@ -346,81 +349,82 @@
                                 android:textSize="13sp" />
 
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:background="@color/app_white">
-                        
+
                         </FrameLayout>
-                    
+
                     </LinearLayout>
-                
+
                 </LinearLayout>
-            
+
             </androidx.cardview.widget.CardView>
-            
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:cardCornerRadius="10dp">
-                
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:orientation="vertical">
-                    
+
                     <TextView
                         android:id="@+id/moreFun_lianjie"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
+                        android:layout_margin="5dp"
                         android:text="@string/moreFun_lianjie"
                         android:textColor="@color/app_black"
                         android:textSize="18sp" />
-                    
+
                     <LinearLayout
                         android:id="@+id/container_links_1"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="15dp"
                         android:baselineAligned="false">
-                        
+
                         <FrameLayout
                             android:id="@+id/more_url_bkjw"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1">
-                            
+
                             <ImageView
                                 android:id="@+id/more_url_bkjw_picture"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:layout_gravity="top|center"
+                                android:layout_marginTop="1dp"
                                 android:src="@drawable/m_jiaowu"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_url_bkjw"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:id="@+id/more_url_vpn"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1">
-                            
+
                             <ImageView
                                 android:id="@+id/more_url_vpn_picture"
                                 android:layout_width="32dp"
@@ -428,23 +432,23 @@
                                 android:layout_gravity="top|center"
                                 android:src="@drawable/m_vpn"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_url_vpn"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:id="@+id/more_url_campus"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1">
-                            
+
                             <ImageView
                                 android:id="@+id/more_url_campus_picture"
                                 android:layout_width="32dp"
@@ -452,23 +456,23 @@
                                 android:layout_gravity="top|center"
                                 android:src="@drawable/m_jiaoyan"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_url_campus"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:id="@+id/more_url_staff"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1">
-                            
+
                             <ImageView
                                 android:id="@+id/more_url_staff_picture"
                                 android:layout_width="32dp"
@@ -476,32 +480,32 @@
                                 android:layout_gravity="top|center"
                                 android:src="@drawable/m_yuangong"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_url_staff"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
-                    
+
                     </LinearLayout>
-                    
+
                     <LinearLayout
                         android:id="@+id/container_links_2"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="15dp"
                         android:baselineAligned="false">
-                        
+
                         <FrameLayout
                             android:id="@+id/more_url_lijiang"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1">
-                            
+
                             <ImageView
                                 android:id="@+id/more_url_lijiang_picture"
                                 android:layout_width="32dp"
@@ -509,14 +513,14 @@
                                 android:layout_gravity="top|center"
                                 android:src="@drawable/m_xuexiao"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_url_lijiang"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
 
                         <FrameLayout
@@ -542,81 +546,81 @@
                                 android:textSize="13sp" />
 
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:id="@+id/more_url_index"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1">
-                            
+
                             <ImageView
-                                android:layout_marginTop="1dp"
                                 android:layout_width="33dp"
                                 android:layout_height="33dp"
                                 android:layout_gravity="top|center"
+                                android:layout_marginTop="1dp"
                                 android:src="@drawable/m_index"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_url_index"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:background="@color/app_white">
-                        
+
                         </FrameLayout>
-                    
+
                     </LinearLayout>
-                
+
                 </LinearLayout>
-            
+
             </androidx.cardview.widget.CardView>
-            
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:cardCornerRadius="10dp">
-                
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:orientation="vertical">
-                    
+
                     <TextView
                         android:id="@+id/moreFun_pingjia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
+                        android:layout_margin="5dp"
                         android:text="@string/moreFun_pingjia"
                         android:textColor="@color/app_black"
                         android:textSize="18sp" />
-                    
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="15dp"
                         android:baselineAligned="false"
                         android:orientation="horizontal">
-                        
+
                         <FrameLayout
                             android:id="@+id/more_evaluating_teachers"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1">
-                            
+
                             <ImageView
                                 android:id="@+id/more_evaluating_teachers_picture"
                                 android:layout_width="30dp"
@@ -625,40 +629,41 @@
                                 android:baselineAlignBottom="false"
                                 android:src="@drawable/m_pingyu"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_evaluating_teachers"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:id="@+id/more_evaluating_textbooks"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1">
-                            
+
                             <ImageView
                                 android:id="@+id/more_evaluating_textbooks_picture"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="top|center"
+                                android:layout_marginTop="1dp"
                                 android:src="@drawable/m_pingjiao"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_evaluating_textbooks"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:id="@+id/more_test"
                             android:layout_width="0dp"
@@ -666,7 +671,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:visibility="invisible">
-                            
+
                             <ImageView
                                 android:id="@+id/more_test_picture"
                                 android:layout_width="30dp"
@@ -674,39 +679,39 @@
                                 android:layout_gravity="top|center"
                                 android:src="@drawable/m_pingjiao"
                                 tools:ignore="ContentDescription" />
-                            
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/text_test"
                                 android:textSize="13sp" />
-                        
+
                         </FrameLayout>
-                        
+
                         <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:background="@color/app_white">
-                        
+
                         </FrameLayout>
-                    
+
                     </LinearLayout>
-                
+
                 </LinearLayout>
-            
-            
+
+
             </androidx.cardview.widget.CardView>
-            
+
             <!-- 备用布局块 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
-        
+
         </LinearLayout>
-    
+
     </ScrollView>
 
 </LinearLayout>
