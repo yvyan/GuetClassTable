@@ -18,7 +18,6 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".MyApp"
