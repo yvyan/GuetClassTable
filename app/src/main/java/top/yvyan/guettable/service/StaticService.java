@@ -32,6 +32,7 @@ import top.yvyan.guettable.Gson.EffectiveCredit;
 import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamScore;
 import top.yvyan.guettable.Gson.ExperimentScore;
+import top.yvyan.guettable.Gson.InnovationScore;
 import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
@@ -58,10 +59,10 @@ public class StaticService {
      * @param account  学号
      * @param password 密码
      * @param isVPN    是否为外网登录
-     * @return         TGT令牌
-     *                 ERROR0 : 网络错误
-     *                 ERROR1 : 密码错误
-     *                 ERROR2 : 需要使用外网网址进行访问
+     * @return TGT令牌
+     * ERROR0 : 网络错误
+     * ERROR1 : 密码错误
+     * ERROR2 : 需要使用外网网址进行访问
      */
     public static String SSOLogin(Context context, String account, String password, boolean isVPN) {
         HttpConnectionAndCode response = LAN.getTGT(context, account, password, isVPN);
@@ -88,11 +89,11 @@ public class StaticService {
      * @param TGT     TGT令牌
      * @param service ST令牌的服务端
      * @param isVPN   是否为外网登录
-     * @return        ST令牌
-     *                ERROR0 : 网络错误
-     *                ERROR1 : TGT失效
-     *                ERROR2 : 需要使用外网网址进行访问 或 TGT失效(上层调用时，若内网返回此错误，
-     *                  则先尝试外网，若是TGT失效，则重新获取；若正常获取，则需要将全局网络设置为外网)
+     * @return ST令牌
+     * ERROR0 : 网络错误
+     * ERROR1 : TGT失效
+     * ERROR2 : 需要使用外网网址进行访问 或 TGT失效(上层调用时，若内网返回此错误，
+     * 则先尝试外网，若是TGT失效，则重新获取；若正常获取，则需要将全局网络设置为外网)
      */
     public static String SSOGetST(Context context, String TGT, String service, boolean isVPN) {
         HttpConnectionAndCode response = LAN.getST(context, TGT, service, isVPN);
@@ -116,12 +117,12 @@ public class StaticService {
     /**
      * 通过ST令牌登录VPN
      *
-     * @param ST      ST令牌
-     * @param token   用于接收登录后的cookie
-     * @return        登录结果
-     *                  0 -- 登录成功
-     *                 -1 -- 登录失败
-     *                 -2 -- 发生异常
+     * @param ST    ST令牌
+     * @param token 用于接收登录后的cookie
+     * @return 登录结果
+     * 0 -- 登录成功
+     * -1 -- 登录失败
+     * -2 -- 发生异常
      */
     public static int loginVPNST(String ST, String token) {
 
@@ -156,11 +157,11 @@ public class StaticService {
      *
      * @param ST       ST令牌
      * @param VPNToken VPNToken
-     * @return         登录结果
-     *                  0 -- 登录成功
-     *                 -1 -- VPN登录失败
-     *                 -2 -- 教务登录失败
-     *                 -3 -- 发生异常
+     * @return 登录结果
+     * 0 -- 登录成功
+     * -1 -- VPN登录失败
+     * -2 -- 教务登录失败
+     * -3 -- 发生异常
      */
     public static int loginBkjwVPNST(String ST, String VPNToken) {
 
@@ -198,10 +199,10 @@ public class StaticService {
      * @param context context
      * @param ST      ST令牌
      * @param session 用于接收登录后的cookie
-     * @return        登录结果
-     *                  0 -- 登录成功
-     *                 -1 -- 登录失败
-     *                 -2 -- 网络错误
+     * @return 登录结果
+     * 0 -- 登录成功
+     * -1 -- 登录失败
+     * -2 -- 网络错误
      */
     public static int loginBkjw(Context context, String ST, StringBuilder session) {
         int state;
@@ -226,11 +227,11 @@ public class StaticService {
      * @param VPNToken VPNToken
      * @param account  学号
      * @param password 密码
-     * @return         登录结果
-     *                  0 -- 登录成功
-     *                 -1 -- 密码错误
-     *                 -2 -- 网络错误
-     *                 -3 -- 未知错误
+     * @return 登录结果
+     * 0 -- 登录成功
+     * -1 -- 密码错误
+     * -2 -- 网络错误
+     * -3 -- 未知错误
      */
     public static int loginVPN(Context context, String VPNToken, String account, String password) {
         HttpConnectionAndCode result = LAN.loginVPN(context, VPNToken, account, password);
@@ -271,10 +272,10 @@ public class StaticService {
      * @param password       密码
      * @param cookie_builder cookie
      * @return state记录当前状态
-     *                  0 : 登录成功
-     *                 -1 : 密码错误
-     *                 -2 : 网络错误/未知错误
-     *                 -3 : 验证码连续错误
+     * 0 : 登录成功
+     * -1 : 密码错误
+     * -2 : 网络错误/未知错误
+     * -3 : 验证码连续错误
      */
     public static int autoLogin(Context context, String account, String password, StringBuilder cookie_builder) {
         int state = 1;
@@ -323,10 +324,10 @@ public class StaticService {
      * @param password 密码
      * @param VPNToken VPNToken
      * @return state记录当前状态
-     *                  0 : 登录成功
-     *                 -1 : 密码错误
-     *                 -2 : 网络错误/未知错误
-     *                 -3 : 验证码连续错误
+     * 0 : 登录成功
+     * -1 : 密码错误
+     * -2 : 网络错误/未知错误
+     * -3 : 验证码连续错误
      */
     public static int autoLoginV(Context context, String account, String password, String VPNToken) {
         int state = 1;
@@ -969,5 +970,36 @@ public class StaticService {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 查询创新积分
+     *
+     * @param context context
+     * @param cookie  cookie
+     * @return 操作结果
+     */
+    public static BaseResponse<InnovationScore> getInnovationScore(Context context, String cookie) {
+        HttpConnectionAndCode httpConnectionAndCode = LAN.getInnovationScore(context, cookie, TokenData.isVPN);
+        return new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {
+        }.getType());
+    }
+
+    /**
+     * 更新创新积分
+     *
+     * @param context context
+     * @param cookie  cookie
+     * @return 更新结果
+     * -1  更新失败
+     * 0   更新成功
+     */
+    public static int updateInnovationScore(Context context, String cookie) {
+        HttpConnectionAndCode httpConnectionAndCode = LAN.updateInnovationScore(context, cookie, TokenData.isVPN);
+        String comment = httpConnectionAndCode.comment;
+        if (comment != null && comment.contains("操作成功")) {
+            return 0;
+        }
+        return -1;
     }
 }

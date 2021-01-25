@@ -105,9 +105,14 @@
     <string name="setting">设置</string>
     <string name="todo">TODO</string>
     <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²</string>
-    
+
+    <!-- 创新积分-->
+    <string name="lan_get_innovationScore"> http://172.16.13.22/student/getcxcy </string>
+    <string name="lan_update_innovationScore"> http://172.16.13.22/student/gencxcy </string>
+
+    <!-- 更多功能 -->
     <string name="text_test"> 测试 </string>
-    
+
     <string name="moreFun_titleBar"> 更多功能 </string>
     <string name="moreFun_jiaowu"> 教务查询 </string>
     <string name="moreFun_biye"> 毕业相关 </string>
