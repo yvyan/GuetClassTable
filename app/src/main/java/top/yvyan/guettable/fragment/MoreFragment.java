@@ -163,8 +163,12 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.more_innovation_score:
-                intent = new Intent(getContext(), InnovationScoreActivity.class);
-                startActivity(intent);
+                if (generalData.isInternational()) {
+                    TextDialog.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                } else {
+                    intent = new Intent(getContext(), InnovationScoreActivity.class);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.more_url_bkjw:
