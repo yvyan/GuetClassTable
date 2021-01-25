@@ -7,6 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
+import com.umeng.analytics.MobclickAgent;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import top.yvyan.guettable.R;
 
 public class MoreUrlActivity extends AppCompatActivity {
@@ -18,6 +23,9 @@ public class MoreUrlActivity extends AppCompatActivity {
     }
 
     public void openBrowser(String url) {
+        Map<String, Object> urlMap = new HashMap<>();
+        urlMap.put("url", url);
+        MobclickAgent.onEventObject(this, "openUrl", urlMap);
         Uri uri = Uri.parse(url);
         Intent webIntent = new Intent();
         webIntent.setAction("android.intent.action.VIEW");
