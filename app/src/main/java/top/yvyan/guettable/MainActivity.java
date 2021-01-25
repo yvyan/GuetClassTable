@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -26,7 +28,6 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import java.util.ArrayList;
 import java.util.List;
 
-import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
@@ -43,12 +44,8 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
     public static final String TAG = "MainActivityInfo";
 
     private BottomNavigationView bottomNavigationView;
-    private ViewPagerAdapter viewPagerAdapter;
     private ViewPager viewPager;
     private MenuItem menuItem;
-
-    private DayClassFragment dayClassFragment;
-    private PersonFragment personFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
 
             }
         });
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         List<Fragment> list = new ArrayList<>();
         list.add(DayClassFragment.newInstance());
@@ -92,9 +89,9 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         list.add(PersonFragment.newInstance());
         viewPagerAdapter.setList(list);
 
-        dayClassFragment = DayClassFragment.newInstance();
+        DayClassFragment dayClassFragment = DayClassFragment.newInstance();
         dayClassFragment.setOnButtonClick(this);
-        personFragment = PersonFragment.newInstance();
+        PersonFragment personFragment = PersonFragment.newInstance();
         personFragment.setOnButtonClick(this);
 
         if (shouldInit()) {
@@ -116,6 +113,10 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         };
         Logger.setLogger(this, newLogger);
 
+        //友盟数据统计
+        UMConfigure.init(this, "600e610a6a2a470e8f8942f9", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
+        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+        //网络切换检测
         initReceiver();
     }
 
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         viewPager.setCurrentItem(n);
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemReselectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemReselectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
