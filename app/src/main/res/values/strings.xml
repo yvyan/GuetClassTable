@@ -120,6 +120,11 @@
     <string name="todo">TODO</string>
     <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²</string>
 
+    <!-- 创新积分-->
+    <string name="lan_get_innovationScore"> http://172.16.13.22/student/getcxcy </string>
+    <string name="lan_update_innovationScore"> http://172.16.13.22/student/gencxcy </string>
+
+    <!-- 更多功能 -->
     <string name="text_test"> 测试 </string>
 
     <string name="titleBar_1">日课表</string>

@@ -31,6 +31,7 @@
         <activity android:name=".moreFun.MoreUrlActivity"></activity>
         <activity android:name=".HelpTestActivity" />
         <activity android:name=".moreFun.TestActivity" />
+        <activity android:name=".moreFun.InnovationScoreActivity"></activity>
         <activity android:name=".moreFun.LibActivity" />
         <activity android:name=".moreFun.ResitActivity" />
         <activity android:name=".moreFun.GradesActivity" />

@@ -21,12 +21,12 @@ public class LAN {
      * 测试连接
      *
      * @param context context
-     * @return        0 -- 内外
-     *             else -- 外网
+     * @return 0 -- 内外
+     * else -- 外网
      */
     public static int testNet(Context context) {
         Resources resources = context.getResources();
-        HttpConnectionAndCode response =  Get.get(
+        HttpConnectionAndCode response = Get.get(
                 "http://172.16.13.22/",
                 null,
                 resources.getString(R.string.user_agent),
@@ -48,7 +48,7 @@ public class LAN {
      * 获取VPNToken
      *
      * @param context context
-     * @return        VPNToken
+     * @return VPNToken
      */
     public static String getVPNToken(Context context) {
         Resources resources = context.getResources();
@@ -85,7 +85,7 @@ public class LAN {
         password = RSAUtil.CASEncryption(password); //密码加密
         String body = "username=" + account + "&password=" + password + "&service=http%3A%2F%2Ficampus.guet.edu.cn%2FCampusPortal&loginType=";
         return Post.post(
-                isVPN? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_get_TGT),
+                isVPN ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_get_TGT),
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.SSO_referer),
@@ -112,7 +112,7 @@ public class LAN {
     public static HttpConnectionAndCode getST(Context context, String TGT, String service, boolean isVPN) {
         Resources resources = context.getResources();
         return Post.post(
-                isVPN? resources.getString(R.string.url_get_ST_vpn) + TGT : resources.getString(R.string.url_get_ST) + TGT,
+                isVPN ? resources.getString(R.string.url_get_ST_vpn) + TGT : resources.getString(R.string.url_get_ST) + TGT,
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.SSO_referer),
@@ -133,7 +133,7 @@ public class LAN {
      * @param context context
      * @param ST      ST令牌
      * @param session 用于接收登录后的cookie
-     * @return        登录状态
+     * @return 登录状态
      */
     public static HttpConnectionAndCode loginBkjwST(Context context, String ST, StringBuilder session) {
         Resources resources = context.getResources();
@@ -197,7 +197,7 @@ public class LAN {
      *
      * @param context  context
      * @param VPNToken VPNToken null表示内网
-     * @return        验证码图片
+     * @return 验证码图片
      */
     public static HttpConnectionAndCode checkCode(Context context, String VPNToken) {
         Resources resources = context.getResources();
@@ -213,6 +213,7 @@ public class LAN {
 
     /**
      * 登录
+     *
      * @param context   context
      * @param account   学号
      * @param pwd       密码
@@ -220,7 +221,7 @@ public class LAN {
      * @param cookie    获取验证码之后的cookie / 外网:获取VPNToken
      * @param builder   用于接收登录后的cookie
      * @param isVPN     是否为外网
-     * @return          登录状态
+     * @return 登录状态
      */
     public static HttpConnectionAndCode login(Context context, String account, String pwd, String checkCode, String cookie, StringBuilder builder, boolean isVPN) {
         Resources resources = context.getResources();
@@ -257,10 +258,11 @@ public class LAN {
 
     /**
      * 获取学生个人信息
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
-     * @return        gson格式的个人信息
+     * @return gson格式的个人信息
      */
     public static HttpConnectionAndCode studentInfo(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
@@ -282,10 +284,11 @@ public class LAN {
 
     /**
      * 获取课程安排
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
-     * @return        gson格式的课程安排
+     * @return gson格式的课程安排
      */
     public static HttpConnectionAndCode getClassTable(Context context, String cookie, String term, boolean isVPN) {
         Resources resources = context.getResources();
@@ -309,11 +312,12 @@ public class LAN {
 
     /**
      * 获取课内实验安排
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
      * @param term    学期（格式：2020-2021_1）
-     * @return        gson格式的课内实验安排
+     * @return gson格式的课内实验安排
      */
     public static HttpConnectionAndCode getLabTable(Context context, String cookie, String term, boolean isVPN) {
         Resources resources = context.getResources();
@@ -337,11 +341,12 @@ public class LAN {
 
     /**
      * 获取考试安排
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param term    学期（格式：2020-2021_1）
      * @param isVPN   是否为外网
-     * @return        gson格式的考试安排
+     * @return gson格式的考试安排
      */
     public static HttpConnectionAndCode getExam(Context context, String cookie, String term, boolean isVPN) {
         Resources resources = context.getResources();
@@ -365,10 +370,11 @@ public class LAN {
 
     /**
      * 获取补考安排
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
-     * @return        gson格式的补考安排
+     * @return gson格式的补考安排
      */
     public static HttpConnectionAndCode getResit(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
@@ -391,10 +397,11 @@ public class LAN {
 
     /**
      * 获取等级考试成绩
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
-     * @return        gson格式的等级考试成绩
+     * @return gson格式的等级考试成绩
      */
     public static HttpConnectionAndCode getCET(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
@@ -417,10 +424,11 @@ public class LAN {
 
     /**
      * 获取普通考试成绩
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
-     * @return        gson格式的普通考试成绩
+     * @return gson格式的普通考试成绩
      */
     public static HttpConnectionAndCode getExamScore(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
@@ -443,10 +451,11 @@ public class LAN {
 
     /**
      * 获取实验考试成绩
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
-     * @return        gson格式的实验考试成绩
+     * @return gson格式的实验考试成绩
      */
     public static HttpConnectionAndCode getExperimentScore(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
@@ -469,10 +478,11 @@ public class LAN {
 
     /**
      * 获取当前学期
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
-     * @return        gson格式的当前学期
+     * @return gson格式的当前学期
      */
     public static HttpConnectionAndCode getThisTerm(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
@@ -494,11 +504,12 @@ public class LAN {
 
     /**
      * 获取评价教师列表
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
      * @param term    学期（格式：2020-2021_1）
-     * @return        gson格式的教师列表
+     * @return gson格式的教师列表
      */
     public static HttpConnectionAndCode getTeacherList(Context context, String cookie, String term, boolean isVPN) {
         Resources resources = context.getResources();
@@ -522,13 +533,14 @@ public class LAN {
 
     /**
      * 获取某个老师的评价表单
+     *
      * @param context   context
      * @param cookie    登录后的cookie
      * @param term      学期（格式：2020-2021_1）
      * @param courseNo  课程编号
      * @param teacherNo 老师编号
      * @param isVPN     是否为外网
-     * @return           gson格式的老师评价表单
+     * @return gson格式的老师评价表单
      */
     public static HttpConnectionAndCode getAvgTeacherForm(Context context, String cookie, String term, String courseNo, String teacherNo, boolean isVPN) {
         Resources resources = context.getResources();
@@ -556,6 +568,7 @@ public class LAN {
 
     /**
      * 提交老师评价表单
+     *
      * @param context   context
      * @param cookie    登录后的cookie
      * @param term      学期（格式：2020-2021_1）
@@ -563,7 +576,7 @@ public class LAN {
      * @param teacherNo 老师编号
      * @param postBody  评价表单
      * @param isVPN     是否为外网
-     * @return          结果
+     * @return 结果
      */
     public static HttpConnectionAndCode saveTeacherForm(Context context, String cookie, String term, String courseNo, String teacherNo, String postBody, boolean isVPN) {
         Resources resources = context.getResources();
@@ -590,11 +603,12 @@ public class LAN {
 
     /**
      * 提交评价老师总评
-     * @param context   context
-     * @param cookie    登录后的cookie
-     * @param postBody  请求体
-     * @param isVPN     是否为外网
-     * @return          操作结果
+     *
+     * @param context  context
+     * @param cookie   登录后的cookie
+     * @param postBody 请求体
+     * @param isVPN    是否为外网
+     * @return 操作结果
      */
     public static HttpConnectionAndCode commitTeacherForm(Context context, String cookie, String postBody, boolean isVPN) {
         Resources resources = context.getResources();
@@ -616,10 +630,11 @@ public class LAN {
 
     /**
      * 同步有效课程
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
-     * @return        操作结果
+     * @return 操作结果
      */
     public static HttpConnectionAndCode updateEffectiveCredits(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
@@ -641,10 +656,11 @@ public class LAN {
 
     /**
      * 获取有效学分
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
-     * @return        操作结果
+     * @return 操作结果
      */
     public static HttpConnectionAndCode getEffectiveCredits(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
@@ -667,10 +683,11 @@ public class LAN {
 
     /**
      * 获取计划课程
+     *
      * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
-     * @return        操作结果
+     * @return 操作结果
      */
     public static HttpConnectionAndCode getPlannedCourses(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
@@ -761,7 +778,7 @@ public class LAN {
      * @param term     学期
      * @param courseid 课程代码
      * @param lsh      参数
-     * @param isVPN   是否为外网
+     * @param isVPN    是否为外网
      * @return 操作结果
      */
     public static HttpConnectionAndCode getAvgTextbookFormState(Context context, String cookie, String term, String courseid, int lsh, boolean isVPN) {
@@ -792,7 +809,7 @@ public class LAN {
      * @param courseid 课程代码
      * @param lsh      参数
      * @param postBody 请求体参数
-     * @param isVPN   是否为外网
+     * @param isVPN    是否为外网
      * @return 操作结果
      */
     public static HttpConnectionAndCode saveTextbookForm(Context context, String cookie, String term, String courseid, int lsh, String postBody, boolean isVPN) {
@@ -824,7 +841,7 @@ public class LAN {
      * @param context  context
      * @param cookie   cookie
      * @param postBody 请求体参数
-     * @param isVPN   是否为外网
+     * @param isVPN    是否为外网
      * @return 操作结果
      */
     public static HttpConnectionAndCode commitTextbookForm(Context context, String cookie, String postBody, boolean isVPN) {
@@ -835,6 +852,58 @@ public class LAN {
                 resources.getString(R.string.user_agent),
                 UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
                 postBody,
+                cookie,
+                "}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 查询创新积分
+     *
+     * @param context context
+     * @param cookie  cookie
+     * @param isVPN   是否外网
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode getInnovationScore(Context context, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(UrlReplaceUtil.getUrlByVPN(isVPN, resources.getString(R.string.lan_get_innovationScore)),
+                null,
+                resources.getString(R.string.user_agent),
+                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 更新创新积分
+     *
+     * @param context context
+     * @param cookie  cookie
+     * @param isVPN   是否外网
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode updateInnovationScore(Context context, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Post.post(
+                UrlReplaceUtil.getUrlByVPN(isVPN, resources.getString(R.string.lan_update_innovationScore)),
+                null,
+                resources.getString(R.string.user_agent),
+                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                null,
                 cookie,
                 "}",
                 null,
