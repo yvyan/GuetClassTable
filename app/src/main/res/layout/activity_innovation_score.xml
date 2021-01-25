@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".moreFun.InnovationScoreActivity">
+
+    <RelativeLayout
+        android:id="@+id/more_innovation_head"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/innovationScore_back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:onClick="onClick"
+            android:src="@drawable/back"
+            app:tint="@color/app_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="50dp"
+            android:text="创新积分"
+            android:textColor="@color/app_white"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/innovationScore_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="160dp"
+            android:text="正在更新"
+            android:textColor="@color/app_white"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@id/more_innovation_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="学院"
+                android:textColor="@color/theme_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/innovation_dptName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:text=""
+                android:textColor="@color/xui_config_color_gray_3"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/gapLine_1"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/innovation_dptName"
+                android:background="@color/xui_btn_gray_normal_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_1"
+                android:layout_margin="15dp"
+                android:text="专业"
+                android:textColor="@color/theme_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/innovation_major"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_1"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:text=""
+                android:textColor="@color/xui_config_color_gray_3"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/gapLine_2"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/innovation_major"
+                android:background="@color/xui_btn_gray_normal_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_2"
+                android:layout_margin="15dp"
+                android:text="年级"
+                android:textColor="@color/theme_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/innovation_grade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_2"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:text=""
+                android:textColor="@color/xui_config_color_gray_3"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/gapLine_3"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/innovation_grade"
+                android:background="@color/xui_btn_gray_normal_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_3"
+                android:layout_margin="15dp"
+                android:text="学号"
+                android:textColor="@color/theme_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/innovation_studentNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_3"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:text=""
+                android:textColor="@color/xui_config_color_gray_3"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/gapLine_4"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/innovation_studentNumber"
+                android:background="@color/xui_btn_gray_normal_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_4"
+                android:layout_margin="15dp"
+                android:text="姓名"
+                android:textColor="@color/theme_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/innovation_studentName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_4"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:text=""
+                android:textColor="@color/xui_config_color_gray_3"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/gapLine_5"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/innovation_studentName"
+                android:background="@color/xui_btn_gray_normal_color" />
+
+            <TextView
+                android:id="@+id/title_innovationScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_5"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="25dp"
+                android:text="积分信息"
+                android:textColor="@color/theme_black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_innovationScore"
+                android:layout_margin="15dp"
+                android:text="基本素质3分"
+                android:textColor="@color/theme_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/innovation_basicScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_innovationScore"
+                android:layout_alignEnd="@id/innovation_btn_update"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:text=""
+                android:textColor="@color/xui_config_color_gray_3"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/gapLine_6"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/innovation_basicScore"
+                android:background="@color/xui_btn_gray_normal_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_6"
+                android:layout_margin="15dp"
+                android:text="基本技能3分(技能课程)"
+                android:textColor="@color/theme_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/innovation_basicScore_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_6"
+                android:layout_alignEnd="@id/innovation_btn_update"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:text=""
+                android:textColor="@color/xui_config_color_gray_3"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/gapLine_7"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/innovation_basicScore_course"
+                android:background="@color/xui_btn_gray_normal_color" />
+
+            <TextView
+                android:id="@+id/text_basicTrain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_7"
+                android:layout_margin="15dp"
+                android:text="基本技能3分(技能训练)"
+                android:textColor="@color/theme_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/innovation_basicScore_train"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_7"
+                android:layout_alignEnd="@id/innovation_btn_update"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:text=""
+                android:textColor="@color/xui_config_color_gray_3"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/gapLine_8"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/innovation_basicScore_train"
+                android:background="@color/xui_btn_gray_normal_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_8"
+                android:layout_margin="15dp"
+                android:text="创新实践2分"
+                android:textColor="@color/theme_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/innovation_practise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_8"
+                android:layout_alignEnd="@id/innovation_btn_update"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:text=""
+                android:textColor="@color/xui_config_color_gray_3"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/gapLine_9"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/innovation_practise"
+                android:background="@color/xui_btn_gray_normal_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_9"
+                android:layout_margin="15dp"
+                android:text="欠修"
+                android:textColor="@color/theme_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/innovation_lack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gapLine_9"
+                android:layout_alignEnd="@id/innovation_btn_update"
+                android:textAlignment="textEnd"
+                android:layout_margin="15dp"
+                android:text=""
+                android:textColor="@color/xui_config_color_gray_3"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/gapLine_10"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/innovation_lack"
+                android:background="@color/xui_btn_gray_normal_color" />
+
+            <com.xuexiang.xui.widget.button.ButtonView
+                android:id="@+id/innovation_btn_getScore"
+                style="@style/ButtonView.Green"
+                android:layout_alignEnd="@id/text_basicTrain"
+                android:layout_below="@id/gapLine_10"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="查询" />
+
+            <com.xuexiang.xui.widget.button.ButtonView
+                android:id="@+id/innovation_btn_update"
+                style="@style/ButtonView.Blue"
+                android:layout_below="@id/gapLine_10"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@id/innovation_btn_getScore"
+                android:text="创新积分更新" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>
