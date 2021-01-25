@@ -321,31 +321,30 @@
                                 android:textSize="13sp" />
                         
                         </FrameLayout>
-                        
+
                         <FrameLayout
-                            android:id="@+id/more_graduation_requirement"
+                            android:id="@+id/more_innovation_score"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:visibility="invisible">
-                            
-<!--                            <ImageView-->
-<!--                                android:id="@+id/more_graduation_requirement_picture"-->
-<!--                                android:layout_width="34dp"-->
-<!--                                android:layout_height="34dp"-->
-<!--                                android:layout_gravity="top|center"-->
-<!--                                android:baselineAlignBottom="false"-->
-<!--                                android:src="@drawable/m_biyeguanli"-->
-<!--                                tools:ignore="ContentDescription" />-->
-<!--                            -->
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_gravity="bottom|center"-->
-<!--                                android:text="@string/moreFun_graduation_requirement"-->
-<!--                                android:textSize="13sp" />-->
-                        
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="29dp"
+                                android:layout_height="29dp"
+                                android:layout_gravity="top|center"
+                                android:baselineAlignBottom="false"
+                                android:src="@drawable/m_innovation_score"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_innovation_score"
+                                android:textSize="13sp" />
+
                         </FrameLayout>
                         
                         <FrameLayout

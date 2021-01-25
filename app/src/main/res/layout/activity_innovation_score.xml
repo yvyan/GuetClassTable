@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".moreFun.InnovationScoreActivity">
 
     <RelativeLayout
@@ -21,7 +22,8 @@
             android:layout_marginStart="10dp"
             android:onClick="onClick"
             android:src="@drawable/back"
-            app:tint="@color/app_white" />
+            app:tint="@color/app_white"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,7 +32,7 @@
             android:layout_marginStart="50dp"
             android:text="创新积分"
             android:textColor="@color/app_white"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/innovationScore_state"
@@ -38,14 +40,45 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="160dp"
-            android:text="正在更新"
             android:textColor="@color/app_white"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
     </RelativeLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/innovation_waite"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.35"
+            app:srcCompat="@drawable/d_tongbu"
+            app:tint="@color/colorAccent"
+            tools:ignore="ContentDescription" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            app:layout_constraintVertical_bias="0.05" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ScrollView
-        android:layout_below="@id/more_innovation_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -70,7 +103,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:text=""
                 android:textColor="@color/xui_config_color_gray_3"
                 android:textSize="16sp" />
 
@@ -99,7 +131,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:text=""
                 android:textColor="@color/xui_config_color_gray_3"
                 android:textSize="16sp" />
 
@@ -128,7 +159,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:text=""
                 android:textColor="@color/xui_config_color_gray_3"
                 android:textSize="16sp" />
 
@@ -157,7 +187,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:text=""
                 android:textColor="@color/xui_config_color_gray_3"
                 android:textSize="16sp" />
 
@@ -186,7 +215,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:text=""
                 android:textColor="@color/xui_config_color_gray_3"
                 android:textSize="16sp" />
 
@@ -227,7 +255,6 @@
                 android:layout_alignEnd="@id/innovation_btn_update"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:text=""
                 android:textColor="@color/xui_config_color_gray_3"
                 android:textSize="16sp" />
 
@@ -256,7 +283,6 @@
                 android:layout_alignEnd="@id/innovation_btn_update"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:text=""
                 android:textColor="@color/xui_config_color_gray_3"
                 android:textSize="16sp" />
 
@@ -286,7 +312,6 @@
                 android:layout_alignEnd="@id/innovation_btn_update"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:text=""
                 android:textColor="@color/xui_config_color_gray_3"
                 android:textSize="16sp" />
 
@@ -315,7 +340,6 @@
                 android:layout_alignEnd="@id/innovation_btn_update"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:text=""
                 android:textColor="@color/xui_config_color_gray_3"
                 android:textSize="16sp" />
 
@@ -342,9 +366,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/gapLine_9"
                 android:layout_alignEnd="@id/innovation_btn_update"
-                android:textAlignment="textEnd"
                 android:layout_margin="15dp"
-                android:text=""
+                android:textAlignment="textEnd"
                 android:textColor="@color/xui_config_color_gray_3"
                 android:textSize="16sp" />
 
@@ -356,26 +379,18 @@
                 android:background="@color/xui_btn_gray_normal_color" />
 
             <com.xuexiang.xui.widget.button.ButtonView
-                android:id="@+id/innovation_btn_getScore"
-                style="@style/ButtonView.Green"
-                android:layout_alignEnd="@id/text_basicTrain"
-                android:layout_below="@id/gapLine_10"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:text="查询" />
-
-            <com.xuexiang.xui.widget.button.ButtonView
                 android:id="@+id/innovation_btn_update"
                 style="@style/ButtonView.Blue"
+                android:layout_width="180dp"
+                android:layout_height="35dp"
                 android:layout_below="@id/gapLine_10"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_toEndOf="@id/innovation_btn_getScore"
-                android:text="创新积分更新" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="创新积分更新"
+                android:textSize="18sp" />
 
         </RelativeLayout>
 
     </ScrollView>
 
-
-</RelativeLayout>
+</LinearLayout>

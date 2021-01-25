@@ -18,6 +18,7 @@ import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
+import top.yvyan.guettable.moreFun.InnovationScoreActivity;
 import top.yvyan.guettable.moreFun.LibActivity;
 import top.yvyan.guettable.moreFun.MoreUrlActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
@@ -32,7 +33,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
     private View view;
     private View testSchedule, credits, testScores, libScores, resitSchedule, libSchedule;
-    private View graduationRequirement, planCourses, cet;
+    private View graduationRequirement, planCourses, cet, innovationPoints;
     private View urlBkjw, urlVPN, urlCampus, urlStaff, urlLiJiang, urlMore, urlIndex;
     private View evaluatingTeachers, evaluatingTextbooks, test;
 
@@ -77,6 +78,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         planCourses.setOnClickListener(this);
         cet = view.findViewById(R.id.more_cet);
         cet.setOnClickListener(this);
+        innovationPoints = view.findViewById(R.id.more_innovation_score);
+        innovationPoints.setOnClickListener(this);
 
         urlBkjw = view.findViewById(R.id.more_url_bkjw);
         urlBkjw.setOnClickListener(this);
@@ -157,6 +160,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.more_cet:
                 intent = new Intent(getContext(), CETActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.more_innovation_score:
+                intent = new Intent(getContext(), InnovationScoreActivity.class);
                 startActivity(intent);
                 break;
 

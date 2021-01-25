@@ -981,8 +981,17 @@ public class StaticService {
      */
     public static BaseResponse<InnovationScore> getInnovationScore(Context context, String cookie) {
         HttpConnectionAndCode httpConnectionAndCode = LAN.getInnovationScore(context, cookie, TokenData.isVPN);
-        return new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {
-        }.getType());
+        if (httpConnectionAndCode.comment != null) {
+            BaseResponse<InnovationScore> result;
+            try {
+                result = new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {}.getType());
+            } catch (Exception ignored) {
+                return null;
+            }
+            return result;
+        } else {
+            return null;
+        }
     }
 
     /**

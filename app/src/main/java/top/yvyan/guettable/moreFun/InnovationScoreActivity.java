@@ -42,8 +42,6 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
     TextView innovationScore_pratise;
     @BindView(R.id.innovation_lack)
     TextView innovationScore_Lack;
-    @BindView(R.id.innovation_btn_getScore)
-    ButtonView btn_get_innovationScore;
     @BindView(R.id.innovation_btn_update)
     ButtonView btn_update_innovationScore;
 
@@ -58,7 +56,6 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
         ButterKnife.bind(this);
         moreFunService = new MoreFunService(this, this);
         moreFunService.update();
-        btn_get_innovationScore.setOnClickListener(this);
         btn_update_innovationScore.setOnClickListener(this);
     }
 
@@ -68,14 +65,21 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
             case R.id.innovationScore_back:
                 finish();
                 break;
-            case R.id.innovation_btn_getScore:
-                moreFunService.update();
-                break;
             case R.id.innovation_btn_update:
                 new Thread(() -> {
+                    runOnUiThread(() -> {
+                        ToastUtil.showToast(this, "正在更新，请耐心等候");
+                    });
                     int result = StaticService.updateInnovationScore(this, cookie);
                     if (result == 0) {
-                        ToastUtil.showToast(this, "更新数据成功!点击查询按钮查看积分");
+                        moreFunService.update();
+                        runOnUiThread(() -> {
+                            ToastUtil.showToast(this, "更新数据成功");
+                        });
+                    } else {
+                        runOnUiThread(() -> {
+                            ToastUtil.showToast(this, "更新失败，请稍后重试");
+                        });
                     }
                 }).start();
                 break;
@@ -101,6 +105,8 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
     }
 
     private void updateView() {
+        View wait = findViewById(R.id.innovation_waite);
+        wait.setVisibility(View.GONE);
         InnovationScore innovationScore = innovationScoreBaseResponse.getData();
         innovation_dptName.setText(innovationScore.getDptname());
         innovation_grade.setText(innovationScore.getGrade());
@@ -112,8 +118,5 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
         innovationScore_Course.setText(String.valueOf(innovationScore.getLb22()));
         innovationScore_pratise.setText(String.valueOf(innovationScore.getLb3()));
         innovationScore_Lack.setText(String.valueOf(innovationScore.getLack()));
-        ToastUtil.showToast(this, "获取成功!");
     }
-
-
 }
