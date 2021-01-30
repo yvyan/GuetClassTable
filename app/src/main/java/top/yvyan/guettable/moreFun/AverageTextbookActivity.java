@@ -66,9 +66,7 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
                         avgTextbookBeans.get(index).setHint("失败");
                     }
                 }
-                runOnUiThread(() -> {
-                    updateView();
-                });
+                runOnUiThread(this::updateView);
                 index++;
             }
         }).start();
@@ -81,7 +79,7 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
                 finish();
                 break;
             case R.id.avg_textbook_start:
-                if ("开始自动评价教材".equals(start.getText())) {
+                if ("开始自动评价教材".contentEquals(start.getText())) {
                     start.setText("正在评价，请稍后...");
                     start();
                 }
@@ -128,7 +126,7 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
         AvgTextbookAdapter avgTextbookAdapter = new AvgTextbookAdapter(avgTextbookBeans);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(avgTextbookAdapter);
-        if (!"".equals(avgTextbookBeans.get(avgTextbookBeans.size() - 1).getHint()) && "正在评价，请稍后...".equals(start.getText())) {
+        if (avgTextbookBeans.size() == 0 || (!"".equals(avgTextbookBeans.get(avgTextbookBeans.size() - 1).getHint()) && "正在评价，请稍后...".contentEquals(start.getText()))) {
             start.setText("开始自动评价教材");
             ToastUtil.showToast(this, "教材评价已经完成！");
         }

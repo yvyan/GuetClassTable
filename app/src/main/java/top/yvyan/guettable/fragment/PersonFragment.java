@@ -100,7 +100,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         person_term = view.findViewById(R.id.person_term);
         person_week = view.findViewById(R.id.person_week);
         TextView profileVersion = view.findViewById(R.id.tv_profile_version);
-        profileVersion.setText(AppUtil.getAppVersionName(getContext()));
+        profileVersion.setText(AppUtil.getAppVersionName(Objects.requireNonNull(getContext())));
 
         //    private View info;
         View help = view.findViewById(R.id.person_help);
@@ -201,7 +201,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     }
 
     public void downloadAllApk() {
-        Uri uri = Uri.parse(getContext().getResources().getString(R.string.downloadAll_url));
+        Uri uri = Uri.parse(Objects.requireNonNull(getContext()).getResources().getString(R.string.downloadAll_url));
         Intent webIntent = new Intent();
         webIntent.setAction("android.intent.action.VIEW");
         webIntent.setData(uri);
@@ -233,21 +233,19 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 new Thread(() -> {
                     TokenData tokenData = TokenData.newInstance(getContext());
                     int n = tokenData.refresh();
-                    if (n == 0) {
-                        //获取剪贴板管理器：
-                        ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                        // 创建普通字符型ClipData
-                        ClipData mClipData = ClipData.newPlainText("Label", tokenData.getCookie());
-                        // 将ClipData内容放到系统剪贴板里。
-                        cm.setPrimaryClip(mClipData);
-                        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                    Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                        if (n == 0) {
+                            //获取剪贴板管理器：
+                            ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                            // 创建普通字符型ClipData
+                            ClipData mClipData = ClipData.newPlainText("Label", tokenData.getCookie());
+                            // 将ClipData内容放到系统剪贴板里。
+                            cm.setPrimaryClip(mClipData);
                             TextDialog.showScanNumberDialog(getContext(), "感谢协助，凭证复制成功，您现在可以发送给开发者了！");
-                        });
-                    } else {
-                        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                        } else {
                             TextDialog.showScanNumberDialog(getContext(), "获取失败，请稍后重试。");
-                        });
-                    }
+                        }
+                    });
                 }).start();
             }
         }
