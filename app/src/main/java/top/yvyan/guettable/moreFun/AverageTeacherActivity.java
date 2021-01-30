@@ -76,7 +76,7 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
         AvgTeacherAdapter avgTeacherAdapter = new AvgTeacherAdapter(avgTeacherBeans);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(avgTeacherAdapter);
-        if (!"".equals(avgTeacherBeans.get(avgTeacherBeans.size() - 1).getHint()) && "正在评价，请稍后...".equals(start.getText())) {
+        if (avgTeacherBeans.size() == 0 || (!"".equals(avgTeacherBeans.get(avgTeacherBeans.size() - 1).getHint()) && "正在评价，请稍后...".contentEquals(start.getText()))) {
             start.setText("开始自动评价教师");
             ToastUtil.showToast(this, "评价教师已经完成！");
         }
@@ -99,9 +99,7 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
                         }
                     }
                 }
-                runOnUiThread(() -> {
-                    updateView();
-                });
+                runOnUiThread(this::updateView);
                 index ++;
             }
         }).start();
@@ -114,7 +112,7 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
                 finish();
                 break;
             case R.id.avg_teacher_start:
-                if ("开始自动评价教师".equals(start.getText())) {
+                if ("开始自动评价教师".contentEquals(start.getText())) {
                     start.setText("正在评价，请稍后...");
                     start();
                 }

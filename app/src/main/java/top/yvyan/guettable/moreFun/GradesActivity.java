@@ -71,7 +71,7 @@ public class GradesActivity extends AppCompatActivity implements IMoreFun {
 
     @Override
     public int updateData(String cookie) {
-        float grades[] = StaticService.calculateGrades(this, cookie, Integer.parseInt(generalData.getGrade()));
+        float[] grades = StaticService.calculateGrades(this, cookie, Integer.parseInt(generalData.getGrade()));
         if (grades != null) {
             moreDate.setGrades(grades);
             return 5;
