@@ -20,9 +20,9 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.AvgTeacherAdapter;
 import top.yvyan.guettable.bean.AvgTeacherBean;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.service.IMoreFun;
-import top.yvyan.guettable.service.MoreFunService;
-import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.service.table.IMoreFun;
+import top.yvyan.guettable.service.table.MoreFunService;
+import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.ToastUtil;
 
 import static com.xuexiang.xui.XUI.getContext;

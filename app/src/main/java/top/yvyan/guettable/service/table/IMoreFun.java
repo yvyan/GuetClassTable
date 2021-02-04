@@ -1,4 +1,4 @@
-package top.yvyan.guettable.service;
+package top.yvyan.guettable.service.table;
 
 public interface IMoreFun {
     /**

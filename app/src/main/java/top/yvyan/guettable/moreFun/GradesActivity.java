@@ -13,9 +13,9 @@ import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
-import top.yvyan.guettable.service.IMoreFun;
-import top.yvyan.guettable.service.MoreFunService;
-import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.service.table.IMoreFun;
+import top.yvyan.guettable.service.table.MoreFunService;
+import top.yvyan.guettable.service.table.fetch.StaticService;
 
 public class GradesActivity extends AppCompatActivity implements IMoreFun {
 

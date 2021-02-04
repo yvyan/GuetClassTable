@@ -16,9 +16,9 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ResitAdapter;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.data.MoreDate;
-import top.yvyan.guettable.service.IMoreFun;
-import top.yvyan.guettable.service.MoreFunService;
-import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.service.table.IMoreFun;
+import top.yvyan.guettable.service.table.MoreFunService;
+import top.yvyan.guettable.service.table.fetch.StaticService;
 
 import static com.xuexiang.xui.XUI.getContext;
 

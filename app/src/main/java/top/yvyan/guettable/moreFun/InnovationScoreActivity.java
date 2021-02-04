@@ -13,9 +13,9 @@ import butterknife.ButterKnife;
 import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.InnovationScore;
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.service.IMoreFun;
-import top.yvyan.guettable.service.MoreFunService;
-import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.service.table.IMoreFun;
+import top.yvyan.guettable.service.table.MoreFunService;
+import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class InnovationScoreActivity extends AppCompatActivity implements View.OnClickListener, IMoreFun {

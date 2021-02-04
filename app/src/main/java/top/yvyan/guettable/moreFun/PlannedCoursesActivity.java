@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,15 +12,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import top.yvyan.guettable.Gson.EffectiveCredit;
-import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.PlannedCourseAdapter;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.data.MoreDate;
-import top.yvyan.guettable.service.IMoreFun;
-import top.yvyan.guettable.service.MoreFunService;
-import top.yvyan.guettable.service.StaticService;
+import top.yvyan.guettable.service.table.IMoreFun;
+import top.yvyan.guettable.service.table.MoreFunService;
+import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 
 import static com.xuexiang.xui.XUI.getContext;

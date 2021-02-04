@@ -1,9 +1,10 @@
-package top.yvyan.guettable.service;
+package top.yvyan.guettable.service.table;
 
 import android.app.Activity;
 
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.service.table.IMoreFun;
 
 public class MoreFunService {
     private Activity activity;
