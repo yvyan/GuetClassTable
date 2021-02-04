@@ -10,11 +10,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,10 +60,11 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:src="@drawable/p_huiyuan"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/p_huiyuan" />
+                    tools:ignore="ContentDescription" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -80,10 +82,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="设置年度"
-                    android:textSize="20sp"
                     android:clickable="false"
-                    />
+                    android:text="设置年度"
+                    android:textSize="20sp" />
 
                 <Spinner
                     android:id="@+id/spinner_year"
@@ -99,10 +100,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="设置学期"
-                    android:textSize="20sp"
                     android:clickable="false"
-                    />
+                    android:text="设置学期"
+                    android:textSize="20sp" />
 
                 <Spinner
                     android:id="@+id/spinner_term"
@@ -119,18 +119,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="设置周次"
-                    android:textSize="20sp"
                     android:clickable="false"
-                    />
+                    android:text="设置周次"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/week_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="第X周"
                     android:layout_margin="5dp"
+                    android:text="第X周"
                     android:textAlignment="center"
                     android:textSize="16sp" />
 
@@ -144,9 +143,9 @@
                     app:xsb_insideRangeLineColor="#00B1FF"
                     app:xsb_insideRangeLineStrokeWidth="10dp"
                     app:xsb_isShowNumber="false"
-                    app:xsb_numberTextSize="14sp"
                     app:xsb_max="200"
                     app:xsb_min="10"
+                    app:xsb_numberTextSize="14sp"
                     app:xsb_outsideRangeLineStrokeWidth="10dp" />
 
             </LinearLayout>

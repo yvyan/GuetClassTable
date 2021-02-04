@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".moreFun.ExamActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".moreFun.ExamActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,24 +16,25 @@
 
         <ImageView
             android:id="@+id/web_back"
-            android:onClick="onClick"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:tint="@color/app_white"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/back" />
+            android:layout_marginStart="10dp"
+            android:onClick="onClick"
+            android:src="@drawable/back"
+            app:tint="@color/app_white"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/web_title"
             android:layout_width="wrap_content"
-            android:textSize="18dp"
-            android:text=""
-            android:textColor="@color/app_white"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
+            android:text=""
+            android:textColor="@color/app_white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/web_back"
             app:layout_constraintTop_toTopOf="parent" />
 

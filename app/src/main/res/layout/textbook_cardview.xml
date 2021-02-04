@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.4"
             android:gravity="center"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textbook_name"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textbook_hint"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.7"
             android:gravity="center"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 

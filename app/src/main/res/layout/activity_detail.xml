@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DetailActivity" >
+    tools:context=".DetailActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,29 +18,30 @@
             android:id="@+id/detail_back"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:tint="@color/app_white"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/back" />
+            android:layout_marginStart="10dp"
+            android:src="@drawable/back"
+            app:tint="@color/app_white"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/detail_title"
             android:layout_width="wrap_content"
-            android:textSize="18dp"
-            android:textColor="@color/app_white"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="60dp"
+            android:layout_marginStart="60dp"
+            android:textColor="@color/app_white"
+            android:textSize="18sp"
             app:layout_constraintTop_toTopOf="parent" />
 
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/class_detail_recycleView"
-        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
