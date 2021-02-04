@@ -178,6 +178,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     Intent intent = new Intent(this, SetTermActivity.class);
                     startActivity(intent);
                     finish();
+                } else { //若获取个人信息失败，则登出，否则会导致后续获取不到年级等信息导致闪退
+                    runOnUiThread(() -> {
+                        ToastUtil.showToast(this, getResources().getString(R.string.lan_login_fail_getInfo));
+                        accountData.logoff();
+                        setEnClick();
+                    });
                 }
             } else {
                 int finalState = state;
