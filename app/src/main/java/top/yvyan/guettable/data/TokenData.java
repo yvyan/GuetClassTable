@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.service.StaticService;
-import top.yvyan.guettable.service.fetch.LAN;
+import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.service.table.fetch.LAN;
 
 public class TokenData {
     private static TokenData tokenData;

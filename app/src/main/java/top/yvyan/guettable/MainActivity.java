@@ -35,7 +35,7 @@ import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.OnButtonClick;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
-import top.yvyan.guettable.service.fetch.LAN;
+import top.yvyan.guettable.service.table.fetch.LAN;
 
 public class MainActivity extends AppCompatActivity implements OnButtonClick {
 

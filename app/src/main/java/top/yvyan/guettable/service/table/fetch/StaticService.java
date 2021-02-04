@@ -1,4 +1,4 @@
-package top.yvyan.guettable.service;
+package top.yvyan.guettable.service.table.fetch;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -47,7 +47,6 @@ import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.service.fetch.LAN;
 import top.yvyan.guettable.util.RegularUtil;
 
 public class StaticService {

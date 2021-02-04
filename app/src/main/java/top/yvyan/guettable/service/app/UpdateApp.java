@@ -1,4 +1,4 @@
-package top.yvyan.guettable.service;
+package top.yvyan.guettable.service.app;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +23,9 @@ import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
+/**
+ * APP检查更新
+ */
 public class UpdateApp {
 
     /**

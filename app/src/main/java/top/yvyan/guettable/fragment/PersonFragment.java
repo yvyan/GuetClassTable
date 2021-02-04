@@ -29,7 +29,7 @@ import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.service.UpdateApp;
+import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;

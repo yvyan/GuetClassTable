@@ -251,8 +251,8 @@
                         tools:ignore="UselessParent">
 
                         <ImageView
-                            android:layout_width="29dp"
-                            android:layout_height="29dp"
+                            android:layout_width="27dp"
+                            android:layout_height="27dp"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="4dp"
                             android:src="@drawable/p_bangzhu"
@@ -292,8 +292,8 @@
                         tools:ignore="UselessParent">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="6dp"
                             android:src="@drawable/p_ziyuan"
@@ -334,8 +334,8 @@
                         tools:ignore="UselessParent">
 
                         <ImageView
-                            android:layout_width="27dp"
-                            android:layout_height="27dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="5dp"
                             android:src="@drawable/p_shengji"
@@ -375,8 +375,8 @@
                         tools:ignore="UselessParent">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="2.6dp"
                             android:src="@drawable/p_cloud"
@@ -416,10 +416,10 @@
                         tools:ignore="UselessParent">
 
                         <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
                             android:layout_centerVertical="true"
-                            android:layout_marginStart="3.5dp"
+                            android:layout_marginStart="4dp"
                             android:src="@drawable/p_test"
                             tools:ignore="ContentDescription" />
 
@@ -457,8 +457,8 @@
                         tools:ignore="UselessParent">
 
                         <ImageView
-                            android:layout_width="29dp"
-                            android:layout_height="29dp"
+                            android:layout_width="27dp"
+                            android:layout_height="27dp"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="4dp"
                             android:src="@drawable/p_guanyu"
