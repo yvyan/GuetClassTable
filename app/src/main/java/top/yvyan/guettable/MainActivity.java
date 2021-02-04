@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Process;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -100,15 +99,12 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         LoggerInterface newLogger = new LoggerInterface() {
             @Override
             public void setTag(String tag) {
-                // ignore
             }
             @Override
             public void log(String content, Throwable t) {
-                Log.d(TAG, content, t);
             }
             @Override
             public void log(String content) {
-                Log.d(TAG, content);
             }
         };
         Logger.setLogger(this, newLogger);
@@ -192,11 +188,9 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
 
                     switch (type2) {
                         case 0://移动 网络    2G 3G 4G 都是一样的 实测 mix2s 联通卡
-                            Log.d("1586", "移动网络");
                             TokenData.isVPN = true;
                             break;
                         case 1: //wifi网络
-                            Log.d("1586", "WIFI");
                             TokenData.isVPN = LAN.testNet(context) != 0;
                             break;
                     }
