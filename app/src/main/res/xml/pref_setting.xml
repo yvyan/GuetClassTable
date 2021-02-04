@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".SettingActivity">
 
-    <Preference
-        android:key="option"
-        android:layout="@layout/setting" />
-
     <PreferenceCategory
         style="PreferenceCategoryStyle"
         android:key="basic_settings"

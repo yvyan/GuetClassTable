@@ -1,46 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".SettingActivity">
 
     <RelativeLayout
-        android:id="@+id/more_head"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="109dp">
 
         <ImageView
             android:id="@+id/setting_back"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:onClick="onClick"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             app:tint="@color/app_white"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/back"
-            android:onClick="doBack" />
+            android:src="@drawable/back" />
 
         <TextView
+            android:id="@+id/grades_title"
             android:layout_width="wrap_content"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:text="设置"
             android:textColor="@color/app_white"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
-            android:layout_marginLeft="130px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dp"
+            app:layout_constraintStart_toStartOf="@id/setting_back"
             app:layout_constraintTop_toTopOf="parent" />
 
     </RelativeLayout>
 
-    <ListView
-        android:id="@android:id/list"
+    <fragment
+        android:id="@+id/setting_fragment"
+        class="top.yvyan.guettable.SettingActivity$SettingFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
