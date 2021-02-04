@@ -22,7 +22,7 @@ import top.yvyan.guettable.AboutActivity;
 import top.yvyan.guettable.HelpTestActivity;
 import top.yvyan.guettable.HelperActivity;
 import top.yvyan.guettable.LoginActivity;
-import top.yvyan.guettable.MySettingActivity;
+import top.yvyan.guettable.SettingActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
 import top.yvyan.guettable.data.AccountData;
@@ -163,7 +163,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 updateView();
                 break;
             case R.id.person_setting:
-                intent = new Intent(getContext(), MySettingActivity.class);
+                intent = new Intent(getContext(), SettingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.person_help:

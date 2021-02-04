@@ -28,10 +28,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".moreFun.MoreUrlActivity"></activity>
+        <activity android:name=".moreFun.MoreUrlActivity" />
         <activity android:name=".HelpTestActivity" />
         <activity android:name=".moreFun.TestActivity" />
-        <activity android:name=".moreFun.InnovationScoreActivity"></activity>
+        <activity android:name=".moreFun.InnovationScoreActivity" />
         <activity android:name=".moreFun.LibActivity" />
         <activity android:name=".moreFun.ResitActivity" />
         <activity android:name=".moreFun.GradesActivity" />
@@ -48,7 +48,7 @@
         <activity android:name=".moreFun.AverageTextbookActivity" />
         <activity android:name=".HelperActivity" />
         <activity android:name=".AboutActivity" />
-        <activity android:name=".MySettingActivity" />
+        <activity android:name=".SettingActivity" />
         <activity android:name=".moreFun.ExperimentScoreActivity" />
         <activity android:name=".moreFun.ExamScoreActivity" />
         <activity android:name=".moreFun.CETActivity" />
@@ -56,7 +56,6 @@
         <activity android:name=".DetailActivity" />
         <activity android:name=".SetTermActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SettingActivity" />
         <activity android:name=".MainActivity" />
 
         <service

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import top.yvyan.guettable.fragment.SettingFragment;
+import top.yvyan.guettable.SettingActivity.SettingFragment;
 
 public class SettingData {
     private static SettingData settingData;
