@@ -54,9 +54,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
-                android:foreground="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="10dp">
 
                 <LinearLayout
@@ -528,6 +528,10 @@
                 android:textColor="@android:color/white"
                 android:textSize="23sp"
                 app:rb_backgroundColor="@color/app_red" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
 
         </LinearLayout>
 

@@ -2,14 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="MainActivity"
-    >
-    <!--
-    -->
+    tools:context="MainActivity">
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp"
         android:layout_width="match_parent"
@@ -21,8 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
 
-        android:gravity="bottom"
         android:background="?android:attr/windowBackground"
+        android:gravity="bottom"
         app:itemBackground="@null"
         app:itemIconTint="@drawable/bottom_navigation_selector"
         app:itemTextColor="@drawable/bottom_navigation_selector"

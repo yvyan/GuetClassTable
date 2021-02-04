@@ -73,11 +73,11 @@
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="4dp"
             android:hint="请输入学号"
+            android:importantForAutofill="no"
             android:inputType="text"
             android:maxLines="1"
             android:textColorHint="@color/xui_config_color_50_pure_black"
-            android:textSize="20sp"
-            android:importantForAutofill="no" />
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
@@ -104,11 +104,11 @@
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="4dp"
             android:hint="请输入智慧校园密码"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             android:maxLines="1"
             android:textColorHint="@color/xui_config_color_50_pure_black"
-            android:textSize="20sp"
-            android:importantForAutofill="no" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/iv_pwd_switch"
@@ -148,11 +148,11 @@
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="4dp"
             android:hint="VPN密码(相同可以忽略)"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             android:maxLines="1"
             android:textColorHint="@color/xui_config_color_50_pure_black"
-            android:textSize="20sp"
-            android:importantForAutofill="no" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/iv_pwd_switch_2"

@@ -18,22 +18,23 @@
             android:id="@+id/planned_course_back"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:onClick="onClick"
             android:src="@drawable/back"
-            app:tint="@color/app_white" />
+            app:tint="@color/app_white"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/planned_course_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
             android:text="计划课程"
             android:textColor="@color/app_white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/planned_course_back"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,10 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="160dp"
-            android:text="正在更新"
+            android:layout_marginStart="160dp"
             android:textColor="@color/app_white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintTop_toTopOf="parent" />
 
     </RelativeLayout>
@@ -65,14 +65,15 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.4"
             app:srcCompat="@drawable/d_kong"
-            app:tint="@color/colorPrimary" />
+            app:tint="@color/colorPrimary"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+        android:id="@+id/planned_course_info_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/planned_course_info_view"
         android:layout_marginBottom="8dp"
         android:orientation="vertical">
 
@@ -105,7 +106,7 @@
                 android:layout_marginBottom="3dp"
                 android:text="课程"
                 android:textColor="@color/app_white"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -116,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:text="学分"
                 android:textColor="@color/app_white"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -127,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:text="成绩"
                 android:textColor="@color/app_white"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"

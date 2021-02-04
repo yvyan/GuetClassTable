@@ -15,12 +15,12 @@
         tools:layout_editor_absoluteX="109dp">
 
         <ImageView
-            android:onClick="doBack"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
+            android:onClick="doBack"
             android:src="@drawable/back"
             app:tint="@color/app_white"
             tools:ignore="ContentDescription" />
@@ -69,15 +69,15 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/about_picture"
                     android:layout_centerInParent="true"
-                    android:textColor="@color/tab_unchecked"
                     android:text="@string/app_name"
+                    android:textColor="@color/tab_unchecked"
                     android:textSize="20sp" />
 
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="30dp"/>
+                android:layout_height="30dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,14 +87,14 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="8dp"/>
+                    android:layout_height="8dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="版本"
-                    android:textSize="16sp"
-                    android:textColor="@color/app_black"/>
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/about_version"
@@ -103,7 +103,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
             </LinearLayout>
 
@@ -113,26 +113,26 @@
                 android:background="@color/xui_config_color_gray_9" />
 
             <LinearLayout
-                android:onClick="join_us"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:onClick="join_us"
                 android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="加入我们"
-                    android:textSize="16sp"
-                    android:textColor="@color/app_black"/>
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
             </LinearLayout>
 
@@ -142,31 +142,31 @@
                 android:background="@color/xui_config_color_gray_9" />
 
             <LinearLayout
-                android:onClick="addQQ"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:onClick="addQQ"
                 android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="官方QQ交流群"
-                    android:textSize="16sp"
-                    android:textColor="@color/app_black"/>
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/QQGroup"/>
+                    android:text="@string/QQGroup" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
             </LinearLayout>
 
@@ -183,23 +183,23 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="作者"
-                    android:textSize="16sp"
-                    android:textColor="@color/app_black"/>
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="wing  |  ssbird  |  tank  |  uuin"/>
+                    android:text="wing  |  ssbird  |  tank  |  uuin" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
             </LinearLayout>
 
@@ -216,23 +216,23 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="特别鸣谢"
-                    android:textSize="16sp"
-                    android:textColor="@color/app_black"/>
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/thanks_person"/>
+                    android:text="@string/thanks_person" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
             </LinearLayout>
 
@@ -242,26 +242,26 @@
                 android:background="@color/xui_config_color_gray_9" />
 
             <LinearLayout
-                android:onClick="devSay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:onClick="devSay"
                 android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="开发者自语"
-                    android:textSize="16sp"
-                    android:textColor="@color/app_black"/>
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
             </LinearLayout>
 
@@ -271,26 +271,26 @@
                 android:background="@color/xui_config_color_gray_9" />
 
             <LinearLayout
-                android:onClick="myGit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:onClick="myGit"
                 android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="项目开源"
-                    android:textSize="16sp"
-                    android:textColor="@color/app_black"/>
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
             </LinearLayout>
 
@@ -300,26 +300,26 @@
                 android:background="@color/xui_config_color_gray_9" />
 
             <LinearLayout
-                android:onClick="open"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:onClick="open"
                 android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="开源引用"
-                    android:textSize="16sp"
-                    android:textColor="@color/app_black"/>
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
             </LinearLayout>
 
@@ -329,26 +329,26 @@
                 android:background="@color/xui_config_color_gray_9" />
 
             <LinearLayout
-                android:onClick="privacy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:onClick="privacy"
                 android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="隐私政策"
-                    android:textSize="16sp"
-                    android:textColor="@color/app_black"/>
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
             </LinearLayout>
 
@@ -358,26 +358,26 @@
                 android:background="@color/xui_config_color_gray_9" />
 
             <LinearLayout
-                android:onClick="statement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:onClick="statement"
                 android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="声明"
-                    android:textSize="16sp"
-                    android:textColor="@color/app_black"/>
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
             </LinearLayout>
 
@@ -385,6 +385,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.1dp"
                 android:background="@color/xui_config_color_gray_9" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
 
         </LinearLayout>
 
