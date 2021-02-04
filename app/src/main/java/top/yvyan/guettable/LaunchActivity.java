@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.service.app.FirstLoad;
 import top.yvyan.guettable.util.TextDialog;
 
 public class LaunchActivity extends AppCompatActivity {
@@ -27,6 +28,8 @@ public class LaunchActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); //状态栏为白色 图标显示深色
         }
 
+        FirstLoad firstLoad = new FirstLoad(getApplicationContext());
+        firstLoad.check();
 
         Window window = this.getWindow();
         if (Build.VERSION.SDK_INT >= 19) {

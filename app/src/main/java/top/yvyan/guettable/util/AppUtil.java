@@ -13,6 +13,21 @@ import java.util.List;
 
 public class AppUtil {
     /**
+     * 返回当前程序版本号
+     */
+    public static int getAppVersionCode(Context context) {
+        int versioncode = 0;
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            versioncode = pi.versionCode;
+        } catch (Exception e) {
+            Log.e("VersionInfo", "Exception", e);
+        }
+        return versioncode;
+    }
+
+    /**
      * 获取当前app version name
      */
     public static String getAppVersionName(Context context) {

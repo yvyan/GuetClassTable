@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -253,7 +252,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      * -3 -- 验证码连续错误
      */
     public int testLoginBkjw(String account, String password, String passwordVPN) {
-        Log.d("1586", "BKJW");
         TokenData tokenData = TokenData.newInstance(this);
         String VPNToken = LAN.getVPNToken(this);
         tokenData.setVPNToken(VPNToken);
