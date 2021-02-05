@@ -36,8 +36,8 @@ public class MoreDate {
     private List<PlannedCourseBean> plannedCourseBeans;
     private float grades[];
 
-    private MoreDate(Activity activity) {
-        sharedPreferences = activity.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
+    private MoreDate(Context context) {
+        sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         load();
     }
@@ -117,9 +117,9 @@ public class MoreDate {
         }
     }
 
-    public static MoreDate newInstance(Activity activity) {
+    public static MoreDate newInstance(Context context) {
         if (moreDate == null) {
-            moreDate = new MoreDate(activity);
+            moreDate = new MoreDate(context);
         }
         return moreDate;
     }

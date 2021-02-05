@@ -3,7 +3,9 @@ package top.yvyan.guettable.service.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
+import top.yvyan.guettable.SettingActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.util.AppUtil;
@@ -61,5 +63,10 @@ public class FirstLoad {
         if (GeneralData.newInstance(context).getGrade() == null) {
             AccountData.newInstance(context).logoff();
         }
+        // 修复课表默认同步频率错误的问题
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(SettingActivity.SettingFragment.REFRESH_DATA_FREQUENCY, "1");
+        editor.apply();
     }
 }
