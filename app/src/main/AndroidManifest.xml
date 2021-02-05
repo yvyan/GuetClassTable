@@ -29,6 +29,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".moreFun.MoreUrlActivity" />
+        <activity android:name=".moreFun.Exam2Activity"/>
+        <activity android:name=".moreFun.CETActivity" />
         <activity android:name=".HelpTestActivity" />
         <activity android:name=".moreFun.TestActivity" />
         <activity android:name=".moreFun.InnovationScoreActivity" />
@@ -51,7 +53,6 @@
         <activity android:name=".SettingActivity" />
         <activity android:name=".moreFun.ExperimentScoreActivity" />
         <activity android:name=".moreFun.ExamScoreActivity" />
-        <activity android:name=".moreFun.CETActivity" />
         <activity android:name=".moreFun.ExamActivity" />
         <activity android:name=".DetailActivity" />
         <activity android:name=".SetTermActivity" />
@@ -71,7 +72,8 @@
         <service
             android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
             android:enabled="true"
-            android:exported="true" /> <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
+            android:exported="true"
+            tools:ignore="ExportedService" /> <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
         <service
             android:name="com.xiaomi.mipush.sdk.MessageHandleService"
             android:enabled="true" />
@@ -80,7 +82,8 @@
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -95,7 +98,8 @@
         </receiver>
         <receiver
             android:name=".receiver.MiPushMessageReceiver"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
             </intent-filter>
