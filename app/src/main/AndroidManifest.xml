@@ -29,7 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".moreFun.MoreUrlActivity" />
-        <activity android:name=".moreFun.Exam2Activity"/>
+        <activity android:name=".moreFun.ExamActivity" />
         <activity android:name=".moreFun.CETActivity" />
         <activity android:name=".HelpTestActivity" />
         <activity android:name=".moreFun.TestActivity" />
@@ -53,7 +53,6 @@
         <activity android:name=".SettingActivity" />
         <activity android:name=".moreFun.ExperimentScoreActivity" />
         <activity android:name=".moreFun.ExamScoreActivity" />
-        <activity android:name=".moreFun.ExamActivity" />
         <activity android:name=".DetailActivity" />
         <activity android:name=".SetTermActivity" />
         <activity android:name=".LoginActivity" />

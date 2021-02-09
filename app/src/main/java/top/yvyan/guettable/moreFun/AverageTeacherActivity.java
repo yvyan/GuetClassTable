@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,23 +28,30 @@ import top.yvyan.guettable.util.ToastUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
+@SuppressLint("NonConstantResourceId")
 public class AverageTeacherActivity extends AppCompatActivity implements View.OnClickListener, IMoreFun {
 
-    @BindView(R.id.average_teacher_state) TextView title;
-    @BindView(R.id.teacher_waite) View waite;
-    @BindView(R.id.teacher_info_recycler_view) RecyclerView recyclerView;
-    @BindView(R.id.avg_teacher_start) Button start;
+    @BindView(R.id.state)
+    TextView state;
+    @BindView(R.id.title)
+    TextView title;
+    @BindView(R.id.teacher_waite)
+    View waite;
+    @BindView(R.id.teacher_info_recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.avg_teacher_start)
+    Button start;
 
     private List<AvgTeacher> avgTeachers;
     private String cookie;
     private List<AvgTeacherBean> avgTeacherBeans;
-    int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_average_teacher);
         ButterKnife.bind(this);
+        title.setText(getString(R.string.moreFun_evaluating_teachers));
 
         MoreFunService moreFunService = new MoreFunService(this, this);
         moreFunService.update();
@@ -56,7 +64,7 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
         if (avgTeachers != null) {
             avgTeacherBeans = new ArrayList<>();
             for (AvgTeacher avgTeacher : avgTeachers) {
-                avgTeacherBeans.add(new AvgTeacherBean(avgTeacher.getCname(), avgTeacher.getName(), ((avgTeacher.getChk() == 1)? "已评教" : "")));
+                avgTeacherBeans.add(new AvgTeacherBean(avgTeacher.getCname(), avgTeacher.getName(), ((avgTeacher.getChk() == 1) ? "已评教" : "")));
             }
             return 5;
         }
@@ -64,9 +72,9 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
     }
 
     @Override
-    public void updateView(String hint, int state) {
-        title.setText(hint);
-        if (state == 5) {
+    public void updateView(String hint, int stateNum) {
+        this.state.setText(hint);
+        if (stateNum == 5) {
             updateView();
         }
     }
@@ -84,6 +92,7 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
 
     private void start() {
         new Thread(() -> {
+            int index = 0;
             for (AvgTeacher avgTeacher : avgTeachers) {
                 Log.d("", avgTeacher.getName());
                 if (avgTeacher.getChk() == 0) {
@@ -100,24 +109,20 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
                     }
                 }
                 runOnUiThread(this::updateView);
-                index ++;
+                index++;
             }
         }).start();
     }
 
+    public void doBack(View view) {
+        finish();
+    }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.average_teacher_back:
-                finish();
-                break;
-            case R.id.avg_teacher_start:
-                if ("开始自动评价教师".contentEquals(start.getText())) {
-                    start.setText("正在评价，请稍后...");
-                    start();
-                }
-            default:
-                break;
+        if ("开始自动评价教师".contentEquals(start.getText())) {
+            start.setText("正在评价，请稍后...");
+            start();
         }
     }
 }

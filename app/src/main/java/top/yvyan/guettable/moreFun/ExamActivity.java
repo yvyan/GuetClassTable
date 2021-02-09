@@ -1,29 +1,21 @@
 package top.yvyan.guettable.moreFun;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.annotation.SuppressLint;
+import android.view.View;
+
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ExamAdapter;
 import top.yvyan.guettable.bean.ExamBean;
-import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.fragment.CourseTableFragment;
-import top.yvyan.guettable.service.table.IMoreFun;
-import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.ComparatorBeanAttribute;
@@ -31,39 +23,27 @@ import top.yvyan.guettable.util.ExamUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
-public class ExamActivity extends AppCompatActivity implements IMoreFun {
+public class ExamActivity extends BaseFuncActivity {
 
     private GeneralData generalData;
     private ScheduleData scheduleData;
     private SingleSettingData singleSettingData;
-    private boolean update = false;
-
-    @BindView(R.id.exam_state) TextView examState;
-    @BindView(R.id.exam_not_find) View examNotFind;
-    @BindView(R.id.exam_more) ImageView examMore;
-    @BindView(R.id.exam_info_recycler_view) RecyclerView recyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exam);
-        ButterKnife.bind(this);
+    protected void childInit() {
+        setTitle(getResources().getString(R.string.moreFun_test_schedule));
+        setShowMore(true);
+        openUpdate();
 
         generalData = GeneralData.newInstance(this);
         scheduleData = ScheduleData.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
-
-        examMore.setOnClickListener(view -> showPopMenu());
-
-        updateView();
-        MoreFunService moreFunService = new MoreFunService(this, this);
-        moreFunService.update();
     }
 
-    /**
-     * 更新考试安排视图
-     */
-    public void updateView() {
+    @Override
+    protected void showContent() {
+        baseSetContentView(R.layout.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_info);
         List<ExamBean> examBeans = scheduleData.getExamBeans();
         if (singleSettingData.isCombineExam()) {
             examBeans = ExamUtil.combineExam(examBeans);
@@ -71,23 +51,20 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
         if (singleSettingData.isHideOutdatedExam()) {
             examBeans = ExamUtil.ridOfOutdatedExam(examBeans);
         }
-        if (examBeans.size() != 0) {
-            examNotFind.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
+        if (examBeans.size() == 0) {
+            showEmptyPage();
         } else {
-            examNotFind.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
+            ExamAdapter examAdapter = new ExamAdapter(examBeans);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(examAdapter);
         }
-        ExamAdapter examAdapter = new ExamAdapter(examBeans);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(examAdapter);
     }
 
-    /**
-     * 显示弹出菜单
-     */
-    public void showPopMenu() {
-        PopupMenu popup = new PopupMenu(this, examMore);
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    protected void showPopMenu(View v) {
+        super.showPopMenu(v);
+        PopupMenu popup = new PopupMenu(this, v);
         popup.getMenuInflater().inflate(R.menu.exam_popmenu, popup.getMenu());
         if (singleSettingData.isCombineExam()) {
             popup.getMenu().findItem(R.id.exam_top1).setTitle("不合并考试安排");
@@ -100,22 +77,22 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
                 case R.id.exam_top1:
                     if (singleSettingData.isCombineExam()) {
                         singleSettingData.setCombineExam(false);
-                        updateView();
+                        showContent();
                         popup.getMenu().findItem(R.id.exam_top1).setTitle("合并考试安排");
                     } else {
                         singleSettingData.setCombineExam(true);
-                        updateView();
+                        showContent();
                         popup.getMenu().findItem(R.id.exam_top1).setTitle("不合并考试安排");
                     }
                     break;
                 case R.id.exam_top2:
                     if (singleSettingData.isHideOutdatedExam()) {
                         singleSettingData.setHideOutdatedExam(false);
-                        updateView();
+                        showContent();
                         popup.getMenu().findItem(R.id.exam_top2).setTitle("隐藏过期的考试安排");
                     } else {
                         singleSettingData.setHideOutdatedExam(true);
-                        updateView();
+                        showContent();
                         popup.getMenu().findItem(R.id.exam_top2).setTitle("显示过期的考试安排");
                     }
                     break;
@@ -141,18 +118,5 @@ public class ExamActivity extends AppCompatActivity implements IMoreFun {
             return 5;
         }
         return 1;
-    }
-
-    @Override
-    public void updateView(String hint, int state) {
-        examState.setText(hint);
-        if (state == 5 && update) {
-            updateView();
-            CourseTableFragment.newInstance().updateTable();
-        }
-    }
-
-    public void onClick(View view) {
-        finish();
     }
 }

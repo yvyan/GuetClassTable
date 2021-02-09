@@ -158,7 +158,7 @@
                 android:orientation="horizontal">
 
                 <com.xuexiang.xui.widget.button.ButtonView
-                    android:id="@+id/back"
+                    android:id="@+id/logoff"
                     style="@style/ButtonView.Gray"
                     android:layout_width="140dp"
                     android:layout_height="40dp"

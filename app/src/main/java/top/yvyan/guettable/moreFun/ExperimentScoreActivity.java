@@ -1,11 +1,7 @@
 package top.yvyan.guettable.moreFun;
 
-import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,16 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ExperimentScoreAdapter;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.service.table.IMoreFun;
-import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BeanHideUtil;
@@ -30,79 +22,59 @@ import top.yvyan.guettable.util.ComparatorBeanAttribute;
 
 import static com.xuexiang.xui.XUI.getContext;
 
-public class ExperimentScoreActivity extends AppCompatActivity implements IMoreFun {
+public class ExperimentScoreActivity extends BaseFuncActivity {
 
     private MoreDate moreDate;
     private GeneralData generalData;
     private SingleSettingData singleSettingData;
-    private boolean update = false;
-
-    @BindView(R.id.experimentscore_state) TextView experimentScoreState;
-    @BindView(R.id.experimentscore_not_find) View experimentScoreNotFind;
-    @BindView(R.id.experiment_score_more) ImageView experimentScoreMore;
-    @BindView(R.id.experimentscore_info_view) View experimentScoreInfoView;
-    @BindView(R.id.experimentscore_info_recycler_view) RecyclerView recyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_experimentscore);
-        ButterKnife.bind(this);
+    protected void childInit() {
+        setTitle(getResources().getString(R.string.moreFun_lib_scores));
+        setShowMore(true);
+        openUpdate();
 
         moreDate = MoreDate.newInstance(this);
         generalData = GeneralData.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
-
-        updateView();
-        MoreFunService moreFunService = new MoreFunService(this, this);
-        moreFunService.update();
     }
 
-    /**
-     * 更新考试成绩视图
-     */
-    public void updateView() {
+    @Override
+    protected void showContent() {
+        baseSetContentView(R.layout.activity_experiment_score);
+        RecyclerView recyclerView = findViewById(R.id.experiment_score_info_recycler_view);
         List<ExperimentScoreBean> experimentScoreBeans = moreDate.getExperimentScoreBeans();
         if (singleSettingData.isHideOtherTermExamScore()) {
             experimentScoreBeans = BeanHideUtil.hideOtherTermExamScore(experimentScoreBeans, generalData.getTerm());
         }
-        if (experimentScoreBeans.size() != 0) {
-            experimentScoreNotFind.setVisibility(View.GONE);
-            experimentScoreInfoView.setVisibility(View.VISIBLE);
+        if (experimentScoreBeans.size() == 0) {
+            showEmptyPage();
         } else {
-            experimentScoreNotFind.setVisibility(View.VISIBLE);
-            experimentScoreInfoView.setVisibility(View.GONE);
+            ExperimentScoreAdapter experimentScoreAdapter = new ExperimentScoreAdapter(experimentScoreBeans);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(experimentScoreAdapter);
         }
-        ExperimentScoreAdapter experimentScoreAdapter = new ExperimentScoreAdapter(experimentScoreBeans);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(experimentScoreAdapter);
     }
 
-    public void onClick(View view) {
-        finish();
-    }
-
-    public void showPopMenu(View view) {
-        PopupMenu popup = new PopupMenu(this, experimentScoreMore);
+    @Override
+    protected void showPopMenu(View v) {
+        super.showPopMenu(v);
+        PopupMenu popup = new PopupMenu(this, v);
         popup.getMenuInflater().inflate(R.menu.exam_score_popmenu, popup.getMenu());
         if (singleSettingData.isHideOtherTermExamScore()) {
             popup.getMenu().findItem(R.id.exam_score_top1).setTitle("显示其它学期成绩");
         }
         popup.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.exam_score_top1:
-                    if (singleSettingData.isHideOtherTermExamScore()) {
-                        singleSettingData.setHideOtherTermExamScore(false);
-                        updateView();
-                        popup.getMenu().findItem(R.id.exam_score_top1).setTitle("显示其它学期成绩");
-                    } else {
-                        singleSettingData.setHideOtherTermExamScore(true);
-                        updateView();
-                        popup.getMenu().findItem(R.id.exam_score_top1).setTitle("隐藏其它学期成绩");
-                    }
-                    break;
-                default:
-                    break;
+            if (item.getItemId() == R.id.exam_score_top1) {
+                if (singleSettingData.isHideOtherTermExamScore()) {
+                    singleSettingData.setHideOtherTermExamScore(false);
+                    showContent();
+                    popup.getMenu().findItem(R.id.exam_score_top1).setTitle("显示其它学期成绩");
+                } else {
+                    singleSettingData.setHideOtherTermExamScore(true);
+                    showContent();
+                    popup.getMenu().findItem(R.id.exam_score_top1).setTitle("隐藏其它学期成绩");
+                }
             }
             return true;
         });
@@ -123,13 +95,5 @@ public class ExperimentScoreActivity extends AppCompatActivity implements IMoreF
             return 5 ;
         }
         return 1;
-    }
-
-    @Override
-    public void updateView(String hint, int state) {
-        experimentScoreState.setText(hint);
-        if (state == 5 && update) {
-            updateView();
-        }
     }
 }

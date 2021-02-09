@@ -1,54 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".moreFun.GradesActivity">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="109dp">
-
-        <ImageView
-            android:id="@+id/grades_back"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:onClick="onClick"
-            android:src="@drawable/back"
-            app:tint="@color/app_white"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/grades_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="50dp"
-            android:text="@string/moreFun_credits"
-            android:textColor="@color/app_white"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@id/grades_back"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/grades_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="160dp"
-            android:textColor="@color/app_white"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -304,6 +260,5 @@
         </LinearLayout>
 
     </ScrollView>
-
 
 </LinearLayout>

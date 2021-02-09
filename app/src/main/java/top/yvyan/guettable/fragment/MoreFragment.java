@@ -14,7 +14,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.moreFun.AverageTeacherActivity;
 import top.yvyan.guettable.moreFun.AverageTextbookActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
-import top.yvyan.guettable.moreFun.Exam2Activity;
+import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
@@ -126,7 +126,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         Uri uri;
         switch (view.getId()) {
             case R.id.more_test_schedule:
-                intent = new Intent(getContext(), Exam2Activity.class);
+                intent = new Intent(getContext(), ExamActivity.class);
                 startActivity(intent);
                 break;
             case R.id.more_credits:

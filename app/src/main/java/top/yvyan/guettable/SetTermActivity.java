@@ -53,7 +53,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         stuName = findViewById(R.id.stu_name);
         spinnerYear = findViewById(R.id.spinner_year);
         spinnerTerm = findViewById(R.id.spinner_term);
-        back = findViewById(R.id.back);
+        back = findViewById(R.id.logoff);
         input = findViewById(R.id.input);
         week_text = findViewById(R.id.week_text);
         back.setOnClickListener(this);
@@ -111,7 +111,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
+            case R.id.logoff:
                 AccountData.newInstance(this).logoff();
                 PersonFragment.newInstance().updateView();
                 finish();

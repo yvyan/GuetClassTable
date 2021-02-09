@@ -1,7 +1,5 @@
 package top.yvyan.guettable.moreFun;
 
-import android.view.View;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,31 +16,30 @@ import top.yvyan.guettable.util.ComparatorBeanAttribute;
 
 import static com.xuexiang.xui.XUI.getContext;
 
-public class CETActivity extends FuncBaseActivity {
+public class CETActivity extends BaseFuncActivity {
 
-    MoreDate moreDate;
-    RecyclerView recyclerView;
+    private MoreDate moreDate;
 
     @Override
-    protected void init() {
-        baseSetContentView(R.layout.recycler_view);
+    protected void childInit() {
         setTitle(getResources().getString(R.string.moreFun_cet));
         setShowMore(false);
+
         moreDate = MoreDate.newInstance(getApplicationContext());
-        recyclerView = findViewById(R.id.recycler_view_info);
     }
 
     @Override
-    protected void updateView() {
+    protected void showContent() {
+        baseSetContentView(R.layout.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_info);
         List<CETBean> cetBeans = moreDate.getCetBeans();
-        if (cetBeans.size() != 0) {
-            recyclerView.setVisibility(View.VISIBLE);
+        if (cetBeans.size() == 0) {
+            showEmptyPage();
         } else {
-            recyclerView.setVisibility(View.GONE);
+            CETAdapter cetAdapter = new CETAdapter(cetBeans);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(cetAdapter);
         }
-        CETAdapter cetAdapter = new CETAdapter(cetBeans);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(cetAdapter);
     }
 
     @Override
