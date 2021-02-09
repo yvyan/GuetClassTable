@@ -14,8 +14,6 @@ public class WebViewActivity extends AppCompatActivity {
     public static String WEB_URL = "webURL";
     public static String WEB_TITLE = "webTitle";
 
-    private WebView webView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +29,7 @@ public class WebViewActivity extends AppCompatActivity {
         if (title == null) {
             title = "网页";
         }
-        TextView webTitle = findViewById(R.id.web_title);
+        TextView webTitle = findViewById(R.id.title);
         webTitle.setText(title);
         WebView webView = findViewById(R.id.webView);
         webView.loadUrl(url);
@@ -47,7 +45,7 @@ public class WebViewActivity extends AppCompatActivity {
         });
     }
 
-    public void onClick(View view) {
+    public void doBack(View view) {
         finish();
     }
 }

@@ -58,16 +58,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="13dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="版本"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
@@ -75,11 +78,12 @@
                 <TextView
                     android:id="@+id/about_version"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
@@ -91,24 +95,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:onClick="join_us"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="加入我们"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
@@ -120,17 +127,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:onClick="addQQ"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="官方QQ交流群"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
@@ -138,11 +148,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="@string/QQGroup" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
@@ -154,16 +165,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="作者"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
@@ -171,11 +185,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="wing  |  ssbird  |  tank  |  uuin" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
@@ -187,16 +202,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="特别鸣谢"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
@@ -204,11 +222,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="@string/thanks_person" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
@@ -220,24 +239,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:onClick="devSay"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="开发者自语"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
@@ -249,24 +271,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:onClick="myGit"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="项目开源"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
@@ -278,24 +303,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:onClick="open"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="开源引用"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
@@ -307,24 +335,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:onClick="privacy"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="隐私政策"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
@@ -336,24 +367,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:onClick="statement"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="声明"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
