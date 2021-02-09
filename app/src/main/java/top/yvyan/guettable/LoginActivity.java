@@ -22,13 +22,14 @@ import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.table.fetch.StaticService;
-import top.yvyan.guettable.service.table.fetch.LAN;
+import top.yvyan.guettable.service.table.fetch.Net;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
+
     private Boolean bPwdSwitch = false;
     private Boolean bPwdSwitch2 = false;
     private EditText etPwd;
@@ -40,7 +41,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private View passwordHelp;
     private ImageView ivPwdSwitch;
     private ImageView ivPwdSwitch2;
-
+    private View progressBar;
 
     private AccountData accountData;
     private GeneralData generalData;
@@ -69,6 +70,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         passwordHelp = findViewById(R.id.password_help);
         ivPwdSwitch.setOnClickListener(showPwdClickListener());
         ivPwdSwitch2.setOnClickListener(showPwdClickListener());
+        progressBar = findViewById(R.id.progressBar2);
 
         if (accountData.getIsSave()) {
             etAccount.setText(accountData.getUsername());
@@ -253,7 +255,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      */
     public int testLoginBkjw(String account, String password, String passwordVPN) {
         TokenData tokenData = TokenData.newInstance(this);
-        String VPNToken = LAN.getVPNToken(this);
+        String VPNToken = Net.getVPNToken(this);
         tokenData.setVPNToken(VPNToken);
         if (passwordVPN.isEmpty()) {
             passwordVPN = password;
@@ -293,6 +295,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private void setEnClick() {
         button.setText("登录");
         button.setEnabled(true);
+        progressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -301,6 +304,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private void setUnClick() {
         button.setText("网络初始化");
         button.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     /**

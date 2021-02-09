@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.service.table.fetch.StaticService;
-import top.yvyan.guettable.service.table.fetch.LAN;
+import top.yvyan.guettable.service.table.fetch.Net;
 
 public class TokenData {
     private static TokenData tokenData;
@@ -72,10 +72,10 @@ public class TokenData {
             return 0;
         }
         if (accountData.getIsLogin()) {
-            isVPN = LAN.testNet(context) != 0;
+            isVPN = Net.testNet(context) != 0;
             if (loginType == 0) {
                 if (isVPN) { //外网
-                    String VPNTokenStr = LAN.getVPNToken(context);
+                    String VPNTokenStr = Net.getVPNToken(context);
                     if (VPNTokenStr != null) {
                         setVPNToken(VPNTokenStr);
                     } else {
@@ -133,7 +133,7 @@ public class TokenData {
                 }
             } else if (loginType == 1){ //VPN+教务登录(目前只有内网)
                 if (isVPN) {
-                    String VPNTokenStr = LAN.getVPNToken(context);
+                    String VPNTokenStr = Net.getVPNToken(context);
                     if (VPNTokenStr != null) {
                         setVPNToken(VPNTokenStr);
                     } else {
