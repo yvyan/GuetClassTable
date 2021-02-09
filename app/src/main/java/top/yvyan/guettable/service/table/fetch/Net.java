@@ -15,7 +15,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.util.RSAUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
 
-public class LAN {
+public class Net {
 
     /**
      * 测试连接

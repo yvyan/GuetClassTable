@@ -123,7 +123,6 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
         android:id="@+id/password_second"
         android:layout_width="match_parent"
@@ -167,7 +166,6 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -190,14 +188,21 @@
         android:id="@+id/login"
         style="@style/SuperButton.Primary.Login"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="6dp"
         android:text="登录" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/password_help"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="10dp">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline5"

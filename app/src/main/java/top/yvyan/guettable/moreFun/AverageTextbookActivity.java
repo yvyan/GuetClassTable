@@ -116,10 +116,15 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
     }
 
     @Override
-    public void updateView(String hint, int state) {
+    public void updateView(String hint, int stateNum) {
         this.state.setText(hint);
-        if (state == 5) {
+        if (stateNum == 5) {
             updateView();
+        } else if (stateNum == 2 || stateNum == -1 || stateNum == -2 || stateNum == -3) {
+            View loading = findViewById(R.id.page_loading);
+            View fail = findViewById(R.id.page_fail);
+            loading.setVisibility(View.GONE);
+            fail.setVisibility(View.VISIBLE);
         }
     }
 

@@ -34,7 +34,7 @@ import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.OnButtonClick;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
-import top.yvyan.guettable.service.table.fetch.LAN;
+import top.yvyan.guettable.service.table.fetch.Net;
 
 public class MainActivity extends AppCompatActivity implements OnButtonClick {
 
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
                             TokenData.isVPN = true;
                             break;
                         case 1: //wifi网络
-                            TokenData.isVPN = LAN.testNet(context) != 0;
+                            TokenData.isVPN = Net.testNet(context) != 0;
                             break;
                     }
                 }  // 无网络

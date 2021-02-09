@@ -3,7 +3,6 @@ package top.yvyan.guettable.moreFun;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -102,6 +101,11 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
         innovationScoreState.setText(hint);
         if (state == 5) {
             updateView();
+        } else if (state == 2 || state == -1 || state == -2 || state == -3) {
+            View loading = findViewById(R.id.page_loading);
+            View fail = findViewById(R.id.page_fail);
+            loading.setVisibility(View.GONE);
+            fail.setVisibility(View.VISIBLE);
         }
     }
 

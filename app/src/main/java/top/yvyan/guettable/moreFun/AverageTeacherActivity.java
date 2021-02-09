@@ -76,6 +76,11 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
         this.state.setText(hint);
         if (stateNum == 5) {
             updateView();
+        } else if (stateNum == 2 || stateNum == -1 || stateNum == -2 || stateNum == -3) {
+            View loading = findViewById(R.id.page_loading);
+            View fail = findViewById(R.id.page_fail);
+            loading.setVisibility(View.GONE);
+            fail.setVisibility(View.VISIBLE);
         }
     }
 
