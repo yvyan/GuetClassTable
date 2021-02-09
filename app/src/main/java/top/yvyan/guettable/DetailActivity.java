@@ -1,5 +1,6 @@
 package top.yvyan.guettable;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -21,23 +22,19 @@ import top.yvyan.guettable.util.TimeUtil;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private ImageView back;
-    private TextView detailTitle;
-    private RecyclerView recyclerView;
-    private ClassDetailAdapter classDetailAdapter;
-
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         List<Schedule> schedules = DetailClassData.newInstance().getCourseBeans();
 
-        back = findViewById(R.id.detail_back);
+        ImageView back = findViewById(R.id.back);
         back.setOnClickListener((view) -> finish());
 
         Intent intent = getIntent();
         int week = (Integer) intent.getExtras().get("week");
-        detailTitle = findViewById(R.id.detail_title);
+        TextView detailTitle = findViewById(R.id.title);
         int n = (schedules.get(0).getStart() / 2 + 1);
         if (n == 7) {
             n = 0;
@@ -46,8 +43,8 @@ public class DetailActivity extends AppCompatActivity {
 
         ComparatorCourse comparatorCourse = new ComparatorCourse();
         Collections.sort(schedules, comparatorCourse);
-        recyclerView = findViewById(R.id.class_detail_recycleView);
-        classDetailAdapter = new ClassDetailAdapter(schedules, week);
+        RecyclerView recyclerView = findViewById(R.id.class_detail_recycleView);
+        ClassDetailAdapter classDetailAdapter = new ClassDetailAdapter(schedules, week);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(classDetailAdapter);
     }

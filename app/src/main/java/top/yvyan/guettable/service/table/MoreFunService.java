@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.service.table.IMoreFun;
 
 public class MoreFunService {
     private Activity activity;
@@ -31,7 +30,7 @@ public class MoreFunService {
                 }
                 setView(92); //显示：正在登录
                 state = tokenData.refresh();
-                if (state == -8 || state == -2) {
+                if (state == -2) {
                     state = tokenData.refresh();
                 }
                 if (state != 0) {

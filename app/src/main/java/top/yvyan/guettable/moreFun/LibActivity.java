@@ -1,76 +1,49 @@
 package top.yvyan.guettable.moreFun;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import com.zhuangfei.timetable.model.ScheduleSupport;
 
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.LibAdapter;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
-import top.yvyan.guettable.fragment.CourseTableFragment;
-import top.yvyan.guettable.service.table.IMoreFun;
-import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 
 import static com.xuexiang.xui.XUI.getContext;
 
-public class LibActivity extends AppCompatActivity implements IMoreFun {
+public class LibActivity extends BaseFuncActivity {
 
-    @BindView(R.id.lib_state)
-    TextView libHint;
-    @BindView(R.id.lib_not_find)
-    View libNotFind;
-    @BindView(R.id.lib_info_recycler_view)
-    RecyclerView recyclerView;
-
-    ScheduleData scheduleData;
-    GeneralData generalData;
+    private ScheduleData scheduleData;
+    private GeneralData generalData;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lib);
-        ButterKnife.bind(this);
+    protected void childInit() {
+        setTitle(getResources().getString(R.string.moreFun_lib_schedule));
+        openUpdate();
 
         scheduleData = ScheduleData.newInstance(this);
         generalData = GeneralData.newInstance(this);
-
-        updateView();
-        MoreFunService moreFunService = new MoreFunService(this, this);
-        moreFunService.update();
     }
 
-    private void updateView() {
+    @Override
+    protected void showContent() {
+        baseSetContentView(R.layout.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_info);
         List<CourseBean> libBeans = scheduleData.getLibBeans();
-
-        if (libBeans.size() != 0) {
-            libNotFind.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
+        if (libBeans.size() == 0) {
+            showEmptyPage();
         } else {
-            libNotFind.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
+            Collections.sort(libBeans, (courseBean, t1) -> (int) ((courseBean.getLabId() * 100 + courseBean.getWeekStart()) - (t1.getLabId() * 100 + t1.getWeekStart())));
+            LibAdapter libAdapter = new LibAdapter(ScheduleSupport.transform(libBeans), generalData.getWeek());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(libAdapter);
         }
-        Collections.sort(libBeans, (courseBean, t1) -> (int) ((courseBean.getLabId() * 100 + courseBean.getWeekStart()) - (t1.getLabId() * 100 + t1.getWeekStart())));
-        LibAdapter libAdapter = new LibAdapter(ScheduleSupport.transform(libBeans), generalData.getWeek());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(libAdapter);
-    }
-
-    public void onClick(View view) {
-        finish();
     }
 
     @Override
@@ -81,14 +54,5 @@ public class LibActivity extends AppCompatActivity implements IMoreFun {
             return 5;
         }
         return 1;
-    }
-
-    @Override
-    public void updateView(String hint, int state) {
-        libHint.setText(hint);
-        if (state == 5) {
-            updateView();
-            CourseTableFragment.newInstance().updateTable();
-        }
     }
 }

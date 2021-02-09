@@ -17,10 +17,10 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.service.table.IMoreFun;
 import top.yvyan.guettable.service.table.MoreFunService;
 
-public abstract class FuncBaseActivity extends AppCompatActivity implements IMoreFun {
+public abstract class BaseFuncActivity extends AppCompatActivity implements IMoreFun {
 
     @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.icon_back)
+    @BindView(R.id.back)
     ImageView back;
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.state)
@@ -37,7 +37,7 @@ public abstract class FuncBaseActivity extends AppCompatActivity implements IMor
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_func_base);
+        setContentView(R.layout.activity_base_func);
         ButterKnife.bind(this);
 
         back.setOnClickListener(this::onBackClick);
@@ -45,18 +45,23 @@ public abstract class FuncBaseActivity extends AppCompatActivity implements IMor
         more.setOnClickListener(this::showPopMenu);
 
         init();
+    }
 
-        updateView();
+    private void init() {
+        childInit();
         MoreFunService moreFunService = new MoreFunService(this, this);
+        showContent();
         moreFunService.update();
     }
 
     /**
      * 设置内容视图
+     *
      * @param layoutResId 内容视图
      */
-    public void baseSetContentView(int layoutResId) {
+    protected void baseSetContentView(int layoutResId) {
         LinearLayout llContent = findViewById(R.id.content);
+        llContent.removeAllViews();
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(layoutResId, null);
         llContent.addView(v);
@@ -83,27 +88,47 @@ public abstract class FuncBaseActivity extends AppCompatActivity implements IMor
 
     /**
      * 设置标题
+     *
      * @param titleText 标题
      */
     protected void setTitle(String titleText) {
         title.setText(titleText);
     }
 
+    /**
+     * 设置空白页面
+     */
+    protected void showEmptyPage() {
+        baseSetContentView(R.layout.more_func_empty);
+    }
+
     @Override
     public void updateView(String hint, int stateNum) {
         state.setText(hint);
         if (stateNum == 5 && update) {
-            updateView();
+            showContent();
         }
     }
 
-    protected abstract void init();
+    /**
+     * 子类init (不包含设置内容视图)
+     */
+    protected abstract void childInit();
 
     protected void onBackClick(View v) {
         finish();
     }
 
-    protected void showPopMenu(View v) {}
+    /**
+     * 显示菜单
+     *
+     * @param v view
+     */
+    protected void showPopMenu(View v) {
+    }
 
-    protected abstract void updateView();
+    /**
+     * 显示内容 (包含设置内容视图)
+     */
+    protected abstract void showContent();
 }

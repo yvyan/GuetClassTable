@@ -9,6 +9,7 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.view.View;
+import android.widget.TextView;
 
 import top.yvyan.guettable.data.TokenData;
 
@@ -20,6 +21,9 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         setTheme(R.style.ThemeText);
+
+        TextView title = findViewById(R.id.title);
+        title.setText("设置");
     }
 
     public void onClick(View view) {

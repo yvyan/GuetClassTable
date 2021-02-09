@@ -1,7 +1,9 @@
 package top.yvyan.guettable.moreFun;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,10 +20,13 @@ import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.ToastUtil;
 
+@SuppressLint("NonConstantResourceId")
 public class InnovationScoreActivity extends AppCompatActivity implements View.OnClickListener, IMoreFun {
 
-    @BindView(R.id.innovationScore_state)
+    @BindView(R.id.state)
     TextView innovationScoreState;
+    @BindView(R.id.title)
+    TextView title;
     @BindView(R.id.innovation_dptName)
     TextView innovation_dptName;
     @BindView(R.id.innovation_major)
@@ -54,32 +59,28 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_innovation_score);
         ButterKnife.bind(this);
+        title.setText(getString(R.string.moreFun_innovation_score));
+        btn_update_innovationScore.setOnClickListener(this);
+
         moreFunService = new MoreFunService(this, this);
         moreFunService.update();
-        btn_update_innovationScore.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.innovationScore_back:
+            case R.id.back:
                 finish();
                 break;
             case R.id.innovation_btn_update:
                 new Thread(() -> {
-                    runOnUiThread(() -> {
-                        ToastUtil.showToast(this, "正在更新，请耐心等候");
-                    });
+                    runOnUiThread(() -> ToastUtil.showToast(this, "正在更新，请耐心等候"));
                     int result = StaticService.updateInnovationScore(this, cookie);
                     if (result == 0) {
                         moreFunService.update();
-                        runOnUiThread(() -> {
-                            ToastUtil.showToast(this, "更新数据成功");
-                        });
+                        runOnUiThread(() -> ToastUtil.showToast(this, "更新数据成功"));
                     } else {
-                        runOnUiThread(() -> {
-                            ToastUtil.showToast(this, "更新失败，请稍后重试");
-                        });
+                        runOnUiThread(() -> ToastUtil.showToast(this, "更新失败，请稍后重试"));
                     }
                 }).start();
                 break;
@@ -118,5 +119,9 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
         innovationScore_Course.setText(String.valueOf(innovationScore.getLb22()));
         innovationScore_pratise.setText(String.valueOf(innovationScore.getLb3()));
         innovationScore_Lack.setText(String.valueOf(innovationScore.getLack()));
+    }
+
+    public void doBack(View view) {
+        finish();
     }
 }

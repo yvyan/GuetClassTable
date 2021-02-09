@@ -1,17 +1,11 @@
 package top.yvyan.guettable;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import top.yvyan.guettable.util.AppUtil;
@@ -21,14 +15,14 @@ import static com.xuexiang.xui.XUI.getContext;
 
 public class AboutActivity extends AppCompatActivity {
 
-    private TextView profileVersion;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        profileVersion = findViewById(R.id.about_version);
+        TextView title = findViewById(R.id.title);
+        title.setText(getString(R.string.person_about));
+        TextView profileVersion = findViewById(R.id.about_version);
         profileVersion.setText(AppUtil.getAppVersionName(getContext()));
     }
 

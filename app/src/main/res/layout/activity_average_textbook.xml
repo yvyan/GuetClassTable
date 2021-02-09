@@ -7,78 +7,24 @@
     android:orientation="vertical"
     tools:context=".moreFun.AverageTextbookActivity">
 
-    <RelativeLayout
+    <include
+        android:id="@+id/func_base_constraintLayout"
+        layout="@layout/header_base"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="109dp">
-
-        <ImageView
-            android:id="@+id/average_textbook_back"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:onClick="onClick"
-            android:src="@drawable/back"
-            app:tint="@color/app_white" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="50dp"
-            android:text="评价教材"
-            android:textColor="@color/app_white"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@id/average_textbook_back"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/average_textbook_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="150dp"
-            android:text="正在更新"
-            android:textColor="@color/app_white"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </RelativeLayout>
+        android:layout_height="45dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/textbook_wait"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <include
+            layout="@layout/more_func_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.35"
-            app:srcCompat="@drawable/d_tongbu"
-            app:tint="@color/colorAccent"
-            tools:ignore="ContentDescription" />
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="200dp"
-            android:layout_height="20dp"
-            android:indeterminate="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,63 +1,41 @@
 package top.yvyan.guettable.moreFun;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.PlannedCourseAdapter;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.data.MoreDate;
-import top.yvyan.guettable.service.table.IMoreFun;
-import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
-public class PlannedCoursesActivity extends AppCompatActivity implements IMoreFun {
+public class PlannedCoursesActivity extends BaseFuncActivity {
 
     private MoreDate moreDate;
-    private boolean update = false;
-
-    @BindView(R.id.planned_course_state)
-    TextView plannedCourseState;
-    @BindView(R.id.planned_course_loading)
-    View plannedCourseLoading;
-    @BindView(R.id.planned_course_info_view)
-    View infoView;
-    @BindView(R.id.planned_course_info_recycler_view)
-    RecyclerView recyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_planned_courses);
-        ButterKnife.bind(this);
+    protected void childInit() {
+        setTitle(getResources().getString(R.string.moreFun_plan_courses));
+        openUpdate();
 
         moreDate = MoreDate.newInstance(this);
-
-        updateView();
-        MoreFunService moreFunService = new MoreFunService(this, this);
-        moreFunService.update();
     }
 
-    private void updateView() {
+    @Override
+    protected void showContent() {
+        baseSetContentView(R.layout.activity_planned_courses);
+        RecyclerView recyclerView = findViewById(R.id.planned_course_info_recycler_view);
         List<PlannedCourseBean> plannedCourseBeans = moreDate.getPlannedCourseBeans();
         if (plannedCourseBeans.size() == 0) {
-            infoView.setVisibility(View.GONE);
-            plannedCourseLoading.setVisibility(View.VISIBLE);
+            showEmptyPage();
         } else {
-            plannedCourseLoading.setVisibility(View.GONE);
-            infoView.setVisibility(View.VISIBLE);
             PlannedCourseAdapter plannedCourseAdapter = new PlannedCourseAdapter(plannedCourseBeans);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(plannedCourseAdapter);
@@ -76,17 +54,5 @@ public class PlannedCoursesActivity extends AppCompatActivity implements IMoreFu
         } else {
             return 1;
         }
-    }
-
-    @Override
-    public void updateView(String hint, int state) {
-        plannedCourseState.setText(hint);
-        if (state == 5 && update) {
-            updateView();
-        }
-    }
-
-    public void onClick(View view) {
-        finish();
     }
 }

@@ -2,10 +2,9 @@ package top.yvyan.guettable;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,8 +15,13 @@ import top.yvyan.guettable.util.ToastUtil;
 
 public class HelpTestActivity extends AppCompatActivity {
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.title)
+    TextView title;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.develop_state)
     TextView state;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.develop_input)
     EditText input;
 
@@ -29,6 +33,7 @@ public class HelpTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_help_test);
         ButterKnife.bind(this);
 
+        title.setText("开发者工具");
         tokenData = TokenData.newInstance(getApplicationContext());
         updateView();
     }

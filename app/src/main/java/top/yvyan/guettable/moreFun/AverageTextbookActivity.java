@@ -1,5 +1,6 @@
 package top.yvyan.guettable.moreFun;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import top.yvyan.guettable.Gson.AvgTextbook;
@@ -27,9 +29,12 @@ import top.yvyan.guettable.util.ToastUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
+@SuppressLint("NonConstantResourceId")
 public class AverageTextbookActivity extends AppCompatActivity implements View.OnClickListener, IMoreFun {
 
-    @BindView(R.id.average_textbook_state)
+    @BindView(R.id.state)
+    TextView state;
+    @BindView(R.id.title)
     TextView title;
     @BindView(R.id.textbook_wait)
     View wait;
@@ -43,13 +48,13 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
     private List<BaseResponse<AvgTextbookData>> dataOuters;
     private String cookie;
     private List<AvgTextbookBean> avgTextbookBeans;
-    int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_average_textbook);
         ButterKnife.bind(this);
+        title.setText(getString(R.string.moreFun_evaluating_textbooks));
 
         MoreFunService moreFunService = new MoreFunService(this, this);
         moreFunService.update();
@@ -57,6 +62,7 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
 
     private void start() {
         new Thread(() -> {
+            int index = 0;
             for (int i = 0; i < dataOuters.size(); i++) {
                 if (dataOuters.get(i).getData() == null) {
                     int n = StaticService.averageTextbook(this, cookie, formGetOuters.get(i), avgTextbookOuter.getData().get(i));
@@ -72,19 +78,15 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
         }).start();
     }
 
+    public void doBack(View view) {
+        finish();
+    }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.average_textbook_back:
-                finish();
-                break;
-            case R.id.avg_textbook_start:
-                if ("开始自动评价教材".contentEquals(start.getText())) {
-                    start.setText("正在评价，请稍后...");
-                    start();
-                }
-            default:
-                break;
+        if ("开始自动评价教材".contentEquals(start.getText())) {
+            start.setText("正在评价，请稍后...");
+            start();
         }
     }
 
@@ -115,7 +117,7 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
 
     @Override
     public void updateView(String hint, int state) {
-        title.setText(hint);
+        this.state.setText(hint);
         if (state == 5) {
             updateView();
         }

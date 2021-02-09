@@ -1,61 +1,41 @@
 package top.yvyan.guettable.moreFun;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
-import top.yvyan.guettable.service.table.IMoreFun;
-import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 
-public class GradesActivity extends AppCompatActivity implements IMoreFun {
+public class GradesActivity extends BaseFuncActivity {
 
-    @BindView(R.id.grades_state)
-    TextView grades_state;
-    @BindView(R.id.grades_main)
-    TextView gradesMain;
-    @BindView(R.id.grades_year_1)
-    TextView gradesYear1;
-    @BindView(R.id.grades_year_2)
-    TextView gradesYear2;
-    @BindView(R.id.grades_year_3)
-    TextView gradesYear3;
-    @BindView(R.id.grades_year_4)
-    TextView gradesYear4;
-    @BindView(R.id.grades_year_5)
-    TextView gradesYear5;
-    @BindView(R.id.grades_year_6)
-    TextView gradesYear6;
-
-    GeneralData generalData;
-    MoreDate moreDate;
+    private GeneralData generalData;
+    private MoreDate moreDate;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grades);
-        ButterKnife.bind(this);
+    protected void childInit() {
+        setTitle(getResources().getString(R.string.moreFun_credits));
+        setShowMore(false);
 
         generalData = GeneralData.newInstance(this);
         moreDate = MoreDate.newInstance(this);
-
-        updateView();
-        MoreFunService moreFunService = new MoreFunService(this, this);
-        moreFunService.update();
     }
 
-    private void updateView() {
-        float grades[] = moreDate.getGrades();
-        DecimalFormat format = new DecimalFormat( "0.00");
+    @Override
+    protected void showContent() {
+        baseSetContentView(R.layout.activity_grades);
+        TextView gradesMain = findViewById(R.id.grades_main);
+        TextView gradesYear1 = findViewById(R.id.grades_year_1);
+        TextView gradesYear2 = findViewById(R.id.grades_year_2);
+        TextView gradesYear3 = findViewById(R.id.grades_year_3);
+        TextView gradesYear4 = findViewById(R.id.grades_year_4);
+        TextView gradesYear5 = findViewById(R.id.grades_year_5);
+        TextView gradesYear6 = findViewById(R.id.grades_year_6);
+
+        float[] grades = moreDate.getGrades();
+        DecimalFormat format = new DecimalFormat("0.00");
         gradesMain.setText(format.format(grades[0]));
         gradesYear1.setText(format.format(grades[1]));
         gradesYear2.setText(format.format(grades[2]));
@@ -63,10 +43,6 @@ public class GradesActivity extends AppCompatActivity implements IMoreFun {
         gradesYear4.setText(format.format(grades[4]));
         gradesYear5.setText(format.format(grades[5]));
         gradesYear6.setText(format.format(grades[6]));
-    }
-
-    public void onClick(View view) {
-        finish();
     }
 
     @Override
@@ -77,14 +53,6 @@ public class GradesActivity extends AppCompatActivity implements IMoreFun {
             return 5;
         } else {
             return 1;
-        }
-    }
-
-    @Override
-    public void updateView(String hint, int state) {
-        grades_state.setText(hint);
-        if (state == 5) {
-            updateView();
         }
     }
 }

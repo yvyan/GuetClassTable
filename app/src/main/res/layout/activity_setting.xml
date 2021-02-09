@@ -3,42 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".SettingActivity">
 
-    <RelativeLayout
+    <include
+        android:id="@+id/func_base_constraintLayout"
+        layout="@layout/header_base"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="109dp">
-
-        <ImageView
-            android:id="@+id/setting_back"
-            android:onClick="onClick"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:tint="@color/app_white"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/back"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/grades_title"
-            android:layout_width="wrap_content"
-            android:textSize="18sp"
-            android:text="设置"
-            android:textColor="@color/app_white"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="50dp"
-            app:layout_constraintStart_toStartOf="@id/setting_back"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </RelativeLayout>
+        android:layout_height="45dp" />
 
     <fragment
         android:id="@+id/setting_fragment"
