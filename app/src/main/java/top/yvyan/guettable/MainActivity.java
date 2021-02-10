@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         if (Build.VERSION.SDK_INT >= 19) {
             //透明状态栏
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
 
         background = findViewById(R.id.background);
