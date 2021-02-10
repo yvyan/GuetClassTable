@@ -48,7 +48,7 @@
         </activity>
         <activity android:name=".moreFun.AverageTeacherActivity" />
         <activity android:name=".moreFun.AverageTextbookActivity" />
-        <activity android:name=".HelperActivity" />
+        <activity android:name=".PersonalizedActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".moreFun.ExperimentScoreActivity" />

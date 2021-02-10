@@ -13,7 +13,7 @@
         android:background="#902ABFFD" />
 
     <RelativeLayout
-        android:id="@+id/more_head"
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="#902ABFFD"
@@ -244,7 +244,7 @@
                 android:orientation="vertical">
 
                 <FrameLayout
-                    android:id="@+id/person_help"
+                    android:id="@+id/person_personalized"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
@@ -258,11 +258,11 @@
                         tools:ignore="UselessParent">
 
                         <ImageView
-                            android:layout_width="27dp"
-                            android:layout_height="27dp"
+                            android:layout_width="29dp"
+                            android:layout_height="29dp"
                             android:layout_centerVertical="true"
-                            android:layout_marginStart="4dp"
-                            android:src="@drawable/p_bangzhu"
+                            android:layout_marginStart="3dp"
+                            android:src="@drawable/p_image"
                             tools:ignore="ContentDescription" />
 
                         <TextView
@@ -270,7 +270,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="45dp"
-                            android:text="@string/person_help"
+                            android:text="@string/person_personalized"
                             android:textColor="@color/app_black"
                             android:textSize="16sp" />
 

@@ -35,6 +35,7 @@ import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.service.table.AutoUpdate;
 import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.TimeUtil;
@@ -45,6 +46,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private static DayClassFragment dayClassFragment;
     private static final String TAG = "DayClassFragment";
+
+    private View view;
 
     private TextView textView;
     private RecyclerView recyclerView;
@@ -75,7 +78,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         dayClassFragment = this;
-        View view = inflater.inflate(R.layout.fragment_day_class, container, false);
+        view = inflater.inflate(R.layout.fragment_day_class, container, false);
 
         View tools = view.findViewById(R.id.day_class_tools);
         if (!SettingData.newInstance(getContext()).isShowTools()) {
@@ -83,8 +86,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         }
 
         View addStatus = view.findViewById(R.id.add_status);
-        //注意这里，到底是用ViewGroup还是用LinearLayout或者是FrameLayout，主要是看你这个EditTex
-        //控件所在的父控件是啥布局，如果是LinearLayout，那么这里就要改成LinearLayout.LayoutParams
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
         lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
         addStatus.setLayoutParams(lp);
@@ -164,10 +165,22 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void setBackground(boolean setBackground) {
+        View addStatus = view.findViewById(R.id.add_status);
+        View titleBar = view.findViewById(R.id.title_bar);
+        if (setBackground) {
+            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+        } else {
+            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: ");
+        setBackground(BackgroundUtil.isSetBackground(getContext()));
         initData();
         autoUpdate.updateView();
         updateView();

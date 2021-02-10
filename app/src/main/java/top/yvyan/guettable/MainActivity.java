@@ -14,6 +14,7 @@ import android.os.Process;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,16 +39,17 @@ import top.yvyan.guettable.fragment.OnButtonClick;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
 import top.yvyan.guettable.service.table.fetch.Net;
+import top.yvyan.guettable.util.BackgroundUtil;
 
 public class MainActivity extends AppCompatActivity implements OnButtonClick {
 
     public static final String APP_ID = "2882303761518881128";
     public static final String APP_KEY = "5601888146128";
-    public static final String TAG = "MainActivityInfo";
 
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
     private MenuItem menuItem;
+    private ImageView background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
 
+        background = findViewById(R.id.background);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemReselectedListener);
         viewPager = findViewById(R.id.vp);
@@ -126,6 +129,16 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
         //网络切换检测
         initReceiver();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (BackgroundUtil.isSetBackground(this)) {
+            BackgroundUtil.setBackground(this, background);
+        } else {
+            background.setImageBitmap(null);
+        }
     }
 
     @Override
