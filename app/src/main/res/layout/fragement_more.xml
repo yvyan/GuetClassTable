@@ -6,11 +6,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/add_status"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#902ABFFD" />
+
     <RelativeLayout
         android:id="@+id/more_head"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/colorPrimary">
+        android:background="#902ABFFD">
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,7 +44,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="#C0ffffff"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -225,8 +233,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="@color/app_white">
+                            android:layout_weight="1">
 
                         </FrameLayout>
 
@@ -234,8 +241,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="@color/app_white">
+                            android:layout_weight="1">
 
                         </FrameLayout>
 
@@ -249,7 +255,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="#C0ffffff"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -354,8 +362,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="@color/app_white">
+                            android:layout_weight="1">
 
                         </FrameLayout>
 
@@ -369,7 +376,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="#C0ffffff"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -528,8 +537,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="@color/app_white">
+                            android:layout_weight="1">
 
                             <ImageView
                                 android:layout_width="30dp"
@@ -575,8 +583,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="@color/app_white">
+                            android:layout_weight="1">
 
                         </FrameLayout>
 
@@ -590,7 +597,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="#C0ffffff"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -693,8 +702,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="@color/app_white">
+                            android:layout_weight="1">
 
                         </FrameLayout>
 

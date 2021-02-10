@@ -85,6 +85,13 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initView() {
+        View addStatus = view.findViewById(R.id.add_status);
+        //注意这里，到底是用ViewGroup还是用LinearLayout或者是FrameLayout，主要是看你这个EditTex
+        //控件所在的父控件是啥布局，如果是LinearLayout，那么这里就要改成LinearLayout.LayoutParams
+        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
+        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
+        addStatus.setLayoutParams(lp);
+
         person_userNameAndNo = view.findViewById(R.id.person_userNameAndNo);
         person_login = view.findViewById(R.id.person_login);
         person_login.setOnClickListener(this);

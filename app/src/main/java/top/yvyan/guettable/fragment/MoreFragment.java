@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.moreFun.AverageTeacherActivity;
@@ -24,6 +26,7 @@ import top.yvyan.guettable.moreFun.MoreUrlActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
 import top.yvyan.guettable.moreFun.TestActivity;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
@@ -57,6 +60,13 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragement_more, container, false);
 
         generalData = GeneralData.newInstance(getContext());
+
+        View addStatus = view.findViewById(R.id.add_status);
+        //注意这里，到底是用ViewGroup还是用LinearLayout或者是FrameLayout，主要是看你这个EditTex
+        //控件所在的父控件是啥布局，如果是LinearLayout，那么这里就要改成LinearLayout.LayoutParams
+        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
+        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
+        addStatus.setLayoutParams(lp);
 
         testSchedule = view.findViewById(R.id.more_test_schedule);
         testSchedule.setOnClickListener(this);
