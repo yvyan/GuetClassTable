@@ -20,7 +20,7 @@ import java.util.Objects;
 
 import top.yvyan.guettable.AboutActivity;
 import top.yvyan.guettable.HelpTestActivity;
-import top.yvyan.guettable.HelperActivity;
+import top.yvyan.guettable.PersonalizedActivity;
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.SettingActivity;
 import top.yvyan.guettable.R;
@@ -31,6 +31,7 @@ import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -86,8 +87,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 
     private void initView() {
         View addStatus = view.findViewById(R.id.add_status);
-        //注意这里，到底是用ViewGroup还是用LinearLayout或者是FrameLayout，主要是看你这个EditTex
-        //控件所在的父控件是啥布局，如果是LinearLayout，那么这里就要改成LinearLayout.LayoutParams
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
         lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
         addStatus.setLayoutParams(lp);
@@ -110,8 +109,8 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         profileVersion.setText(AppUtil.getAppVersionName(Objects.requireNonNull(getContext())));
 
         //    private View info;
-        View help = view.findViewById(R.id.person_help);
-        help.setOnClickListener(this);
+        View personPersonalized = view.findViewById(R.id.person_personalized);
+        personPersonalized.setOnClickListener(this);
         View share = view.findViewById(R.id.person_share);
         share.setOnClickListener(this);
         View update = view.findViewById(R.id.person_update);
@@ -146,9 +145,22 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void setBackground(boolean setBackground) {
+        View addStatus = view.findViewById(R.id.add_status);
+        View titleBar = view.findViewById(R.id.title_bar);
+        if (setBackground) {
+            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+        } else {
+            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
+        setBackground(BackgroundUtil.isSetBackground(getContext()));
         initData();
     }
 
@@ -173,8 +185,8 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getContext(), SettingActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.person_help:
-                intent = new Intent(getContext(), HelperActivity.class);
+            case R.id.person_personalized:
+                intent = new Intent(getContext(), PersonalizedActivity.class);
                 startActivity(intent);
                 break;
             case R.id.person_share:

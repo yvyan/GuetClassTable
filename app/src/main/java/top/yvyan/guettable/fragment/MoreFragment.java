@@ -27,6 +27,7 @@ import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
 import top.yvyan.guettable.moreFun.TestActivity;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
@@ -62,8 +63,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         generalData = GeneralData.newInstance(getContext());
 
         View addStatus = view.findViewById(R.id.add_status);
-        //注意这里，到底是用ViewGroup还是用LinearLayout或者是FrameLayout，主要是看你这个EditTex
-        //控件所在的父控件是啥布局，如果是LinearLayout，那么这里就要改成LinearLayout.LayoutParams
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
         lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
         addStatus.setLayoutParams(lp);
@@ -122,9 +121,22 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         generalData = GeneralData.newInstance(getContext());
     }
 
+    private void setBackground(boolean setBackground) {
+        View addStatus = view.findViewById(R.id.add_status);
+        View titleBar = view.findViewById(R.id.title_bar);
+        if (setBackground) {
+            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+        } else {
+            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
+        setBackground(BackgroundUtil.isSetBackground(getContext()));
         initData();
     }
 

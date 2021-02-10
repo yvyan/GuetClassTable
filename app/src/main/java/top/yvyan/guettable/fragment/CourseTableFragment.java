@@ -33,6 +33,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.ToastUtil;
@@ -80,8 +81,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         moreButton.setOnClickListener(view -> showPopMenu());
 
         View addStatus = view.findViewById(R.id.add_status);
-        //注意这里，到底是用ViewGroup还是用LinearLayout或者是FrameLayout，主要是看你这个EditTex
-        //控件所在的父控件是啥布局，如果是LinearLayout，那么这里就要改成LinearLayout.LayoutParams
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
         lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
         addStatus.setLayoutParams(lp);
@@ -105,6 +104,23 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         settingData = SettingData.newInstance(getActivity());
     }
 
+    private void setBackground(boolean setBackground) {
+        View addStatus = view.findViewById(R.id.add_status);
+        View titleBar = view.findViewById(R.id.title_bar);
+        if (setBackground) {
+            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            mTimetableView.colorPool().setUselessColor(0xCCCCCC);
+            mTimetableView.alpha(0.7f, 0.7f, 0.9f);
+        } else {
+            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            mTimetableView.colorPool().setUselessColor(0xE0E0E0);
+            mTimetableView.alpha(1, 1, 1);
+        }
+        mTimetableView.updateView();
+    }
+
     /**
      * 初始化课程控件
      */
@@ -113,7 +129,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         mWeekView = view.findViewById(R.id.id_weekview);
         mTimetableView = view.findViewById(R.id.id_timetableView);
         deltaImg = view.findViewById(R.id.deltaIcon);
-        preToWeekButton=view.findViewById(R.id.pre_week);
+        preToWeekButton = view.findViewById(R.id.pre_week);
         nextToWeekButton=view.findViewById(R.id.next_week);
 
         //设置周次选择属性
@@ -169,7 +185,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 //隐藏旗标布局
                 .isShowFlaglayout(false)
                 .showView();
-        mTimetableView.colorPool().setUselessColor(0xcccccc);
         if (singleSettingData.isHideOtherWeek()) {
             hideNonThisWeek();
         }
@@ -204,8 +219,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
-        mTimetableView.onDateBuildListener()
-                .onHighLight();
+        setBackground(BackgroundUtil.isSetBackground(getContext()));
     }
 
     public void updateTable() {

@@ -86,11 +86,6 @@
     <string name="url_resource_center">https://www.guet.edu.cn/jxzyzx/</string>
 
     <string name="share_text">新的桂电课程表，简洁、好用，分享给你，点击链接下载：http://app.xiaomi.com/detail/1288502 \n(小米官方链接，请放心访问，建议使用浏览器打开)</string>
-    <string name="help_1">点击“我的”页面的“点击登录”按钮，输入学号和教务密码即可登录，设置学期和星期即可自动导入课表。</string>
-    <string name="help_2">点击“周课表”上方的“第x周”即可滑动点击切换周次；点击课程可以查看详情。</string>
-    <string name="help_3">周课表和一些查询页面右上角有设置按钮，可以进行个性化设置。</string>
-    <string name="help_more_1">“我的”页面右上角设置中的高级设置可以设置课程显示的长度，方便适配不同手机，也可以设置自动更新频率欧~~。</string>
-    <string name="help_more_2">加入课程表交流群，最快体验新功能，还等什么 ↓</string>
     <string name="first_about">该项目与学校官方无关。个人开发者作品，不含广告，永久免费。\n\n 该项目会一直开源，一直保证代码库最新，保证和小伙伴使用的APP源码一致。开源是为了接受大家的监督，也是保护小伙伴教务隐私的有效手段，感谢大家的支持！</string>
     <string name="about_1">仍然记得刚入学时看到同学发来的“桂电课程表”时的激动，一个简单的APP，却能够给桂电学子带来切实的便利，自己又何尝不想成为这样一个人…</string>
     <string name="about_2">两年过去了，学长的那个课程表已经跟不上时代了，近期，学校关停了老版的教务系统，学长的课程表接入的正是这个系统，所以自然也无法使用；我也借Android课设的机会，完成自己的一个愿望，也是对学长的致敬。</string>
@@ -156,7 +151,7 @@
     <string name="person_grade">年级</string>
     <string name="person_term">学年</string>
     <string name="person_week">周数</string>
-    <string name="person_help">帮助与进阶</string>
+    <string name="person_personalized">个性化设置</string>
     <string name="person_share">分享给同学</string>
     <string name="person_update">检查更新</string>
     <string name="person_download_all">所有版本下载</string>
