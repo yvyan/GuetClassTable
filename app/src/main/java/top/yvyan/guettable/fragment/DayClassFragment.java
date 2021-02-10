@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,7 @@ import com.zhuangfei.timetable.model.ScheduleSupport;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.DayClassAdapter;
@@ -32,6 +34,7 @@ import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.service.table.AutoUpdate;
 import top.yvyan.guettable.service.app.UpdateApp;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.TimeUtil;
@@ -43,14 +46,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private static DayClassFragment dayClassFragment;
     private static final String TAG = "DayClassFragment";
 
-    private View view;
     private TextView textView;
     private RecyclerView recyclerView;
     private View showExam;
     private TextView showExamDay;
-    private View testSchedule, urlBkjw, testScores, credits;
 
-    private DayClassAdapter dayClassAdapter;
     private AutoUpdate autoUpdate;
     private OnButtonClick onButtonClick;
 
@@ -75,24 +75,31 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         dayClassFragment = this;
-        view = inflater.inflate(R.layout.fragment_day_class, container, false);
+        View view = inflater.inflate(R.layout.fragment_day_class, container, false);
 
         View tools = view.findViewById(R.id.day_class_tools);
-        if (! SettingData.newInstance(getContext()).isShowTools()) {
+        if (!SettingData.newInstance(getContext()).isShowTools()) {
             tools.setVisibility(View.GONE);
         }
+
+        View addStatus = view.findViewById(R.id.add_status);
+        //注意这里，到底是用ViewGroup还是用LinearLayout或者是FrameLayout，主要是看你这个EditTex
+        //控件所在的父控件是啥布局，如果是LinearLayout，那么这里就要改成LinearLayout.LayoutParams
+        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
+        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
+        addStatus.setLayoutParams(lp);
 
         textView = view.findViewById(R.id.day_class_hint);
         textView.setOnClickListener(this);
         showExam = view.findViewById(R.id.day_show_exam);
         showExamDay = view.findViewById(R.id.day_show_exam_day);
-        testSchedule = view.findViewById(R.id.day_test_schedule);
+        View testSchedule = view.findViewById(R.id.day_test_schedule);
         testSchedule.setOnClickListener(this);
-        urlBkjw = view.findViewById(R.id.day_url_bkjw);
+        View urlBkjw = view.findViewById(R.id.day_url_bkjw);
         urlBkjw.setOnClickListener(this);
-        testScores = view.findViewById(R.id.day_test_scores);
+        View testScores = view.findViewById(R.id.day_test_scores);
         testScores.setOnClickListener(this);
-        credits = view.findViewById(R.id.day_credits);
+        View credits = view.findViewById(R.id.day_credits);
         credits.setOnClickListener(this);
 
         initData();
@@ -136,7 +143,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             todayList = new ArrayList<>();
             tomorrowList = new ArrayList<>();
         }
-        dayClassAdapter = new DayClassAdapter(getContext(), todayList, tomorrowList);
+        DayClassAdapter dayClassAdapter = new DayClassAdapter(getContext(), todayList, tomorrowList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(dayClassAdapter);
 

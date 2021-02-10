@@ -8,9 +8,12 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,6 +57,14 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         }
         setContentView(R.layout.activity_main);
 
+        Window window = this.getWindow();
+        if (Build.VERSION.SDK_INT >= 19) {
+            //透明状态栏
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemReselectedListener);
         viewPager = findViewById(R.id.vp);
@@ -62,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
             //用于页面滑动时底部Tab切换
             @Override
             public void onPageSelected(int position) {

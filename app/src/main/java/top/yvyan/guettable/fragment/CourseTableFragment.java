@@ -21,6 +21,7 @@ import com.zhuangfei.timetable.view.WeekView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import top.yvyan.guettable.DetailActivity;
 import top.yvyan.guettable.R;
@@ -31,6 +32,7 @@ import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.ToastUtil;
@@ -76,6 +78,13 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         view = inflater.inflate(R.layout.fragment_base_func, container, false);
         moreButton = view.findViewById(R.id.id_more);
         moreButton.setOnClickListener(view -> showPopMenu());
+
+        View addStatus = view.findViewById(R.id.add_status);
+        //注意这里，到底是用ViewGroup还是用LinearLayout或者是FrameLayout，主要是看你这个EditTex
+        //控件所在的父控件是啥布局，如果是LinearLayout，那么这里就要改成LinearLayout.LayoutParams
+        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
+        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
+        addStatus.setLayoutParams(lp);
 
         initData();
 
@@ -150,7 +159,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     }
                 })
                 .callback((ISchedule.OnItemClickListener) (v, scheduleList) -> display(scheduleList))
-                .callback((ISchedule.OnItemLongClickListener) (v, day, start) -> {} /*Toast.makeText(getActivity(),
+                .callback((ISchedule.OnItemLongClickListener) (v, day, start) -> {
+                } /*Toast.makeText(getActivity(),
                         "长按:周" + day  + ",第" + start + "节",
                         Toast.LENGTH_SHORT).show()*/)
                 .callback(curWeek -> {
@@ -159,6 +169,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 //隐藏旗标布局
                 .isShowFlaglayout(false)
                 .showView();
+        mTimetableView.colorPool().setUselessColor(0xcccccc);
         if (singleSettingData.isHideOtherWeek()) {
             hideNonThisWeek();
         }
@@ -301,5 +312,15 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
      */
     protected void showNonThisWeek() {
         mTimetableView.isShowNotCurWeek(true).updateView();
+    }
+
+    /**
+     * 设置非本周课的背景
+     *
+     * @param color color
+     */
+    public void setNonThisWeekBgcolor(int color) {
+        mTimetableView.colorPool().setUselessColor(color);
+        mTimetableView.updateView();
     }
 }
