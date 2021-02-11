@@ -25,18 +25,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="15dp"
                 android:text="主页背景:"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:background="@color/xui_config_color_gray_9" />
 
             <LinearLayout
                 android:id="@+id/clean_background"

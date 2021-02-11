@@ -85,7 +85,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
         if (schedules.get(position).getWeekList().contains(week)) {
             holder.card.setBackgroundColor(0xCF94D6F9);
         } else {
-            holder.card.setBackgroundColor(0xFFFFFFFF);
+            holder.card.setBackgroundColor(0xC0ffffff);
         }
     }
 
