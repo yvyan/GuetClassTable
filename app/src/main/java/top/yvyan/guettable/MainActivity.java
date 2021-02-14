@@ -59,11 +59,9 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         }
         setContentView(R.layout.activity_main);
 
+        //透明状态栏
         Window window = this.getWindow();
-        if (Build.VERSION.SDK_INT >= 19) {
-            //透明状态栏
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         background = findViewById(R.id.background);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);

@@ -39,11 +39,9 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         List<Schedule> schedules = DetailClassData.newInstance().getCourseBeans();
 
+        //透明状态栏
         Window window = this.getWindow();
-        if (Build.VERSION.SDK_INT >= 19) {
-            //透明状态栏
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         View addStatus = findViewById(R.id.add_status);
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
         lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getApplicationContext()));

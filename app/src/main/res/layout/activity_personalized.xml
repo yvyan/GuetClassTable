@@ -1,119 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".PersonalizedActivity">
 
-    <include
-        android:id="@+id/func_base_constraintLayout"
-        layout="@layout/header_base"
-        android:layout_width="match_parent"
-        android:layout_height="45dp" />
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <View
+            android:id="@+id/add_status"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:text="主页背景:"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp" />
+        <include
+            android:id="@+id/func_base_constraintLayout"
+            layout="@layout/header_base"
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/clean_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="cleanBackground"
                 android:orientation="vertical">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:text="恢复默认背景"
-                    android:textColor="@color/app_black"
-                    android:textSize="16sp" />
+                    android:layout_marginTop="15dp"
+                    android:text="主页背景:"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/clean_background"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:text="还原到系统默认白色背景" />
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="cleanBackground"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="恢复默认背景"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="还原到系统默认白色背景" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="10dp" />
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+                <LinearLayout
+                    android:id="@+id/set_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="setBackground"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="设置自定义背景"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="仅图库图片支持裁剪" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@color/xui_config_color_gray_9" />
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:background="@color/xui_config_color_gray_9" />
+        </ScrollView>
 
-            <LinearLayout
-                android:id="@+id/set_background"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="setBackground"
-                android:orientation="vertical">
+    </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:text="设置自定义背景"
-                    android:textColor="@color/app_black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:text="从图库选择图片作为背景" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:background="@color/xui_config_color_gray_9" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
