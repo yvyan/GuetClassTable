@@ -45,19 +45,15 @@ public class BackgroundUtil {
         }
     }
 
-    public static boolean setBackground(Context context, ImageView imageView) {
+    public static void setBackground(Context context, ImageView imageView) {
         if (isSetBackground(context)) {
             try {
                 FileInputStream stream = new FileInputStream(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + "/userBackground.jpg");
                 Bitmap bitmap = BitmapFactory.decodeStream(stream);
                 imageView.setImageBitmap(bitmap);
-                return true;
             } catch (FileNotFoundException e) {
                 deleteBackground(context);
-                return false;
             }
-        } else {
-            return false;
         }
     }
 }
