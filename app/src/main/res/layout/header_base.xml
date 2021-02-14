@@ -10,7 +10,7 @@
         android:id="@+id/back"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="15dp"
         android:onClick="doBack"
         android:src="@drawable/back"
         app:layout_constraintBottom_toBottomOf="parent"

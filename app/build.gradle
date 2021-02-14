@@ -56,8 +56,10 @@ dependencies {
     //小米检查更新
     implementation 'mi-appstore:xiaomi-update-sdk:4.0.3'
     //友盟移动统计
-    implementation  'com.umeng.umsdk:common:9.3.3'
-    implementation  'com.umeng.umsdk:asms:1.1.4' // asms包依赖
+    implementation  'com.umeng.umsdk:common:9.3.6'
+    implementation  'com.umeng.umsdk:asms:1.2.0' // asms包依赖
     //友盟APM
     implementation 'com.umeng.umsdk:apm:1.1.0'
+    //友盟在线参数
+    implementation  'com.umeng.umsdk:abtest:1.0.0' //使用ABTest模块必选
 }

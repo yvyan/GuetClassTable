@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.umeng.umcrash.UMCrash;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -80,8 +82,9 @@ public class PersonalizedActivity extends AppCompatActivity {
                     outputStream.flush();
                     outputStream.close();
                     ToastUtil.showToast(getApplicationContext(), "设置背景成功！");
-                } catch (IOException fileNotFoundException) {
+                } catch (IOException e1) {
                     ToastUtil.showToast(getApplicationContext(), "读取错误，背景设计失败！");
+                    UMCrash.generateCustomLog(e1, "IOException");
                 }
             }
         } else if (requestCode == 3) {
