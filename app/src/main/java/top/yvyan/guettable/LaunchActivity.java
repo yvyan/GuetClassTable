@@ -1,8 +1,12 @@
 package top.yvyan.guettable;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,8 +14,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.app.FirstLoad;
+import top.yvyan.guettable.service.table.fetch.Net;
 import top.yvyan.guettable.util.TextDialog;
 
 public class LaunchActivity extends AppCompatActivity {
@@ -38,6 +46,8 @@ public class LaunchActivity extends AppCompatActivity {
             //透明导航栏
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+        //网络切换检测
+        initReceiver();
 
         int time = 150;    //设置等待时间，单位为毫秒
         Handler handler = new Handler();
@@ -67,5 +77,44 @@ public class LaunchActivity extends AppCompatActivity {
                 LaunchActivity.this.finish();
             }
         }, time);
+    }
+
+    BroadcastReceiver netReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isAvailable()) {
+                    int type2 = networkInfo.getType();
+
+                    switch (type2) {
+                        case 0://移动 网络    2G 3G 4G 都是一样的 实测 mix2s 联通卡
+                            TokenData.isVPN = true;
+                            break;
+                        case 1: //wifi网络
+                            TokenData.isVPN = Net.testNet(context) != 0;
+                            break;
+                    }
+                }  // 无网络
+            }
+        }
+    };
+
+    /**
+     * 注册网络监听的广播
+     */
+    private void initReceiver() {
+        IntentFilter timeFilter = new IntentFilter();
+        timeFilter.addAction("android.net.ethernet.ETHERNET_STATE_CHANGED");
+        timeFilter.addAction("android.net.ethernet.STATE_CHANGE");
+        timeFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        timeFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        timeFilter.addAction("android.net.wifi.STATE_CHANGE");
+        timeFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        registerReceiver(netReceiver, timeFilter);
     }
 }

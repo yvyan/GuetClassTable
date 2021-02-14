@@ -26,7 +26,7 @@ public class SettingActivity extends AppCompatActivity {
         title.setText("设置");
     }
 
-    public void onClick(View view) {
+    public void doBack(View view) {
         finish();
     }
 
