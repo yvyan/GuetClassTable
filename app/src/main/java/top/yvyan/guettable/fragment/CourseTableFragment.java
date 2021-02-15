@@ -1,5 +1,6 @@
 package top.yvyan.guettable.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ import top.yvyan.guettable.util.ToastUtil;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
 
+    @SuppressLint("StaticFieldLeak")
     private static CourseTableFragment courseTableFragment;
 
     //控件
@@ -120,6 +122,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     /**
      * 初始化课程控件
      */
+    @SuppressLint("SetTextI18n")
     private void initTimetableView() {
         //获取控件
         mWeekView = view.findViewById(R.id.id_weekview);
@@ -155,7 +158,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         mTimetableView.curWeek(generalData.getWeek())
                 .maxSlideItem(12)
                 .monthWidthDp(18)
-                .itemHeight(DensityUtil.dip2px(getContext(), singleSettingData.getItemLength()))
+                .itemHeight(DensityUtil.dip2px(Objects.requireNonNull(getContext()), singleSettingData.getItemLength()))
                 .callback(new OnItemBuildAdapter() {
                     @Override
                     public String getItemText(Schedule schedule, boolean isThisWeek) {
@@ -240,7 +243,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     /**
      * 显示内容
      *
-     * @param beans
+     * @param beans beans
      */
     protected void display(List<Schedule> beans) {
         detailClassData.setCourseBeans(beans);
@@ -253,27 +256,23 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
      * 显示弹出菜单
      */
     public void showPopMenu() {
-        PopupMenu popup = new PopupMenu(getActivity(), moreButton);
+        PopupMenu popup = new PopupMenu(Objects.requireNonNull(getActivity()), moreButton);
         popup.getMenuInflater().inflate(R.menu.course_table_popmenu, popup.getMenu());
         if (singleSettingData.isHideOtherWeek()) {
             popup.getMenu().findItem(R.id.course_tab_top1).setTitle("显示非本周课程");
         }
         popup.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.course_tab_top1:
-                    if (singleSettingData.isHideOtherWeek()) {
-                        singleSettingData.setHideOtherWeek(false);
-                        popup.getMenu().findItem(R.id.course_tab_top1).setTitle("隐藏非本周课程");
-                    } else {
-                        singleSettingData.setHideOtherWeek(true);
-                        popup.getMenu().findItem(R.id.course_tab_top1).setTitle("显示非本周课程");
-                    }
-                    mTimetableView
-                            .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
-                            .updateView();
-                    break;
-                default:
-                    break;
+            if (item.getItemId() == R.id.course_tab_top1) {
+                if (singleSettingData.isHideOtherWeek()) {
+                    singleSettingData.setHideOtherWeek(false);
+                    popup.getMenu().findItem(R.id.course_tab_top1).setTitle("隐藏非本周课程");
+                } else {
+                    singleSettingData.setHideOtherWeek(true);
+                    popup.getMenu().findItem(R.id.course_tab_top1).setTitle("显示非本周课程");
+                }
+                mTimetableView
+                        .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
+                        .updateView();
             }
             return true;
         });

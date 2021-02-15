@@ -34,6 +34,7 @@ public class ExamActivity extends BaseFuncActivity {
         setTitle(getResources().getString(R.string.moreFun_test_schedule));
         setShowMore(true);
         openUpdate();
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_test_schedule));
 
         generalData = GeneralData.newInstance(this);
         scheduleData = ScheduleData.newInstance(this);

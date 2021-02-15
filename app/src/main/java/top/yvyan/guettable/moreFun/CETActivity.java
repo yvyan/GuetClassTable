@@ -24,6 +24,7 @@ public class CETActivity extends BaseFuncActivity {
     protected void childInit() {
         setTitle(getResources().getString(R.string.moreFun_cet));
         setShowMore(false);
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_cet));
 
         moreDate = MoreDate.newInstance(getApplicationContext());
     }

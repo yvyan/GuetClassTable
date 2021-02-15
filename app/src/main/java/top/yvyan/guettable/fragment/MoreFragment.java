@@ -1,5 +1,6 @@
 package top.yvyan.guettable.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,10 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.umeng.analytics.MobclickAgent;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import top.yvyan.guettable.R;
@@ -33,13 +38,10 @@ import top.yvyan.guettable.util.ToastUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
+    @SuppressLint("StaticFieldLeak")
     private static MoreFragment moreFragment;
 
     private View view;
-    private View testSchedule, credits, testScores, libScores, resitSchedule, libSchedule;
-    private View graduationRequirement, planCourses, cet, innovationPoints;
-    private View urlBkjw, urlVPN, urlCampus, urlStaff, urlLiJiang, urlMore, urlIndex;
-    private View evaluatingTeachers, evaluatingTextbooks, test;
 
     private GeneralData generalData;
 
@@ -67,50 +69,50 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
         addStatus.setLayoutParams(lp);
 
-        testSchedule = view.findViewById(R.id.more_test_schedule);
+        View testSchedule = view.findViewById(R.id.more_test_schedule);
         testSchedule.setOnClickListener(this);
-        credits = view.findViewById(R.id.more_credits);
+        View credits = view.findViewById(R.id.more_credits);
         credits.setOnClickListener(this);
-        testScores = view.findViewById(R.id.more_test_scores);
+        View testScores = view.findViewById(R.id.more_test_scores);
         testScores.setOnClickListener(this);
-        libScores = view.findViewById(R.id.more_lib_scores);
+        View libScores = view.findViewById(R.id.more_lib_scores);
         libScores.setOnClickListener(this);
-        resitSchedule = view.findViewById(R.id.more_resit_schedule);
+        View resitSchedule = view.findViewById(R.id.more_resit_schedule);
         resitSchedule.setOnClickListener(this);
-        libSchedule = view.findViewById(R.id.more_lib_schedule);
+        View libSchedule = view.findViewById(R.id.more_lib_schedule);
         libSchedule.setOnClickListener(this);
 
-//        graduationRequirement = view.findViewById(R.id.more_graduation_requirement);
+//        View graduationRequirement = view.findViewById(R.id.more_graduation_requirement);
 //        graduationRequirement.setOnClickListener(this);
 //        graduationRequirement.setVisibility(View.GONE);
-        planCourses = view.findViewById(R.id.more_plan_courses);
+        View planCourses = view.findViewById(R.id.more_plan_courses);
         planCourses.setOnClickListener(this);
-        cet = view.findViewById(R.id.more_cet);
+        View cet = view.findViewById(R.id.more_cet);
         cet.setOnClickListener(this);
-        innovationPoints = view.findViewById(R.id.more_innovation_score);
+        View innovationPoints = view.findViewById(R.id.more_innovation_score);
         innovationPoints.setOnClickListener(this);
 
-        urlBkjw = view.findViewById(R.id.more_url_bkjw);
+        View urlBkjw = view.findViewById(R.id.more_url_bkjw);
         urlBkjw.setOnClickListener(this);
-        urlVPN = view.findViewById(R.id.more_url_vpn);
+        View urlVPN = view.findViewById(R.id.more_url_vpn);
         urlVPN.setOnClickListener(this);
-        urlCampus = view.findViewById(R.id.more_url_campus);
+        View urlCampus = view.findViewById(R.id.more_url_campus);
         urlCampus.setOnClickListener(this);
-        urlStaff = view.findViewById(R.id.more_url_staff);
+        View urlStaff = view.findViewById(R.id.more_url_staff);
         urlStaff.setOnClickListener(this);
-        urlLiJiang = view.findViewById(R.id.more_url_lijiang);
+        View urlLiJiang = view.findViewById(R.id.more_url_lijiang);
         urlLiJiang.setOnClickListener(this);
-        urlMore = view.findViewById(R.id.more_url_more);
+        View urlMore = view.findViewById(R.id.more_url_more);
         urlMore.setOnClickListener(this);
-        urlIndex = view.findViewById(R.id.more_url_index);
+        View urlIndex = view.findViewById(R.id.more_url_index);
         urlIndex.setOnClickListener(this);
 
-        evaluatingTeachers = view.findViewById(R.id.more_evaluating_teachers);
+        View evaluatingTeachers = view.findViewById(R.id.more_evaluating_teachers);
         evaluatingTeachers.setOnClickListener(this);
-        evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
+        View evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
         evaluatingTextbooks.setOnClickListener(this);
 
-//        test = view.findViewById(R.id.more_test);
+//        View test = view.findViewById(R.id.more_test);
 //        test.setOnClickListener(this);
 //        test.setVisibility(View.VISIBLE);
 
@@ -140,12 +142,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         initData();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         Intent intent;
-        Intent webIntent = new Intent();
-        webIntent.setAction("android.intent.action.VIEW");
-        Uri uri;
         switch (view.getId()) {
             case R.id.more_test_schedule:
                 intent = new Intent(getContext(), ExamActivity.class);
@@ -194,38 +194,26 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.more_url_bkjw:
-                uri = Uri.parse(UrlReplaceUtil.getUrlByInternational(generalData.isInternational(), getContext().getResources().getString(R.string.url_bkjw)));
-                webIntent.setData(uri);
-                startActivity(webIntent);
+                openBrowser(UrlReplaceUtil.getUrlByInternational(generalData.isInternational(), Objects.requireNonNull(getContext()).getResources().getString(R.string.url_bkjw)));
                 break;
             case R.id.more_url_vpn:
-                uri = Uri.parse(getContext().getResources().getString(R.string.url_vpn));
-                webIntent.setData(uri);
-                startActivity(webIntent);
+                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_vpn));
                 break;
             case R.id.more_url_campus:
-                uri = Uri.parse(getContext().getResources().getString(R.string.smart_campus));
-                webIntent.setData(uri);
-                startActivity(webIntent);
+                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.smart_campus));
                 break;
             case R.id.more_url_staff:
-                uri = Uri.parse(getContext().getResources().getString(R.string.url_xsgl));
-                webIntent.setData(uri);
-                startActivity(webIntent);
+                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_xsgl));
                 break;
             case R.id.more_url_lijiang:
-                uri = Uri.parse(getContext().getResources().getString(R.string.url_lijiang));
-                webIntent.setData(uri);
-                startActivity(webIntent);
+                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_lijiang));
                 break;
             case R.id.more_url_more:
                 intent = new Intent(getContext(), MoreUrlActivity.class);
                 startActivity(intent);
                 break;
             case R.id.more_url_index:
-                uri = Uri.parse(getContext().getResources().getString(R.string.guet_yvyan_top));
-                webIntent.setData(uri);
-                startActivity(webIntent);
+                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.guet_yvyan_top));
                 break;
             case R.id.more_evaluating_teachers:
                 if (generalData.isInternational()) {
@@ -250,5 +238,16 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             default:
                 ToastUtil.showToast(getContext(), "敬请期待！");
         }
+    }
+
+    public void openBrowser(String url) {
+        Map<String, Object> urlMap = new HashMap<>();
+        urlMap.put("url", url);
+        MobclickAgent.onEventObject(getContext(), "openUrl", urlMap);
+        Uri uri = Uri.parse(url);
+        Intent webIntent = new Intent();
+        webIntent.setAction("android.intent.action.VIEW");
+        webIntent.setData(uri);
+        startActivity(webIntent);
     }
 }

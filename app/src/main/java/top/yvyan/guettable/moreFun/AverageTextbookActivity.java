@@ -25,6 +25,7 @@ import top.yvyan.guettable.bean.AvgTextbookBean;
 import top.yvyan.guettable.service.table.IMoreFun;
 import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
@@ -55,6 +56,7 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_average_textbook);
         ButterKnife.bind(this);
         title.setText(getString(R.string.moreFun_evaluating_textbooks));
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_evaluating_textbooks));
 
         MoreFunService moreFunService = new MoreFunService(this, this);
         moreFunService.update();

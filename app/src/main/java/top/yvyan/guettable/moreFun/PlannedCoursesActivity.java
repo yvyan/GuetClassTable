@@ -24,6 +24,7 @@ public class PlannedCoursesActivity extends BaseFuncActivity {
     protected void childInit() {
         setTitle(getResources().getString(R.string.moreFun_plan_courses));
         openUpdate();
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_plan_courses));
 
         moreDate = MoreDate.newInstance(this);
     }

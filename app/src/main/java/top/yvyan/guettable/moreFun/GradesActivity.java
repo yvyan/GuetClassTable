@@ -8,6 +8,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.util.AppUtil;
 
 public class GradesActivity extends BaseFuncActivity {
 
@@ -18,6 +19,7 @@ public class GradesActivity extends BaseFuncActivity {
     protected void childInit() {
         setTitle(getResources().getString(R.string.moreFun_credits));
         setShowMore(false);
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_credits));
 
         generalData = GeneralData.newInstance(this);
         moreDate = MoreDate.newInstance(this);
