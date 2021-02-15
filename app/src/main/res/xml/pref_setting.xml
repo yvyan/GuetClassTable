@@ -52,15 +52,6 @@
             android:summary="首页显示快捷工具栏，包含常用工具和链接"
             android:title="首页显示快捷工具栏" />
 
-        <ListPreference
-            android:defaultValue="62"
-            android:dialogTitle="选择课程项长度"
-            android:entries="@array/class_length_entities"
-            android:entryValues="@array/class_length_values"
-            android:key="class_length"
-            android:summary="设置周课表单个课程的长度"
-            android:title="课程项长度" />
-
         <SwitchPreference
             android:defaultValue="false"
            android:key="developer_mode"

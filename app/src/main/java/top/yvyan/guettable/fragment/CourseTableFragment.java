@@ -27,9 +27,9 @@ import top.yvyan.guettable.DetailActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
-import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.AppUtil;
@@ -45,11 +45,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     //控件
     private TimetableView mTimetableView;
     private WeekView mWeekView;
-    private ImageButton nextToWeekButton;
-    private ImageButton preToWeekButton;
 
     private ImageView moreButton;
-    private LinearLayout linearLayout;
     private TextView titleTextView;
     private ImageView deltaImg;
 
@@ -66,8 +63,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
     public static CourseTableFragment newInstance() {
         if (courseTableFragment == null) {
-            CourseTableFragment fragment = new CourseTableFragment();
-            courseTableFragment = fragment;
+            courseTableFragment = new CourseTableFragment();
         }
         return courseTableFragment;
     }
@@ -76,7 +72,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         courseTableFragment = this;
-        view = inflater.inflate(R.layout.fragment_base_func, container, false);
+        view = inflater.inflate(R.layout.fragment_table, container, false);
         moreButton = view.findViewById(R.id.id_more);
         moreButton.setOnClickListener(view -> showPopMenu());
 
@@ -90,7 +86,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         target = generalData.getWeek();
 
         titleTextView = view.findViewById(R.id.id_title);
-        linearLayout = view.findViewById(R.id.id_class_layout);
+        LinearLayout linearLayout = view.findViewById(R.id.id_class_layout);
         linearLayout.setOnClickListener(this);
         initTimetableView();
         return view;
@@ -111,7 +107,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
             titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
             mTimetableView.colorPool().setUselessColor(0xCCCCCC);
-            mTimetableView.alpha(0.7f, 0.7f, 0.9f);
+            mTimetableView.alpha(singleSettingData.getDateAlpha(), singleSettingData.getSlideAlpha(), singleSettingData.getItemAlpha());
         } else {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -129,8 +125,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         mWeekView = view.findViewById(R.id.id_weekview);
         mTimetableView = view.findViewById(R.id.id_timetableView);
         deltaImg = view.findViewById(R.id.deltaIcon);
-        preToWeekButton = view.findViewById(R.id.pre_week);
-        nextToWeekButton=view.findViewById(R.id.next_week);
+        ImageButton preToWeekButton = view.findViewById(R.id.pre_week);
+        ImageButton nextToWeekButton = view.findViewById(R.id.next_week);
 
         //设置周次选择属性
         mWeekView.curWeek(generalData.getWeek())
@@ -157,13 +153,13 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .showView();
         target = generalData.getWeek();
         mTimetableView.curWeek(generalData.getWeek())
-                .maxSlideItem(14)
+                .maxSlideItem(12)
                 .monthWidthDp(18)
-                .itemHeight(DensityUtil.dip2px(getContext(), settingData.getClassLength()))
+                .itemHeight(DensityUtil.dip2px(getContext(), singleSettingData.getItemLength()))
                 .callback(new OnItemBuildAdapter() {
                     @Override
                     public String getItemText(Schedule schedule, boolean isThisWeek) {
-                        if ((int)schedule.getExtras().get(ExamBean.TYPE) == 2) { //考试安排
+                        if ((int) schedule.getExtras().get(ExamBean.TYPE) == 2) { //考试安排
                             return "(考试)" + schedule.getName() + "@" + schedule.getRoom();
                         } else { //理论课和课内实验
                             if (schedule.getRoom() != null) {
@@ -184,10 +180,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 })
                 //隐藏旗标布局
                 .isShowFlaglayout(false)
+                .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
                 .showView();
-        if (singleSettingData.isHideOtherWeek()) {
-            hideNonThisWeek();
-        }
         nextToWeekButton.setOnClickListener(view -> {
             int cur = mTimetableView.curWeek();
             target = target + 1;
@@ -201,7 +195,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         });
         preToWeekButton.setOnClickListener(view -> {
             int cur = mTimetableView.curWeek();
-            target = target -1;
+            target = target - 1;
             if (target < 1) {
                 target = 1;
             }
@@ -245,6 +239,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
     /**
      * 显示内容
+     *
      * @param beans
      */
     protected void display(List<Schedule> beans) {
@@ -268,13 +263,14 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 case R.id.course_tab_top1:
                     if (singleSettingData.isHideOtherWeek()) {
                         singleSettingData.setHideOtherWeek(false);
-                        showNonThisWeek();
                         popup.getMenu().findItem(R.id.course_tab_top1).setTitle("隐藏非本周课程");
                     } else {
                         singleSettingData.setHideOtherWeek(true);
-                        hideNonThisWeek();
                         popup.getMenu().findItem(R.id.course_tab_top1).setTitle("显示非本周课程");
                     }
+                    mTimetableView
+                            .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
+                            .updateView();
                     break;
                 default:
                     break;
@@ -286,55 +282,22 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.id_class_layout:
-                //如果周次选择已经显示了，那么将它隐藏，更新课程、日期
-                //否则，显示
-                if (mWeekView.isShowing()) {
-                    mWeekView.isShow(false);
-                    deltaImg.setImageResource(R.drawable.delta);
-                    titleTextView.setTextColor(getResources().getColor(R.color.app_white));
-                    int cur = mTimetableView.curWeek();
-                    mTimetableView.onDateBuildListener()
-                            .onUpdateDate(cur, cur);
-                    mTimetableView.changeWeekOnly(cur);
-                    target = cur;
-                } else {
-                    deltaImg.setImageResource(R.drawable.delta_pressed);
-                    mWeekView.isShow(true);
-                    titleTextView.setTextColor(getResources().getColor(R.color.app_red));
-                }
-                break;
+        if (view.getId() == R.id.id_class_layout) {//如果周次选择已经显示了，那么将它隐藏，更新课程、日期
+            //否则，显示
+            if (mWeekView.isShowing()) {
+                mWeekView.isShow(false);
+                deltaImg.setImageResource(R.drawable.delta);
+                titleTextView.setTextColor(getResources().getColor(R.color.app_white));
+                int cur = mTimetableView.curWeek();
+                mTimetableView.onDateBuildListener()
+                        .onUpdateDate(cur, cur);
+                mTimetableView.changeWeekOnly(cur);
+                target = cur;
+            } else {
+                deltaImg.setImageResource(R.drawable.delta_pressed);
+                mWeekView.isShow(true);
+                titleTextView.setTextColor(getResources().getColor(R.color.app_red));
+            }
         }
-    }
-
-    /**
-     * 隐藏非本周课程
-     * 修改了内容的显示，所以必须更新全部（性能不高）
-     * 建议：在初始化时设置该属性
-     * <p>
-     * updateView()被调用后，会重新构建课程，课程会回到当前周
-     */
-    protected void hideNonThisWeek() {
-        mTimetableView.isShowNotCurWeek(false).updateView();
-    }
-
-    /**
-     * 显示非本周课程
-     * 修改了内容的显示，所以必须更新全部（性能不高）
-     * 建议：在初始化时设置该属性
-     */
-    protected void showNonThisWeek() {
-        mTimetableView.isShowNotCurWeek(true).updateView();
-    }
-
-    /**
-     * 设置非本周课的背景
-     *
-     * @param color color
-     */
-    public void setNonThisWeekBgcolor(int color) {
-        mTimetableView.colorPool().setUselessColor(color);
-        mTimetableView.updateView();
     }
 }

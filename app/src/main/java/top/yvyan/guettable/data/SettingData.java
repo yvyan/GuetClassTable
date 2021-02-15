@@ -45,10 +45,6 @@ public class SettingData {
         return sharedPreferences.getBoolean(SettingFragment.APP_CHECK_UPDATE, true);
     }
 
-    public int getClassLength() {
-        return Integer.parseInt(sharedPreferences.getString(SettingFragment.CLASS_LENGTH, "60"));
-    }
-
     public boolean isDevelopMode() {
         return sharedPreferences.getBoolean(SettingFragment.DEVELOPER_MODE, false);
     }

@@ -39,7 +39,6 @@ public class SettingActivity extends AppCompatActivity {
         public static final String SHOW_EXAM_ON_TABLE = "show_exam_on_table";
         public static final String SHOW_TOOLS_ON_DAY_CLASS = "show_tools_on_day_class";
         public static final String APP_CHECK_UPDATE = "app_check_update";
-        public static final String CLASS_LENGTH = "class_length";
         public static final String DEVELOPER_MODE = "developer_mode";
 
 
