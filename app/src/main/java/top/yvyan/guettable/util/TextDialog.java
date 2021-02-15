@@ -40,6 +40,7 @@ public class TextDialog {
         dialog = builder.create();
         // 弹出对话框
         dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         // 以下两行代码是对话框的EditText点击后不能显示输入法的
         dialog.getWindow().clearFlags(
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE

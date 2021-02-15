@@ -20,6 +20,8 @@ import java.util.Objects;
 
 import top.yvyan.guettable.AboutActivity;
 import top.yvyan.guettable.HelpTestActivity;
+import top.yvyan.guettable.LaunchActivity;
+import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.PersonalizedActivity;
 import top.yvyan.guettable.LoginActivity;
 import top.yvyan.guettable.SettingActivity;
@@ -121,6 +123,8 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         about.setOnClickListener(this);
         View helpTest = view.findViewById(R.id.person_help_test);
         helpTest.setOnClickListener(this);
+        View helpMe = view.findViewById(R.id.person_help_me);
+        helpMe.setOnClickListener(this);
     }
 
     public void updateView() {
@@ -205,6 +209,26 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
             case R.id.person_about:
                 intent = new Intent(getContext(), AboutActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.person_help_me:
+                TextDialog.IDialogService service = new TextDialog.IDialogService() {
+                    @Override
+                    public int onClickYes() {
+                        try {
+                            ToastUtil.showToast(getContext(), "感谢支持！");
+                            startActivity(Intent.parseUri(getResources().getString(R.string.alipay_url), Intent.URI_INTENT_SCHEME));
+                        } catch (Exception e) {
+                            ToastUtil.showToast(getContext(), "打开支付宝失败");
+                        }
+                        return 0;
+                    }
+
+                    @Override
+                    public int onClickBack() {
+                        return 0;
+                    }
+                };
+                TextDialog.showDialog(getContext(), "感谢您", false, "捐赠", "取消", getString(R.string.thanks_help), service);
                 break;
             default:
                 ToastUtil.showToast(getContext(), "尽请期待");

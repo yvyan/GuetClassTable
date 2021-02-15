@@ -92,6 +92,8 @@
     <string name="github_url">https://github.com/yvyan/GuetClassTable</string>
     <string name="thanks_1">课程表控件: https://github.com/zfman/TimetableView</string>
     <string name="thanks_2">GUET课程表: https://github.com/Telephone2019/CourseTable</string>
+    <string name="alipay_url">intent://platformapi/startapp?saId=10000007&amp;clientVersion=3.7.0.0718&amp;qrcode=https%3A%2F%2Fqr.alipay.com%2Ffkx10679zh5n4frnfxiye62%3F_s%3Dweb-other&amp;_t=1472443966571#Intent;scheme=alipayqr;package=com.eg.android.AlipayGphone;end</string>
+    <string name="thanks_help">桂电课程表是学生小组开发软件，没有任何收入，只为给桂电学子提供一个简洁、安全和实用的平台。如果愿意，你可以捐赠支持开发者。十分感谢！</string>
     <string name="join_us">我们开发者团队希望这个项目能够持久，我们也会一直开源，但是我们终究会离开校园，我们希望有能力喜欢奉献的你加入我们，让这个课程表可以长长久久！ \n\n看看我们自己，为了一个共同的小目标不顾一切，可能这就是青春吧！有想法？请立刻加入QQ群私聊我们！</string>
     <string name="privacy_text">\u0020\u0020在您使用过程中，桂电课程表可能会申请以下权限：\n
         1.读写手机存储权限\n
@@ -160,6 +162,7 @@
     <string name="btn_quit">退出登录</string>
     <string name="QQGroup">963908505</string>
     <string name="person_help_test">协助测试</string>
+    <string name="person_help_me">支持开发者</string>
     <string name="first_login_help">输入智慧校园的密码，也即统一登录平台，若之前没有登录过，需要先在浏览器上登录一次，成功后即可在APP上正常登录，若不知道密码，请联系辅导员或加群寻求帮助；点击下方按钮进行首次登录。(国际学院学生请使用教务登录方式)</string>
     <string name="moreFun_url_index">桂电导航</string>
     <string name="moreFun_innovation_score">创新积分</string>
