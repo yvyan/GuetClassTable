@@ -39,7 +39,7 @@ public class MoreUrlActivity extends AppCompatActivity {
         startActivity(webIntent);
     }
 
-    public void onClick(View view) {
+    public void doBack(View view) {
         finish();
     }
 
