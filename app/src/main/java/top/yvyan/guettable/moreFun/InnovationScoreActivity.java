@@ -17,6 +17,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.service.table.IMoreFun;
 import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 @SuppressLint("NonConstantResourceId")
@@ -60,6 +61,7 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
         ButterKnife.bind(this);
         title.setText(getString(R.string.moreFun_innovation_score));
         btn_update_innovationScore.setOnClickListener(this);
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_innovation_score));
 
         moreFunService = new MoreFunService(this, this);
         moreFunService.update();

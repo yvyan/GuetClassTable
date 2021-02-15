@@ -23,7 +23,7 @@ public class SettingActivity extends AppCompatActivity {
         setTheme(R.style.ThemeText);
 
         TextView title = findViewById(R.id.title);
-        title.setText("设置");
+        title.setText(getResources().getString(R.string.person_setting));
     }
 
     public void doBack(View view) {

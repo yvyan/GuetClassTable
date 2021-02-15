@@ -22,6 +22,7 @@ public class ResitActivity extends BaseFuncActivity {
     protected void childInit() {
         setTitle(getResources().getString(R.string.moreFun_resit_schedule));
         openUpdate();
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_resit_schedule));
 
         moreDate = MoreDate.newInstance(getApplicationContext());
     }

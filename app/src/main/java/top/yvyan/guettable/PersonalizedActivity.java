@@ -1,5 +1,6 @@
 package top.yvyan.guettable;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,7 +31,6 @@ import java.util.List;
 import java.util.Objects;
 
 import top.yvyan.guettable.bean.CourseBean;
-import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
@@ -43,6 +43,7 @@ public class PersonalizedActivity extends AppCompatActivity {
 
     private ImageView background;
     private TimetableView mTimetableView;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch showOtherWeek;
 
     @Override
@@ -169,14 +170,10 @@ public class PersonalizedActivity extends AppCompatActivity {
                 .callback(new OnItemBuildAdapter() {
                     @Override
                     public String getItemText(Schedule schedule, boolean isThisWeek) {
-                        if (!((int) schedule.getExtras().get(ExamBean.TYPE) != 2)) { //考试安排
-                            return "(考试)" + schedule.getName() + "@" + schedule.getRoom();
-                        } else { //理论课和课内实验
-                            if (schedule.getRoom() != null) {
-                                return schedule.getName() + "@" + schedule.getRoom();
-                            } else {
-                                return schedule.getName();
-                            }
+                        if (schedule.getRoom() != null) {
+                            return schedule.getName() + "@" + schedule.getRoom();
+                        } else {
+                            return schedule.getName();
                         }
                     }
                 })

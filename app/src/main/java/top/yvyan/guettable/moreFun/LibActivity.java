@@ -14,6 +14,7 @@ import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.util.AppUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -26,6 +27,7 @@ public class LibActivity extends BaseFuncActivity {
     protected void childInit() {
         setTitle(getResources().getString(R.string.moreFun_lib_schedule));
         openUpdate();
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_lib_schedule));
 
         scheduleData = ScheduleData.newInstance(this);
         generalData = GeneralData.newInstance(this);

@@ -33,6 +33,7 @@ public class ExperimentScoreActivity extends BaseFuncActivity {
         setTitle(getResources().getString(R.string.moreFun_lib_scores));
         setShowMore(true);
         openUpdate();
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_lib_scores));
 
         moreDate = MoreDate.newInstance(this);
         generalData = GeneralData.newInstance(this);

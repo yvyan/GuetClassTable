@@ -1,6 +1,7 @@
 package top.yvyan.guettable.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -20,13 +21,11 @@ import java.util.Objects;
 
 import top.yvyan.guettable.AboutActivity;
 import top.yvyan.guettable.HelpTestActivity;
-import top.yvyan.guettable.LaunchActivity;
-import top.yvyan.guettable.MainActivity;
-import top.yvyan.guettable.PersonalizedActivity;
 import top.yvyan.guettable.LoginActivity;
-import top.yvyan.guettable.SettingActivity;
+import top.yvyan.guettable.PersonalizedActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.SetTermActivity;
+import top.yvyan.guettable.SettingActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SettingData;
@@ -38,6 +37,7 @@ import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
+    @SuppressLint("StaticFieldLeak")
     private static PersonFragment personFragment;
 
     private static final String TAG = "PersonFragment";
@@ -127,6 +127,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         helpMe.setOnClickListener(this);
     }
 
+    @SuppressLint("SetTextI18n")
     public void updateView() {
         if (accountData.getIsLogin()) {
             person_userNameAndNo.setVisibility(View.VISIBLE);
@@ -168,6 +169,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         initData();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -175,42 +177,53 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
             case R.id.person_userInfo_card:
             case R.id.person_login:
                 if (accountData.getIsLogin()) {
+                    AppUtil.reportFunc(getContext(), "设置学期");
                     intent = new Intent(getContext(), SetTermActivity.class);
                 } else {
+                    AppUtil.reportFunc(getContext(), "登录");
                     intent = new Intent(getContext(), LoginActivity.class);
                 }
                 startActivity(intent);
                 break;
             case R.id.btn_quit:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.btn_quit));
                 accountData.logoff();
                 updateView();
                 break;
             case R.id.person_setting:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_setting));
                 intent = new Intent(getContext(), SettingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.person_personalized:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_personalized));
                 intent = new Intent(getContext(), PersonalizedActivity.class);
                 startActivity(intent);
                 break;
             case R.id.person_share:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_share));
                 shareText();
                 break;
             case R.id.person_update:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_update));
                 ToastUtil.showToast(getContext(), "正在检查更新……");
                 UpdateApp.checkUpdate(getContext(), 2);
                 break;
             case R.id.person_download_all:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_download_all));
                 downloadAllApk();
                 break;
             case R.id.person_help_test:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_help_test));
                 helpTest();
                 break;
             case R.id.person_about:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_about));
                 intent = new Intent(getContext(), AboutActivity.class);
                 startActivity(intent);
                 break;
             case R.id.person_help_me:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_help_me));
                 TextDialog.IDialogService service = new TextDialog.IDialogService() {
                     @Override
                     public int onClickYes() {

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.util.AppUtil;
 
 public class MoreUrlActivity extends AppCompatActivity {
 
@@ -24,6 +25,7 @@ public class MoreUrlActivity extends AppCompatActivity {
 
         TextView title = findViewById(R.id.title);
         title.setText(getString(R.string.moreFun_url_more));
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_url_more));
     }
 
     public void openBrowser(String url) {

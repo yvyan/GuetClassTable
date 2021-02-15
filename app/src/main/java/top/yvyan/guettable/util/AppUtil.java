@@ -10,7 +10,11 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
+import com.umeng.analytics.MobclickAgent;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AppUtil {
     /**
@@ -126,5 +130,11 @@ public class AppUtil {
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         return resources.getDimensionPixelSize(resourceId);
+    }
+
+    public static void reportFunc(Context context, String funcName) {
+        Map<String, Object> funcMap = new HashMap<>();
+        funcMap.put("name", funcName);
+        MobclickAgent.onEventObject(context, "funcUsage", funcMap);
     }
 }
