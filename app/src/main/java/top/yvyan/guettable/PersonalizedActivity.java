@@ -6,24 +6,44 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.umeng.umcrash.UMCrash;
+import com.xuexiang.xui.widget.picker.XSeekBar;
+import com.zhuangfei.timetable.TimetableView;
+import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
+import com.zhuangfei.timetable.model.Schedule;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
+import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.bean.ExamBean;
+import top.yvyan.guettable.data.SingleSettingData;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
+import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class PersonalizedActivity extends AppCompatActivity {
 
-    //ImageView background;
+    private SingleSettingData singleSettingData;
+
+    private ImageView background;
+    private TimetableView mTimetableView;
+    private Switch showOtherWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +53,137 @@ public class PersonalizedActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.title);
         title.setText(getString(R.string.person_personalized));
 
-//        Window window = this.getWindow();
-//        //透明状态栏
-//        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        View addStatus = findViewById(R.id.add_status);
-//        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
-//        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getApplicationContext()));
-//        addStatus.setLayoutParams(lp);
-//        background = findViewById(R.id.background);
+        singleSettingData = SingleSettingData.newInstance(getApplicationContext());
+
+        Window window = this.getWindow();
+        //透明状态栏
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        View addStatus = findViewById(R.id.add_status);
+        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
+        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getApplicationContext()));
+        addStatus.setLayoutParams(lp);
+        background = findViewById(R.id.background);
+
+        initCourseTable();
+        initAlphaSeekBar();
+        initLengthSeekBar();
+
+        showOtherWeek = findViewById(R.id.switch1);
+        showOtherWeek.setChecked(!singleSettingData.isHideOtherWeek());
+    }
+
+    private void initAlphaSeekBar() {
+        XSeekBar seekBarDateAlpha = findViewById(R.id.seekBar_date_alpha);
+        XSeekBar seekBarSlideAlpha = findViewById(R.id.seekBar_slide_alpha);
+        XSeekBar seekBarItemAlpha = findViewById(R.id.seekBar_item_alpha);
+        seekBarDateAlpha.setDefaultValue((int) (singleSettingData.getDateAlpha() * 10));
+        seekBarSlideAlpha.setDefaultValue((int) (singleSettingData.getSlideAlpha() * 10));
+        seekBarItemAlpha.setDefaultValue((int) (singleSettingData.getItemAlpha() * 10));
+        seekBarDateAlpha.setOnSeekBarListener(onSeekBarAlphaListener);
+        seekBarSlideAlpha.setOnSeekBarListener(onSeekBarAlphaListener);
+        seekBarItemAlpha.setOnSeekBarListener(onSeekBarAlphaListener);
+    }
+
+    private final XSeekBar.OnSeekBarListener onSeekBarAlphaListener = (seekBar, newValue) -> {
+        float dateAlpha = singleSettingData.getDateAlpha();
+        float slideAlpha = singleSettingData.getSlideAlpha();
+        float itemAlpha = singleSettingData.getItemAlpha();
+        boolean update = false;
+        if (R.id.seekBar_date_alpha == seekBar.getId()) {
+            if (dateAlpha != newValue / 10.0f) {
+                dateAlpha = newValue / 10.0f;
+                update = true;
+
+            }
+        } else if (R.id.seekBar_slide_alpha == seekBar.getId()) {
+            if (slideAlpha != newValue / 10.0f) {
+                slideAlpha = newValue / 10.0f;
+                update = true;
+            }
+        } else if (R.id.seekBar_item_alpha == seekBar.getId()) {
+            if (itemAlpha != newValue / 10.0f) {
+                itemAlpha = newValue / 10.0f;
+                update = true;
+            }
+        }
+        if (update && BackgroundUtil.isSetBackground(getApplicationContext())) {
+            singleSettingData.setAlpha(dateAlpha, slideAlpha, itemAlpha);
+            mTimetableView
+                    .alpha(dateAlpha, slideAlpha, itemAlpha)
+                    .updateView();
+        }
+    };
+
+    private void initLengthSeekBar() {
+        XSeekBar seekBarItemLength = findViewById(R.id.seekBar_item_length);
+        seekBarItemLength.setDefaultValue((singleSettingData.getItemLength() - 40) / 5);
+        seekBarItemLength.setOnSeekBarListener(onSeekBarLengthListener);
+    }
+
+    private final XSeekBar.OnSeekBarListener onSeekBarLengthListener = (seekBar, newValue) -> {
+        int itemLength = singleSettingData.getItemLength();
+        if (itemLength != (newValue * 5) + 40) {
+            itemLength = (newValue * 5) + 40;
+            singleSettingData.setItemLength(itemLength);
+            mTimetableView
+                    .itemHeight(DensityUtil.dip2px(getApplicationContext(), itemLength))
+                    .updateView();
+        }
+    };
+
+    private void initCourseTable() {
+        List<Schedule> schedules = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            Schedule schedule = new Schedule();
+            schedule.setName("示例课程" + i + 1);
+            schedule.setRoom("教室" + i + 1);
+            schedule.setStart(1);
+            schedule.setStep(2);
+            schedule.setDay(i * 2 + 1);
+            List<Integer> weekList = new ArrayList<>();
+            weekList.add(1);
+            schedule.setWeekList(weekList);
+            schedule.putExtras(CourseBean.TYPE, 0);
+            schedules.add(schedule);
+        }
+        for (int i = 0; i < 2; i++) {
+            Schedule schedule = new Schedule();
+            schedule.setName("示例课程" + (i) / 2 + 3);
+            schedule.setRoom("教室" + (i) / 2 + 3);
+            schedule.setStart(1);
+            schedule.setStep(2);
+            schedule.setDay(i + 5);
+            List<Integer> weekList = new ArrayList<>();
+            weekList.add(2);
+            schedule.setWeekList(weekList);
+            schedule.putExtras(CourseBean.TYPE, 0);
+            schedules.add(schedule);
+        }
+
+        mTimetableView = findViewById(R.id.id_timetableView);
+        mTimetableView.curWeek(1)
+                .data(schedules)
+                .maxSlideItem(12)
+                .monthWidthDp(18)
+                .itemHeight(DensityUtil.dip2px(getApplicationContext(), singleSettingData.getItemLength()))
+                .callback(new OnItemBuildAdapter() {
+                    @Override
+                    public String getItemText(Schedule schedule, boolean isThisWeek) {
+                        if (!((int) schedule.getExtras().get(ExamBean.TYPE) != 2)) { //考试安排
+                            return "(考试)" + schedule.getName() + "@" + schedule.getRoom();
+                        } else { //理论课和课内实验
+                            if (schedule.getRoom() != null) {
+                                return schedule.getName() + "@" + schedule.getRoom();
+                            } else {
+                                return schedule.getName();
+                            }
+                        }
+                    }
+                })
+                //隐藏旗标布局
+                .isShowFlaglayout(false)
+                .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
+                .updateView();
     }
 
     public void doBack(View view) {
@@ -49,7 +192,7 @@ public class PersonalizedActivity extends AppCompatActivity {
 
     public void cleanBackground(View view) {
         BackgroundUtil.deleteBackground(getApplicationContext());
-        //updateBackground();
+        updateBackground();
         ToastUtil.showToast(getApplicationContext(), "清除背景成功！");
     }
 
@@ -96,32 +239,36 @@ public class PersonalizedActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        updateBackground();
-//    }
-//
-//    private void updateBackground() {
-//        View addStatus = findViewById(R.id.add_status);
-//        View titleBar = findViewById(R.id.func_base_constraintLayout);
-//        if (BackgroundUtil.isSetBackground(this)) {
-//            BackgroundUtil.setBackground(this, background);
-//            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-//            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-//        } else {
-//            background.setImageBitmap(null);
-//            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateBackground();
+    }
+
+    private void updateBackground() {
+        View addStatus = findViewById(R.id.add_status);
+        View titleBar = findViewById(R.id.func_base_constraintLayout);
+        if (BackgroundUtil.isSetBackground(this)) {
+            BackgroundUtil.setBackground(this, background);
+            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            mTimetableView.colorPool().setUselessColor(0xCCCCCC);
+            mTimetableView.alpha(singleSettingData.getDateAlpha(), singleSettingData.getSlideAlpha(), singleSettingData.getItemAlpha());
+        } else {
+            background.setImageBitmap(null);
+            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            mTimetableView.colorPool().setUselessColor(0xE0E0E0);
+            mTimetableView.alpha(1, 1, 1);
+        }
+        mTimetableView.updateView();
+    }
 
     private void photoClip(Uri uri) {
         // 调用系统中自带的图片剪裁
         Intent intent = new Intent("com.android.camera.action.CROP");
         Uri imageUri = Uri.parse("file://" + "/" + BackgroundUtil.getPath(this));
         BackgroundUtil.deleteBackground(this);
-        Log.d("1586", imageUri.toString());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("noFaceDetection", true);
@@ -135,5 +282,13 @@ public class PersonalizedActivity extends AppCompatActivity {
         intent.putExtra("return-data", false);
         intent.putExtra("output", imageUri);
         startActivityForResult(intent, 3);
+    }
+
+    public void showOtherWeek(View view) {
+        singleSettingData.setHideOtherWeek(!singleSettingData.isHideOtherWeek());
+        showOtherWeek.setChecked(!singleSettingData.isHideOtherWeek());
+        mTimetableView
+                .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
+                .updateView();
     }
 }

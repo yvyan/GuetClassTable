@@ -12,16 +12,25 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -37,6 +46,23 @@
             android:layout_width="match_parent"
             android:layout_height="45dp" />
 
+        <com.zhuangfei.timetable.TimetableView
+            android:id="@+id/id_timetableView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline7">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -49,7 +75,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="25dp"
                     android:layout_marginTop="15dp"
                     android:text="主页背景:"
                     android:textColor="@color/colorPrimary"
@@ -72,7 +98,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="20dp"
                         android:text="恢复默认背景"
                         android:textColor="@color/app_black"
                         android:textSize="16sp" />
@@ -80,7 +106,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="20dp"
                         android:text="还原到系统默认白色背景" />
 
                     <View
@@ -113,7 +139,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="20dp"
                         android:text="设置自定义背景"
                         android:textColor="@color/app_black"
                         android:textSize="16sp" />
@@ -121,7 +147,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="20dp"
                         android:text="仅图库图片支持裁剪" />
 
                     <View
@@ -136,6 +162,219 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:background="@color/xui_config_color_gray_9" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="设置透明度(仅在设置背景后有效)"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="日期栏：(默认为6)" />
+
+                    <com.xuexiang.xui.widget.picker.XSeekBar
+                        android:id="@+id/seekBar_date_alpha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:xsb_insideRangeLineColor="#00B1FF"
+                        app:xsb_insideRangeLineStrokeWidth="10dp"
+                        app:xsb_max="10"
+                        app:xsb_min="0"
+                        app:xsb_numberTextSize="14sp"
+                        app:xsb_outsideRangeLineStrokeWidth="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="侧边栏：(默认为0)" />
+
+                    <com.xuexiang.xui.widget.picker.XSeekBar
+                        android:id="@+id/seekBar_slide_alpha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="20dp"
+                        app:xsb_insideRangeLineColor="#00B1FF"
+                        app:xsb_insideRangeLineStrokeWidth="10dp"
+                        app:xsb_max="10"
+                        app:xsb_min="0"
+                        app:xsb_numberTextSize="14sp"
+                        app:xsb_outsideRangeLineStrokeWidth="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="课程项：(默认为9)" />
+
+                    <com.xuexiang.xui.widget.picker.XSeekBar
+                        android:id="@+id/seekBar_item_alpha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="20dp"
+                        app:xsb_insideRangeLineColor="#00B1FF"
+                        app:xsb_insideRangeLineStrokeWidth="10dp"
+                        app:xsb_max="10"
+                        app:xsb_min="0"
+                        app:xsb_numberTextSize="14sp"
+                        app:xsb_outsideRangeLineStrokeWidth="10dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="15dp"
+                    android:text="课程项:"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="showOtherWeek">
+
+                    <View
+                        android:id="@+id/view1"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="3dp"
+                        android:text="显示非本周课程"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view1" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="非本周课程显示为灰色"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView1" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView2" />
+
+                    <Switch
+                        android:id="@+id/switch1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:clickable="false"
+                        android:theme="@style/ThemeText"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/xui_config_color_gray_9"
+                    tools:layout_editor_absoluteX="15dp"
+                    tools:layout_editor_absoluteY="44dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="设置课程项长度(默认为4)"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp" />
+
+                    <com.xuexiang.xui.widget.picker.XSeekBar
+                        android:id="@+id/seekBar_item_length"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:xsb_insideRangeLineColor="#00B1FF"
+                        app:xsb_insideRangeLineStrokeWidth="10dp"
+                        app:xsb_max="10"
+                        app:xsb_min="0"
+                        app:xsb_numberTextSize="14sp"
+                        app:xsb_outsideRangeLineStrokeWidth="10dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/xui_config_color_gray_9"
+                    tools:layout_editor_absoluteX="15dp"
+                    tools:layout_editor_absoluteY="44dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
