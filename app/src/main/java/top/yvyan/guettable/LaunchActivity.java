@@ -10,6 +10,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,7 +21,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.app.FirstLoad;
 import top.yvyan.guettable.service.table.fetch.Net;
-import top.yvyan.guettable.util.TextDialog;
+import top.yvyan.guettable.util.DialogUtil;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -55,23 +56,20 @@ public class LaunchActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             GeneralData generalData = GeneralData.newInstance(getApplicationContext());
             if (!generalData.isApplyPrivacy()) {
-
-                TextDialog.IDialogService service = new TextDialog.IDialogService() {
+                DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
                     @Override
-                    public int onClickYes() {
+                    public void onClickYes() {
                         generalData.setApplyPrivacy(true);
                         startActivity(new Intent(LaunchActivity.this, MainActivity.class));
                         LaunchActivity.this.finish();
-                        return 0;
                     }
 
                     @Override
-                    public int onClickBack() {
+                    public void onClickBack() {
                         finish();
-                        return 0;
                     }
                 };
-                TextDialog.showDialog(this, "隐私协议", false, "同意", "拒绝", getString(R.string.privacy_text), service);
+                DialogUtil.showDialog(this, "隐私协议", false, "同意", "拒绝", getString(R.string.privacy_text), service);
             } else {
                 startActivity(new Intent(LaunchActivity.this, MainActivity.class));
                 LaunchActivity.this.finish();

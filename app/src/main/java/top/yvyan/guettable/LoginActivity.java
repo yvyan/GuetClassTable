@@ -23,7 +23,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.service.table.fetch.Net;
-import top.yvyan.guettable.util.TextDialog;
+import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
@@ -136,7 +136,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             if (type == 0) { //CAS登录
                 if (generalData.isInternational()) {
                     runOnUiThread(() -> {
-                        TextDialog.showScanNumberDialog(this, "国际学院同学目前只支持教务登录，请点击上方切换教务登录重试！");
+                        DialogUtil.showScanNumberDialog(this, "国际学院同学目前只支持教务登录，请点击上方切换教务登录重试！");
                         setEnClick();
                     });
                     return;

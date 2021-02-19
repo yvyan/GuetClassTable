@@ -19,7 +19,6 @@ public class GeneralData {
     private static final String IS_INTERNATIONAL = "isInternational";
     private static final String LAST_UPDATE_TIME = "lastUpdateTime";
     private static final String APP_LAST_UPDATE_TIME = "appLastUpdateTime";
-    private static final String RENEWABLE = "renewable";
     private static final String APPLY_PRIVACY = "applyPrivacy";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -34,7 +33,6 @@ public class GeneralData {
     private long lastUpdateTime;
     //控制检查更新频率
     private long appLastUpdateTime;
-    private boolean renewable;
     //隐私协议
     private boolean applyPrivacy;
 
@@ -54,7 +52,6 @@ public class GeneralData {
         isInternational = sharedPreferences.getBoolean(IS_INTERNATIONAL, false);
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
         appLastUpdateTime = sharedPreferences.getLong(APP_LAST_UPDATE_TIME, -1);
-        renewable = sharedPreferences.getBoolean(RENEWABLE, false);
         applyPrivacy = sharedPreferences.getBoolean(APPLY_PRIVACY, false);
     }
 
@@ -153,16 +150,6 @@ public class GeneralData {
         editor.apply();
     }
 
-    public boolean isRenewable() {
-        return renewable;
-    }
-
-    public void setRenewable(boolean renewable) {
-        this.renewable = renewable;
-        editor.putBoolean(RENEWABLE, renewable);
-        editor.apply();
-    }
-
     public boolean isApplyPrivacy() {
         return applyPrivacy;
     }
@@ -170,5 +157,6 @@ public class GeneralData {
     public void setApplyPrivacy(boolean applyPrivacy) {
         this.applyPrivacy = applyPrivacy;
         editor.putBoolean(APPLY_PRIVACY, applyPrivacy);
+        editor.apply();
     }
 }

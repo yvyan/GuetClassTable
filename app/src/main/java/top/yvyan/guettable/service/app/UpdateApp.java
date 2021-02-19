@@ -2,6 +2,8 @@ package top.yvyan.guettable.service.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.view.Window;
 import android.view.WindowManager;
@@ -41,13 +43,12 @@ public class UpdateApp {
                 case UpdateStatus.STATUS_UPDATE: //有更新
                     if (type == 2) {
                         //显示弹窗
-                        showScanNumberDialog(context, updateResponse.updateLog, R.drawable.d_shengji);
+                        showScanNumberDialog(context, updateResponse.updateLog, updateResponse.versionName);
                     } else {
-                        generalData.setRenewable(true);
                         if (SettingData.newInstance(context).isAppCheckUpdate()) {
                             if (generalData.getAppLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getAppLastUpdateTime()), new Date()) >= 1) {
                                 // 显示弹窗
-                                showScanNumberDialog(context, updateResponse.updateLog, R.drawable.d_shengji);
+                                showScanNumberDialog(context, updateResponse.updateLog, updateResponse.versionName);
                                 // 刷新时间
                                 generalData.setAppLastUpdateTime(System.currentTimeMillis());
                             }
@@ -57,8 +58,6 @@ public class UpdateApp {
                 case UpdateStatus.STATUS_NO_UPDATE:
                     if (type == 2) {
                         ToastUtil.showToast(context, "已是最新版本！");
-                    } else {
-                        generalData.setRenewable(false);
                     }
                     break;
                 case UpdateStatus.STATUS_NO_NET:
@@ -82,52 +81,38 @@ public class UpdateApp {
     }
 
     /**
-     * 显示弹窗
+     * 显示更新弹窗
      *
      * @param context 上下文
      * @param text    自定义显示的文字
-     * @param id      自定义图片资源
+     * @param version 版本
      */
-    private static void showScanNumberDialog(final Context context, String text, int id) {
+    private static void showScanNumberDialog(final Context context, String text, String version) {
         AlertDialog dialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         // 创建对话框
         dialog = builder.create();
-        // 没有下面这句代码会导致自定义对话框还存在原有的背景
-
-        // 弹出对话框
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
-        // 以下两行代码是对话框的EditText点击后不能显示输入法的
-        dialog.getWindow().clearFlags(
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        dialog.getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        // *** 主要就是在这里实现这种效果的.
-        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
+        dialog.setCancelable(false);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Window window = dialog.getWindow();
+
         window.setContentView(R.layout.update_dialog);
-        TextView tv_scan_number = (TextView) window
-                .findViewById(R.id.tv_dialoghint);
+        TextView updateVersion = window.findViewById(R.id.tv_updateVersion);
+        updateVersion.setText(version);
+        TextView tv_scan_number = window.findViewById(R.id.tv_updateComm);
         tv_scan_number.setText(text);
-        // 实例化确定按钮
         Button btn_hint_yes = window.findViewById(R.id.btn_hint_yes);
-        // 实例化取消按钮
         ImageView btn_hint_no = window.findViewById(R.id.imageView_no);
         Button btn_hint_addQQ = window.findViewById(R.id.btn_hint_addQQ);
-        // 实例化图片
-        ImageView iv_dialoghint = (ImageView) window
-                .findViewById(R.id.iv_dialoghint);
-        // 自定义图片的资源
-        iv_dialoghint.setImageResource(id);
         btn_hint_yes.setOnClickListener(arg0 -> {
             updateApp(context);
             dialog.dismiss();
         });
-        btn_hint_no.setOnClickListener(arg0 -> {
-            dialog.dismiss();
-        });
+        btn_hint_no.setOnClickListener(arg0 -> dialog.dismiss());
         btn_hint_addQQ.setOnClickListener(arg0 -> {
             AppUtil.addQQ(context);
             dialog.dismiss();
