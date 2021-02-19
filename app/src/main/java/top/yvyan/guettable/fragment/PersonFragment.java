@@ -207,7 +207,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
             case R.id.person_update:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_update));
                 ToastUtil.showToast(getContext(), "正在检查更新……");
-                UpdateApp.checkUpdate(getContext(), 2);
+                UpdateApp.check(getActivity(), 2);
                 break;
             case R.id.person_download_all:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_download_all));
@@ -274,14 +274,14 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     public void helpTest() {
         if (SettingData.newInstance(getContext()).isDevelopMode()) {
             if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {
-                DialogUtil.showScanNumberDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后进行测试。");
+                DialogUtil.showTextDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后进行测试。");
             } else {
                 Intent intent = new Intent(getContext(), HelpTestActivity.class);
                 startActivity(intent);
             }
         } else {
             if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {
-                DialogUtil.showScanNumberDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后获取凭证。");
+                DialogUtil.showTextDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后获取凭证。");
             } else {
                 ToastUtil.showToast(getContext(), "请不要切换网络，正在获取凭证，请稍后！");
                 new Thread(() -> {
@@ -295,9 +295,9 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                             ClipData mClipData = ClipData.newPlainText("Label", tokenData.getCookie());
                             // 将ClipData内容放到系统剪贴板里。
                             cm.setPrimaryClip(mClipData);
-                            DialogUtil.showScanNumberDialog(getContext(), "感谢协助，凭证复制成功，您现在可以发送给开发者了！");
+                            DialogUtil.showTextDialog(getContext(), "感谢协助，凭证复制成功，您现在可以发送给开发者了！");
                         } else {
-                            DialogUtil.showScanNumberDialog(getContext(), "获取失败，请稍后重试。");
+                            DialogUtil.showTextDialog(getContext(), "获取失败，请稍后重试。");
                         }
                     });
                 }).start();

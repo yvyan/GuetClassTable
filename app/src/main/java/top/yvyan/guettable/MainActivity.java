@@ -1,5 +1,6 @@
 package top.yvyan.guettable;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.cconfig.RemoteConfigSettings;
+import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.commonsdk.UMConfigure;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
@@ -98,10 +101,12 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         }
 
         //友盟
+        UMRemoteConfig.getInstance().setConfigSettings(new RemoteConfigSettings.Builder().setAutoUpdateModeEnabled(true).build()); //在线参数
+        UMRemoteConfig.getInstance().setDefaults(R.xml.cloud_config_parms);
         UMConfigure.init(this, "600e610a6a2a470e8f8942f9", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, ""); //数据统计
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
 
-        UpdateApp.checkUpdate(this, 1);
+        UpdateApp.check(this, 1);
     }
 
     @Override
@@ -122,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
     private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemReselectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
+        @SuppressLint("NonConstantResourceId")
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             menuItem = item;
@@ -149,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
         List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
         String mainProcessName = getPackageName();
-
         //获取本App的唯一标识
         int myPid = Process.myPid();
         //利用一个增强for循环取出手机里的所有进程

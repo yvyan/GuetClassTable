@@ -65,6 +65,7 @@ public class AutoUpdate {
      * 视图启动时调用
      */
     public void start() {
+        init();
         // 判断时间间隔
         updateView();
         if (settingData.getIsRefresh()) {
