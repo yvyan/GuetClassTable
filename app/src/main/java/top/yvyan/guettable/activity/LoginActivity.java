@@ -137,7 +137,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             if (type == 0) { //CAS登录
                 if (generalData.isInternational()) {
                     runOnUiThread(() -> {
-                        DialogUtil.showScanNumberDialog(this, "国际学院同学目前只支持教务登录，请点击上方切换教务登录重试！");
+                        DialogUtil.showTextDialog(this, "国际学院同学目前只支持教务登录，请点击上方切换教务登录重试！");
                         setEnClick();
                     });
                     return;

@@ -153,7 +153,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.more_credits:
                 if (generalData.isInternational()) {
-                    DialogUtil.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
                 } else {
                     intent = new Intent(getContext(), GradesActivity.class);
                     startActivity(intent);
@@ -186,7 +186,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.more_innovation_score:
                 if (generalData.isInternational()) {
-                    DialogUtil.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
                 } else {
                     intent = new Intent(getContext(), InnovationScoreActivity.class);
                     startActivity(intent);
@@ -217,7 +217,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.more_evaluating_teachers:
                 if (generalData.isInternational()) {
-                    DialogUtil.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
                 } else {
                     intent = new Intent(getContext(), AverageTeacherActivity.class);
                     startActivity(intent);
@@ -225,7 +225,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.more_evaluating_textbooks:
                 if (generalData.isInternational()) {
-                    DialogUtil.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
                 } else {
                     intent = new Intent(getContext(), AverageTextbookActivity.class);
                     startActivity(intent);

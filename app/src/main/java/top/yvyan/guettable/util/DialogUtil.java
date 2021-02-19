@@ -79,7 +79,7 @@ public class DialogUtil {
      * @param context 上下文
      * @param text    自定义显示的文字
      */
-    public static void showScanNumberDialog(final Context context, String text) {
+    public static void showTextDialog(final Context context, String text) {
         AlertDialog dialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         dialog = builder.create();

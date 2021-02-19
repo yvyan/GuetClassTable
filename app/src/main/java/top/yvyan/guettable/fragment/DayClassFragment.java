@@ -217,7 +217,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.day_credits:
                 if (generalData.isInternational()) {
-                    DialogUtil.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
                 } else {
                     intent = new Intent(getContext(), GradesActivity.class);
                     startActivity(intent);
