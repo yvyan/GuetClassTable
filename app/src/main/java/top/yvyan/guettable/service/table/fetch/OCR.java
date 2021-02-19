@@ -1,4 +1,4 @@
-package top.yvyan.guettable.OCR;
+package top.yvyan.guettable.service.table.fetch;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -1,4 +1,4 @@
-package top.yvyan.guettable;
+package top.yvyan.guettable.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,7 @@ import android.preference.SwitchPreference;
 import android.view.View;
 import android.widget.TextView;
 
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.TokenData;
 
 public class SettingActivity extends AppCompatActivity {

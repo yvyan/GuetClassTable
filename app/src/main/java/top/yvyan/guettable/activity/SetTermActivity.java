@@ -1,4 +1,4 @@
-package top.yvyan.guettable;
+package top.yvyan.guettable.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +12,7 @@ import com.xuexiang.xui.widget.button.ButtonView;
 import com.xuexiang.xui.widget.picker.XSeekBar;
 
 import top.yvyan.guettable.Gson.StudentInfo;
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;

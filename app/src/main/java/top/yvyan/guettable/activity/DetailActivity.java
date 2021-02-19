@@ -1,4 +1,4 @@
-package top.yvyan.guettable;
+package top.yvyan.guettable.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ClassDetailAdapter;
 import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.util.AppUtil;

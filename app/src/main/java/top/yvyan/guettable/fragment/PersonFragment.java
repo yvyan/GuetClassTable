@@ -19,13 +19,13 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
-import top.yvyan.guettable.AboutActivity;
-import top.yvyan.guettable.HelpTestActivity;
-import top.yvyan.guettable.LoginActivity;
-import top.yvyan.guettable.PersonalizedActivity;
+import top.yvyan.guettable.activity.AboutActivity;
+import top.yvyan.guettable.activity.HelpTestActivity;
+import top.yvyan.guettable.activity.LoginActivity;
+import top.yvyan.guettable.activity.PersonalizedActivity;
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.SetTermActivity;
-import top.yvyan.guettable.SettingActivity;
+import top.yvyan.guettable.activity.SetTermActivity;
+import top.yvyan.guettable.activity.SettingActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SettingData;

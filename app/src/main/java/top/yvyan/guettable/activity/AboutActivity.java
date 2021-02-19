@@ -1,4 +1,4 @@
-package top.yvyan.guettable;
+package top.yvyan.guettable.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SettingActivity">
+    tools:context=".activity.SettingActivity">
 
     <include
         android:id="@+id/func_base_constraintLayout"
@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/setting_fragment"
-        class="top.yvyan.guettable.SettingActivity$SettingFragment"
+        class="top.yvyan.guettable.activity.SettingActivity$SettingFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -1,4 +1,4 @@
-package top.yvyan.guettable;
+package top.yvyan.guettable.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 import org.jetbrains.annotations.NotNull;
 
 import top.yvyan.guettable.Gson.StudentInfo;
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
