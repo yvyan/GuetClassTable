@@ -64,12 +64,17 @@ public class UpdateApp {
                         String result = response.body().string();
                         UpdateInfo updateInfo = new Gson().fromJson(result, UpdateInfo.class);
                         if (updateInfo.getVersioncode() > AppUtil.getAppVersionCode(activity)) {
-                            if (SettingData.newInstance(activity).isAppCheckUpdate() || updateInfo.getForce() <= 1) {
-                                if (updateInfo.getForce() <= 2 || generalData.getAppLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getAppLastUpdateTime()), new Date()) >= 1) {
-                                    // 显示弹窗
-                                    activity.runOnUiThread(() -> showUpdateDialog(activity, updateInfo.comm, updateInfo.getVersion(), updateInfo.url));
-                                    // 刷新时间
-                                    generalData.setAppLastUpdateTime(System.currentTimeMillis());
+                            if (type == 2) {
+                                //显示弹窗
+                                activity.runOnUiThread(() -> showUpdateDialog(activity, updateInfo.comm, updateInfo.getVersion(), updateInfo.url));
+                            } else {
+                                if (SettingData.newInstance(activity).isAppCheckUpdate() || updateInfo.getForce() <= 1) {
+                                    if (updateInfo.getForce() <= 2 || generalData.getAppLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getAppLastUpdateTime()), new Date()) >= 1) {
+                                        // 显示弹窗
+                                        activity.runOnUiThread(() -> showUpdateDialog(activity, updateInfo.comm, updateInfo.getVersion(), updateInfo.url));
+                                        // 刷新时间
+                                        generalData.setAppLastUpdateTime(System.currentTimeMillis());
+                                    }
                                 }
                             }
                         } else {
