@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import top.yvyan.guettable.util.AppUtil;
-import top.yvyan.guettable.util.TextDialog;
+import top.yvyan.guettable.util.DialogUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -35,7 +35,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void devSay(View view) {
-        TextDialog.showScanNumberDialog(this, getResources().getString(R.string.about_1) + "\r\n\r\n" + getResources().getString(R.string.about_2));
+        DialogUtil.showScanNumberDialog(this, getResources().getString(R.string.about_1) + "\r\n\r\n" + getResources().getString(R.string.about_2));
     }
 
     public void myGit(View view) {
@@ -43,7 +43,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void open(View view) {
-        TextDialog.showScanNumberDialog(this, getResources().getString(R.string.thanks_1) + "\r\n\r\n" + getResources().getString(R.string.thanks_2)+ "\r\n\r\n和一些常用依赖，在此表示感谢！");
+        DialogUtil.showScanNumberDialog(this, getResources().getString(R.string.thanks_1) + "\r\n\r\n" + getResources().getString(R.string.thanks_2) + "\r\n\r\n和一些常用依赖，在此表示感谢！");
     }
 
     public void privacy(View view) {
@@ -62,10 +62,10 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void join_us(View view) {
-        TextDialog.showScanNumberDialog(this, getResources().getString(R.string.join_us));
+        DialogUtil.showScanNumberDialog(this, getResources().getString(R.string.join_us));
     }
 
     public void statement(View view) {
-        TextDialog.showScanNumberDialog(this, getResources().getString(R.string.first_about));
+        DialogUtil.showScanNumberDialog(this, getResources().getString(R.string.first_about));
     }
 }

@@ -17,11 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.cconfig.RemoteConfigSettings;
-import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.commonsdk.UMConfigure;
-import com.xiaomi.channel.commonutils.logger.LoggerInterface;
-import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.ArrayList;
@@ -33,6 +29,7 @@ import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.OnButtonClick;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
+import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.util.BackgroundUtil;
 
 public class MainActivity extends AppCompatActivity implements OnButtonClick {
@@ -101,9 +98,10 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         }
 
         //友盟
-        UMRemoteConfig.getInstance().setConfigSettings(new RemoteConfigSettings.Builder().setAutoUpdateModeEnabled(true).build()); //在线参数
         UMConfigure.init(this, "600e610a6a2a470e8f8942f9", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, ""); //数据统计
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+
+        UpdateApp.checkUpdate(this, 1);
     }
 
     @Override

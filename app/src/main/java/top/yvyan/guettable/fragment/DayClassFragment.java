@@ -30,12 +30,11 @@ import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
-import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.service.table.AutoUpdate;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
+import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ExamUtil;
-import top.yvyan.guettable.util.TextDialog;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
@@ -102,8 +101,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         credits.setOnClickListener(this);
 
         initData();
-        // 检查更新
-        UpdateApp.checkUpdate(getContext(), 1);
 
         autoUpdate = AutoUpdate.newInstance(getActivity());
         if (accountData.getIsLogin()) {
@@ -186,6 +183,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     /**
      * 用户点击状态文字时的响应
+     *
      * @param view 视图
      */
     @Override
@@ -219,7 +217,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.day_credits:
                 if (generalData.isInternational()) {
-                    TextDialog.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
+                    DialogUtil.showScanNumberDialog(getContext(), "国际学院教务系统暂无此功能");
                 } else {
                     intent = new Intent(getContext(), GradesActivity.class);
                     startActivity(intent);
@@ -236,11 +234,12 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     /**
      * 获取List<Schedule>类型的课表数据
+     *
      * @return List<Schedule>类型的课表数据
      */
     private List<Schedule> getData() {
         List<Schedule> list;
-        if(!ScheduleData.newInstance(getActivity()).getCourseBeans().isEmpty()) {
+        if (!ScheduleData.newInstance(getActivity()).getCourseBeans().isEmpty()) {
             list = ScheduleSupport.transform(scheduleData.getCourseBeans());
         } else {
             list = new ArrayList<>();

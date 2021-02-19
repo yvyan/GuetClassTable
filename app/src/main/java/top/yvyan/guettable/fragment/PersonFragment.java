@@ -33,7 +33,7 @@ import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
-import top.yvyan.guettable.util.TextDialog;
+import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
@@ -224,24 +224,22 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.person_help_me:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_help_me));
-                TextDialog.IDialogService service = new TextDialog.IDialogService() {
+                DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
                     @Override
-                    public int onClickYes() {
+                    public void onClickYes() {
                         try {
                             ToastUtil.showToast(getContext(), "感谢支持！");
                             startActivity(Intent.parseUri(getResources().getString(R.string.alipay_url), Intent.URI_INTENT_SCHEME));
                         } catch (Exception e) {
                             ToastUtil.showToast(getContext(), "打开支付宝失败");
                         }
-                        return 0;
                     }
 
                     @Override
-                    public int onClickBack() {
-                        return 0;
+                    public void onClickBack() {
                     }
                 };
-                TextDialog.showDialog(getContext(), "感谢您", false, "捐赠", "取消", getString(R.string.thanks_help), service);
+                DialogUtil.showDialog(getContext(), "感谢您", false, "捐赠", "取消", getString(R.string.thanks_help), service);
                 break;
             default:
                 ToastUtil.showToast(getContext(), "尽请期待");
@@ -276,14 +274,14 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     public void helpTest() {
         if (SettingData.newInstance(getContext()).isDevelopMode()) {
             if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {
-                TextDialog.showScanNumberDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后进行测试。");
+                DialogUtil.showScanNumberDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后进行测试。");
             } else {
                 Intent intent = new Intent(getContext(), HelpTestActivity.class);
                 startActivity(intent);
             }
         } else {
             if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {
-                TextDialog.showScanNumberDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后获取凭证。");
+                DialogUtil.showScanNumberDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后获取凭证。");
             } else {
                 ToastUtil.showToast(getContext(), "请不要切换网络，正在获取凭证，请稍后！");
                 new Thread(() -> {
@@ -297,9 +295,9 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                             ClipData mClipData = ClipData.newPlainText("Label", tokenData.getCookie());
                             // 将ClipData内容放到系统剪贴板里。
                             cm.setPrimaryClip(mClipData);
-                            TextDialog.showScanNumberDialog(getContext(), "感谢协助，凭证复制成功，您现在可以发送给开发者了！");
+                            DialogUtil.showScanNumberDialog(getContext(), "感谢协助，凭证复制成功，您现在可以发送给开发者了！");
                         } else {
-                            TextDialog.showScanNumberDialog(getContext(), "获取失败，请稍后重试。");
+                            DialogUtil.showScanNumberDialog(getContext(), "获取失败，请稍后重试。");
                         }
                     });
                 }).start();
