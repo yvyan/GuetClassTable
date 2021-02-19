@@ -31,15 +31,15 @@
         <activity android:name=".moreFun.MoreUrlActivity" />
         <activity android:name=".moreFun.ExamActivity" />
         <activity android:name=".moreFun.CETActivity" />
-        <activity android:name=".HelpTestActivity" />
+        <activity android:name=".activity.HelpTestActivity" />
         <activity android:name=".moreFun.TestActivity" />
         <activity android:name=".moreFun.InnovationScoreActivity" />
         <activity android:name=".moreFun.LibActivity" />
         <activity android:name=".moreFun.ResitActivity" />
         <activity android:name=".moreFun.GradesActivity" />
         <activity android:name=".moreFun.PlannedCoursesActivity" />
-        <activity android:name=".WebViewActivity" />
-        <activity android:name=".LaunchActivity">
+        <activity android:name=".activity.WebViewActivity" />
+        <activity android:name=".activity.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,14 +48,14 @@
         </activity>
         <activity android:name=".moreFun.AverageTeacherActivity" />
         <activity android:name=".moreFun.AverageTextbookActivity" />
-        <activity android:name=".PersonalizedActivity" />
-        <activity android:name=".AboutActivity" />
-        <activity android:name=".SettingActivity" />
+        <activity android:name=".activity.PersonalizedActivity" />
+        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.SettingActivity" />
         <activity android:name=".moreFun.ExperimentScoreActivity" />
         <activity android:name=".moreFun.ExamScoreActivity" />
-        <activity android:name=".DetailActivity" />
-        <activity android:name=".SetTermActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".activity.DetailActivity" />
+        <activity android:name=".activity.SetTermActivity" />
+        <activity android:name=".activity.LoginActivity" />
         <activity android:name=".MainActivity" />
 
         <service

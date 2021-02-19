@@ -1,4 +1,4 @@
-package top.yvyan.guettable;
+package top.yvyan.guettable.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.util.ToastUtil;
 

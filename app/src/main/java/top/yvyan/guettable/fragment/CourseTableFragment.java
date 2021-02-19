@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import top.yvyan.guettable.DetailActivity;
+import top.yvyan.guettable.activity.DetailActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
@@ -162,7 +162,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .callback(new OnItemBuildAdapter() {
                     @Override
                     public String getItemText(Schedule schedule, boolean isThisWeek) {
-                        if ((int) schedule.getExtras().get(ExamBean.TYPE) == 2) { //考试安排
+                        //考试安排
+                        if ((int) schedule.getExtras().get(ExamBean.TYPE) == 2) {
                             return "(考试)" + schedule.getName() + "@" + schedule.getRoom();
                         } else { //理论课和课内实验
                             if (schedule.getRoom() != null) {

@@ -1,5 +1,6 @@
 package top.yvyan.guettable.service.table;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import java.util.Collections;
@@ -22,14 +23,15 @@ import top.yvyan.guettable.util.ToastUtil;
 
 public class AutoUpdate {
 
+    @SuppressLint("StaticFieldLeak")
     private static AutoUpdate autoUpdate;
-    private Activity activity;
+    private final Activity activity;
 
-    private AccountData accountData;
-    private ScheduleData scheduleData;
-    private GeneralData generalData;
-    private TokenData tokenData;
-    private SettingData settingData;
+    private final AccountData accountData;
+    private final ScheduleData scheduleData;
+    private final GeneralData generalData;
+    private final TokenData tokenData;
+    private final SettingData settingData;
 
     private int state;
 
@@ -76,19 +78,10 @@ public class AutoUpdate {
      * 启动同步
      */
     public void update() {
-        init();
         // 判断状态是否符合；合适的状态：就绪 网络错误 同步成功(点击同步)
-        if (state == 0 || state == -2 || state == 8) {
+        if (state == 0 || state == -2 || state == 5) {
             update_thread();
         }
-    }
-
-    /**
-     * 首次登录成功后导入课表
-     */
-    public void firstLogin() {
-        init();
-        update();
     }
 
     public void updateView() {
@@ -139,9 +132,9 @@ public class AutoUpdate {
         }
         final String out = text;
         activity.runOnUiThread(() -> {
-            try{
+            try {
                 DayClassFragment.newInstance().updateText(out);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         });
     }
@@ -220,7 +213,6 @@ public class AutoUpdate {
                 }
             } else {
                 updateView(2);
-                return;
             }
         }).start();
     }
