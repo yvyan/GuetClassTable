@@ -189,7 +189,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="日期栏：(默认为6)" />
+                        android:text="日期栏：(默认为12)" />
 
                     <com.xuexiang.xui.widget.picker.XSeekBar
                         android:id="@+id/seekBar_date_alpha"
@@ -200,7 +200,7 @@
                         android:layout_marginEnd="20dp"
                         app:xsb_insideRangeLineColor="#00B1FF"
                         app:xsb_insideRangeLineStrokeWidth="10dp"
-                        app:xsb_max="10"
+                        app:xsb_max="20"
                         app:xsb_min="0"
                         app:xsb_numberTextSize="14sp"
                         app:xsb_outsideRangeLineStrokeWidth="10dp" />
@@ -221,7 +221,7 @@
                         android:layout_marginEnd="20dp"
                         app:xsb_insideRangeLineColor="#00B1FF"
                         app:xsb_insideRangeLineStrokeWidth="10dp"
-                        app:xsb_max="10"
+                        app:xsb_max="20"
                         app:xsb_min="0"
                         app:xsb_numberTextSize="14sp"
                         app:xsb_outsideRangeLineStrokeWidth="10dp" />
@@ -230,7 +230,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="课程项：(默认为9)" />
+                        android:text="课程项：(默认为18)" />
 
                     <com.xuexiang.xui.widget.picker.XSeekBar
                         android:id="@+id/seekBar_item_alpha"
@@ -242,7 +242,7 @@
                         android:layout_marginEnd="20dp"
                         app:xsb_insideRangeLineColor="#00B1FF"
                         app:xsb_insideRangeLineStrokeWidth="10dp"
-                        app:xsb_max="10"
+                        app:xsb_max="20"
                         app:xsb_min="0"
                         app:xsb_numberTextSize="14sp"
                         app:xsb_outsideRangeLineStrokeWidth="10dp" />

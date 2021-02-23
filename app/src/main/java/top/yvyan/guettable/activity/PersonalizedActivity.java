@@ -78,9 +78,9 @@ public class PersonalizedActivity extends AppCompatActivity {
         XSeekBar seekBarDateAlpha = findViewById(R.id.seekBar_date_alpha);
         XSeekBar seekBarSlideAlpha = findViewById(R.id.seekBar_slide_alpha);
         XSeekBar seekBarItemAlpha = findViewById(R.id.seekBar_item_alpha);
-        seekBarDateAlpha.setDefaultValue((int) (singleSettingData.getDateAlpha() * 10));
-        seekBarSlideAlpha.setDefaultValue((int) (singleSettingData.getSlideAlpha() * 10));
-        seekBarItemAlpha.setDefaultValue((int) (singleSettingData.getItemAlpha() * 10));
+        seekBarDateAlpha.setDefaultValue((int) (singleSettingData.getDateAlpha() * 20));
+        seekBarSlideAlpha.setDefaultValue((int) (singleSettingData.getSlideAlpha() * 20));
+        seekBarItemAlpha.setDefaultValue((int) (singleSettingData.getItemAlpha() * 20));
         seekBarDateAlpha.setOnSeekBarListener(onSeekBarAlphaListener);
         seekBarSlideAlpha.setOnSeekBarListener(onSeekBarAlphaListener);
         seekBarItemAlpha.setOnSeekBarListener(onSeekBarAlphaListener);
@@ -92,19 +92,19 @@ public class PersonalizedActivity extends AppCompatActivity {
         float itemAlpha = singleSettingData.getItemAlpha();
         boolean update = false;
         if (R.id.seekBar_date_alpha == seekBar.getId()) {
-            if (dateAlpha != newValue / 10.0f) {
-                dateAlpha = newValue / 10.0f;
+            if (dateAlpha != newValue / 20.0f) {
+                dateAlpha = newValue / 20.0f;
                 update = true;
 
             }
         } else if (R.id.seekBar_slide_alpha == seekBar.getId()) {
-            if (slideAlpha != newValue / 10.0f) {
-                slideAlpha = newValue / 10.0f;
+            if (slideAlpha != newValue / 20.0f) {
+                slideAlpha = newValue / 20.0f;
                 update = true;
             }
         } else if (R.id.seekBar_item_alpha == seekBar.getId()) {
-            if (itemAlpha != newValue / 10.0f) {
-                itemAlpha = newValue / 10.0f;
+            if (itemAlpha != newValue / 20.0f) {
+                itemAlpha = newValue / 20.0f;
                 update = true;
             }
         }

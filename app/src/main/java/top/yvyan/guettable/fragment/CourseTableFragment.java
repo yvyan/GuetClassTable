@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import top.yvyan.guettable.activity.DetailActivity;
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.activity.DetailActivity;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.DetailClassData;
@@ -43,15 +43,12 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
     @SuppressLint("StaticFieldLeak")
     private static CourseTableFragment courseTableFragment;
-
     //控件
     private TimetableView mTimetableView;
     private WeekView mWeekView;
-
     private ImageView moreButton;
     private TextView titleTextView;
     private ImageView deltaImg;
-
     private View view;
 
     private GeneralData generalData;
@@ -59,7 +56,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private SingleSettingData singleSettingData;
     private DetailClassData detailClassData;
     private SettingData settingData;
-
     //记录切换的周次，不一定是当前周
     int target;
 
@@ -84,12 +80,13 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         addStatus.setLayoutParams(lp);
 
         initData();
-
         target = generalData.getWeek();
-
         titleTextView = view.findViewById(R.id.id_title);
         LinearLayout linearLayout = view.findViewById(R.id.id_class_layout);
         linearLayout.setOnClickListener(this);
+        mWeekView = view.findViewById(R.id.id_weekview);
+        mTimetableView = view.findViewById(R.id.id_timetableView);
+        setBackground(BackgroundUtil.isSetBackground(getContext()));
         initTimetableView();
         return view;
     }
@@ -116,10 +113,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             mTimetableView.colorPool().setUselessColor(0xE0E0E0);
             mTimetableView.alpha(1, 1, 1);
         }
-        mTimetableView.updateView();
-
-        mTimetableView.onDateBuildListener().onUpdateDate(mTimetableView.curWeek(), target);
-        mTimetableView.changeWeekOnly(target);
     }
 
     /**
@@ -128,20 +121,16 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @SuppressLint("SetTextI18n")
     private void initTimetableView() {
         //获取控件
-        mWeekView = view.findViewById(R.id.id_weekview);
-        mTimetableView = view.findViewById(R.id.id_timetableView);
         deltaImg = view.findViewById(R.id.deltaIcon);
         ImageButton preToWeekButton = view.findViewById(R.id.pre_week);
         ImageButton nextToWeekButton = view.findViewById(R.id.next_week);
-
         //设置周次选择属性
         mWeekView.curWeek(generalData.getWeek())
                 .callback(week -> {
                     int cur = mTimetableView.curWeek();
                     target = week;
                     //更新切换后的日期，从当前周cur->切换的周week
-                    mTimetableView.onDateBuildListener()
-                            .onUpdateDate(cur, week);
+                    mTimetableView.onDateBuildListener().onUpdateDate(cur, week);
                     mTimetableView.changeWeekOnly(week);
                 })
                 .callback(() -> {
@@ -178,10 +167,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     }
                 })
                 .callback((ISchedule.OnItemClickListener) (v, scheduleList) -> display(scheduleList))
-                .callback((ISchedule.OnItemLongClickListener) (v, day, start) -> {
-                } /*Toast.makeText(getActivity(),
-                        "长按:周" + day  + ",第" + start + "节",
-                        Toast.LENGTH_SHORT).show()*/)
                 .callback(curWeek -> {
                     titleTextView.setText("第" + curWeek + "周");
                 })
@@ -195,9 +180,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             if (target > 20) {
                 target = 20;
             }
-            //更新切换后的日期，从当前周cur->切换的周week
-            mTimetableView.onDateBuildListener()
-                    .onUpdateDate(cur, target);
+            mTimetableView.onDateBuildListener().onUpdateDate(cur, target);
             mTimetableView.changeWeekOnly(target);
         });
         preToWeekButton.setOnClickListener(view -> {
@@ -206,21 +189,10 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             if (target < 1) {
                 target = 1;
             }
-            //更新切换后的日期，从当前周cur->切换的周week
-            mTimetableView.onDateBuildListener()
-                    .onUpdateDate(cur, target);
+            mTimetableView.onDateBuildListener().onUpdateDate(cur, target);
             mTimetableView.changeWeekOnly(target);
         });
         updateTable();
-    }
-
-    /**
-     * 更新一下，防止因程序在后台时间过长（超过一天）而导致的日期或高亮不准确问题。
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        setBackground(BackgroundUtil.isSetBackground(getContext()));
     }
 
     public void updateTable() {
@@ -238,10 +210,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 schedules.add(examBean.getSchedule());
             }
         }
-        mWeekView.data(schedules)
-                .showView();
-        mTimetableView.data(schedules)
-                .updateView();
+        mWeekView.data(schedules).showView();
+        mTimetableView.data(schedules).updateView();
     }
 
     /**
