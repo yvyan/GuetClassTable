@@ -125,6 +125,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         ImageButton preToWeekButton = view.findViewById(R.id.pre_week);
         ImageButton nextToWeekButton = view.findViewById(R.id.next_week);
         //设置周次选择属性
+        mWeekView.itemCount(generalData.getMaxWeek());
         mWeekView.curWeek(generalData.getWeek())
                 .callback(week -> {
                     int cur = mTimetableView.curWeek();
@@ -177,18 +178,14 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         nextToWeekButton.setOnClickListener(view -> {
             int cur = mTimetableView.curWeek();
             target = target + 1;
-            if (target > 20) {
-                target = 20;
-            }
+            target = Math.min(target, generalData.getMaxWeek());
             mTimetableView.onDateBuildListener().onUpdateDate(cur, target);
             mTimetableView.changeWeekOnly(target);
         });
         preToWeekButton.setOnClickListener(view -> {
             int cur = mTimetableView.curWeek();
             target = target - 1;
-            if (target < 1) {
-                target = 1;
-            }
+            target = Math.max(target, 1);
             mTimetableView.onDateBuildListener().onUpdateDate(cur, target);
             mTimetableView.changeWeekOnly(target);
         });

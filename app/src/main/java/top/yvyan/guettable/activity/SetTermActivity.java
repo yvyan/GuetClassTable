@@ -1,5 +1,6 @@
 package top.yvyan.guettable.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.xuexiang.xui.widget.button.ButtonView;
 import com.xuexiang.xui.widget.picker.XSeekBar;
 
-import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
@@ -26,15 +26,9 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
     private TextView week_text;
     private Spinner spinnerYear;
     private Spinner spinnerTerm;
-    private ButtonView back;
-    private ButtonView input;
     private XSeekBar seekBar;
 
     private GeneralData generalData;
-    private StudentInfo studentInfo;
-
-    private String term;
-    private String grade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,17 +48,18 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         stuName = findViewById(R.id.stu_name);
         spinnerYear = findViewById(R.id.spinner_year);
         spinnerTerm = findViewById(R.id.spinner_term);
-        back = findViewById(R.id.logoff);
-        input = findViewById(R.id.input);
+        ButtonView back = findViewById(R.id.logoff);
+        ButtonView input = findViewById(R.id.input);
         week_text = findViewById(R.id.week_text);
         back.setOnClickListener(this);
         input.setOnClickListener(this);
         generalData = GeneralData.newInstance(this);
     }
 
+    @SuppressLint("SetTextI18n")
     private void initView() {
-        grade = generalData.getGrade();
-        term = generalData.getTerm();
+        String grade = generalData.getGrade();
+        String term = generalData.getTerm();
         stuId.setText(generalData.getNumber());
         stuName.setText(generalData.getName());
         int num = Integer.parseInt(grade);
@@ -84,16 +79,14 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         //自动选择星期
         int week = generalData.getWeek();
         week_text.setText("第" + week + "周");
+        seekBar.setMax(generalData.getMaxWeek() * 10);
         seekBar.setDefaultValue(week * 10);
-        seekBar.setOnSeekBarListener((seekBar, newValue) -> {
-//                    Log.d("newvalue: ", String.valueOf(newValue));
-                    week_text.setText("第" + (newValue / 10) + "周");
-                }
+        seekBar.setOnSeekBarListener((seekBar, newValue) -> week_text.setText("第" + (newValue / 10) + "周")
         );
     }
 
     private void setYearSpinner(int num) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item);
         adapter.add(num + "-" + (num + 1) + "(大一)");
         num++;
         adapter.add(num + "-" + (num + 1) + "(大二)");
@@ -105,10 +98,10 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         adapter.add(num + "-" + (num + 1) + "(大五)");
         num++;
         adapter.add(num + "-" + (num + 1) + "(大六)");
-        num++;
         spinnerYear.setAdapter(adapter);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
