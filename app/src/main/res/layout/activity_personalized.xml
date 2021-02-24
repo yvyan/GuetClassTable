@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="15dp"
-                    android:text="主页背景:"
+                    android:text="背景和透明:"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp" />
 
@@ -168,6 +168,13 @@
                     android:layout_marginEnd="20dp"
                     android:background="@color/xui_config_color_gray_9" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -191,19 +198,31 @@
                         android:layout_marginStart="20dp"
                         android:text="日期栏：(默认为12)" />
 
-                    <com.xuexiang.xui.widget.picker.XSeekBar
-                        android:id="@+id/seekBar_date_alpha"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        app:xsb_insideRangeLineColor="#00B1FF"
-                        app:xsb_insideRangeLineStrokeWidth="10dp"
-                        app:xsb_max="20"
-                        app:xsb_min="0"
-                        app:xsb_numberTextSize="14sp"
-                        app:xsb_outsideRangeLineStrokeWidth="10dp" />
+                        android:orientation="horizontal"
+                        android:weightSum="7">
+
+                        <SeekBar
+                            android:id="@+id/seekBar_date_alpha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:layout_weight="1"
+                            android:max="20"
+                            android:progressTint="@color/colorPrimary"
+                            android:thumbTint="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/textView_date_alpha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="6"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -211,20 +230,31 @@
                         android:layout_marginStart="20dp"
                         android:text="侧边栏：(默认为0)" />
 
-                    <com.xuexiang.xui.widget.picker.XSeekBar
-                        android:id="@+id/seekBar_slide_alpha"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="20dp"
-                        app:xsb_insideRangeLineColor="#00B1FF"
-                        app:xsb_insideRangeLineStrokeWidth="10dp"
-                        app:xsb_max="20"
-                        app:xsb_min="0"
-                        app:xsb_numberTextSize="14sp"
-                        app:xsb_outsideRangeLineStrokeWidth="10dp" />
+                        android:orientation="horizontal"
+                        android:weightSum="7">
+
+                        <SeekBar
+                            android:id="@+id/seekBar_slide_alpha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:layout_weight="1"
+                            android:max="20"
+                            android:progressTint="@color/colorPrimary"
+                            android:thumbTint="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/textView_slide_alpha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="6"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -232,20 +262,31 @@
                         android:layout_marginStart="20dp"
                         android:text="课程项：(默认为18)" />
 
-                    <com.xuexiang.xui.widget.picker.XSeekBar
-                        android:id="@+id/seekBar_item_alpha"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="20dp"
-                        app:xsb_insideRangeLineColor="#00B1FF"
-                        app:xsb_insideRangeLineStrokeWidth="10dp"
-                        app:xsb_max="20"
-                        app:xsb_min="0"
-                        app:xsb_numberTextSize="14sp"
-                        app:xsb_outsideRangeLineStrokeWidth="10dp" />
+                        android:orientation="horizontal"
+                        android:weightSum="7">
+
+                        <SeekBar
+                            android:id="@+id/seekBar_item_alpha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:layout_weight="1"
+                            android:max="20"
+                            android:progressTint="@color/colorPrimary"
+                            android:thumbTint="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/textView_item_alpha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="6"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
@@ -265,7 +306,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="15dp"
-                    android:text="课程项:"
+                    android:text="课表:"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp" />
 
@@ -350,19 +391,87 @@
                         android:textColor="@color/app_black"
                         android:textSize="16sp" />
 
-                    <com.xuexiang.xui.widget.picker.XSeekBar
-                        android:id="@+id/seekBar_item_length"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="7">
+
+                        <SeekBar
+                            android:id="@+id/seekBar_item_length"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:layout_weight="1"
+                            android:max="10"
+                            android:progressTint="@color/colorPrimary"
+                            android:thumbTint="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/textView_item_length"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="6"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        app:xsb_insideRangeLineColor="#00B1FF"
-                        app:xsb_insideRangeLineStrokeWidth="10dp"
-                        app:xsb_max="10"
-                        app:xsb_min="0"
-                        app:xsb_numberTextSize="14sp"
-                        app:xsb_outsideRangeLineStrokeWidth="10dp" />
+                        android:text="设置最大周数(默认为20)"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="7">
+
+                        <SeekBar
+                            android:id="@+id/seekBar_max_week"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:layout_weight="1"
+                            android:max="10"
+                            android:progressTint="@color/colorPrimary"
+                            android:thumbTint="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/textView_max_week"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="6"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"

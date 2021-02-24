@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ import java.util.Objects;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
@@ -41,6 +43,7 @@ import top.yvyan.guettable.util.ToastUtil;
 public class PersonalizedActivity extends AppCompatActivity {
 
     private SingleSettingData singleSettingData;
+    private GeneralData generalData;
 
     private ImageView background;
     private TimetableView mTimetableView;
@@ -56,6 +59,7 @@ public class PersonalizedActivity extends AppCompatActivity {
         title.setText(getString(R.string.person_personalized));
 
         singleSettingData = SingleSettingData.newInstance(getApplicationContext());
+        generalData = GeneralData.newInstance(getApplicationContext());
 
         Window window = this.getWindow();
         //透明状态栏
@@ -69,60 +73,92 @@ public class PersonalizedActivity extends AppCompatActivity {
         initCourseTable();
         initAlphaSeekBar();
         initLengthSeekBar();
+        initMaxWeek2SeekBar();
 
         showOtherWeek = findViewById(R.id.switch1);
         showOtherWeek.setChecked(!singleSettingData.isHideOtherWeek());
     }
 
     private void initAlphaSeekBar() {
-        XSeekBar seekBarDateAlpha = findViewById(R.id.seekBar_date_alpha);
-        XSeekBar seekBarSlideAlpha = findViewById(R.id.seekBar_slide_alpha);
-        XSeekBar seekBarItemAlpha = findViewById(R.id.seekBar_item_alpha);
-        seekBarDateAlpha.setDefaultValue((int) (singleSettingData.getDateAlpha() * 20));
-        seekBarSlideAlpha.setDefaultValue((int) (singleSettingData.getSlideAlpha() * 20));
-        seekBarItemAlpha.setDefaultValue((int) (singleSettingData.getItemAlpha() * 20));
-        seekBarDateAlpha.setOnSeekBarListener(onSeekBarAlphaListener);
-        seekBarSlideAlpha.setOnSeekBarListener(onSeekBarAlphaListener);
-        seekBarItemAlpha.setOnSeekBarListener(onSeekBarAlphaListener);
+        SeekBar dateAlphaSeekBar = findViewById(R.id.seekBar_date_alpha);
+        SeekBar slideAlphaSeekBar = findViewById(R.id.seekBar_slide_alpha);
+        SeekBar itemAlphaSeekBar = findViewById(R.id.seekBar_item_alpha);
+        TextView dateAlphaTextView = findViewById(R.id.textView_date_alpha);
+        TextView slideAlphaTextView = findViewById(R.id.textView_slide_alpha);
+        TextView itemAlphaTextView = findViewById(R.id.textView_item_alpha);
+        dateAlphaSeekBar.setProgress((int) (singleSettingData.getDateAlpha() * 20));
+        slideAlphaSeekBar.setProgress((int) (singleSettingData.getSlideAlpha() * 20));
+        itemAlphaSeekBar.setProgress((int) (singleSettingData.getItemAlpha() * 20));
+        dateAlphaTextView.setText(String.valueOf((int) (singleSettingData.getDateAlpha() * 20)));
+        slideAlphaTextView.setText(String.valueOf((int) (singleSettingData.getSlideAlpha() * 20)));
+        itemAlphaTextView.setText(String.valueOf((int) (singleSettingData.getItemAlpha() * 20)));
+        dateAlphaSeekBar.setOnSeekBarChangeListener(onAlphaSeekBarListener);
+        slideAlphaSeekBar.setOnSeekBarChangeListener(onAlphaSeekBarListener);
+        itemAlphaSeekBar.setOnSeekBarChangeListener(onAlphaSeekBarListener);
     }
 
-    private final XSeekBar.OnSeekBarListener onSeekBarAlphaListener = (seekBar, newValue) -> {
-        float dateAlpha = singleSettingData.getDateAlpha();
-        float slideAlpha = singleSettingData.getSlideAlpha();
-        float itemAlpha = singleSettingData.getItemAlpha();
-        boolean update = false;
-        if (R.id.seekBar_date_alpha == seekBar.getId()) {
-            if (dateAlpha != newValue / 20.0f) {
-                dateAlpha = newValue / 20.0f;
-                update = true;
-
+    private final SeekBar.OnSeekBarChangeListener onAlphaSeekBarListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            float dateAlpha = singleSettingData.getDateAlpha();
+            float slideAlpha = singleSettingData.getSlideAlpha();
+            float itemAlpha = singleSettingData.getItemAlpha();
+            if (R.id.seekBar_date_alpha == seekBar.getId()) {
+                dateAlpha = i / 20.0f;
+                TextView dateAlphaTextView = findViewById(R.id.textView_date_alpha);
+                dateAlphaTextView.setText(String.valueOf(i));
+            } else if (R.id.seekBar_slide_alpha == seekBar.getId()) {
+                slideAlpha = i / 20.0f;
+                TextView slideAlphaTextView = findViewById(R.id.textView_slide_alpha);
+                slideAlphaTextView.setText(String.valueOf(i));
+            } else if (R.id.seekBar_item_alpha == seekBar.getId()) {
+                itemAlpha = i / 20.0f;
+                TextView itemAlphaTextView = findViewById(R.id.textView_item_alpha);
+                itemAlphaTextView.setText(String.valueOf(i));
             }
-        } else if (R.id.seekBar_slide_alpha == seekBar.getId()) {
-            if (slideAlpha != newValue / 20.0f) {
-                slideAlpha = newValue / 20.0f;
-                update = true;
-            }
-        } else if (R.id.seekBar_item_alpha == seekBar.getId()) {
-            if (itemAlpha != newValue / 20.0f) {
-                itemAlpha = newValue / 20.0f;
-                update = true;
+            if (BackgroundUtil.isSetBackground(getApplicationContext())) {
+                singleSettingData.setAlpha(dateAlpha, slideAlpha, itemAlpha);
+                mTimetableView
+                        .alpha(dateAlpha, slideAlpha, itemAlpha)
+                        .updateView();
             }
         }
-        if (update && BackgroundUtil.isSetBackground(getApplicationContext())) {
-            singleSettingData.setAlpha(dateAlpha, slideAlpha, itemAlpha);
-            mTimetableView
-                    .alpha(dateAlpha, slideAlpha, itemAlpha)
-                    .updateView();
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
         }
     };
 
     private void initLengthSeekBar() {
-        XSeekBar seekBarItemLength = findViewById(R.id.seekBar_item_length);
-        seekBarItemLength.setDefaultValue((singleSettingData.getItemLength() - 40) / 5);
-        seekBarItemLength.setOnSeekBarListener(onSeekBarLengthListener);
+        SeekBar itemLengthSeekBar = findViewById(R.id.seekBar_item_length);
+        TextView itemLengthTextView = findViewById(R.id.textView_item_length);
+        itemLengthSeekBar.setProgress((singleSettingData.getItemLength() - 40) / 5);
+        itemLengthTextView.setText(String.valueOf(itemLengthSeekBar.getProgress()));
+        itemLengthSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                itemLengthTextView.setText(String.valueOf(i));
+                singleSettingData.setItemLength(i * 5 + 40);
+                mTimetableView
+                        .itemHeight(DensityUtil.dip2px(getApplicationContext(), singleSettingData.getItemLength()))
+                        .updateView();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
     }
 
-    private final XSeekBar.OnSeekBarListener onSeekBarLengthListener = (seekBar, newValue) -> {
+    private final XSeekBar.OnSeekBarListener onLengthSeekBarListener = (seekBar, newValue) -> {
         int itemLength = singleSettingData.getItemLength();
         if (itemLength != (newValue * 5) + 40) {
             itemLength = (newValue * 5) + 40;
@@ -132,6 +168,28 @@ public class PersonalizedActivity extends AppCompatActivity {
                     .updateView();
         }
     };
+
+    private void initMaxWeek2SeekBar() {
+        SeekBar maxWeekSeekBar = findViewById(R.id.seekBar_max_week);
+        TextView textView = findViewById(R.id.textView_max_week);
+        maxWeekSeekBar.setProgress(generalData.getMaxWeek() - 15);
+        textView.setText(String.valueOf(generalData.getMaxWeek()));
+        maxWeekSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                textView.setText(String.valueOf(15 + i));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                generalData.setMaxWeek(Integer.parseInt(String.valueOf(textView.getText())));
+            }
+        });
+    }
 
     private void initCourseTable() {
         List<Schedule> schedules = new ArrayList<>();

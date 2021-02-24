@@ -1,5 +1,6 @@
 package top.yvyan.guettable.data;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -12,6 +13,7 @@ public class GeneralData {
     private static final String SHP_NAME = "GeneralData";
     private static final String NAME = "name";
     private static final String NUMBER = "number";
+    private static final String MAX_WEEK = "maxWeek";
     private static final String WEEK = "week";
     private static final String TIME = "time";
     private static final String GRADE = "grade";
@@ -25,6 +27,7 @@ public class GeneralData {
 
     private String name;
     private String number;
+    private int maxWeek;
     private int week;
     private long time;
     private String grade;
@@ -36,6 +39,7 @@ public class GeneralData {
     //隐私协议
     private boolean applyPrivacy;
 
+    @SuppressLint("CommitPrefEdits")
     private GeneralData(Context context) {
         sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -45,6 +49,7 @@ public class GeneralData {
     private void load() {
         name = sharedPreferences.getString(NAME, "");
         number = sharedPreferences.getString(NUMBER, "");
+        maxWeek = sharedPreferences.getInt(MAX_WEEK, 20);
         week = sharedPreferences.getInt(WEEK, 1);
         time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
         grade = sharedPreferences.getString(GRADE, null);
@@ -83,12 +88,19 @@ public class GeneralData {
         editor.apply();
     }
 
+    public int getMaxWeek() {
+        return maxWeek;
+    }
+
+    public void setMaxWeek(int maxWeek) {
+        this.maxWeek = maxWeek;
+        editor.putInt(MAX_WEEK, maxWeek);
+        editor.apply();
+    }
+
     public int getWeek() {
         int err = TimeUtil.calcWeekOffset(new Date(time), new Date(System.currentTimeMillis()));
-        if (week + err >= 20) {
-            return 20;
-        }
-        return week + err;
+        return Math.min(week + err, maxWeek);
     }
 
     public void setWeek(int week) {
