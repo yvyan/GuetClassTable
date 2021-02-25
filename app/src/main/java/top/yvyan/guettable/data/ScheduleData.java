@@ -1,5 +1,6 @@
 package top.yvyan.guettable.data;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -18,13 +19,16 @@ public class ScheduleData {
     private static final String CLASS_STRING = "classString";
     private static final String LIB_STRING = "libString";
     private static final String EXAM_STRING = "examString";
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
+    private static final String USER_COURSE_BEANS = "userCourseBeans";
+    private final SharedPreferences sharedPreferences;
+    private final SharedPreferences.Editor editor;
 
     private List<CourseBean> courseBeans;
     private List<CourseBean> libBeans;
     private List<ExamBean> examBeans;
+    private List<CourseBean> userCourseBeans;
 
+    @SuppressLint("CommitPrefEdits")
     private ScheduleData(Context context) {
         sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -35,31 +39,31 @@ public class ScheduleData {
         CourseBean[] courseBeans1 = null;
         CourseBean[] libBeans1 = null;
         ExamBean[] examBeans1 = null;
+        CourseBean[] userCourseBeans1 = null;
         String classString = sharedPreferences.getString(CLASS_STRING, null);
         String libString = sharedPreferences.getString(LIB_STRING, null);
         String examString = sharedPreferences.getString(EXAM_STRING, null);
+        String userCourseString = sharedPreferences.getString(USER_COURSE_BEANS, null);
         if (classString != null) {
             try {
                 courseBeans1 = (CourseBean[]) SerializeUtil.serializeToObject(classString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             if (courseBeans1 != null) {
                 courseBeans = Arrays.asList(courseBeans1);
+                courseBeans = new ArrayList<>(courseBeans);
             }
         }
         if (libString != null) {
             try {
                 libBeans1 = (CourseBean[]) SerializeUtil.serializeToObject(libString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             if (libBeans1 != null) {
                 libBeans = Arrays.asList(libBeans1);
+                libBeans = new ArrayList<>(libBeans);
             }
         }
         if (examString != null) {
@@ -70,6 +74,18 @@ public class ScheduleData {
             }
             if (examBeans1 != null) {
                 examBeans = Arrays.asList(examBeans1);
+                examBeans = new ArrayList<>(examBeans);
+            }
+        }
+        if (userCourseString != null) {
+            try {
+                userCourseBeans1 = (CourseBean[]) SerializeUtil.serializeToObject(userCourseString);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (userCourseBeans1 != null) {
+                userCourseBeans = Arrays.asList(userCourseBeans1);
+                userCourseBeans = new ArrayList<>(userCourseBeans);
             }
         }
     }
@@ -81,6 +97,7 @@ public class ScheduleData {
         return scheduleData;
     }
 
+    //课程信息
     public List<CourseBean> getCourseBeans() {
         if (courseBeans == null) {
             courseBeans = new ArrayList<>();
@@ -104,6 +121,7 @@ public class ScheduleData {
         }
     }
 
+    //实验信息
     public List<CourseBean> getLibBeans() {
         if (libBeans == null) {
             libBeans = new ArrayList<>();
@@ -126,6 +144,7 @@ public class ScheduleData {
             editor.apply();
         }
     }
+
     //考试安排
     public List<ExamBean> getExamBeans() {
         if (examBeans == null) {
@@ -150,9 +169,34 @@ public class ScheduleData {
         }
     }
 
+    //用户自定义课程
+    public List<CourseBean> getUserCourseBeans() {
+        if (userCourseBeans == null) {
+            userCourseBeans = new ArrayList<>();
+        }
+        return userCourseBeans;
+    }
+
+    public void setUserCourseBeans(List<CourseBean> userCourseBeans) {
+        this.userCourseBeans = userCourseBeans;
+        String userCourseString = null;
+        CourseBean[] userCourseBeans1 = new CourseBean[userCourseBeans.size()];
+        userCourseBeans.toArray(userCourseBeans1);
+        try {
+            userCourseString = SerializeUtil.serialize(userCourseBeans1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (userCourseString != null) {
+            editor.putString(USER_COURSE_BEANS, userCourseString);
+            editor.apply();
+        }
+    }
+
     public void deleteAll() {
         setCourseBeans(new ArrayList<>());
         setLibBeans(new ArrayList<>());
         setExamBeans(new ArrayList<>());
+        setUserCourseBeans(new ArrayList<>());
     }
 }

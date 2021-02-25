@@ -1,7 +1,5 @@
 package top.yvyan.guettable.moreFun;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
@@ -19,9 +19,6 @@ import top.yvyan.guettable.service.table.MoreFunService;
 
 public abstract class BaseFuncActivity extends AppCompatActivity implements IMoreFun {
 
-    @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.back)
-    ImageView back;
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.state)
     TextView state;
@@ -40,7 +37,6 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
         setContentView(R.layout.activity_base_func);
         ButterKnife.bind(this);
 
-        back.setOnClickListener(this::onBackClick);
         more.setVisibility(View.GONE);
         more.setOnClickListener(this::showPopMenu);
 
@@ -69,6 +65,7 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
 
     /**
      * 设置是否显示更多按钮
+     *
      * @param isShow 是否
      */
     protected void setShowMore(boolean isShow) {
@@ -115,10 +112,6 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
      */
     protected abstract void childInit();
 
-    protected void onBackClick(View v) {
-        finish();
-    }
-
     /**
      * 显示菜单
      *
@@ -131,4 +124,8 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
      * 显示内容 (包含设置内容视图)
      */
     protected abstract void showContent();
+
+    public void doBack(View view) {
+        finish();
+    }
 }

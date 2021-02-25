@@ -3,6 +3,7 @@ package top.yvyan.guettable.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.activity.AddCourseActivity;
 import top.yvyan.guettable.activity.DetailActivity;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
@@ -33,6 +35,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
+import top.yvyan.guettable.service.table.MyOperator;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DensityUtil;
@@ -148,7 +151,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .isShow(false)//设置隐藏，默认显示
                 .showView();
         target = generalData.getWeek();
-        mTimetableView.curWeek(generalData.getWeek())
+        mTimetableView.operater(new MyOperator())
+                .curWeek(generalData.getWeek())
                 .maxSlideItem(12)
                 .monthWidthDp(18)
                 .itemHeight(DensityUtil.dip2px(Objects.requireNonNull(getContext()), singleSettingData.getItemLength()))
@@ -171,9 +175,18 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .callback(curWeek -> {
                     titleTextView.setText("第" + curWeek + "周");
                 })
-                //隐藏旗标布局
-                .isShowFlaglayout(false)
                 .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
+                .callback(new ISchedule.OnSpaceItemClickListener() {
+                    @Override
+                    public void onSpaceItemClick(int day, int start) {
+                        addCourse(target, day + 1, (start + 1) / 2);
+                        Log.d("1586", "周" + target + "天" + day + "; 节：" + start);
+                    }
+
+                    @Override
+                    public void onInit(LinearLayout flagLayout, int monthWidth, int itemWidth, int itemHeight, int marTop, int marLeft) {
+                    }
+                })
                 .showView();
         nextToWeekButton.setOnClickListener(view -> {
             int cur = mTimetableView.curWeek();
@@ -195,6 +208,9 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     public void updateTable() {
         List<Schedule> schedules = new ArrayList<>();
         for (CourseBean courseBean : scheduleData.getCourseBeans()) {
+            schedules.add(courseBean.getSchedule());
+        }
+        for (CourseBean courseBean : scheduleData.getUserCourseBeans()) {
             schedules.add(courseBean.getSchedule());
         }
         if (settingData.getShowLibOnTable()) {
@@ -220,6 +236,14 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         detailClassData.setCourseBeans(beans);
         Intent intent = new Intent(getContext(), DetailActivity.class);
         intent.putExtra("week", target);
+        startActivity(intent);
+    }
+
+    private void addCourse(int week, int day, int start) {
+        Intent intent = new Intent(getContext(), AddCourseActivity.class);
+        intent.putExtra("week", week);
+        intent.putExtra("day", day);
+        intent.putExtra("start", start);
         startActivity(intent);
     }
 

@@ -27,7 +27,11 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup,UnusedAttribute">
+        <activity
+            android:name=".activity.AddCourseActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".moreFun.MoreUrlActivity" />
         <activity android:name=".moreFun.ExamActivity" />
         <activity android:name=".moreFun.CETActivity" />
@@ -81,7 +85,8 @@
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
                     tools:ignore="BatteryLife" />
 
                 <category android:name="android.intent.category.DEFAULT" />
