@@ -1,5 +1,6 @@
 package top.yvyan.guettable.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,8 @@ import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.ClassDetailViewHolder> {
-    private List<Schedule> schedules;
-    private int week;
+    private final List<Schedule> schedules;
+    private final int week;
 
     public ClassDetailAdapter(List<Schedule> schedules, int week) {
         this.schedules = schedules;
@@ -30,14 +31,15 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
     @Override
     public ClassDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.detail_cardview,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.detail_cardview, parent, false);
         return new ClassDetailViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ClassDetailViewHolder holder, int position) {
 
-        if ((int)schedules.get(position).getExtras().get(ExamBean.TYPE) == 2) { //考试安排
+        if ((int) schedules.get(position).getExtras().get(ExamBean.TYPE) == 2) { //考试安排
             ExamBean examBean = new ExamBean();
             examBean.setFromSchedule(schedules.get(position));
             holder.textView1.setText("(考试)" + examBean.getName());
@@ -76,10 +78,16 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
                 holder.textView7.setText(courseBean.getRemarks());
             }
 
-            if(courseBean.isLab()) { //课内实验
+            if (courseBean.isLab()) { //课内实验
                 holder.textView2.setText("名称：" + courseBean.getLabName());
             } else { //理论课
-                holder.textView2.setText("课号：" + courseBean.getNumber());
+                if (courseBean.getNumber() == null || "".equals(courseBean.getNumber())) {
+                    holder.textView2.setVisibility(View.GONE);
+                } else {
+                    holder.textView2.setVisibility(View.VISIBLE);
+                    holder.textView2.setText("课号：" + courseBean.getNumber());
+                }
+
             }
         }
         if (schedules.get(position).getWeekList().contains(week)) {
@@ -97,6 +105,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
     static class ClassDetailViewHolder extends RecyclerView.ViewHolder {
         View card;
         TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
+
         public ClassDetailViewHolder(@NonNull View itemView) {
             super(itemView);
             card = itemView.findViewById(R.id.detail_card);
