@@ -1,5 +1,6 @@
 package top.yvyan.guettable.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import java.util.Objects;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.DayClassAdapter;
+import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
@@ -42,8 +44,8 @@ import top.yvyan.guettable.util.UrlReplaceUtil;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
+    @SuppressLint("StaticFieldLeak")
     private static DayClassFragment dayClassFragment;
-    private static final String TAG = "DayClassFragment";
 
     private View view;
 
@@ -66,8 +68,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     public static DayClassFragment newInstance() {
         if (dayClassFragment == null) {
-            DayClassFragment fragment = new DayClassFragment();
-            dayClassFragment = fragment;
+            dayClassFragment = new DayClassFragment();
         }
         return dayClassFragment;
     }
@@ -122,6 +123,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     /**
      * 更新日课表视图
      */
+    @SuppressLint("SetTextI18n")
     public void updateView() {
         List<Schedule> allClass = getData();
         List<Schedule> todayList, tomorrowList;
@@ -193,6 +195,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      *
      * @param view 视图
      */
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -201,7 +204,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         Uri uri;
         switch (view.getId()) {
             case R.id.day_class_hint:
-                if ("去登录".equals(textView.getText())) {
+                if ("去登录".contentEquals(textView.getText())) {
                     if (onButtonClick != null) {
                         onButtonClick.onClick(3);
                     }
@@ -250,6 +253,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             list = ScheduleSupport.transform(scheduleData.getCourseBeans());
         } else {
             list = new ArrayList<>();
+        }
+        for (CourseBean courseBean : scheduleData.getUserCourseBeans()) {
+            list.add(courseBean.getSchedule());
         }
         if (settingData.getShowLibOnTable()) {
             List<Schedule> labList = ScheduleSupport.transform(scheduleData.getLibBeans());

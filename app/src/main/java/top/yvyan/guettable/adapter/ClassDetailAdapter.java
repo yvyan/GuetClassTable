@@ -1,9 +1,12 @@
 package top.yvyan.guettable.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,17 +17,23 @@ import com.zhuangfei.timetable.model.Schedule;
 import java.util.List;
 
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.activity.DetailActivity;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.ClassDetailViewHolder> {
     private final List<Schedule> schedules;
     private final int week;
+    private final Activity activity;
+    private final Intent intent;
 
-    public ClassDetailAdapter(List<Schedule> schedules, int week) {
+    public ClassDetailAdapter(Intent intent, Activity activity, List<Schedule> schedules, int week) {
         this.schedules = schedules;
         this.week = week;
+        this.activity = activity;
+        this.intent = intent;
     }
 
     @NonNull
@@ -87,7 +96,20 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
                     holder.textView2.setVisibility(View.VISIBLE);
                     holder.textView2.setText("课号：" + courseBean.getNumber());
                 }
+            }
 
+            if (courseBean.getId() != 0) {
+                holder.imageView.setVisibility(View.VISIBLE);
+                holder.imageView.setOnClickListener(view -> {
+                    ScheduleData.newInstance(activity).deleteUserCourse(courseBean.getId());
+                    schedules.remove(position);
+                    //删除动画
+                    notifyItemRemoved(position);
+                    notifyDataSetChanged();
+                    activity.setResult(DetailActivity.ALTER, intent);
+                });
+            } else {
+                holder.imageView.setVisibility(View.GONE);
             }
         }
         if (schedules.get(position).getWeekList().contains(week)) {
@@ -105,6 +127,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
     static class ClassDetailViewHolder extends RecyclerView.ViewHolder {
         View card;
         TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
+        ImageView imageView;
 
         public ClassDetailViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -116,6 +139,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
             textView5 = itemView.findViewById(R.id.detail_text_5);
             textView6 = itemView.findViewById(R.id.detail_text_6);
             textView7 = itemView.findViewById(R.id.detail_text_7);
+            imageView = itemView.findViewById(R.id.detail_imageView);
         }
     }
 }

@@ -19,6 +19,7 @@ public class ScheduleData {
     private static final String CLASS_STRING = "classString";
     private static final String LIB_STRING = "libString";
     private static final String EXAM_STRING = "examString";
+    private static final String USER_COURSE_NO = "userCourseNo";
     private static final String USER_COURSE_BEANS = "userCourseBeans";
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
@@ -26,6 +27,7 @@ public class ScheduleData {
     private List<CourseBean> courseBeans;
     private List<CourseBean> libBeans;
     private List<ExamBean> examBeans;
+    private long userCourseNo;
     private List<CourseBean> userCourseBeans;
 
     @SuppressLint("CommitPrefEdits")
@@ -88,6 +90,7 @@ public class ScheduleData {
                 userCourseBeans = new ArrayList<>(userCourseBeans);
             }
         }
+        userCourseNo = sharedPreferences.getLong(USER_COURSE_NO, 1);
     }
 
     public static ScheduleData newInstance(Context context) {
@@ -197,6 +200,27 @@ public class ScheduleData {
         setCourseBeans(new ArrayList<>());
         setLibBeans(new ArrayList<>());
         setExamBeans(new ArrayList<>());
+        setUserCourseNo(1);
         setUserCourseBeans(new ArrayList<>());
+    }
+
+    public long getUserCourseNo() {
+        setUserCourseNo(userCourseNo + 1);
+        return userCourseNo;
+    }
+
+    public void setUserCourseNo(long userCourseNo) {
+        this.userCourseNo = userCourseNo;
+        editor.putLong(USER_COURSE_NO, userCourseNo);
+        editor.apply();
+    }
+
+    public void deleteUserCourse(long id) {
+        for (int i = 0; i < userCourseBeans.size(); i++) {
+            if (userCourseBeans.get(i).getId() == id) {
+                userCourseBeans.remove(i);
+                break;
+            }
+        }
     }
 }
