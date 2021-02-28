@@ -455,7 +455,6 @@ public class StaticService {
             }.getType());
             for (ExamInfo examInfo1 : baseResponse.getData()) {
                 examBeans.add(examInfo1.toExamBean());
-                AppUtil.Log(examInfo1.toExamBean().toString());
             }
             return examBeans;
         } else {

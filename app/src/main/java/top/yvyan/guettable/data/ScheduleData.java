@@ -11,6 +11,7 @@ import java.util.List;
 
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.SerializeUtil;
 
 public class ScheduleData {
@@ -218,7 +219,9 @@ public class ScheduleData {
     public void deleteUserCourse(long id) {
         for (int i = 0; i < userCourseBeans.size(); i++) {
             if (userCourseBeans.get(i).getId() == id) {
+                AppUtil.Log(userCourseBeans.get(i).toString());
                 userCourseBeans.remove(i);
+                setUserCourseBeans(userCourseBeans);
                 break;
             }
         }
