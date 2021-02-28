@@ -50,4 +50,16 @@ public class MoreUrlActivity extends AppCompatActivity {
     public void schoolSong(View view) {
         openBrowser(getResources().getString(R.string.url_school_song));
     }
+
+    public void netLogin(View view) {
+        openBrowser(getResources().getString(R.string.url_net_login));
+    }
+
+    public void CET(View view) {
+        openBrowser(getResources().getString(R.string.url_cet));
+    }
+
+    public void mail(View view) {
+        openBrowser(getResources().getString(R.string.url_mail));
+    }
 }

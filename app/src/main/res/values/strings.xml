@@ -84,6 +84,12 @@
     <string name="url_school_song">https://music.163.com/#/song?id=469744200</string>
     <string name="text_resource_center">教学资源中心 (网课群号)</string>
     <string name="url_resource_center">https://www.guet.edu.cn/jxzyzx/</string>
+    <string name="text_net_login">上网登录页(出校器认证)</string>
+    <string name="url_net_login">http://10.0.1.5/</string>
+    <string name="text_cet">四六级官网(报名、查成绩)</string>
+    <string name="url_cet">http://cet.neea.edu.cn/</string>
+    <string name="text_mail">桂电学生邮箱</string>
+    <string name="url_mail">http://mail.guet.edu.cn/</string>
 
     <string name="share_text">新的桂电课程表，简洁、好用，分享给你，点击链接下载：http://app.xiaomi.com/detail/1288502 \n(小米官方链接，请放心访问，建议使用浏览器打开)</string>
     <string name="first_about">该项目与学校官方无关。个人开发者作品，不含广告，永久免费。\n\n 该项目会一直开源，一直保证代码库最新，保证和小伙伴使用的APP源码一致。开源是为了接受大家的监督，也是保护小伙伴教务隐私的有效手段，感谢大家的支持！</string>
