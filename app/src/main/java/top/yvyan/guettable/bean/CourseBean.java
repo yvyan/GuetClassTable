@@ -3,6 +3,8 @@ package top.yvyan.guettable.bean;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleEnable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -248,6 +250,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         this.labId = labId;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "CourseBean{" +

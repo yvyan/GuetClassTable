@@ -248,9 +248,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             List<Schedule> labList = ScheduleSupport.transform(scheduleData.getLibBeans());
             list.addAll(labList);
         }
-        if (settingData.getShowExamOnTable() && !"2019-2020_2".equals(generalData.getTerm())) {
+        if (settingData.getShowExamOnTable()) {
             for (ExamBean examBean : ExamUtil.combineExam(scheduleData.getExamBeans())) {
-                if (examBean != null) {
+                if (examBean != null && examBean.getWeek() != 0) {
                     list.add(examBean.getSchedule());
                 }
             }

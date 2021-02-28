@@ -20,6 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 public class AppUtil {
+
+    public static void Log(String text) {
+        Log.d("15863", text);
+    }
+
     /**
      * 返回当前程序版本号
      */

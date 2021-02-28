@@ -46,6 +46,7 @@ import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.RegularUtil;
 
 public class StaticService {
@@ -454,6 +455,7 @@ public class StaticService {
             }.getType());
             for (ExamInfo examInfo1 : baseResponse.getData()) {
                 examBeans.add(examInfo1.toExamBean());
+                AppUtil.Log(examInfo1.toExamBean().toString());
             }
             return examBeans;
         } else {

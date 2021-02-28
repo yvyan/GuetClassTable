@@ -3,6 +3,8 @@ package top.yvyan.guettable.service.table;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
+import com.umeng.umcrash.UMCrash;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -146,28 +148,12 @@ public class AutoUpdate {
     private void update_thread() {
         new Thread(() -> {
             String cookie;
-            if (accountData.getIsLogin()) {
-                updateView(91); //显示：尝试同步理论课
-                cookie = tokenData.getCookie();
-                List<CourseBean> courseBeans;
-                List<CourseBean> getClass = StaticService.getClass(
-                        activity,
-                        cookie,
-                        generalData.getTerm()
-                        );
-                if (getClass != null) {
-                    courseBeans = getClass;
-                    scheduleData.setCourseBeans(courseBeans);
-                } else {
-                    updateView(92);
-                    state = tokenData.refresh();
-                    if (state != 0) {
-                        updateView(state);
-                        return;
-                    }
-                    updateView(93); //显示：正在同步理论课
+            try {
+                if (accountData.getIsLogin()) {
+                    updateView(91); //显示：尝试同步理论课
                     cookie = tokenData.getCookie();
-                    getClass = StaticService.getClass(
+                    List<CourseBean> courseBeans;
+                    List<CourseBean> getClass = StaticService.getClass(
                             activity,
                             cookie,
                             generalData.getTerm()
@@ -175,45 +161,67 @@ public class AutoUpdate {
                     if (getClass != null) {
                         courseBeans = getClass;
                         scheduleData.setCourseBeans(courseBeans);
-                    }  else {
+                    } else {
+                        updateView(92);
+                        state = tokenData.refresh();
+                        if (state != 0) {
+                            updateView(state);
+                            return;
+                        }
+                        updateView(93); //显示：正在同步理论课
+                        cookie = tokenData.getCookie();
+                        getClass = StaticService.getClass(
+                                activity,
+                                cookie,
+                                generalData.getTerm()
+                        );
+                        if (getClass != null) {
+                            courseBeans = getClass;
+                            scheduleData.setCourseBeans(courseBeans);
+                        } else {
+                            updateView(3);
+                            return;
+                        }
+                    }
+                    //获取考试安排
+                    updateView(94);
+                    List<ExamBean> examBeans = StaticService.getExam(
+                            activity,
+                            cookie,
+                            generalData.getTerm()
+                    );
+                    if (examBeans != null) {
+                        ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
+                        Collections.sort(examBeans, comparatorBeanAttribute);
+                        scheduleData.setExamBeans(examBeans);
+                    } else {
                         updateView(3);
                         return;
                     }
-                }
-                //获取考试安排
-                updateView(94);
-                List<ExamBean> examBeans = StaticService.getExam(
-                        activity,
-                        cookie,
-                        generalData.getTerm()
-                );
-                if (examBeans != null) {
-                    ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
-                    Collections.sort(examBeans, comparatorBeanAttribute);
-                    scheduleData.setExamBeans(examBeans);
+                    //获取实验课
+                    updateView(95);
+                    List<CourseBean> getLab = StaticService.getLab(
+                            activity,
+                            cookie,
+                            generalData.getTerm()
+                    );
+                    if (getLab != null) {
+                        updateView(5);
+                        scheduleData.setLibBeans(getLab);
+                        generalData.setLastUpdateTime(System.currentTimeMillis());
+                        activity.runOnUiThread(() -> {
+                            CourseTableFragment.newInstance().updateTable();
+                            DayClassFragment.newInstance().updateView();
+                            ToastUtil.showToast(activity, "同步成功");
+                        });
+                    }
                 } else {
-                    updateView(3);
-                    return;
+                    updateView(2);
                 }
-                //获取实验课
-                updateView(95);
-                List<CourseBean> getLab = StaticService.getLab(
-                        activity,
-                        cookie,
-                        generalData.getTerm()
-                );
-                if (getLab != null) {
-                    updateView(5);
-                    scheduleData.setLibBeans(getLab);
-                    generalData.setLastUpdateTime(System.currentTimeMillis());
-                    activity.runOnUiThread(() -> {
-                        CourseTableFragment.newInstance().updateTable();
-                        DayClassFragment.newInstance().updateView();
-                        ToastUtil.showToast(activity, "同步成功");
-                    });
-                }
-            } else {
-                updateView(2);
+            } catch (Exception e) {
+                UMCrash.generateCustomLog(e, "AutoUpdate");
+                activity.runOnUiThread(() -> ToastUtil.showToast(activity, "同步失败，请联系开发者"));
+                updateView(0);
             }
         }).start();
     }
