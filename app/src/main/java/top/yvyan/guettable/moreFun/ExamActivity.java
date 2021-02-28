@@ -7,6 +7,8 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.umeng.umcrash.UMCrash;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -50,7 +52,12 @@ public class ExamActivity extends BaseFuncActivity {
             examBeans = ExamUtil.combineExam(examBeans);
         }
         if (singleSettingData.isHideOutdatedExam()) {
-            examBeans = ExamUtil.ridOfOutdatedExam(examBeans);
+            try {
+                examBeans = ExamUtil.ridOfOutdatedExam(examBeans);
+            } catch (Exception e) {
+                UMCrash.generateCustomLog(e, "ExamUtil.ridOfOutdatedExam");
+            }
+
         }
         if (examBeans.size() == 0) {
             showEmptyPage();

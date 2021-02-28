@@ -1,5 +1,7 @@
 package top.yvyan.guettable.Gson;
 
+import com.umeng.umcrash.UMCrash;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -71,7 +73,7 @@ public class ExamInfo {
         try {
             date = format.parse(examdate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            UMCrash.generateCustomLog(e, "ExamInfo.toExamBean");
         }
         return new ExamBean(courseno, cname, name, zc, xq, ksjc == null ? 0 : Integer.parseInt(ksjc), kssj, date, croomno);
     }

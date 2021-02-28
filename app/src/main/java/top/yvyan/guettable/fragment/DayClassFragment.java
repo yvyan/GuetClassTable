@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.umeng.umcrash.UMCrash;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleSupport;
 
@@ -144,18 +145,24 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(dayClassAdapter);
 
         //更新考试剩余时间信息
-        List<ExamBean> examBeans = scheduleData.getExamBeans();
-        examBeans = ExamUtil.combineExam(examBeans);
-        examBeans = ExamUtil.ridOfOutdatedExam(examBeans);
-        if (examBeans.size() != 0) {
-            showExam.setVisibility(View.VISIBLE);
-            int n = TimeUtil.calcDayOffset(new Date(), examBeans.get(0).getDate());
-            if (n >= 1) {
-                showExamDay.setText("您" + n + "天后有考试");
+        try {
+            List<ExamBean> examBeans = scheduleData.getExamBeans();
+            examBeans = ExamUtil.combineExam(examBeans);
+            examBeans = ExamUtil.ridOfOutdatedExam(examBeans);
+            if (examBeans.size() != 0) {
+                showExam.setVisibility(View.VISIBLE);
+
+                int n = TimeUtil.calcDayOffset(new Date(), examBeans.get(0).getDate());
+                if (n >= 1) {
+                    showExamDay.setText("您" + n + "天后有考试");
+                } else {
+                    showExamDay.setText("您今天有考试");
+                }
             } else {
-                showExamDay.setText("您今天有考试");
+                showExam.setVisibility(View.GONE);
             }
-        } else {
+        } catch (Exception e) {
+            UMCrash.generateCustomLog(e, "Day.showExamDay");
             showExam.setVisibility(View.GONE);
         }
     }
