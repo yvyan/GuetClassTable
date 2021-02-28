@@ -218,9 +218,11 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 schedules.add(courseBean.getSchedule());
             }
         }
-        if (settingData.getShowExamOnTable() && !"2019-2020_2".equals(generalData.getTerm())) {
+        if (settingData.getShowExamOnTable()) {
             for (ExamBean examBean : ExamUtil.combineExam(scheduleData.getExamBeans())) {
-                schedules.add(examBean.getSchedule());
+                if (examBean != null && examBean.getWeek() != 0) {
+                    schedules.add(examBean.getSchedule());
+                }
             }
         }
         mWeekView.data(schedules).showView();

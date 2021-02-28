@@ -19,7 +19,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.umeng.umcrash.UMCrash;
-import com.xuexiang.xui.widget.picker.XSeekBar;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
@@ -157,17 +156,6 @@ public class PersonalizedActivity extends AppCompatActivity {
             }
         });
     }
-
-    private final XSeekBar.OnSeekBarListener onLengthSeekBarListener = (seekBar, newValue) -> {
-        int itemLength = singleSettingData.getItemLength();
-        if (itemLength != (newValue * 5) + 40) {
-            itemLength = (newValue * 5) + 40;
-            singleSettingData.setItemLength(itemLength);
-            mTimetableView
-                    .itemHeight(DensityUtil.dip2px(getApplicationContext(), itemLength))
-                    .updateView();
-        }
-    };
 
     private void initMaxWeek2SeekBar() {
         SeekBar maxWeekSeekBar = findViewById(R.id.seekBar_max_week);

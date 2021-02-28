@@ -187,7 +187,6 @@ public class AddCourseActivity extends AppCompatActivity {
                     (courseTeacherEditText.getText().toString().isEmpty() ? null : courseTeacherEditText.getText().toString()),
                     (courseCommEditText.getText().toString().isEmpty() ? null : courseCommEditText.getText().toString())
             );
-            Log.d("1586", courseBean.toString());
             try {
                 courseBeans.add(courseBean);
             } catch (Exception e) {
