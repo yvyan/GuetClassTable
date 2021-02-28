@@ -3,7 +3,6 @@ package top.yvyan.guettable.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
@@ -180,7 +180,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     @Override
                     public void onSpaceItemClick(int day, int start) {
                         addCourse(target, day + 1, (start + 1) / 2);
-                        Log.d("1586", "周" + target + "天" + day + "; 节：" + start);
                     }
 
                     @Override
@@ -227,6 +226,9 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         }
         mWeekView.data(schedules).showView();
         mTimetableView.data(schedules).updateView();
+
+        mTimetableView.onDateBuildListener().onUpdateDate(mTimetableView.curWeek(), target);
+        mTimetableView.changeWeekOnly(target);
     }
 
     /**
@@ -238,7 +240,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         detailClassData.setCourseBeans(beans);
         Intent intent = new Intent(getContext(), DetailActivity.class);
         intent.putExtra("week", target);
-        startActivity(intent);
+        startActivityForResult(intent, DetailActivity.REQUEST_CODE);
     }
 
     private void addCourse(int week, int day, int start) {
@@ -246,7 +248,17 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         intent.putExtra("week", week);
         intent.putExtra("day", day);
         intent.putExtra("start", start);
-        startActivity(intent);
+        startActivityForResult(intent, AddCourseActivity.REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AddCourseActivity.REQUEST_CODE && resultCode == AddCourseActivity.ADD) {
+            updateTable();
+        } else if (requestCode == DetailActivity.REQUEST_CODE && resultCode == DetailActivity.ALTER) {
+            updateTable();
+        }
     }
 
     /**

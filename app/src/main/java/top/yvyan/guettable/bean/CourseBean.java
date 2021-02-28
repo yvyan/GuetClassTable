@@ -18,9 +18,10 @@ public class CourseBean implements ScheduleEnable, Serializable {
     public static String WEEK_START = "weekStart";
     public static String WEEK_END = "weekEnd";
     public static String TYPE = "type";
+    public static String ID = "id";
 
     //id
-    private int id;
+    private long id;
     //是否为实验
     private boolean isLab;
     //课号
@@ -54,13 +55,19 @@ public class CourseBean implements ScheduleEnable, Serializable {
     public CourseBean() {
     }
 
+    //用户添加课程
+    public void userAdd(String number, String name, String room, int weekStart, int weekEnd, int day, int time, String teacher, String remarks, long id) {
+        setCourse(number, name, room, weekStart, weekEnd, day, time, teacher, remarks);
+        setId(id);
+    }
+
     //设置为理论课
     public void setCourse(String number, String name, String room, int weekStart, int weekEnd, int day, int time, String teacher, String remarks) {
         this.isLab = false;
         this.name = name;
         this.room = room;
-        this.weekList=new ArrayList<>();
-        for(int k = weekStart; k <= weekEnd; k++){
+        this.weekList = new ArrayList<>();
+        for (int k = weekStart; k <= weekEnd; k++) {
             weekList.add(k);
         }
         this.weekStart = weekStart;
@@ -97,6 +104,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         if (isLab) {
             labName = (String) schedule.getExtras().get(LIB_NAME);
         }
+        id = (long) schedule.getExtras().get(ID);
 
         number = (String) schedule.getExtras().get(NUMBER);
         day = schedule.getDay();
@@ -126,15 +134,16 @@ public class CourseBean implements ScheduleEnable, Serializable {
         schedule.putExtras(WEEK_START, weekStart);
         schedule.putExtras(WEEK_END, weekEnd);
         //类型: 0:理论课; 1:实验课; 2:考试安排
-        schedule.putExtras(TYPE, isLab? 1 : 0);
+        schedule.putExtras(TYPE, isLab ? 1 : 0);
+        schedule.putExtras(ID, id);
         return schedule;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

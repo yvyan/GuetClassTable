@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,13 +30,18 @@ import top.yvyan.guettable.util.ComparatorCourse;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class DetailActivity extends AppCompatActivity {
+    public static int REQUEST_CODE = 11;
+    public static int ALTER = 10;
+
+    List<Schedule> schedules;
+    int week;
 
     @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        List<Schedule> schedules = DetailClassData.newInstance().getCourseBeans();
+        schedules = DetailClassData.newInstance().getCourseBeans();
         //透明状态栏
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -45,7 +51,7 @@ public class DetailActivity extends AppCompatActivity {
         addStatus.setLayoutParams(lp);
         //加载时间信息
         Intent thisIntent = getIntent();
-        int week = (Integer) thisIntent.getExtras().get("week");
+        week = (Integer) thisIntent.getExtras().get("week");
         TextView detailTitle = findViewById(R.id.title);
         int day = schedules.get(0).getDay();
         int n = (schedules.get(0).getStart() / 2 + 1);
@@ -63,15 +69,8 @@ public class DetailActivity extends AppCompatActivity {
             intent.putExtra("week", week);
             intent.putExtra("day", day);
             intent.putExtra("start", finalN);
-            startActivity(intent);
+            startActivityForResult(intent, AddCourseActivity.REQUEST_CODE);
         });
-        //加载课程信息
-        ComparatorCourse comparatorCourse = new ComparatorCourse();
-        Collections.sort(schedules, comparatorCourse);
-        RecyclerView recyclerView = findViewById(R.id.class_detail_recycleView);
-        ClassDetailAdapter classDetailAdapter = new ClassDetailAdapter(schedules, week);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(classDetailAdapter);
         //自定义背景图
         ImageView background = findViewById(R.id.background);
         View titleBar = findViewById(R.id.func_base_constraintLayout);
@@ -84,6 +83,32 @@ public class DetailActivity extends AppCompatActivity {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        lodeData(schedules, week);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AddCourseActivity.REQUEST_CODE && resultCode == AddCourseActivity.ADD) {
+            Intent intent = getIntent();
+            setResult(ALTER, intent);
+            finish();
+        }
+    }
+
+    private void lodeData(List<Schedule> schedules, int week) {
+        //加载课程信息
+        ComparatorCourse comparatorCourse = new ComparatorCourse();
+        Collections.sort(schedules, comparatorCourse);
+        RecyclerView recyclerView = findViewById(R.id.class_detail_recycleView);
+        ClassDetailAdapter classDetailAdapter = new ClassDetailAdapter(getIntent(), this, schedules, week);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(classDetailAdapter);
     }
 
     public void doBack(View view) {

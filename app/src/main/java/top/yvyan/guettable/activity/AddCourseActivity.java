@@ -3,7 +3,6 @@ package top.yvyan.guettable.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -28,6 +27,8 @@ import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class AddCourseActivity extends AppCompatActivity {
+    public static int REQUEST_CODE = 10;
+    public static int ADD = 10;
 
     GeneralData generalData;
 
@@ -117,6 +118,9 @@ public class AddCourseActivity extends AppCompatActivity {
 
         courseStartSeekBar = findViewById(R.id.seekBar_course_start);
         courseStartTextView = findViewById(R.id.textView_course_start);
+        if (start == 7) {
+            start = 0;
+        }
         courseStartSeekBar.setProgress(start);
         courseStartSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -176,16 +180,17 @@ public class AddCourseActivity extends AppCompatActivity {
             ScheduleData scheduleData = ScheduleData.newInstance(getApplicationContext());
             List<CourseBean> courseBeans = scheduleData.getUserCourseBeans();
             CourseBean courseBean = new CourseBean();
-            courseBean.setCourse(
+            courseBean.userAdd(
                     (courseNumberEditText.getText().toString().isEmpty() ? null : courseNumberEditText.getText().toString()),
                     courseName,
                     (coursePlaceEditText.getText().toString().isEmpty() ? null : coursePlaceEditText.getText().toString()),
                     weekStartSeekBar.getProgress() + 1,
                     weekEndSeekBar.getProgress() + 1,
                     daySeekBar.getProgress() + 1,
-                    courseStartSeekBar.getProgress(),
+                    (courseStartSeekBar.getProgress() == 0 ? 7 : courseStartSeekBar.getProgress()),
                     (courseTeacherEditText.getText().toString().isEmpty() ? null : courseTeacherEditText.getText().toString()),
-                    (courseCommEditText.getText().toString().isEmpty() ? null : courseCommEditText.getText().toString())
+                    (courseCommEditText.getText().toString().isEmpty() ? null : courseCommEditText.getText().toString()),
+                    scheduleData.getUserCourseNo()
             );
             try {
                 courseBeans.add(courseBean);
@@ -195,6 +200,10 @@ public class AddCourseActivity extends AppCompatActivity {
 
             scheduleData.setUserCourseBeans(courseBeans);
             ToastUtil.showToast(getApplicationContext(), "添加成功！");
+
+            Intent intent = getIntent();
+            setResult(ADD, intent);
+            finish();
         }
     }
 
