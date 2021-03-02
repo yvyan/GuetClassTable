@@ -21,6 +21,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.TimeUtil;
@@ -30,6 +31,7 @@ public class AddCourseActivity extends AppCompatActivity {
     public static int REQUEST_CODE = 10;
     public static int ADD = 10;
 
+    SingleSettingData singleSettingData;
     GeneralData generalData;
 
     SeekBar weekStartSeekBar;
@@ -45,6 +47,9 @@ public class AddCourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
+        //数据初始化
+        generalData = GeneralData.newInstance(getApplicationContext());
+        singleSettingData = SingleSettingData.newInstance(getApplicationContext());
         TextView title = findViewById(R.id.title);
         title.setText("添加课程");
         //透明状态栏
@@ -60,14 +65,14 @@ public class AddCourseActivity extends AppCompatActivity {
         if (BackgroundUtil.isSetBackground(this)) {
             BackgroundUtil.setBackground(this, background);
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
         } else {
             background.setImageBitmap(null);
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha(255);
         }
-        //数据初始化
-        generalData = GeneralData.newInstance(getApplicationContext());
         Intent thisIntent = getIntent();
         int week = thisIntent.getIntExtra("week", 1);
         int day = thisIntent.getIntExtra("day", 0);

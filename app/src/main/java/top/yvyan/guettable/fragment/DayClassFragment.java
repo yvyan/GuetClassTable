@@ -30,6 +30,7 @@ import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SettingData;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
@@ -57,6 +58,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private AutoUpdate autoUpdate;
     private OnButtonClick onButtonClick;
 
+    private SingleSettingData singleSettingData;
     private AccountData accountData;
     private GeneralData generalData;
     private SettingData settingData;
@@ -114,6 +116,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initData() {
+        singleSettingData = SingleSettingData.newInstance(getActivity());
         accountData = AccountData.newInstance(getActivity());
         generalData = GeneralData.newInstance(getActivity());
         settingData = SettingData.newInstance(getActivity());
@@ -174,10 +177,12 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         View titleBar = view.findViewById(R.id.title_bar);
         if (setBackground) {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
         } else {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha(255);
         }
     }
 

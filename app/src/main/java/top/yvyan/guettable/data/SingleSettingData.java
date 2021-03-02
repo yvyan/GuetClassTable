@@ -14,6 +14,7 @@ public class SingleSettingData {
     private static final String DATE_ALPHA = "dateAlpha";
     private static final String SLIDE_ALPHA = "slideAlpha";
     private static final String ITEM_ALPHA = "itemAlpha";
+    private static final String TITLE_BAR_ALPHA = "titleBarAlpha";
     private static final String ITEM_LENGTH = "itemLength";
     private static final String COMBINE_EXAM = "combineExam";
     private static final String HIDE_OUTDATED_EXAM = "hideOutdatedExam";
@@ -26,6 +27,7 @@ public class SingleSettingData {
     private float dateAlpha; //透明度
     private float slideAlpha;
     private float itemAlpha;
+    private float titleBarAlpha; // 需要乘以20
     private int itemLength;
 
     private boolean combineExam;       //(考试安排)合并考试安排
@@ -42,9 +44,10 @@ public class SingleSettingData {
 
     private void load() {
         hideOtherWeek = sharedPreferences.getBoolean(HIDE_OTHER_WEEK, false);
-        dateAlpha = sharedPreferences.getFloat(DATE_ALPHA, (float) 0.6);
-        slideAlpha = sharedPreferences.getFloat(SLIDE_ALPHA, (float) 0);
-        itemAlpha = sharedPreferences.getFloat(ITEM_ALPHA, (float) 0.9);
+        dateAlpha = sharedPreferences.getFloat(DATE_ALPHA, 0.6f);
+        slideAlpha = sharedPreferences.getFloat(SLIDE_ALPHA, 0.0f);
+        itemAlpha = sharedPreferences.getFloat(ITEM_ALPHA, 0.9f);
+        titleBarAlpha = sharedPreferences.getFloat(TITLE_BAR_ALPHA, 127.5f);
         itemLength = sharedPreferences.getInt(ITEM_LENGTH, 60);
 
         combineExam = sharedPreferences.getBoolean(COMBINE_EXAM, true);
@@ -129,6 +132,10 @@ public class SingleSettingData {
         return itemAlpha;
     }
 
+    public float getTitleBarAlpha() {
+        return titleBarAlpha;
+    }
+
     public void setAlpha(float dateAlpha, float slideAlpha, float itemAlpha) {
         if (dateAlpha > 1) {
             dateAlpha = 1;
@@ -152,6 +159,35 @@ public class SingleSettingData {
         editor.putFloat(DATE_ALPHA, dateAlpha);
         editor.putFloat(SLIDE_ALPHA, slideAlpha);
         editor.putFloat(ITEM_ALPHA, itemAlpha);
+        editor.apply();
+    }
+
+    public void setAlpha(float dateAlpha, float slideAlpha, float itemAlpha, float titleBarAlpha) {
+        if (dateAlpha > 1) {
+            dateAlpha = 1;
+        } else if (dateAlpha < 0) {
+            dateAlpha = 0;
+        }
+        if (slideAlpha > 1) {
+            slideAlpha = 1;
+        } else if (slideAlpha < 0) {
+            slideAlpha = 0;
+        }
+        if (itemAlpha > 1) {
+            itemAlpha = 1;
+        } else if (itemAlpha < 0) {
+            itemAlpha = 0;
+        }
+
+        this.dateAlpha = dateAlpha;
+        this.slideAlpha = slideAlpha;
+        this.itemAlpha = itemAlpha;
+        this.titleBarAlpha = titleBarAlpha;
+
+        editor.putFloat(DATE_ALPHA, dateAlpha);
+        editor.putFloat(SLIDE_ALPHA, slideAlpha);
+        editor.putFloat(ITEM_ALPHA, itemAlpha);
+        editor.putFloat(TITLE_BAR_ALPHA, titleBarAlpha);
         editor.apply();
     }
 }

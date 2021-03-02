@@ -288,6 +288,38 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="标题栏：(默认为10)" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="7">
+
+                        <SeekBar
+                            android:id="@+id/seekBar_titleBar_alpha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="7dp"
+                            android:layout_weight="1"
+                            android:max="20"
+                            android:progressTint="@color/colorPrimary"
+                            android:thumbTint="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/textView_titleBar_alpha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="6"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="10dp" />
