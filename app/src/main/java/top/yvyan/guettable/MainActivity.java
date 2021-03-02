@@ -121,8 +121,10 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
     protected void onStart() {
         super.onStart();
         if (BackgroundUtil.isSetBackground(this)) {
+            bottomNavigationView.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
             BackgroundUtil.setBackground(this, background);
         } else {
+            bottomNavigationView.getBackground().setAlpha(255);
             background.setImageBitmap(null);
         }
     }
