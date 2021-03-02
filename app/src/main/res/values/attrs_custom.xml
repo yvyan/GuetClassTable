@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="color_bar" format="color"/>
+    <attr name="color_text" format="color"/>
+    <attr name="color_bottomNav" format="color"/>
+</resources>

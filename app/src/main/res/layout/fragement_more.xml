@@ -16,7 +16,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#902ABFFD">
+        android:background="?attr/color_bar">
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,8 +44,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp"
                 app:cardBackgroundColor="#C0ffffff"
+                app:cardCornerRadius="10dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -255,8 +255,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp"
                 app:cardBackgroundColor="#C0ffffff"
+                app:cardCornerRadius="10dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -376,8 +376,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp"
                 app:cardBackgroundColor="#C0ffffff"
+                app:cardCornerRadius="10dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -597,8 +597,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp"
                 app:cardBackgroundColor="#C0ffffff"
+                app:cardCornerRadius="10dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout

@@ -83,7 +83,7 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="15dp"
                     android:text="背景和透明:"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/color_text"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -211,8 +211,8 @@
                             android:layout_margin="7dp"
                             android:layout_weight="1"
                             android:max="20"
-                            android:progressTint="@color/colorPrimary"
-                            android:thumbTint="@color/colorPrimary" />
+                            android:progressTint="?attr/color_bar"
+                            android:thumbTint="?attr/color_bar" />
 
                         <TextView
                             android:id="@+id/textView_date_alpha"
@@ -243,8 +243,8 @@
                             android:layout_margin="7dp"
                             android:layout_weight="1"
                             android:max="20"
-                            android:progressTint="@color/colorPrimary"
-                            android:thumbTint="@color/colorPrimary" />
+                            android:progressTint="?attr/color_bar"
+                            android:thumbTint="?attr/color_bar" />
 
                         <TextView
                             android:id="@+id/textView_slide_alpha"
@@ -275,8 +275,8 @@
                             android:layout_margin="7dp"
                             android:layout_weight="1"
                             android:max="20"
-                            android:progressTint="@color/colorPrimary"
-                            android:thumbTint="@color/colorPrimary" />
+                            android:progressTint="?attr/color_bar"
+                            android:thumbTint="?attr/color_bar" />
 
                         <TextView
                             android:id="@+id/textView_item_alpha"
@@ -307,8 +307,8 @@
                             android:layout_margin="7dp"
                             android:layout_weight="1"
                             android:max="20"
-                            android:progressTint="@color/colorPrimary"
-                            android:thumbTint="@color/colorPrimary" />
+                            android:progressTint="?attr/color_bar"
+                            android:thumbTint="?attr/color_bar" />
 
                         <TextView
                             android:id="@+id/textView_titleBar_alpha"
@@ -339,7 +339,7 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="15dp"
                     android:text="课表:"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/color_text"
                     android:textSize="14sp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -436,8 +436,8 @@
                             android:layout_margin="7dp"
                             android:layout_weight="1"
                             android:max="10"
-                            android:progressTint="@color/colorPrimary"
-                            android:thumbTint="@color/colorPrimary" />
+                            android:progressTint="?attr/color_bar"
+                            android:thumbTint="?attr/color_bar" />
 
                         <TextView
                             android:id="@+id/textView_item_length"
@@ -492,8 +492,8 @@
                             android:layout_margin="7dp"
                             android:layout_weight="1"
                             android:max="10"
-                            android:progressTint="@color/colorPrimary"
-                            android:thumbTint="@color/colorPrimary" />
+                            android:progressTint="?attr/color_bar"
+                            android:thumbTint="?attr/color_bar" />
 
                         <TextView
                             android:id="@+id/textView_max_week"
@@ -522,6 +522,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="10dp" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="15dp"
+                    android:text="主题:"
+                    android:textColor="?attr/color_text"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/switch_theme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner
+                        android:id="@+id/spinner_theme"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="25dp"
+                        app:ms_background_color="@color/app_gray6" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
             </LinearLayout>
 
         </ScrollView>

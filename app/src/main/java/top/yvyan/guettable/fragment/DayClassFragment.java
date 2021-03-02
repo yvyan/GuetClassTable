@@ -80,12 +80,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         dayClassFragment = this;
         view = inflater.inflate(R.layout.fragment_day_class, container, false);
-
         View tools = view.findViewById(R.id.day_class_tools);
         if (!SettingData.newInstance(getContext()).isShowTools()) {
             tools.setVisibility(View.GONE);
         }
-
+        initData();
         View addStatus = view.findViewById(R.id.add_status);
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
         lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
@@ -103,8 +102,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         testScores.setOnClickListener(this);
         View credits = view.findViewById(R.id.day_credits);
         credits.setOnClickListener(this);
-
-        initData();
 
         autoUpdate = AutoUpdate.newInstance(getActivity());
         if (accountData.getIsLogin()) {
@@ -177,11 +174,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         View titleBar = view.findViewById(R.id.title_bar);
         if (setBackground) {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
         } else {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha(255);
         }
     }

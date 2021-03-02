@@ -19,6 +19,7 @@ public class SingleSettingData {
     private static final String COMBINE_EXAM = "combineExam";
     private static final String HIDE_OUTDATED_EXAM = "hideOutdatedExam";
     private static final String HIDE_OTHER_TERM_EXAM_SCORE = "hideOtherTermExamScore";
+    private static final String THEME_ID = "theme_id";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -27,8 +28,9 @@ public class SingleSettingData {
     private float dateAlpha; //透明度
     private float slideAlpha;
     private float itemAlpha;
-    private float titleBarAlpha; // 需要乘以20
+    private float titleBarAlpha;
     private int itemLength;
+    private int themeId;
 
     private boolean combineExam;       //(考试安排)合并考试安排
     private boolean hideOutdatedExam;  //(考试安排)隐藏过期的考试安排
@@ -49,6 +51,8 @@ public class SingleSettingData {
         itemAlpha = sharedPreferences.getFloat(ITEM_ALPHA, 0.9f);
         titleBarAlpha = sharedPreferences.getFloat(TITLE_BAR_ALPHA, 127.5f);
         itemLength = sharedPreferences.getInt(ITEM_LENGTH, 60);
+
+        themeId = sharedPreferences.getInt(THEME_ID,0);
 
         combineExam = sharedPreferences.getBoolean(COMBINE_EXAM, true);
         hideOutdatedExam = sharedPreferences.getBoolean(HIDE_OUTDATED_EXAM, true);
@@ -134,6 +138,16 @@ public class SingleSettingData {
 
     public float getTitleBarAlpha() {
         return titleBarAlpha;
+    }
+
+    public int getThemeId() {
+        return themeId;
+    }
+
+    public void setThemeId(int themeId) {
+        this.themeId = themeId;
+        editor.putInt(THEME_ID, themeId);
+        editor.apply();
     }
 
     public void setAlpha(float dateAlpha, float slideAlpha, float itemAlpha) {
