@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.InnovationScore;
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.table.IMoreFun;
 import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
@@ -57,6 +58,8 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SingleSettingData singleSettingData = SingleSettingData.newInstance(getApplicationContext());
+        setPageTheme(singleSettingData.getThemeId());
         setContentView(R.layout.activity_innovation_score);
         ButterKnife.bind(this);
         title.setText(getString(R.string.moreFun_innovation_score));
@@ -129,5 +132,25 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
 
     public void doBack(View view) {
         finish();
+    }
+
+    void setPageTheme(int id) {
+        switch (id) {
+            case 0:
+                setTheme(R.style.AppTheme);
+                break;
+            case 1:
+                setTheme(R.style.AppTheme_Pink);
+                break;
+            case 2:
+                setTheme(R.style.AppTheme_Red);
+                break;
+            case 3:
+                setTheme(R.style.AppTheme_Orange);
+                break;
+            case 4:
+                setTheme(R.style.AppTheme_Green);
+                break;
+        }
     }
 }

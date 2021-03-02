@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.umeng.umcrash.UMCrash;
+import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
@@ -40,11 +41,11 @@ import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
-public class PersonalizedActivity extends AppCompatActivity {
+public class PersonalizedActivity extends AppCompatActivity implements MaterialSpinner.OnItemSelectedListener {
 
+    private static String[] themes = {"课表蓝", "B站粉", "京东红", "淘宝橙", "微信绿"};
     private SingleSettingData singleSettingData;
     private GeneralData generalData;
-    private ConstraintLayout header;
 
     private ImageView background;
     private TimetableView mTimetableView;
@@ -54,13 +55,18 @@ public class PersonalizedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        singleSettingData = SingleSettingData.newInstance(getApplicationContext());
+        generalData = GeneralData.newInstance(getApplicationContext());
+        setPageTheme(singleSettingData.getThemeId());
         setContentView(R.layout.activity_personalized);
 
         TextView title = findViewById(R.id.title);
         title.setText(getString(R.string.person_personalized));
 
-        singleSettingData = SingleSettingData.newInstance(getApplicationContext());
-        generalData = GeneralData.newInstance(getApplicationContext());
+        MaterialSpinner spinner = findViewById(R.id.spinner_theme);
+        spinner.setItems(themes);
+        spinner.setSelectedIndex(singleSettingData.getThemeId());
+        spinner.setOnItemSelectedListener(this);
 
         Window window = this.getWindow();
         //透明状态栏
@@ -311,13 +317,11 @@ public class PersonalizedActivity extends AppCompatActivity {
             BackgroundUtil.setBackground(this, background);
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
             titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
-//            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
             mTimetableView.colorPool().setUselessColor(0xCCCCCC);
             mTimetableView.alpha(singleSettingData.getDateAlpha(), singleSettingData.getSlideAlpha(), singleSettingData.getItemAlpha());
         } else {
             background.setImageBitmap(null);
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha(255);
             mTimetableView.colorPool().setUselessColor(0xE0E0E0);
             mTimetableView.alpha(1, 1, 1);
@@ -351,5 +355,33 @@ public class PersonalizedActivity extends AppCompatActivity {
         mTimetableView
                 .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
                 .updateView();
+    }
+
+    void setPageTheme(int id) {
+        switch (id) {
+            case 0:
+                setTheme(R.style.AppTheme);
+                break;
+            case 1:
+                setTheme(R.style.AppTheme_Pink);
+                break;
+            case 2:
+                setTheme(R.style.AppTheme_Red);
+                break;
+            case 3:
+                setTheme(R.style.AppTheme_Orange);
+                break;
+            case 4:
+                setTheme(R.style.AppTheme_Green);
+                break;
+        }
+    }
+
+    @Override
+    public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+        setPageTheme(position);
+        singleSettingData.setThemeId(position);
+        recreate();
+        ToastUtil.showToast(this, "修改主题成功！");
     }
 }

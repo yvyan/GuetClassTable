@@ -26,6 +26,7 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
@@ -40,10 +41,13 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
     public static final String APP_ID = "2882303761518881128";
     public static final String APP_KEY = "5601888146128";
 
+    private SingleSettingData singleSettingData;
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
     private MenuItem menuItem;
     private ImageView background;
+
+    private static int themeID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +55,15 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+        singleSettingData = SingleSettingData.newInstance(this);
+        themeID = singleSettingData.getThemeId();
+        setPageTheme(themeID);
         setContentView(R.layout.activity_main);
 
         //透明状态栏
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
 
         background = findViewById(R.id.background);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -176,4 +184,32 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         startActivity(intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (themeID != singleSettingData.getThemeId()) {
+            themeID = singleSettingData.getThemeId();
+            recreate();
+        }
+    }
+
+    void setPageTheme(int id) {
+        switch (id) {
+            case 0:
+                setTheme(R.style.AppTheme);
+                break;
+            case 1:
+                setTheme(R.style.AppTheme_Pink);
+                break;
+            case 2:
+                setTheme(R.style.AppTheme_Red);
+                break;
+            case 3:
+                setTheme(R.style.AppTheme_Orange);
+                break;
+            case 4:
+                setTheme(R.style.AppTheme_Green);
+                break;
+        }
+    }
 }

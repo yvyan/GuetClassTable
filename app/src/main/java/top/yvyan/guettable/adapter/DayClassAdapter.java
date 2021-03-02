@@ -2,6 +2,7 @@ package top.yvyan.guettable.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,9 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             holder.textView6.setVisibility(View.GONE);
             holder.textView7.setVisibility(View.GONE);
 
-            holder.textView1.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            TypedValue tv = new TypedValue();
+            context.getTheme().resolveAttribute(R.attr.color_text, tv, true);
+            holder.textView1.setTextColor(context.getResources().getColor(tv.resourceId));
             holder.textView1.setTextSize(20);
             int size;
             String text;

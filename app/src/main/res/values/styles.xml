@@ -7,6 +7,49 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/MyTextViewStyle</item>
+        <item name="color_bar">@color/color_background_blue</item>
+        <item name="color_text">@color/color_background_blue</item>
+        <item name="color_bottomNav">@color/color_background_blue</item>
+    </style>
+
+    <style name="AppTheme_Red" parent="XUITheme.Phone">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/MyTextViewStyle</item>
+        <item name="color_bar">@color/color_background_red</item>
+        <item name="color_text">@color/color_background_red</item>
+        <item name="color_bottomNav">@color/color_background_red</item>
+    </style>
+
+    <style name="AppTheme_Orange" parent="XUITheme.Phone">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/MyTextViewStyle</item>
+        <item name="color_bar">@color/color_background_orange</item>
+        <item name="color_text">@color/color_background_orange</item>
+        <item name="color_bottomNav">@color/color_background_orange</item>
+    </style>
+
+    <style name="AppTheme_Pink" parent="XUITheme.Phone">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/MyTextViewStyle</item>
+        <item name="color_bar">@color/color_background_pink</item>
+        <item name="color_text">@color/color_background_pink</item>
+        <item name="color_bottomNav">@color/color_background_pink</item>
+    </style>
+
+    <style name="AppTheme_Green" parent="XUITheme.Phone">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/MyTextViewStyle</item>
+        <item name="color_bar">@color/color_background_green</item>
+        <item name="color_text">@color/color_background_green</item>
+        <item name="color_bottomNav">@color/color_background_green</item>
     </style>
 
     <style name="MyTextViewStyle" parent="android:Widget.TextView">
@@ -48,6 +91,7 @@
         <item name="android:backgroundDimEnabled">true</item>
         <!-- 模糊 -->
     </style>
+
     <style name="AnimBottom" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>

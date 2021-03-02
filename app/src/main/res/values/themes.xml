@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-        <style name="ThemeText">
-            <item name="colorControlActivated">@color/colorPrimary</item>
-            <item name="android:colorAccent">@color/colorPrimary</item>
-        </style>
+    <style name="ThemeText">
+        <item name="colorControlActivated">?attr/color_bar</item>
+        <item name="android:colorAccent">?attr/color_bar</item>
+    </style>
 </resources>

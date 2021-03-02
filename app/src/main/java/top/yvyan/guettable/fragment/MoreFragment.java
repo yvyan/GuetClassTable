@@ -131,11 +131,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         View titleBar = view.findViewById(R.id.title_bar);
         if (setBackground) {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
         } else {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha(255);
         }
     }

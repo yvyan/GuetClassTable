@@ -16,7 +16,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#902ABFFD"
+        android:background="?attr/color_bar"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -63,8 +63,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="10dp"
                 app:cardBackgroundColor="#C0ffffff"
+                app:cardCornerRadius="10dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
