@@ -6,12 +6,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,10 +23,12 @@ import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.AvgTextbookAdapter;
 import top.yvyan.guettable.bean.AvgTextbookBean;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.table.IMoreFun;
 import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
@@ -43,6 +46,8 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
     RecyclerView recyclerView;
     @BindView(R.id.avg_textbook_start)
     Button start;
+    @BindView(R.id.func_base_constraintLayout)
+    ConstraintLayout header;
 
     private BaseResponse<List<AvgTextbook>> avgTextbookOuter;
     private List<BaseResponse<AvgTextbookFormGet>> formGetOuters;
@@ -53,8 +58,11 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SingleSettingData singleSettingData = SingleSettingData.newInstance(this);
+        BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_average_textbook);
         ButterKnife.bind(this);
+        header.getBackground().setAlpha(255);
         title.setText(getString(R.string.moreFun_evaluating_textbooks));
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_evaluating_textbooks));
 
@@ -140,4 +148,5 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
             ToastUtil.showToast(this, "教材评价已经完成！");
         }
     }
+
 }

@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         }
         singleSettingData = SingleSettingData.newInstance(this);
         themeID = singleSettingData.getThemeId();
-        setPageTheme(themeID);
+        BackgroundUtil.setPageTheme(this, themeID);
         setContentView(R.layout.activity_main);
 
         //透明状态栏
@@ -193,23 +193,4 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         }
     }
 
-    void setPageTheme(int id) {
-        switch (id) {
-            case 0:
-                setTheme(R.style.AppTheme);
-                break;
-            case 1:
-                setTheme(R.style.AppTheme_Pink);
-                break;
-            case 2:
-                setTheme(R.style.AppTheme_Red);
-                break;
-            case 3:
-                setTheme(R.style.AppTheme_Orange);
-                break;
-            case 4:
-                setTheme(R.style.AppTheme_Green);
-                break;
-        }
-    }
 }

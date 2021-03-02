@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import top.yvyan.guettable.R;
+
 public class BackgroundUtil {
 
     /**
@@ -53,6 +55,28 @@ public class BackgroundUtil {
                 imageView.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 deleteBackground(context);
+            }
+        }
+    }
+
+    public static void setPageTheme(Context context, int themeID) {
+        if(context != null){
+            switch (themeID) {
+                case 0:
+                    context.setTheme(R.style.AppTheme);
+                    break;
+                case 1:
+                    context.setTheme(R.style.AppTheme_Pink);
+                    break;
+                case 2:
+                    context.setTheme(R.style.AppTheme_Red);
+                    break;
+                case 3:
+                    context.setTheme(R.style.AppTheme_Orange);
+                    break;
+                case 4:
+                    context.setTheme(R.style.AppTheme_Green);
+                    break;
             }
         }
     }

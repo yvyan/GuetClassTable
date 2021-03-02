@@ -57,7 +57,7 @@ public class PersonalizedActivity extends AppCompatActivity implements MaterialS
         super.onCreate(savedInstanceState);
         singleSettingData = SingleSettingData.newInstance(getApplicationContext());
         generalData = GeneralData.newInstance(getApplicationContext());
-        setPageTheme(singleSettingData.getThemeId());
+        BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_personalized);
 
         TextView title = findViewById(R.id.title);
@@ -355,30 +355,10 @@ public class PersonalizedActivity extends AppCompatActivity implements MaterialS
                 .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
                 .updateView();
     }
-
-    void setPageTheme(int id) {
-        switch (id) {
-            case 0:
-                setTheme(R.style.AppTheme);
-                break;
-            case 1:
-                setTheme(R.style.AppTheme_Pink);
-                break;
-            case 2:
-                setTheme(R.style.AppTheme_Red);
-                break;
-            case 3:
-                setTheme(R.style.AppTheme_Orange);
-                break;
-            case 4:
-                setTheme(R.style.AppTheme_Green);
-                break;
-        }
-    }
-
+    
     @Override
     public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-        setPageTheme(position);
+        BackgroundUtil.setPageTheme(this, position);
         singleSettingData.setThemeId(position);
         finish();
         ToastUtil.showToast(this, "修改主题成功！");

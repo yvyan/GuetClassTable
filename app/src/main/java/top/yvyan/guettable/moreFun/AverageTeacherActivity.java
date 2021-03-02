@@ -1,15 +1,16 @@
 package top.yvyan.guettable.moreFun;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +22,12 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.AvgTeacherAdapter;
 import top.yvyan.guettable.bean.AvgTeacherBean;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.table.IMoreFun;
 import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
@@ -42,6 +45,8 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
     RecyclerView recyclerView;
     @BindView(R.id.avg_teacher_start)
     Button start;
+    @BindView(R.id.func_base_constraintLayout)
+    ConstraintLayout header;
 
     private List<AvgTeacher> avgTeachers;
     private String cookie;
@@ -50,8 +55,11 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SingleSettingData singleSettingData = SingleSettingData.newInstance(this);
+        BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_average_teacher);
         ButterKnife.bind(this);
+        header.getBackground().setAlpha(255);
         title.setText(getString(R.string.moreFun_evaluating_teachers));
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_evaluating_teachers));
 

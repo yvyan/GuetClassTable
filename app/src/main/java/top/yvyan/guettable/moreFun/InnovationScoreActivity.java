@@ -20,6 +20,7 @@ import top.yvyan.guettable.service.table.IMoreFun;
 import top.yvyan.guettable.service.table.MoreFunService;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 @SuppressLint("NonConstantResourceId")
@@ -62,7 +63,7 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SingleSettingData singleSettingData = SingleSettingData.newInstance(getApplicationContext());
-        setPageTheme(singleSettingData.getThemeId());
+        BackgroundUtil.setPageTheme(this,singleSettingData.getThemeId());
         setContentView(R.layout.activity_innovation_score);
         ButterKnife.bind(this);
         header.getBackground().setAlpha(255);
@@ -136,25 +137,5 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
 
     public void doBack(View view) {
         finish();
-    }
-
-    void setPageTheme(int id) {
-        switch (id) {
-            case 0:
-                setTheme(R.style.AppTheme);
-                break;
-            case 1:
-                setTheme(R.style.AppTheme_Pink);
-                break;
-            case 2:
-                setTheme(R.style.AppTheme_Red);
-                break;
-            case 3:
-                setTheme(R.style.AppTheme_Orange);
-                break;
-            case 4:
-                setTheme(R.style.AppTheme_Green);
-                break;
-        }
     }
 }
