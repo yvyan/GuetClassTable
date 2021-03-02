@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +30,8 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.more)
     ImageView more;
+    @BindView(R.id.func_base_constraintLayout)
+    ConstraintLayout header;
 
     protected boolean update = true;
 
@@ -39,11 +42,10 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
         setPageTheme(singleSettingData.getThemeId());
         setContentView(R.layout.activity_base_func);
         ButterKnife.bind(this);
-
         more.setVisibility(View.GONE);
         more.setOnClickListener(this::showPopMenu);
-
         init();
+        header.getBackground().setAlpha(255);
     }
 
     private void init() {

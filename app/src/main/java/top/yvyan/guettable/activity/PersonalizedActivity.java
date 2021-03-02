@@ -43,7 +43,7 @@ import top.yvyan.guettable.util.ToastUtil;
 
 public class PersonalizedActivity extends AppCompatActivity implements MaterialSpinner.OnItemSelectedListener {
 
-    private static String[] themes = {"课表蓝", "B站粉", "京东红", "淘宝橙", "微信绿"};
+    private static String[] themes = {"桂电蓝", "B站粉", "京东红", "淘宝橙", "微信绿"};
     private SingleSettingData singleSettingData;
     private GeneralData generalData;
 
@@ -132,7 +132,6 @@ public class PersonalizedActivity extends AppCompatActivity implements MaterialS
                 titleBarAlpha = 12.75f * i;
                 TextView titleBarTextView = findViewById(R.id.textView_titleBar_alpha);
                 titleBarTextView.setText(String.valueOf(i));
-                System.out.println("透明度：" + i);
             }
             if (BackgroundUtil.isSetBackground(getApplicationContext())) {
                 singleSettingData.setAlpha(dateAlpha, slideAlpha, itemAlpha, titleBarAlpha);
@@ -312,7 +311,7 @@ public class PersonalizedActivity extends AppCompatActivity implements MaterialS
 
     private void updateBackground() {
         View addStatus = findViewById(R.id.add_status);
-        View titleBar = findViewById(R.id.func_base_constraintLayout);
+        ConstraintLayout titleBar = findViewById(R.id.func_base_constraintLayout);
         if (BackgroundUtil.isSetBackground(this)) {
             BackgroundUtil.setBackground(this, background);
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
@@ -381,7 +380,7 @@ public class PersonalizedActivity extends AppCompatActivity implements MaterialS
     public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
         setPageTheme(position);
         singleSettingData.setThemeId(position);
-        recreate();
+        finish();
         ToastUtil.showToast(this, "修改主题成功！");
     }
 }

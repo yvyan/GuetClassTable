@@ -547,9 +547,9 @@
                     <com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner
                         android:id="@+id/spinner_theme"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_margin="25dp"
-                        app:ms_background_color="@color/app_gray6" />
+                        app:ms_background_color="@color/app_white2" />
 
                     <View
                         android:layout_width="match_parent"
