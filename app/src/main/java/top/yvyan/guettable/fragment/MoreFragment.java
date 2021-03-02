@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.moreFun.AverageTeacherActivity;
 import top.yvyan.guettable.moreFun.AverageTextbookActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
@@ -43,6 +44,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
     private View view;
 
+    private SingleSettingData singleSettingData;
     private GeneralData generalData;
 
     public MoreFragment() {
@@ -63,6 +65,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragement_more, container, false);
 
         generalData = GeneralData.newInstance(getContext());
+        singleSettingData = SingleSettingData.newInstance(getContext());
 
         View addStatus = view.findViewById(R.id.add_status);
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
@@ -128,10 +131,12 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         View titleBar = view.findViewById(R.id.title_bar);
         if (setBackground) {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
         } else {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha(255);
         }
     }
 

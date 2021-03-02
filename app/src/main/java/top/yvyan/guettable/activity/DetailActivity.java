@@ -24,6 +24,7 @@ import java.util.Objects;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ClassDetailAdapter;
 import top.yvyan.guettable.data.DetailClassData;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.ComparatorCourse;
@@ -33,6 +34,8 @@ public class DetailActivity extends AppCompatActivity {
     public static int REQUEST_CODE = 11;
     public static int ALTER = 10;
 
+    private SingleSettingData singleSettingData;
+
     List<Schedule> schedules;
     int week;
 
@@ -41,6 +44,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        singleSettingData = SingleSettingData.newInstance(getApplicationContext());
         schedules = DetailClassData.newInstance().getCourseBeans();
         //透明状态栏
         Window window = this.getWindow();
@@ -77,11 +81,13 @@ public class DetailActivity extends AppCompatActivity {
         if (BackgroundUtil.isSetBackground(this)) {
             BackgroundUtil.setBackground(this, background);
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
         } else {
             background.setImageBitmap(null);
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha(255);
         }
     }
 

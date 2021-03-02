@@ -17,6 +17,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.umeng.umcrash.UMCrash;
 import com.zhuangfei.timetable.TimetableView;
@@ -43,6 +44,7 @@ public class PersonalizedActivity extends AppCompatActivity {
 
     private SingleSettingData singleSettingData;
     private GeneralData generalData;
+    private ConstraintLayout header;
 
     private ImageView background;
     private TimetableView mTimetableView;
@@ -82,18 +84,23 @@ public class PersonalizedActivity extends AppCompatActivity {
         SeekBar dateAlphaSeekBar = findViewById(R.id.seekBar_date_alpha);
         SeekBar slideAlphaSeekBar = findViewById(R.id.seekBar_slide_alpha);
         SeekBar itemAlphaSeekBar = findViewById(R.id.seekBar_item_alpha);
+        SeekBar titleBarAlphaSeekBar = findViewById(R.id.seekBar_titleBar_alpha);
         TextView dateAlphaTextView = findViewById(R.id.textView_date_alpha);
         TextView slideAlphaTextView = findViewById(R.id.textView_slide_alpha);
         TextView itemAlphaTextView = findViewById(R.id.textView_item_alpha);
+        TextView titleBarAlphaTextView = findViewById(R.id.textView_titleBar_alpha);            // .
         dateAlphaSeekBar.setProgress((int) (singleSettingData.getDateAlpha() * 20));
         slideAlphaSeekBar.setProgress((int) (singleSettingData.getSlideAlpha() * 20));
         itemAlphaSeekBar.setProgress((int) (singleSettingData.getItemAlpha() * 20));
+        titleBarAlphaSeekBar.setProgress((int) (singleSettingData.getTitleBarAlpha() / 12.75f));    // .
         dateAlphaTextView.setText(String.valueOf((int) (singleSettingData.getDateAlpha() * 20)));
         slideAlphaTextView.setText(String.valueOf((int) (singleSettingData.getSlideAlpha() * 20)));
         itemAlphaTextView.setText(String.valueOf((int) (singleSettingData.getItemAlpha() * 20)));
+        titleBarAlphaTextView.setText(String.valueOf((int) (singleSettingData.getTitleBarAlpha() / 12.75f)));     // .
         dateAlphaSeekBar.setOnSeekBarChangeListener(onAlphaSeekBarListener);
         slideAlphaSeekBar.setOnSeekBarChangeListener(onAlphaSeekBarListener);
         itemAlphaSeekBar.setOnSeekBarChangeListener(onAlphaSeekBarListener);
+        titleBarAlphaSeekBar.setOnSeekBarChangeListener(onAlphaSeekBarListener);
     }
 
     private final SeekBar.OnSeekBarChangeListener onAlphaSeekBarListener = new SeekBar.OnSeekBarChangeListener() {
@@ -102,6 +109,7 @@ public class PersonalizedActivity extends AppCompatActivity {
             float dateAlpha = singleSettingData.getDateAlpha();
             float slideAlpha = singleSettingData.getSlideAlpha();
             float itemAlpha = singleSettingData.getItemAlpha();
+            float titleBarAlpha = singleSettingData.getTitleBarAlpha();
             if (R.id.seekBar_date_alpha == seekBar.getId()) {
                 dateAlpha = i / 20.0f;
                 TextView dateAlphaTextView = findViewById(R.id.textView_date_alpha);
@@ -114,9 +122,16 @@ public class PersonalizedActivity extends AppCompatActivity {
                 itemAlpha = i / 20.0f;
                 TextView itemAlphaTextView = findViewById(R.id.textView_item_alpha);
                 itemAlphaTextView.setText(String.valueOf(i));
+            } else if (R.id.seekBar_titleBar_alpha == seekBar.getId()) {
+                titleBarAlpha = 12.75f * i;
+                TextView titleBarTextView = findViewById(R.id.textView_titleBar_alpha);
+                titleBarTextView.setText(String.valueOf(i));
+                System.out.println("透明度：" + i);
             }
             if (BackgroundUtil.isSetBackground(getApplicationContext())) {
-                singleSettingData.setAlpha(dateAlpha, slideAlpha, itemAlpha);
+                singleSettingData.setAlpha(dateAlpha, slideAlpha, itemAlpha, titleBarAlpha);
+                ConstraintLayout header = findViewById(R.id.func_base_constraintLayout);
+                header.getBackground().setAlpha((int) titleBarAlpha);
                 mTimetableView
                         .alpha(dateAlpha, slideAlpha, itemAlpha)
                         .updateView();
@@ -295,13 +310,15 @@ public class PersonalizedActivity extends AppCompatActivity {
         if (BackgroundUtil.isSetBackground(this)) {
             BackgroundUtil.setBackground(this, background);
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
+//            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
             mTimetableView.colorPool().setUselessColor(0xCCCCCC);
             mTimetableView.alpha(singleSettingData.getDateAlpha(), singleSettingData.getSlideAlpha(), singleSettingData.getItemAlpha());
         } else {
             background.setImageBitmap(null);
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha(255);
             mTimetableView.colorPool().setUselessColor(0xE0E0E0);
             mTimetableView.alpha(1, 1, 1);
         }

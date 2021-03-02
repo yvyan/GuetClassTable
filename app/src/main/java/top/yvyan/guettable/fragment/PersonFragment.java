@@ -19,16 +19,17 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.activity.AboutActivity;
 import top.yvyan.guettable.activity.HelpTestActivity;
 import top.yvyan.guettable.activity.LoginActivity;
 import top.yvyan.guettable.activity.PersonalizedActivity;
-import top.yvyan.guettable.R;
 import top.yvyan.guettable.activity.SetTermActivity;
 import top.yvyan.guettable.activity.SettingActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SettingData;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.util.AppUtil;
@@ -54,6 +55,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private TextView person_term;
     private TextView person_week;
 
+    private SingleSettingData singleSettingData;
     private AccountData accountData;
     private GeneralData generalData;
     private OnButtonClick onButtonClick;
@@ -85,6 +87,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private void initData() {
         accountData = AccountData.newInstance(getContext());
         generalData = GeneralData.newInstance(getContext());
+        singleSettingData = SingleSettingData.newInstance(getContext());
     }
 
     private void initView() {
@@ -155,10 +158,12 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         View titleBar = view.findViewById(R.id.title_bar);
         if (setBackground) {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
         } else {
             addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            titleBar.getBackground().setAlpha(255);
         }
     }
 
