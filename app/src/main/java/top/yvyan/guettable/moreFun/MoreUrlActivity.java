@@ -1,12 +1,13 @@
 package top.yvyan.guettable.moreFun;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -14,14 +15,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.BackgroundUtil;
 
 public class MoreUrlActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SingleSettingData singleSettingData = SingleSettingData.newInstance(this);
+        BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_more_url);
+
+        ConstraintLayout header = findViewById(R.id.func_base_constraintLayout);
+        header.getBackground().setAlpha(255);
 
         TextView title = findViewById(R.id.title);
         title.setText(getString(R.string.moreFun_url_more));

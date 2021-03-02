@@ -1,7 +1,5 @@
 package top.yvyan.guettable.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -10,6 +8,9 @@ import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.TokenData;
@@ -21,7 +22,8 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        setTheme(R.style.ThemeText);
+        ConstraintLayout header = findViewById(R.id.func_base_constraintLayout);
+        header.getBackground().setAlpha(255);
 
         TextView title = findViewById(R.id.title);
         title.setText(getResources().getString(R.string.person_setting));
@@ -55,7 +57,7 @@ public class SettingActivity extends AppCompatActivity {
 
             SwitchPreference refreshData = (SwitchPreference) findPreference(REFRESH_DATA);
             refreshData.setOnPreferenceChangeListener((preference, newValue) -> {
-                if((boolean)newValue) {
+                if ((boolean) newValue) {
                     basicSettings.addPreference(refreshDataFrequency);
                 } else {
                     basicSettings.removePreference(refreshDataFrequency);
@@ -72,7 +74,7 @@ public class SettingActivity extends AppCompatActivity {
 
             SwitchPreference developMode = (SwitchPreference) findPreference(DEVELOPER_MODE);
             developMode.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (!(boolean)newValue) {
+                if (!(boolean) newValue) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { //尽可能自动关闭调试
                         TokenData tokenData = TokenData.newInstance(getContext());
                         if (tokenData.isDevelop()) {
