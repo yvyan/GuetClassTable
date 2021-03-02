@@ -63,9 +63,9 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         SingleSettingData singleSettingData = SingleSettingData.newInstance(getApplicationContext());
         setPageTheme(singleSettingData.getThemeId());
-        header.getBackground().setAlpha(255);
         setContentView(R.layout.activity_innovation_score);
         ButterKnife.bind(this);
+        header.getBackground().setAlpha(255);
         title.setText(getString(R.string.moreFun_innovation_score));
         btn_update_innovationScore.setOnClickListener(this);
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_innovation_score));
