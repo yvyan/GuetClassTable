@@ -124,8 +124,8 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
         innovation_studentName.setText(innovationScore.getName());
         innovation_studentNumber.setText(innovationScore.getStid());
         innovationScore_Basic.setText(String.valueOf(innovationScore.getLb1()));
-        innovationScore_Train.setText(String.valueOf(innovationScore.getLb21()));
-        innovationScore_Course.setText(String.valueOf(innovationScore.getLb22()));
+        innovationScore_Course.setText(String.valueOf(innovationScore.getLb21()));
+        innovationScore_Train.setText(String.valueOf(innovationScore.getLb22()));
         innovationScore_pratise.setText(String.valueOf(innovationScore.getLb3()));
         innovationScore_Lack.setText(String.valueOf(innovationScore.getLack()));
     }
