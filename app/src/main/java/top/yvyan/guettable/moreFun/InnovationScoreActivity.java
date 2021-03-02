@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.xuexiang.xui.widget.button.ButtonView;
 
@@ -50,6 +51,8 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
     TextView innovationScore_Lack;
     @BindView(R.id.innovation_btn_update)
     ButtonView btn_update_innovationScore;
+    @BindView(R.id.func_base_constraintLayout)
+    ConstraintLayout header;
 
     private BaseResponse<InnovationScore> innovationScoreBaseResponse;
     private MoreFunService moreFunService;
@@ -60,6 +63,7 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         SingleSettingData singleSettingData = SingleSettingData.newInstance(getApplicationContext());
         setPageTheme(singleSettingData.getThemeId());
+        header.getBackground().setAlpha(255);
         setContentView(R.layout.activity_innovation_score);
         ButterKnife.bind(this);
         title.setText(getString(R.string.moreFun_innovation_score));

@@ -75,7 +75,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         personFragment = this;
         Log.d(TAG, "createPersonFragmentView");
-        view = inflater.inflate(R.layout.fragement_preson, container, false);
+        view = inflater.inflate(R.layout.fragement_person, container, false);
         initData();
         initView();
         updateView();
