@@ -18,6 +18,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.table.IMoreFun;
 import top.yvyan.guettable.service.table.MoreFunService;
+import top.yvyan.guettable.util.BackgroundUtil;
 
 public abstract class BaseFuncActivity extends AppCompatActivity implements IMoreFun {
 
@@ -39,7 +40,7 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SingleSettingData singleSettingData = SingleSettingData.newInstance(getApplicationContext());
-        setPageTheme(singleSettingData.getThemeId());
+        BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_base_func);
         ButterKnife.bind(this);
         more.setVisibility(View.GONE);
@@ -134,23 +135,4 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
         finish();
     }
 
-    void setPageTheme(int id) {
-        switch (id) {
-            case 0:
-                setTheme(R.style.AppTheme);
-                break;
-            case 1:
-                setTheme(R.style.AppTheme_Pink);
-                break;
-            case 2:
-                setTheme(R.style.AppTheme_Red);
-                break;
-            case 3:
-                setTheme(R.style.AppTheme_Orange);
-                break;
-            case 4:
-                setTheme(R.style.AppTheme_Green);
-                break;
-        }
-    }
 }
