@@ -173,11 +173,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         View addStatus = view.findViewById(R.id.add_status);
         View titleBar = view.findViewById(R.id.title_bar);
         if (setBackground) {
-            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
             titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
+            addStatus.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
         } else {
-            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha(255);
+            addStatus.getBackground().setAlpha(255);
         }
     }
 

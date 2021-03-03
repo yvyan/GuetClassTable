@@ -314,13 +314,13 @@ public class PersonalizedActivity extends AppCompatActivity implements MaterialS
         ConstraintLayout titleBar = findViewById(R.id.func_base_constraintLayout);
         if (BackgroundUtil.isSetBackground(this)) {
             BackgroundUtil.setBackground(this, background);
-            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+            addStatus.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
             titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
             mTimetableView.colorPool().setUselessColor(0xCCCCCC);
             mTimetableView.alpha(singleSettingData.getDateAlpha(), singleSettingData.getSlideAlpha(), singleSettingData.getItemAlpha());
         } else {
             background.setImageBitmap(null);
-            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            addStatus.getBackground().setAlpha(255);
             titleBar.getBackground().setAlpha(255);
             mTimetableView.colorPool().setUselessColor(0xE0E0E0);
             mTimetableView.alpha(1, 1, 1);
@@ -355,7 +355,7 @@ public class PersonalizedActivity extends AppCompatActivity implements MaterialS
                 .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
                 .updateView();
     }
-    
+
     @Override
     public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
         BackgroundUtil.setPageTheme(this, position);

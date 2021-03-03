@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.SingleSettingData;
@@ -30,6 +33,12 @@ public class MoreUrlActivity extends AppCompatActivity {
 
         ConstraintLayout header = findViewById(R.id.func_base_constraintLayout);
         header.getBackground().setAlpha(255);
+
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        View addStatus = findViewById(R.id.add_status);
+        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
+        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getApplicationContext()));
+        addStatus.setLayoutParams(lp);
 
         TextView title = findViewById(R.id.title);
         title.setText(getString(R.string.moreFun_url_more));

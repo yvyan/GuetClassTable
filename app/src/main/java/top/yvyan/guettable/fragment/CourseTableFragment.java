@@ -106,13 +106,13 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         View addStatus = view.findViewById(R.id.add_status);
         View titleBar = view.findViewById(R.id.title_bar);
         if (setBackground) {
-            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
             titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
+            addStatus.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
             mTimetableView.colorPool().setUselessColor(0xCCCCCC);
             mTimetableView.alpha(singleSettingData.getDateAlpha(), singleSettingData.getSlideAlpha(), singleSettingData.getItemAlpha());
         } else {
-            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha(255);
+            addStatus.getBackground().setAlpha(255);
             mTimetableView.colorPool().setUselessColor(0xE0E0E0);
             mTimetableView.alpha(1, 1, 1);
         }
