@@ -3,12 +3,16 @@ package top.yvyan.guettable.moreFun;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.xuexiang.xui.widget.button.ButtonView;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,6 +72,11 @@ public class InnovationScoreActivity extends AppCompatActivity implements View.O
         ButterKnife.bind(this);
         header.getBackground().setAlpha(255);
         title.setText(getString(R.string.moreFun_innovation_score));
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        View addStatus = findViewById(R.id.add_status);
+        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
+        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getApplicationContext()));
+        addStatus.setLayoutParams(lp);
         btn_update_innovationScore.setOnClickListener(this);
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_innovation_score));
 

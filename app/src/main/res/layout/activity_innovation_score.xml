@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".moreFun.InnovationScoreActivity">
 
+    <View
+        android:id="@+id/add_status"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/color_bar" />
+
     <include
         android:id="@+id/func_base_constraintLayout"
         layout="@layout/header_base"

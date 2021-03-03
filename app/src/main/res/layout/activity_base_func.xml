@@ -6,11 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".moreFun.BaseFuncActivity">
 
-    <include
-        android:id="@+id/func_base_constraintLayout"
-        layout="@layout/header_base"
+    <LinearLayout
+        android:id="@+id/line"
         android:layout_width="match_parent"
-        android:layout_height="45dp" />
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/add_status"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?attr/color_bar" />
+
+        <include
+            android:id="@+id/func_base_constraintLayout"
+            layout="@layout/header_base"
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/content"
@@ -20,6 +38,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/func_base_constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/line" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

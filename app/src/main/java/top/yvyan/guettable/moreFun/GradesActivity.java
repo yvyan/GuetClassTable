@@ -15,6 +15,7 @@ public class GradesActivity extends BaseFuncActivity {
     private GeneralData generalData;
     private MoreDate moreDate;
 
+
     @Override
     protected void childInit() {
         setTitle(getResources().getString(R.string.moreFun_credits));

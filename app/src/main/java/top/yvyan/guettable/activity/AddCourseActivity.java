@@ -46,10 +46,11 @@ public class AddCourseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_course);
         //数据初始化
         generalData = GeneralData.newInstance(getApplicationContext());
         singleSettingData = SingleSettingData.newInstance(getApplicationContext());
+        BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
+        setContentView(R.layout.activity_add_course);
         TextView title = findViewById(R.id.title);
         title.setText("添加课程");
         //透明状态栏
@@ -64,14 +65,12 @@ public class AddCourseActivity extends AppCompatActivity {
         View titleBar = findViewById(R.id.func_base_constraintLayout);
         if (BackgroundUtil.isSetBackground(this)) {
             BackgroundUtil.setBackground(this, background);
-            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
+            addStatus.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
         } else {
             background.setImageBitmap(null);
-            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha(255);
+            addStatus.getBackground().setAlpha(255);
         }
         Intent thisIntent = getIntent();
         int week = thisIntent.getIntExtra("week", 1);

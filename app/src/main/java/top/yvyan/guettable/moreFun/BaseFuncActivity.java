@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.table.IMoreFun;
 import top.yvyan.guettable.service.table.MoreFunService;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 
 public abstract class BaseFuncActivity extends AppCompatActivity implements IMoreFun {
@@ -33,6 +37,8 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
     ImageView more;
     @BindView(R.id.func_base_constraintLayout)
     ConstraintLayout header;
+    @BindView(R.id.add_status)
+    View addStatus;
 
     protected boolean update = true;
 
@@ -47,9 +53,15 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
         more.setOnClickListener(this::showPopMenu);
         init();
         header.getBackground().setAlpha(255);
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
+        lp.height = lp.height + AppUtil.getStatusBarHeight(this);
+        addStatus.setLayoutParams(lp);
     }
 
     private void init() {
+
         childInit();
         MoreFunService moreFunService = new MoreFunService(this, this);
         showContent();

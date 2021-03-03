@@ -34,8 +34,6 @@ public class DetailActivity extends AppCompatActivity {
     public static int REQUEST_CODE = 11;
     public static int ALTER = 10;
 
-    private SingleSettingData singleSettingData;
-
     List<Schedule> schedules;
     int week;
 
@@ -43,8 +41,9 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SingleSettingData singleSettingData = SingleSettingData.newInstance(getApplicationContext());
+        BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_detail);
-        singleSettingData = SingleSettingData.newInstance(getApplicationContext());
         schedules = DetailClassData.newInstance().getCourseBeans();
         //透明状态栏
         Window window = this.getWindow();
@@ -80,21 +79,19 @@ public class DetailActivity extends AppCompatActivity {
         View titleBar = findViewById(R.id.func_base_constraintLayout);
         if (BackgroundUtil.isSetBackground(this)) {
             BackgroundUtil.setBackground(this, background);
-            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
+            addStatus.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
         } else {
             background.setImageBitmap(null);
-            addStatus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             titleBar.getBackground().setAlpha(255);
+            addStatus.getBackground().setAlpha(255);
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        lodeData(schedules, week);
+        loadData(schedules, week);
     }
 
     @Override
@@ -107,7 +104,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    private void lodeData(List<Schedule> schedules, int week) {
+    private void loadData(List<Schedule> schedules, int week) {
         //加载课程信息
         ComparatorCourse comparatorCourse = new ComparatorCourse();
         Collections.sort(schedules, comparatorCourse);
