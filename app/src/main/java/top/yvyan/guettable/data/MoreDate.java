@@ -1,6 +1,5 @@
 package top.yvyan.guettable.data;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -14,6 +13,7 @@ import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.bean.ResitBean;
+import top.yvyan.guettable.bean.SelectedCourseBean;
 import top.yvyan.guettable.util.SerializeUtil;
 
 public class MoreDate {
@@ -25,6 +25,7 @@ public class MoreDate {
     private static final String EXPERIMENT_SCORE_STRING = "EXPERIMENT_SCORE_STRING";
     private static final String PLANNED_COURSE_STRING = "plannedCourseString";
     private static final String GRADES_STRING = "gradesString";
+    private static final String SELECTED_COURSE = "SELECTED_COURSE";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -34,11 +35,13 @@ public class MoreDate {
     private List<ExamScoreBean> examScoreBeans;
     private List<ExperimentScoreBean> experimentScoreBeans;
     private List<PlannedCourseBean> plannedCourseBeans;
-    private float grades[];
+    private List<SelectedCourseBean> selectedCoursesBeans;
+    private float[] grades;
 
     private MoreDate(Context context) {
         sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+        editor.apply();
         load();
     }
 
@@ -48,20 +51,21 @@ public class MoreDate {
         ExamScoreBean[] examScoreBeans1 = null;
         ExperimentScoreBean[] experimentScoreBeans1 = null;
         PlannedCourseBean[] plannedCourseBeans1 = null;
+        SelectedCourseBean[] selectedCourseBeans1 = null;
+
 
         String resitString = sharedPreferences.getString(RESIT_STRING, null);
         String cetString = sharedPreferences.getString(CET_STRING, null);
-        String examScoreString = sharedPreferences.getString(EXAM_SCORE_STRING,null);
-        String experimentScoreString = sharedPreferences.getString(EXPERIMENT_SCORE_STRING,null);
+        String examScoreString = sharedPreferences.getString(EXAM_SCORE_STRING, null);
+        String experimentScoreString = sharedPreferences.getString(EXPERIMENT_SCORE_STRING, null);
         String plannedCourseString = sharedPreferences.getString(PLANNED_COURSE_STRING, null);
         String gradesString = sharedPreferences.getString(GRADES_STRING, null);
+        String selectedCourseString = sharedPreferences.getString(SELECTED_COURSE, null);
 
         if (resitString != null) {
             try {
                 resitBeans1 = (ResitBean[]) SerializeUtil.serializeToObject(resitString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             if (resitBeans1 != null) {
@@ -78,7 +82,7 @@ public class MoreDate {
                 cetBeans = Arrays.asList(cetBeans1);
             }
         }
-        if(examScoreString != null) {
+        if (examScoreString != null) {
             try {
                 examScoreBeans1 = (ExamScoreBean[]) SerializeUtil.serializeToObject(examScoreString);
             } catch (IOException | ClassNotFoundException e) {
@@ -88,7 +92,7 @@ public class MoreDate {
                 examScoreBeans = Arrays.asList(examScoreBeans1);
             }
         }
-        if(experimentScoreString != null) {
+        if (experimentScoreString != null) {
             try {
                 experimentScoreBeans1 = (ExperimentScoreBean[]) SerializeUtil.serializeToObject(experimentScoreString);
             } catch (IOException | ClassNotFoundException e) {
@@ -115,6 +119,16 @@ public class MoreDate {
                 e.printStackTrace();
             }
         }
+        if (selectedCourseString != null) {
+            try {
+                selectedCourseBeans1 = (SelectedCourseBean[]) SerializeUtil.serializeToObject(selectedCourseString);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (selectedCourseBeans1 != null) {
+                selectedCoursesBeans = Arrays.asList(selectedCourseBeans1);
+            }
+        }
     }
 
     public static MoreDate newInstance(Context context) {
@@ -125,7 +139,7 @@ public class MoreDate {
     }
 
     public List<ResitBean> getResitBeans() {
-        if (resitBeans  == null) {
+        if (resitBeans == null) {
             resitBeans = new ArrayList<>();
         }
         return resitBeans;
@@ -224,6 +238,17 @@ public class MoreDate {
             plannedCourseBeans = new ArrayList<>();
         }
         return plannedCourseBeans;
+    }
+
+    public List<SelectedCourseBean> getSelectedCourseBeans() {
+        if (selectedCoursesBeans == null) {
+            selectedCoursesBeans = new ArrayList<>();
+        }
+        return selectedCoursesBeans;
+    }
+
+    public void setSelectedCoursesBeans(List<SelectedCourseBean> selectedCoursesBeans) {
+        this.selectedCoursesBeans = selectedCoursesBeans;
     }
 
     public void setPlannedCourseBeans(List<PlannedCourseBean> plannedCourseBeans) {

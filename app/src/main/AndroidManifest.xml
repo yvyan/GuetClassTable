@@ -29,6 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,UnusedAttribute">
+        <activity android:name=".moreFun.SelectedCourseActivity" />
         <activity
             android:name=".activity.AddCourseActivity"
             android:windowSoftInputMode="adjustPan" />
