@@ -545,6 +545,7 @@
                         android:layout_height="10dp" />
 
                     <com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner
+                        style="@style/Material.SpinnerStyle"
                         android:id="@+id/spinner_theme"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

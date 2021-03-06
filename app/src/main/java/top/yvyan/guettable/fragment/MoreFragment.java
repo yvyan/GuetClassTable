@@ -31,6 +31,7 @@ import top.yvyan.guettable.moreFun.LibActivity;
 import top.yvyan.guettable.moreFun.MoreUrlActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
+import top.yvyan.guettable.moreFun.SelectedCourseActivity;
 import top.yvyan.guettable.moreFun.TestActivity;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
@@ -114,6 +115,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         evaluatingTeachers.setOnClickListener(this);
         View evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
         evaluatingTextbooks.setOnClickListener(this);
+
+        View selectedCourse = view.findViewById(R.id.more_selected_course);
+        selectedCourse.setOnClickListener(this);
 
 //        View test = view.findViewById(R.id.more_test);
 //        test.setOnClickListener(this);
@@ -236,6 +240,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.more_test:
                 intent = new Intent(getContext(), TestActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.more_selected_course:
+                intent = new Intent(getContext(), SelectedCourseActivity.class);
                 startActivity(intent);
                 break;
             default:

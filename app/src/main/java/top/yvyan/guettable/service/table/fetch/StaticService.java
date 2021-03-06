@@ -2,6 +2,7 @@ package top.yvyan.guettable.service.table.fetch;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -36,6 +37,7 @@ import top.yvyan.guettable.Gson.InnovationScore;
 import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
+import top.yvyan.guettable.Gson.SelectedCourse;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.bean.CETBean;
@@ -45,8 +47,8 @@ import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.bean.ResitBean;
+import top.yvyan.guettable.bean.SelectedCourseBean;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.RegularUtil;
 
 public class StaticService {
@@ -700,7 +702,8 @@ public class StaticService {
     public static BaseResponse<AvgTextbookFormGet> getAvgTextbookFormOuter(Context context, String cookie, AvgTextbook avgTextbook) {
         HttpConnectionAndCode textbookFormGet = Net.getAvgTextbookFormOuter(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh(), TokenData.isVPN);
         if (textbookFormGet.code == 0) {
-            return new Gson().fromJson(textbookFormGet.comment, new BaseResponse<AvgTextbookFormGet>().getClass());
+            Log.d("Json: ", textbookFormGet.comment);
+            return new Gson().fromJson(textbookFormGet.comment, new BaseResponse<AvgTeacherFormGet>().getClass());
         } else {
             return null;
         }
@@ -983,7 +986,8 @@ public class StaticService {
         if (httpConnectionAndCode.comment != null) {
             BaseResponse<InnovationScore> result;
             try {
-                result = new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {}.getType());
+                result = new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {
+                }.getType());
             } catch (Exception ignored) {
                 return null;
             }
@@ -1009,5 +1013,28 @@ public class StaticService {
             return 0;
         }
         return -1;
+    }
+
+    /**
+     * 查询已选课程
+     *
+     * @param context context
+     * @param cookie  cookie
+     * @param term    当前学期
+     * @return 操作结果
+     */
+    public static List<SelectedCourseBean> getSelectedCourse(Context context, String cookie, String term) {
+        HttpConnectionAndCode httpConnectionAndCode = Net.getSelectedCourse(context, cookie, term, TokenData.isVPN);
+        String comment = httpConnectionAndCode.comment;
+        List<SelectedCourseBean> list = null;
+        if (comment != null && comment.startsWith("{")) {
+            BaseResponse<List<SelectedCourse>> result = new Gson().fromJson(comment, new TypeToken<BaseResponse<List<SelectedCourse>>>() {
+            }.getType());
+            list = new ArrayList<>();
+            for (SelectedCourse selectedCourse : result.getData()) {
+                list.add(new SelectedCourseBean(selectedCourse));
+            }
+        }
+        return list;
     }
 }
