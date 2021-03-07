@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.DayClassAdapter;
 import top.yvyan.guettable.bean.CourseBean;
@@ -56,7 +57,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private TextView showExamDay;
 
     private AutoUpdate autoUpdate;
-    private OnButtonClick onButtonClick;
 
     private SingleSettingData singleSettingData;
     private AccountData accountData;
@@ -205,9 +205,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.day_class_hint:
                 if ("去登录".contentEquals(textView.getText())) {
-                    if (onButtonClick != null) {
-                        onButtonClick.onClick(3);
-                    }
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.onClick(3);
                     return;
                 }
                 autoUpdate.update();
@@ -269,9 +268,5 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             }
         }
         return list;
-    }
-
-    public void setOnButtonClick(OnButtonClick onButtonClick) {
-        this.onButtonClick = onButtonClick;
     }
 }
