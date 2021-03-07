@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.umcrash.UMCrash;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -46,7 +47,6 @@ import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.RegularUtil;
 
 public class StaticService {
@@ -700,7 +700,12 @@ public class StaticService {
     public static BaseResponse<AvgTextbookFormGet> getAvgTextbookFormOuter(Context context, String cookie, AvgTextbook avgTextbook) {
         HttpConnectionAndCode textbookFormGet = Net.getAvgTextbookFormOuter(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh(), TokenData.isVPN);
         if (textbookFormGet.code == 0) {
-            return new Gson().fromJson(textbookFormGet.comment, new BaseResponse<AvgTextbookFormGet>().getClass());
+            try {
+                return new Gson().fromJson(textbookFormGet.comment, new BaseResponse<AvgTextbookFormGet>().getClass());
+            } catch (Exception e) {
+                UMCrash.generateCustomLog(e, "StaticService.getAvgTextbookFormOuter");
+                return null;
+            }
         } else {
             return null;
         }
@@ -983,7 +988,8 @@ public class StaticService {
         if (httpConnectionAndCode.comment != null) {
             BaseResponse<InnovationScore> result;
             try {
-                result = new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {}.getType());
+                result = new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {
+                }.getType());
             } catch (Exception ignored) {
                 return null;
             }

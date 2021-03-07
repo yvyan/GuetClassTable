@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.umeng.umcrash.UMCrash;
 import com.xuexiang.xui.widget.button.ButtonView;
 import com.xuexiang.xui.widget.picker.XSeekBar;
 
@@ -63,7 +64,12 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         String term = generalData.getTerm();
         stuId.setText(generalData.getNumber());
         stuName.setText(generalData.getName());
-        int num = Integer.parseInt(grade);
+        int num = 2018;
+        try {
+            num = Integer.parseInt(grade);
+        } catch (Exception e) {
+            UMCrash.generateCustomLog(e, "SetTerm.initView.Integer.parseInt");
+        }
         setYearSpinner(num);
         //自动选择年度
         int nowYear = Integer.parseInt(term.substring(0, 4));
