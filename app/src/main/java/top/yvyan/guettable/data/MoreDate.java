@@ -25,10 +25,10 @@ public class MoreDate {
     private static final String EXPERIMENT_SCORE_STRING = "EXPERIMENT_SCORE_STRING";
     private static final String PLANNED_COURSE_STRING = "plannedCourseString";
     private static final String GRADES_STRING = "gradesString";
-    private static final String SELECTED_COURSE = "SELECTED_COURSE";
+    private static final String SELECTED_COURSE = "selectedCourses";
 
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
+    private final SharedPreferences sharedPreferences;
+    private final SharedPreferences.Editor editor;
 
     private List<ResitBean> resitBeans;
     private List<CETBean> cetBeans;
@@ -233,22 +233,12 @@ public class MoreDate {
         }
     }
 
+    //计划课程
     public List<PlannedCourseBean> getPlannedCourseBeans() {
         if (plannedCourseBeans == null) {
             plannedCourseBeans = new ArrayList<>();
         }
         return plannedCourseBeans;
-    }
-
-    public List<SelectedCourseBean> getSelectedCourseBeans() {
-        if (selectedCoursesBeans == null) {
-            selectedCoursesBeans = new ArrayList<>();
-        }
-        return selectedCoursesBeans;
-    }
-
-    public void setSelectedCoursesBeans(List<SelectedCourseBean> selectedCoursesBeans) {
-        this.selectedCoursesBeans = selectedCoursesBeans;
     }
 
     public void setPlannedCourseBeans(List<PlannedCourseBean> plannedCourseBeans) {
@@ -263,6 +253,30 @@ public class MoreDate {
         }
         if (plannedCourseString != null) {
             editor.putString(PLANNED_COURSE_STRING, plannedCourseString);
+            editor.apply();
+        }
+    }
+
+    //已选课程
+    public List<SelectedCourseBean> getSelectedCourseBeans() {
+        if (selectedCoursesBeans == null) {
+            selectedCoursesBeans = new ArrayList<>();
+        }
+        return selectedCoursesBeans;
+    }
+
+    public void setSelectedCoursesBeans(List<SelectedCourseBean> selectedCoursesBeans) {
+        this.selectedCoursesBeans = selectedCoursesBeans;
+        String selectCourseString = null;
+        SelectedCourseBean[] selectedCourseBeans1 = new SelectedCourseBean[selectedCoursesBeans.size()];
+        selectedCoursesBeans.toArray(selectedCourseBeans1);
+        try {
+            selectCourseString = SerializeUtil.serialize(selectedCourseBeans1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (selectCourseString != null) {
+            editor.putString(SELECTED_COURSE, selectCourseString);
             editor.apply();
         }
     }

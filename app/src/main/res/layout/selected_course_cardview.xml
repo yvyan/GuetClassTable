@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:layout_marginBottom="10dp"
     android:orientation="vertical">
 
     <View
@@ -19,6 +19,7 @@
         android:id="@+id/selected_courseName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="名称"
         android:textAlignment="center"
@@ -32,6 +33,7 @@
         android:id="@+id/selected_courseQuality"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="性质"
         android:textSize="16sp"
@@ -44,6 +46,7 @@
         android:id="@+id/selected_courseCredit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="学分"
         android:textSize="16sp"
@@ -56,6 +59,7 @@
         android:id="@+id/selected_selectType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="类别"
         android:textSize="16sp"

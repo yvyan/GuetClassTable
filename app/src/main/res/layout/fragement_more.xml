@@ -214,8 +214,8 @@
 
                             <ImageView
                                 android:id="@+id/more_lib_schedule_picture"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
                                 android:layout_gravity="top|center"
                                 android:src="@drawable/m_shiyanping"
                                 tools:ignore="ContentDescription" />
@@ -237,8 +237,9 @@
 
                             <ImageView
                                 android:id="@+id/more_selected_course"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
+                                android:layout_marginTop="-3dp"
                                 android:layout_gravity="top|center"
                                 android:src="@drawable/ic_selected_course"
                                 tools:ignore="ContentDescription" />
@@ -256,7 +257,8 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            tools:ignore="UselessLeaf">
 
                         </FrameLayout>
 
@@ -377,7 +379,8 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            tools:ignore="UselessLeaf">
 
                         </FrameLayout>
 
@@ -598,7 +601,8 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            tools:ignore="UselessLeaf">
 
                         </FrameLayout>
 
@@ -717,7 +721,8 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            tools:ignore="UselessLeaf">
 
                         </FrameLayout>
 
