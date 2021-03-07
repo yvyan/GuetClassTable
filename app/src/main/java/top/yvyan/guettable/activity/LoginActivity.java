@@ -1,5 +1,6 @@
 package top.yvyan.guettable.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -153,9 +154,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 state = -2;
             }
             if (state == 0) {
-                runOnUiThread(() -> {
-                    button.setText("正在登录");
-                });
+                runOnUiThread(() -> button.setText("正在登录"));
                 TokenData tokenData = TokenData.newInstance(this);
                 tokenData.setLoginType(type);
                 accountData.setUser(account, pwd, cbRememberPwd.isChecked());
@@ -167,9 +166,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     }
                 }
                 tokenData.refresh();
-                runOnUiThread(() -> {
-                    button.setText("获取个人信息");
-                });
+                runOnUiThread(() -> button.setText("获取个人信息"));
                 StudentInfo studentInfo = StaticService.getStudentInfo(this, TokenData.newInstance(this).getCookie());
                 GeneralData generalData = GeneralData.newInstance(this);
                 if (studentInfo != null) {
@@ -182,7 +179,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     finish();
                 } else { //若获取个人信息失败，则登出，否则会导致后续获取不到年级等信息导致闪退
                     runOnUiThread(() -> {
-                        ToastUtil.showToast(this, getResources().getString(R.string.lan_login_fail_getInfo));
+                        ToastUtil.showToast(this, getResources().getString(R.string.login_fail_getInfo));
                         accountData.logoff();
                         setEnClick();
                     });
@@ -192,14 +189,20 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 runOnUiThread(() -> {
                     switch (finalState) {
                         case -1:
-                            ToastUtil.showToast(this, getResources().getString(R.string.lan_login_fail_pwd));
+                            if (type == 0) {
+                                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_pwd));
+                            } else {
+                                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_bkjw));
+                            }
                             break;
                         case -2:
-                            ToastUtil.showToast(this, getResources().getString(R.string.lan_login_fail));
+                            ToastUtil.showToast(this, getResources().getString(R.string.login_fail));
                             break;
                         case -3:
-                            ToastUtil.showToast(this, getResources().getString(R.string.lan_login_fail_ck));
+                            ToastUtil.showToast(this, getResources().getString(R.string.login_fail_ck));
                             break;
+                        case -4:
+                            ToastUtil.showToast(this, getResources().getString(R.string.login_fail_vpn));
                     }
                     setEnClick();
                 });
@@ -228,9 +231,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      */
     public int testLoginCAS(String account, String password) {
         String TGTTokenStr = StaticService.SSOLogin(this, account, password, TokenData.isVPN);
-        runOnUiThread(() -> {
-            button.setText("正在认证");
-        });
+        runOnUiThread(() -> button.setText("正在认证"));
         if (TGTTokenStr.equals("ERROR2")) {
             return -2;
         }
@@ -249,11 +250,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      * @param password 密码
      * @param passwordVPN VPN密码
      * @return 操作结果
-     * 0 -- 登录成功
-     * -1 -- 密码错误
+     *  0 -- 登录成功
+     * -1 -- 教务密码错误
      * -2 -- 网络错误/未知错误
      * -3 -- 验证码连续错误
+     * -4 -- VPN密码错误
      */
+    @SuppressLint("SetTextI18n")
     public int testLoginBkjw(String account, String password, String passwordVPN) {
         TokenData tokenData = TokenData.newInstance(this);
         String VPNToken = Net.getVPNToken(this);
@@ -261,15 +264,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         if (passwordVPN.isEmpty()) {
             passwordVPN = password;
         }
-        runOnUiThread(() -> {
-            button.setText("验证VPN");
-        });
+        runOnUiThread(() -> button.setText("验证VPN"));
         int n = StaticService.loginVPN(this, VPNToken, account, passwordVPN);
+        if (n != 0) {
+            n = -4;
+        }
         if (TokenData.isVPN) {
             if (n == 0) {
-                runOnUiThread(() -> {
-                    button.setText("验证教务");
-                });
+                runOnUiThread(() -> button.setText("验证教务"));
                 n = StaticService.autoLoginV(this, account, password, VPNToken);
             }
         } else {

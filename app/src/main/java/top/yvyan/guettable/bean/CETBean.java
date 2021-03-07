@@ -2,6 +2,8 @@ package top.yvyan.guettable.bean;
 
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public class CETBean implements Serializable, BeanAttribute {
@@ -11,13 +13,13 @@ public class CETBean implements Serializable, BeanAttribute {
     //学期
     private String term;
     //综合成绩
-    private int stage;
+    private final int stage;
     //折算成绩
     private float score;
     //证书编号
-    private String card;
+    private final String card;
     //推送时间
-    private String postDate;
+    private final String postDate;
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -26,11 +28,12 @@ public class CETBean implements Serializable, BeanAttribute {
         if (obj.getClass() != this.getClass())
             return false;
         CETBean cetBean = (CETBean) obj;
+        if (cetBean.getCard() == null && this.getCard() != null || cetBean.getCard() != null && this.getCard() == null) {
+            return false;
+        }
         return this.card.equals(cetBean.card)
                 && this.stage == cetBean.stage;
     }
-
-    public CETBean() {}
 
     public CETBean(String name, String term, int stage, float score, String card, String postDate) {
         this.name = name;
@@ -69,10 +72,6 @@ public class CETBean implements Serializable, BeanAttribute {
         return stage;
     }
 
-    public void setStage(int stage) {
-        this.stage = stage;
-    }
-
     public float getScore() {
         return score;
     }
@@ -85,18 +84,11 @@ public class CETBean implements Serializable, BeanAttribute {
         return card;
     }
 
-    public void setCard(String card) {
-        this.card = card;
-    }
-
     public String getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(String postDate) {
-        this.postDate = postDate;
-    }
-
+    @NotNull
     @Override
     public String toString() {
         return "CETBean{" +
