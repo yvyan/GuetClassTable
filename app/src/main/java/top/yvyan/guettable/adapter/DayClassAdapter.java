@@ -90,8 +90,15 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             holder.textView3.setText("教师：" + examBean.getTeacher());
             holder.textView4.setText("教室：" + examBean.getRoom());
             holder.textView5.setText("时间：" + examBean.getTime());
-            holder.textView6.setVisibility(View.GONE);
-            holder.textView7.setText("日期：" + TimeUtil.timeFormat(examBean.getDate()) + "(第" + examBean.getWeek() + "周 " + TimeUtil.whichDay(examBean.getDay()) + ")");
+            String date = "日期：" + TimeUtil.timeFormat(examBean.getDate()) + "(第" + examBean.getWeek() + "周 " + TimeUtil.whichDay(examBean.getDay()) + ")";
+            if (examBean.getComm().isEmpty()) {
+                holder.textView6.setVisibility(View.GONE);
+                holder.textView7.setText(date);
+            } else {
+                holder.textView6.setVisibility(View.VISIBLE);
+                holder.textView6.setText(date);
+                holder.textView7.setText(examBean.getComm());
+            }
         } else { //理论课和课内实验
             CourseBean courseBean = new CourseBean();
             courseBean.setFromSchedule(schedule);

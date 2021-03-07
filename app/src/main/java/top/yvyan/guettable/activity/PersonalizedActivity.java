@@ -21,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.umeng.umcrash.UMCrash;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
+import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner.OnItemSelectedListener;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
@@ -41,9 +42,9 @@ import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
-public class PersonalizedActivity extends AppCompatActivity implements MaterialSpinner.OnItemSelectedListener {
+public class PersonalizedActivity extends AppCompatActivity implements OnItemSelectedListener {
 
-    private static String[] themes = {"桂电蓝", "B站粉", "京东红", "淘宝橙", "微信绿"};
+    private static final String[] themes = {"桂电蓝", "B站粉", "京东红", "淘宝橙", "微信绿"};
     private SingleSettingData singleSettingData;
     private GeneralData generalData;
 

@@ -5,8 +5,6 @@ import androidx.annotation.Nullable;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleEnable;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +16,7 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
     public static String TIME = "time";
     public static String DATE = "date";
     public static String TYPE = "type";
+    public static String COMM = "comm";
 
     //课号
     private String number;
@@ -37,6 +36,8 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
     private Date date;
     //教室
     private String room;
+    //备注
+    private String comm;
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -52,7 +53,8 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
             return number.equals(bean.number)
                     && week == bean.week
                     && day == bean.day
-                    && time.equals(bean.time);
+                    && time.equals(bean.time)
+                    && comm.equals(bean.comm);
         } else {
             return false;
         }
@@ -71,9 +73,10 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         this.time = examBean.getTime();
         this.date = examBean.getDate();
         this.room = examBean.getRoom();
+        this.comm = examBean.getComm();
     }
 
-    public ExamBean(String number, String name, String teacher, int week, int day, int classNum, String time, Date date, String room) {
+    public ExamBean(String number, String name, String teacher, int week, int day, int classNum, String time, Date date, String room, String comm) {
         this.number = number;
         this.name = name;
         this.teacher = teacher;
@@ -83,6 +86,10 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         this.time = time;
         this.date = date;
         this.room = room;
+        if (comm == null) {
+            comm = "";
+        }
+        this.comm = comm;
     }
 
     public void setFromSchedule(Schedule schedule) {
@@ -95,6 +102,10 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         week = schedule.getWeekList().get(0);
         time = (String) schedule.getExtras().get(TIME);
         date = (Date) schedule.getExtras().get(DATE);
+        comm = (String) schedule.getExtras().get(COMM);
+        if (comm == null) {
+            comm = "";
+        }
     }
 
     @Override
@@ -116,6 +127,7 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         schedule.putExtras(NUMBER, number);
         //类型: 0:理论课; 1:实验课; 2:考试安排
         schedule.putExtras(TYPE, 2);
+        schedule.putExtras(COMM, comm);
         return schedule;
     }
 
@@ -167,20 +179,15 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         this.room = room;
     }
 
-    @NotNull
-    @Override
-    public String toString() {
-        return "ExamBean{" +
-                "number='" + number + '\'' +
-                ", name='" + name + '\'' +
-                ", teacher='" + teacher + '\'' +
-                ", week=" + week +
-                ", day=" + day +
-                ", classNum=" + classNum +
-                ", time='" + time + '\'' +
-                ", date=" + date +
-                ", room='" + room + '\'' +
-                '}';
+    public String getComm() {
+        if (comm == null) {
+            comm = "";
+        }
+        return comm;
+    }
+
+    public void setComm(String comm) {
+        this.comm = comm;
     }
 
     @Override
@@ -190,6 +197,6 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
 
     @Override
     public long getOrder() {
-        return week * 10 + day;
+        return week * 7 + day;
     }
 }

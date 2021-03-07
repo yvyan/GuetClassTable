@@ -1,5 +1,6 @@
 package top.yvyan.guettable.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
         return new ExamViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ExamViewHolder holder, int position) {
         holder.textView1.setText(examBeans.get(position).getName());
@@ -37,11 +39,18 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
         holder.textView3.setText("教师：" + examBeans.get(position).getTeacher());
         holder.textView4.setText("教室：" + (examBeans.get(position).getRoom() == null ? "未公布" : examBeans.get(position).getRoom()));
         holder.textView5.setText("时间：" + examBeans.get(position).getTime());
-        holder.textView6.setVisibility(View.GONE);
-        holder.textView7.setText("日期："
+        String date = "日期："
                 + (examBeans.get(position).getDate() == null ? "获取失败" : TimeUtil.timeFormat(examBeans.get(position).getDate()))
                 + "(第" + examBeans.get(position).getWeek() + "周 "
-                + TimeUtil.whichDay(examBeans.get(position).getDay()) + ")");
+                + TimeUtil.whichDay(examBeans.get(position).getDay()) + ")";
+        if (examBeans.get(position).getComm().isEmpty()) {
+            holder.textView6.setVisibility(View.GONE);
+            holder.textView7.setText(date);
+        } else {
+            holder.textView6.setVisibility(View.VISIBLE);
+            holder.textView6.setText(date);
+            holder.textView7.setText(examBeans.get(position).getComm());
+        }
     }
 
     @Override

@@ -84,7 +84,7 @@
                     android:layout_marginTop="15dp"
                     android:text="背景和透明:"
                     android:textColor="?attr/color_text"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:id="@+id/clean_background"
@@ -340,7 +340,7 @@
                     android:layout_marginTop="15dp"
                     android:text="课表:"
                     android:textColor="?attr/color_text"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -518,10 +518,6 @@
                     android:layout_marginEnd="20dp"
                     android:background="@color/xui_config_color_gray_9" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -529,15 +525,12 @@
                     android:layout_marginTop="15dp"
                     android:text="主题:"
                     android:textColor="?attr/color_text"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:id="@+id/switch_theme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:orientation="vertical">
 
                     <View
@@ -548,14 +541,20 @@
                         android:id="@+id/spinner_theme"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp"
                         app:ms_background_color="@color/app_white2" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="10dp" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
                 </LinearLayout>
+
             </LinearLayout>
 
         </ScrollView>
