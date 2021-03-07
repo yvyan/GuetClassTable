@@ -23,7 +23,8 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
 
     @Override
     protected void childInit() {
-        setTitle("已选课程");
+        setTitle(getResources().getString(R.string.moreFun_selected_course));
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_selected_course));
         setShowMore(false);
         generalData = GeneralData.newInstance(this);
         moreDate = MoreDate.newInstance(this);
@@ -45,10 +46,8 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
         if (selectedCourseBeans != null) {
             ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
             Collections.sort(selectedCourseBeans, comparatorBeanAttribute);
-            if (!AppUtil.equalList(selectedCourseBeans, moreDate.getSelectedCourseBeans())) {
-                moreDate.setSelectedCoursesBeans(selectedCourseBeans);
-                update = true;
-            }
+            moreDate.setSelectedCoursesBeans(selectedCourseBeans);
+            update = true;
             return 5;
         }
         return 1;

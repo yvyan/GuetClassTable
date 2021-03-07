@@ -44,10 +44,10 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
 
     static class SelectedCourseViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView courseCredit;
-        private TextView courseName;
-        private TextView courseType;
-        private TextView courseQuality;
+        private final TextView courseCredit;
+        private final TextView courseName;
+        private final TextView courseType;
+        private final TextView courseQuality;
 
         public SelectedCourseViewHolder(@NonNull View itemView) {
             super(itemView);
