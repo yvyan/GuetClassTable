@@ -58,14 +58,38 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="schoolSong">
+                android:onClick="training">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
                     android:layout_margin="12dp"
-                    android:text="@string/text_school_song"
+                    android:text="@string/text_training"
+                    android:textColor="#AA000000"
+                    android:textSize="18sp" />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="calendar">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:layout_margin="12dp"
+                    android:text="@string/text_calendar"
                     android:textColor="#AA000000"
                     android:textSize="18sp" />
 
@@ -106,14 +130,14 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="CET">
+                android:onClick="libOpen">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
                     android:layout_margin="12dp"
-                    android:text="@string/text_cet"
+                    android:text="@string/text_lib_open"
                     android:textColor="#AA000000"
                     android:textSize="18sp" />
 
@@ -138,6 +162,54 @@
                     android:layout_gravity="start|center"
                     android:layout_margin="12dp"
                     android:text="@string/text_mail"
+                    android:textColor="#AA000000"
+                    android:textSize="18sp" />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="CET">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:layout_margin="12dp"
+                    android:text="@string/text_cet"
+                    android:textColor="#AA000000"
+                    android:textSize="18sp" />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="schoolSong">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:layout_margin="12dp"
+                    android:text="@string/text_school_song"
                     android:textColor="#AA000000"
                     android:textSize="18sp" />
 

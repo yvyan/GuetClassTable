@@ -79,4 +79,16 @@ public class MoreUrlActivity extends AppCompatActivity {
     public void mail(View view) {
         openBrowser(getResources().getString(R.string.url_mail));
     }
+
+    public void training(View view) {
+        openBrowser(getResources().getString(R.string.url_training));
+    }
+
+    public void calendar(View view) {
+        openBrowser(getResources().getString(R.string.url_calendar));
+    }
+
+    public void libOpen(View view) {
+        openBrowser(getResources().getString(R.string.url_lib_open));
+    }
 }
