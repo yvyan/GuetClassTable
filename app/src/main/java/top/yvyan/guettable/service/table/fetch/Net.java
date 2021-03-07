@@ -913,4 +913,33 @@ public class Net {
                 null
         );
     }
+
+
+    /**
+     * 查询已选课程
+     *
+     * @param context
+     * @param cookie
+     * @param isVPN   是否外网
+     * @return 操作结果
+     */
+    public static HttpConnectionAndCode getSelectedCourse(Context context, String cookie, String term, boolean isVPN) {
+        Resources resources = context.getResources();
+        String[] param = {"term=".concat(term)};
+        return Get.get(
+                UrlReplaceUtil.getUrlByVPN(isVPN, resources.getString(R.string.lan_get_selected_course)),
+                param,
+                resources.getString(R.string.user_agent),
+                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_login_success_contain_response_text),
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
 }
