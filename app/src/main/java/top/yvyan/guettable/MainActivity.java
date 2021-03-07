@@ -30,13 +30,12 @@ import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
-import top.yvyan.guettable.fragment.OnButtonClick;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
 import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.util.BackgroundUtil;
 
-public class MainActivity extends AppCompatActivity implements OnButtonClick {
+public class MainActivity extends AppCompatActivity {
 
     public static final String APP_ID = "2882303761518881128";
     public static final String APP_KEY = "5601888146128";
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         //透明状态栏
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
 
         background = findViewById(R.id.background);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -99,11 +97,6 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         list.add(PersonFragment.newInstance());
         viewPagerAdapter.setList(list);
 
-        DayClassFragment dayClassFragment = DayClassFragment.newInstance();
-        dayClassFragment.setOnButtonClick(this);
-        PersonFragment personFragment = PersonFragment.newInstance();
-        personFragment.setOnButtonClick(this);
-
         if (shouldInit()) {
             MiPushClient.registerPush(this, APP_ID, APP_KEY);
         }
@@ -129,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements OnButtonClick {
         }
     }
 
-    @Override
     public void onClick(int n) {
         viewPager.setCurrentItem(n);
     }

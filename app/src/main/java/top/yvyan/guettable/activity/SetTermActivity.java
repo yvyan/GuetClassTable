@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.xuexiang.xui.widget.button.ButtonView;
 import com.xuexiang.xui.widget.picker.XSeekBar;
 
+import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
@@ -132,7 +133,8 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 GeneralData.newInstance(this).setLastUpdateTime(-1);
                 PersonFragment personFragment = PersonFragment.newInstance();
                 personFragment.updateView();
-                personFragment.getOnButtonClick().onClick(0); //切换页面0
+                MainActivity mainActivity = (MainActivity) personFragment.getActivity();
+                mainActivity.onClick(0); //切换页面0
 
                 ToastUtil.showToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待，不要滑动页面");
                 finish();
