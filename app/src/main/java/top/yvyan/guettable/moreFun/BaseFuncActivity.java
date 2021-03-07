@@ -35,8 +35,10 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.more)
     ImageView more;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.func_base_constraintLayout)
     ConstraintLayout header;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.add_status)
     View addStatus;
 

@@ -18,6 +18,8 @@ import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SingleSettingData;
+import top.yvyan.guettable.fragment.CourseTableFragment;
+import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.ComparatorBeanAttribute;
@@ -122,6 +124,10 @@ public class ExamActivity extends BaseFuncActivity {
             if (!AppUtil.equalList(examBeans, scheduleData.getExamBeans())) {
                 scheduleData.setExamBeans(examBeans);
                 update = true;
+                runOnUiThread(() -> {
+                    CourseTableFragment.newInstance().updateTable();
+                    DayClassFragment.newInstance().updateView();
+                });
             }
             return 5;
         }
