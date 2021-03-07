@@ -23,7 +23,12 @@ public class ResitBean implements Serializable, BeanAttribute {
         this.number = number;
         this.name = name;
         this.time = time;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+        SimpleDateFormat simpleDateFormat;
+        if (date.contains("-")) {
+            simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            simpleDateFormat = new SimpleDateFormat("MM dd yyyy");
+        }
         if (date != null) {
             try {
                 this.date = simpleDateFormat.parse(date);

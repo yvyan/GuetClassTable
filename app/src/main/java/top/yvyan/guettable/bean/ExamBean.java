@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleEnable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +58,8 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         }
     }
 
-    public ExamBean() {}
+    public ExamBean() {
+    }
 
     public ExamBean(ExamBean examBean) {
         this.number = examBean.getNumber();
@@ -120,10 +123,6 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public String getName() {
         return name;
     }
@@ -134,10 +133,6 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
 
     public String getTeacher() {
         return teacher;
-    }
-
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
     }
 
     public int getWeek() {
@@ -152,32 +147,16 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         return day;
     }
 
-    public void setDay(int day) {
-        this.day = day;
-    }
-
     public int getClassNum() {
         return classNum;
-    }
-
-    public void setClassNum(int classNum) {
-        this.classNum = classNum;
     }
 
     public String getTime() {
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public Date getDate() {
         return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public String getRoom() {
@@ -188,6 +167,7 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         this.room = room;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "ExamBean{" +
