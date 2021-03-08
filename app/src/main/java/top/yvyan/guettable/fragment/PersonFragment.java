@@ -1,6 +1,5 @@
 package top.yvyan.guettable.fragment;
 
-
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;

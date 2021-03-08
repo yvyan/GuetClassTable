@@ -26,9 +26,7 @@ import top.yvyan.guettable.util.SSLUtils;
 
 public class Post {
     /**
-     * @non-ui
-     * @return
-     * - 0 GET success
+     * @return - 0 GET success
      * - -1 cannot open url
      * - -2 cannot close input stream
      * - -3 can not get output stream
@@ -36,7 +34,6 @@ public class Post {
      * - -5 cannot get response
      * - -6 response check fail
      * - -7 302
-     * @clear
      */
     public static HttpConnectionAndCode post(@NonNull final String u,
                                              @Nullable final String[] parms,
@@ -49,13 +46,13 @@ public class Post {
                                              @Nullable final String success_resp_text,
                                              @Nullable final String[] accept_encodings,
                                              @Nullable final Boolean redirect,
-                                             @Nullable final String content_type){
-        URL url = null;
-        HttpURLConnection cnt = null;
-        DataOutputStream dos = null;
-        InputStreamReader in = null;
-        String response = null;
-        int resp_code = 0;
+                                             @Nullable final String content_type) {
+        URL url;
+        HttpURLConnection cnt;
+        DataOutputStream dos;
+        InputStreamReader in;
+        String response;
+        int resp_code;
         try {
             StringBuilder u_bulider = new StringBuilder();
             u_bulider.append(u);
@@ -67,13 +64,13 @@ public class Post {
             cnt.setDoOutput(true);
             cnt.setDoInput(true);
             cnt.setRequestProperty("User-Agent", user_agent);
-            if (accept_encodings != null && accept_encodings.length > 0){
+            if (accept_encodings != null && accept_encodings.length > 0) {
                 List<String> encodings = Arrays.asList(accept_encodings);
-                if (encodings.indexOf("gzip") == -1){
+                if (!encodings.contains("gzip")) {
                     encodings.add("gzip");
                 }
                 cnt.setRequestProperty("Accept-Encoding", TextUtils.join(", ", encodings));
-            }else {
+            } else {
                 cnt.setRequestProperty("Accept-Encoding", "gzip");
             }
             cnt.setRequestProperty("Referer", referer);
@@ -83,24 +80,22 @@ public class Post {
             if (content_type != null) {
                 cnt.setRequestProperty("Content-Type", content_type);
             }
-            if (cookie != null){
+            if (cookie != null) {
                 cnt.setRequestProperty("Cookie", cookie);
             }
             cnt.setRequestMethod("POST");
             if (redirect == null) {
                 cnt.setInstanceFollowRedirects(true);
-            }else {
+            } else {
                 cnt.setInstanceFollowRedirects(redirect);
             }
             cnt.setReadTimeout(8000);
             cnt.setConnectTimeout(4000);
             if (cnt instanceof HttpsURLConnection) { // 判断是否为https请求
                 SSLContext sslContext = SSLUtils.getSSLContextWithoutCer();
-                if (sslContext != null) {
-                    SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-                    ((HttpsURLConnection) cnt).setSSLSocketFactory(sslSocketFactory);
-                    ((HttpsURLConnection) cnt).setHostnameVerifier(SSLUtils.hostnameVerifier);
-                }
+                SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+                ((HttpsURLConnection) cnt).setSSLSocketFactory(sslSocketFactory);
+                ((HttpsURLConnection) cnt).setHostnameVerifier(SSLUtils.hostnameVerifier);
             }
             cnt.connect();
         } catch (Exception e) {
@@ -108,7 +103,7 @@ public class Post {
             return new HttpConnectionAndCode(-1);
         }
         String body = "";
-        if (data != null){
+        if (data != null) {
             body += data;
         }
         try {
@@ -127,22 +122,22 @@ public class Post {
         }
         try {
             resp_code = cnt.getResponseCode();
-            if (redirect != null && !redirect && resp_code == 302){
+            if (redirect != null && !redirect && resp_code == 302) {
                 return new HttpConnectionAndCode(cnt, -7, "");
             }
             List<String> encodings = cnt.getHeaderFields().get("content-encoding");
-            if (encodings != null){
-                if (encodings.get(0).equals("gzip")){
+            if (encodings != null) {
+                if (encodings.get(0).equals("gzip")) {
                     in = new InputStreamReader(new GZIPInputStream(cnt.getInputStream()));
-                }else {
+                } else {
                     in = new InputStreamReader(cnt.getInputStream());
                 }
-            }else {
+            } else {
                 in = new InputStreamReader(cnt.getInputStream());
             }
             StringBuilder response_builder = new StringBuilder();
             char read_char;
-            while((read_char = (char)in.read()) != (char)-1){
+            while ((read_char = (char) in.read()) != (char) -1) {
                 response_builder.append(read_char);
             }
             response = response_builder.toString();
@@ -177,7 +172,7 @@ public class Post {
             if (cookieman.getCookieStore().getCookies().size() > 0) {
                 List<HttpCookie> cookieList = cookieman.getCookieStore().getCookies();
                 List<String> cookieStringList = new LinkedList<>();
-                for (HttpCookie httpCookie : cookieList){
+                for (HttpCookie httpCookie : cookieList) {
                     String str = httpCookie.getName() + "=" + httpCookie.getValue();
                     cookieStringList.add(str);
                 }
@@ -188,8 +183,8 @@ public class Post {
         }
 
         //do not disconnect, keep alive
-        if (success_resp_text != null){
-            if (!response.contains(success_resp_text)){
+        if (success_resp_text != null) {
+            if (!response.contains(success_resp_text)) {
                 //if cookie_delimiter != null but no server cookie, set_cookie = ""
                 //if no response, response = ""
                 return new HttpConnectionAndCode(cnt, -6, response, set_cookie, resp_code);

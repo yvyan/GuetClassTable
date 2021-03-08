@@ -15,7 +15,7 @@ import top.yvyan.guettable.bean.AvgTextbookBean;
 
 public class AvgTextbookAdapter extends RecyclerView.Adapter<AvgTextbookAdapter.AvgTextbookViewHolder> {
 
-    private List<AvgTextbookBean> avgTextbookBeans;
+    private final List<AvgTextbookBean> avgTextbookBeans;
 
     public AvgTextbookAdapter(List<AvgTextbookBean> avgTextbookBeans) {
         this.avgTextbookBeans = avgTextbookBeans;

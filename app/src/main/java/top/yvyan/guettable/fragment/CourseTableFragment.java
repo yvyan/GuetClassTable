@@ -42,6 +42,7 @@ import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
+@SuppressWarnings("ConstantConditions")
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
 
     @SuppressLint("StaticFieldLeak")

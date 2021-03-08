@@ -6,6 +6,10 @@ import com.zhuangfei.timetable.operater.SimpleOperater;
 
 import java.util.List;
 
+/**
+ * com.github.zfman:TimetableView修复类，解决了部分情况下临时切换周后点击空白无法触发回调的bug
+ * 复现：当前周某位置有课，临时切换到改位置无课的周，点击无法触发空白点击回调
+ */
 public class MyOperator extends SimpleOperater {
 
     protected int currWeek;
