@@ -1,5 +1,6 @@
 package top.yvyan.guettable.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class CETAdapter extends RecyclerView.Adapter<CETAdapter.CETViewHolder> {
         return new CETViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull CETViewHolder holder, int position) {
         holder.textView1.setText(cetBeans.get(position).getName());
@@ -50,8 +52,9 @@ public class CETAdapter extends RecyclerView.Adapter<CETAdapter.CETViewHolder> {
         return cetBeans.size();
     }
 
-    public class CETViewHolder extends RecyclerView.ViewHolder {
+    public static class CETViewHolder extends RecyclerView.ViewHolder {
         TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
+
         public CETViewHolder(@NonNull View itemView) {
             super(itemView);
             textView1 = itemView.findViewById(R.id.detail_text_1);

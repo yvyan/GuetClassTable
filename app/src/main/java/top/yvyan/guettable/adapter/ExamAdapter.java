@@ -37,7 +37,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
         holder.textView1.setText(examBeans.get(position).getName());
         holder.textView2.setText("课号：" + examBeans.get(position).getNumber());
         holder.textView3.setText("教师：" + examBeans.get(position).getTeacher());
-        holder.textView4.setText("教室：" + (examBeans.get(position).getRoom() == null ? "未公布" : examBeans.get(position).getRoom()));
+        holder.textView4.setText("教室：" + (examBeans.get(position).getRoom().isEmpty() ? "未公布" : examBeans.get(position).getRoom()));
         holder.textView5.setText("时间：" + examBeans.get(position).getTime());
         String date = "日期："
                 + (examBeans.get(position).getDate() == null ? "获取失败" : TimeUtil.timeFormat(examBeans.get(position).getDate()))

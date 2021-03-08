@@ -17,8 +17,7 @@ import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
-import top.yvyan.guettable.util.BeanHideUtil;
-import top.yvyan.guettable.util.ComparatorBeanAttribute;
+import top.yvyan.guettable.util.BeanAttributeUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -46,7 +45,7 @@ public class ExperimentScoreActivity extends BaseFuncActivity {
         RecyclerView recyclerView = findViewById(R.id.experiment_score_info_recycler_view);
         List<ExperimentScoreBean> experimentScoreBeans = moreDate.getExperimentScoreBeans();
         if (singleSettingData.isHideOtherTermExamScore()) {
-            experimentScoreBeans = BeanHideUtil.hideOtherTermExamScore(experimentScoreBeans, generalData.getTerm());
+            experimentScoreBeans = BeanAttributeUtil.hideOtherTerm(experimentScoreBeans, generalData.getTerm());
         }
         if (experimentScoreBeans.size() == 0) {
             showEmptyPage();
@@ -87,13 +86,13 @@ public class ExperimentScoreActivity extends BaseFuncActivity {
         List<ExperimentScoreBean> experimentScoreBeans;
         experimentScoreBeans = StaticService.getExperimentScore(this, cookie);
         if (experimentScoreBeans != null) {
-            ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
-            Collections.sort(experimentScoreBeans, comparatorBeanAttribute);
+            BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+            Collections.sort(experimentScoreBeans, beanAttributeUtil);
             if (!AppUtil.equalList(experimentScoreBeans, moreDate.getExperimentScoreBeans())) {
                 moreDate.setExperimentScoreBeans(experimentScoreBeans);
                 update = true;
             }
-            return 5 ;
+            return 5;
         }
         return 1;
     }
