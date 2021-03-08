@@ -2,9 +2,13 @@ package top.yvyan.guettable.bean;
 
 import androidx.annotation.Nullable;
 
+import com.umeng.umcrash.UMCrash;
+
 import java.io.Serializable;
 
-public class ExperimentScoreBean implements Serializable, BeanAttribute {
+import top.yvyan.guettable.util.BeanAttributeUtil;
+
+public class ExperimentScoreBean implements Serializable, BeanAttributeUtil.BeanAttribute {
     private static final long serialVersionUID = 7413694414885883651L;
     //实验名称
     private String name;
@@ -41,6 +45,9 @@ public class ExperimentScoreBean implements Serializable, BeanAttribute {
     }
 
     public String getName() {
+        if (name == null) {
+            name = "";
+        }
         return name;
     }
 
@@ -49,26 +56,33 @@ public class ExperimentScoreBean implements Serializable, BeanAttribute {
     }
 
     public String getCourseId() {
+        if (courseId == null) {
+            courseId = "";
+        }
         return courseId;
-    }
-
-    public void setCourseId(String courseId) {
-        this.courseId = courseId;
     }
 
     @Override
     public String getTerm() {
+        if (term == null) {
+            term = "";
+        }
         return term;
     }
 
     @Override
     public long getOrder() {
-        if (term.length() == 5) {
-            return Integer.parseInt(term) * -1;
+        try {
+            if (getTerm().length() == 5) {
+                return Integer.parseInt(getTerm()) * -1;
+            }
+            int year = Integer.parseInt(getTerm().substring(0, 4));
+            year = year * 10 + Integer.parseInt(getTerm().substring(10, 11));
+            return year * (-1);
+        } catch (Exception e) {
+            UMCrash.generateCustomLog(e, "ExperimentScoreBean.getOrder");
         }
-        int year = Integer.parseInt(term.substring(0, 4));
-        year = year * 10 + Integer.parseInt(term.substring(10, 11));
-        return year * (-1);
+        return 0;
     }
 
     public void setTerm(String term) {
@@ -79,23 +93,11 @@ public class ExperimentScoreBean implements Serializable, BeanAttribute {
         return finalScore;
     }
 
-    public void setFinalScore(float finalScore) {
-        this.finalScore = finalScore;
-    }
-
     public float getUsuallyScore() {
         return usuallyScore;
     }
 
-    public void setUsuallyScore(float usuallyScore) {
-        this.usuallyScore = usuallyScore;
-    }
-
     public float getCheckScore() {
         return checkScore;
-    }
-
-    public void setCheckScore(float checkScore) {
-        this.checkScore = checkScore;
     }
 }

@@ -1,11 +1,17 @@
 package top.yvyan.guettable.bean;
 
+import android.annotation.SuppressLint;
+
+import com.umeng.umcrash.UMCrash;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ResitBean implements Serializable, BeanAttribute {
+import top.yvyan.guettable.util.BeanAttributeUtil;
+
+public class ResitBean implements Serializable, BeanAttributeUtil.BeanAttribute {
 
     private static final long serialVersionUID = 311647067934662380L;
     //课号
@@ -19,22 +25,24 @@ public class ResitBean implements Serializable, BeanAttribute {
     //教室
     private String room;
 
+    @SuppressLint("SimpleDateFormat")
     public ResitBean(String number, String name, String time, String date, String room) {
         this.number = number;
         this.name = name;
         this.time = time;
         SimpleDateFormat simpleDateFormat;
+        if (date == null) {
+            date = "";
+        }
         if (date.contains("-")) {
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         } else {
             simpleDateFormat = new SimpleDateFormat("MM dd yyyy");
         }
-        if (date != null) {
-            try {
-                this.date = simpleDateFormat.parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        try {
+            this.date = simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            UMCrash.generateCustomLog(e, "ResitBean");
         }
         this.room = room;
     }
@@ -47,18 +55,23 @@ public class ResitBean implements Serializable, BeanAttribute {
 
     @Override
     public long getOrder() {
+        if (date == null) {
+            return 0;
+        }
         return date.getTime();
     }
 
     public String getNumber() {
+        if (number == null) {
+            number = "";
+        }
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public String getName() {
+        if (name == null) {
+            name = "";
+        }
         return name;
     }
 
@@ -67,11 +80,10 @@ public class ResitBean implements Serializable, BeanAttribute {
     }
 
     public String getTime() {
+        if (time == null) {
+            time = "";
+        }
         return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public Date getDate() {
@@ -83,10 +95,9 @@ public class ResitBean implements Serializable, BeanAttribute {
     }
 
     public String getRoom() {
+        if (room == null) {
+            room = "";
+        }
         return room;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
     }
 }

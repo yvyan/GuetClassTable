@@ -12,7 +12,7 @@ import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
-import top.yvyan.guettable.util.ComparatorBeanAttribute;
+import top.yvyan.guettable.util.BeanAttributeUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -48,8 +48,8 @@ public class CETActivity extends BaseFuncActivity {
         List<CETBean> cetBeans;
         cetBeans = StaticService.getCET(this, cookie);
         if (cetBeans != null) {
-            ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
-            Collections.sort(cetBeans, comparatorBeanAttribute);
+            BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+            Collections.sort(cetBeans, beanAttributeUtil);
             if (!AppUtil.equalList(cetBeans, moreDate.getCetBeans())) {
                 moreDate.setCetBeans(cetBeans);
             }

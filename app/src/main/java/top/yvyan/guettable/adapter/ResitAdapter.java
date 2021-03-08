@@ -1,5 +1,6 @@
 package top.yvyan.guettable.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,18 +27,19 @@ public class ResitAdapter extends RecyclerView.Adapter<ResitAdapter.ResitViewHol
     public ResitAdapter.ResitViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.detail_cardview,parent,false);
-        return new ResitAdapter.ResitViewHolder(itemView);
+        return new ResitViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ResitAdapter.ResitViewHolder holder, int position) {
         holder.textView1.setText(resitBeans.get(position).getName());
         holder.textView2.setText("课号：" + resitBeans.get(position).getNumber());
         holder.textView3.setVisibility(View.GONE);
-        holder.textView4.setText("教室：" + (resitBeans.get(position).getRoom() == null? " 未公布" : resitBeans.get(position).getRoom()));
-        holder.textView5.setText("时间：" + (resitBeans.get(position).getTime() == null? " 未公布" : resitBeans.get(position).getTime()));
+        holder.textView4.setText("教室：" + (resitBeans.get(position).getRoom().isEmpty() ? " 未公布" : resitBeans.get(position).getRoom()));
+        holder.textView5.setText("时间：" + (resitBeans.get(position).getTime().isEmpty() ? " 未公布" : resitBeans.get(position).getTime()));
         holder.textView6.setVisibility(View.GONE);
-        holder.textView7.setText("日期：" + (resitBeans.get(position).getDate() == null? " 未公布" : TimeUtil.timeFormat(resitBeans.get(position).getDate())));
+        holder.textView7.setText("日期：" + (resitBeans.get(position).getDate() == null ? " 未公布" : TimeUtil.timeFormat(resitBeans.get(position).getDate())));
     }
 
     @Override
@@ -45,8 +47,9 @@ public class ResitAdapter extends RecyclerView.Adapter<ResitAdapter.ResitViewHol
         return resitBeans.size();
     }
 
-    public class ResitViewHolder extends RecyclerView.ViewHolder {
+    public static class ResitViewHolder extends RecyclerView.ViewHolder {
         TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
+
         public ResitViewHolder(@NonNull View itemView) {
             super(itemView);
             textView1 = itemView.findViewById(R.id.detail_text_1);

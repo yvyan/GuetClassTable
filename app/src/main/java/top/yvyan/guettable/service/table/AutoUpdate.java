@@ -19,7 +19,7 @@ import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.service.table.fetch.StaticService;
-import top.yvyan.guettable.util.ComparatorBeanAttribute;
+import top.yvyan.guettable.util.BeanAttributeUtil;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -191,8 +191,8 @@ public class AutoUpdate {
                             generalData.getTerm()
                     );
                     if (examBeans != null) {
-                        ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
-                        Collections.sort(examBeans, comparatorBeanAttribute);
+                        BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+                        Collections.sort(examBeans, beanAttributeUtil);
                         scheduleData.setExamBeans(examBeans);
                     } else {
                         updateView(3);
