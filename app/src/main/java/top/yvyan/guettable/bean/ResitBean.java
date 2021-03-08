@@ -30,17 +30,17 @@ public class ResitBean implements Serializable, BeanAttributeUtil.BeanAttribute 
         this.number = number;
         this.name = name;
         this.time = time;
-        SimpleDateFormat simpleDateFormat;
+        SimpleDateFormat format;
         if (date == null) {
             date = "";
         }
         if (date.contains("-")) {
-            simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            format = new SimpleDateFormat("yyyy-MM-dd");
         } else {
-            simpleDateFormat = new SimpleDateFormat("MM dd yyyy");
+            format = new SimpleDateFormat("MM dd yyyy");
         }
         try {
-            this.date = simpleDateFormat.parse(date);
+            this.date = format.parse(date);
         } catch (ParseException e) {
             UMCrash.generateCustomLog(e, "ResitBean");
         }
