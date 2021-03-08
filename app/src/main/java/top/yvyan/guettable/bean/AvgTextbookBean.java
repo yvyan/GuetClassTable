@@ -1,8 +1,8 @@
 package top.yvyan.guettable.bean;
 
 public class AvgTextbookBean {
-    private String courseName;
-    private String textbookName;
+    private final String courseName;
+    private final String textbookName;
     private String hint;
 
     public AvgTextbookBean(String courseName, String textbookName, String hint) {
@@ -15,16 +15,8 @@ public class AvgTextbookBean {
         return courseName;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
-
     public String getTextbookName() {
         return textbookName;
-    }
-
-    public void setTextbookName(String textbookName) {
-        this.textbookName = textbookName;
     }
 
     public String getHint() {

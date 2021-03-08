@@ -23,6 +23,7 @@ import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.util.TimeUtil;
 
+@SuppressWarnings("ConstantConditions")
 public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.ClassDetailViewHolder> {
     private final List<Schedule> schedules;
     private final int week;
@@ -69,12 +70,12 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
             CourseBean courseBean = new CourseBean();
             courseBean.setFromSchedule(schedules.get(position));
             holder.textView1.setText(courseBean.getName());
-            if (courseBean.getTeacher() == null) {
+            if (courseBean.getTeacher().isEmpty()) {
                 holder.textView3.setVisibility(View.GONE);
             } else {
                 holder.textView3.setText("教师：" + courseBean.getTeacher());
             }
-            if (courseBean.getRoom() == null) {
+            if (courseBean.getRoom().isEmpty()) {
                 holder.textView4.setVisibility(View.GONE);
             } else {
                 holder.textView4.setText("教室：" + courseBean.getRoom());
@@ -85,7 +86,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
             }
             holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + n + "大节");
 
-            if (courseBean.getRemarks() == null || "".equals(courseBean.getRemarks())) {
+            if (courseBean.getRemarks().isEmpty()) {
                 holder.textView6.setVisibility(View.GONE);
                 holder.textView7.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
             } else {
@@ -97,7 +98,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
             if (courseBean.isLab()) { //课内实验
                 holder.textView2.setText("名称：" + courseBean.getLabName());
             } else { //理论课
-                if (courseBean.getNumber() == null || "".equals(courseBean.getNumber())) {
+                if (courseBean.getNumber().isEmpty()) {
                     holder.textView2.setVisibility(View.GONE);
                 } else {
                     holder.textView2.setVisibility(View.VISIBLE);

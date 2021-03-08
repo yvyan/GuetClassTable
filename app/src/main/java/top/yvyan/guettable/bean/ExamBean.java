@@ -1,11 +1,16 @@
 package top.yvyan.guettable.bean;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.Nullable;
 
+import com.umeng.umcrash.UMCrash;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleEnable;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +77,22 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil
         this.comm = examBean.getComm();
     }
 
-    public ExamBean(String number, String name, String teacher, int week, int day, int classNum, String time, Date date, String room, String comm) {
+    @SuppressLint("SimpleDateFormat")
+    public ExamBean(String number, String name, String teacher, int week, int day, int classNum, String time, String examdate, String room, String comm) {
+        SimpleDateFormat format;
+        if (examdate == null) {
+            examdate = "";
+        }
+        if (examdate.contains("-")) {
+            format = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            format = new SimpleDateFormat("MM dd yyyy");
+        }
+        try {
+            this.date = format.parse(examdate);
+        } catch (ParseException e) {
+            UMCrash.generateCustomLog(e, "ExamInfo.toExamBean");
+        }
         this.number = number;
         this.name = name;
         this.teacher = teacher;
@@ -80,7 +100,6 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil
         this.day = day;
         this.classNum = classNum;
         this.time = time;
-        this.date = date;
         this.room = room;
         this.comm = comm;
     }
