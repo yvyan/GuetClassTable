@@ -6,11 +6,11 @@ import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.TokenData;
 
 public class MoreFunService {
-    private Activity activity;
+    private final Activity activity;
 
-    private AccountData accountData;
-    private TokenData tokenData;
-    private IMoreFun iMoreFun;
+    private final AccountData accountData;
+    private final TokenData tokenData;
+    private final IMoreFun iMoreFun;
 
     public MoreFunService(Activity activity, IMoreFun iMoreFun) {
         this.activity = activity;
@@ -92,8 +92,6 @@ public class MoreFunService {
                 hint = "未知错误";
                 break;
         }
-        activity.runOnUiThread(() -> {
-            iMoreFun.updateView(hint, state);
-        });
+        activity.runOnUiThread(() -> iMoreFun.updateView(hint, state));
     }
 }

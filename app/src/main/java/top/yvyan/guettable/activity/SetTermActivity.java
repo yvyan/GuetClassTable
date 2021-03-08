@@ -140,7 +140,9 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 PersonFragment personFragment = PersonFragment.newInstance();
                 personFragment.updateView();
                 MainActivity mainActivity = (MainActivity) personFragment.getActivity();
-                mainActivity.onClick(0); //切换页面0
+                if (mainActivity != null) {
+                    mainActivity.onClick(0); //切换页面0
+                }
 
                 ToastUtil.showToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待，不要滑动页面");
                 finish();

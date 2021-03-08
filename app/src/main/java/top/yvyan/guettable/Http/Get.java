@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.CookieManager;
@@ -23,18 +22,14 @@ import javax.net.ssl.SSLSocketFactory;
 
 import top.yvyan.guettable.util.SSLUtils;
 
-
 public class Get {
     /**
-     * @non-ui
-     * @return
-     * - 0 GET success
+     * @return - 0 GET success
      * - -1 cannot open url
      * - -2 cannot close input stream
      * - -5 cannot get response
      * - -6 response check fail
      * - -7 302
-     * @clear
      */
     public static HttpConnectionAndCode get(@NonNull final String u,
                                             @Nullable final String[] parms,
@@ -48,13 +43,12 @@ public class Get {
                                             @Nullable final Boolean redirect,
                                             @Nullable final Integer connect_timeout,
                                             @Nullable final Integer read_timeout,
-                                            @Nullable final String content_type){
-        URL url = null;
-        HttpURLConnection cnt = null;
-        DataOutputStream dos = null;
-        InputStreamReader in = null;
-        String response = null;
-        int resp_code = 0;
+                                            @Nullable final String content_type) {
+        URL url;
+        HttpURLConnection cnt;
+        InputStreamReader in;
+        String response;
+        int resp_code;
         try {
             StringBuilder u_bulider = new StringBuilder();
             u_bulider.append(u);
@@ -66,23 +60,23 @@ public class Get {
             cnt.setDoOutput(true);
             cnt.setDoInput(true);
             cnt.setRequestProperty("User-Agent", user_agent);
-            if (accept_encodings != null && accept_encodings.length > 0){
+            if (accept_encodings != null && accept_encodings.length > 0) {
                 List<String> encodings = Arrays.asList(accept_encodings);
-                if (encodings.indexOf("gzip") == -1){
+                if (!encodings.contains("gzip")) {
                     encodings.add("gzip");
                 }
                 cnt.setRequestProperty("Accept-Encoding", TextUtils.join(", ", encodings));
-            }else {
+            } else {
                 cnt.setRequestProperty("Accept-Encoding", "gzip");
             }
             cnt.setRequestProperty("Referer", referer);
-            if (cookie != null){
+            if (cookie != null) {
                 cnt.setRequestProperty("Cookie", cookie);
             }
             cnt.setRequestMethod("GET");
             if (redirect == null) {
                 cnt.setInstanceFollowRedirects(true);
-            }else {
+            } else {
                 cnt.setInstanceFollowRedirects(redirect);
             }
             if (content_type != null) {
@@ -90,21 +84,19 @@ public class Get {
             }
             if (read_timeout == null) {
                 cnt.setReadTimeout(4000);
-            }else {
+            } else {
                 cnt.setReadTimeout(read_timeout);
             }
             if (connect_timeout == null) {
                 cnt.setConnectTimeout(2000);
-            }else {
+            } else {
                 cnt.setConnectTimeout(connect_timeout);
             }
             if (cnt instanceof HttpsURLConnection) { // 判断是否为https请求
                 SSLContext sslContext = SSLUtils.getSSLContextWithoutCer();
-                if (sslContext != null) {
-                    SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-                    ((HttpsURLConnection) cnt).setSSLSocketFactory(sslSocketFactory);
-                    ((HttpsURLConnection) cnt).setHostnameVerifier(SSLUtils.hostnameVerifier);
-                }
+                SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+                ((HttpsURLConnection) cnt).setSSLSocketFactory(sslSocketFactory);
+                ((HttpsURLConnection) cnt).setHostnameVerifier(SSLUtils.hostnameVerifier);
             }
             cnt.connect();
         } catch (Exception e) {
@@ -113,18 +105,18 @@ public class Get {
         }
         try {
             resp_code = cnt.getResponseCode();
-            if (redirect != null && !redirect && resp_code == 302){
+            if (redirect != null && !redirect && resp_code == 302) {
                 return new HttpConnectionAndCode(cnt, -7, "");
             }
             List<String> encodings = cnt.getHeaderFields().get("content-encoding");
-            if (encodings != null && encodings.get(0).equals("gzip")){
+            if (encodings != null && encodings.get(0).equals("gzip")) {
                 in = new InputStreamReader(new GZIPInputStream(cnt.getInputStream()));
-            }else {
+            } else {
                 in = new InputStreamReader(cnt.getInputStream());
             }
             StringBuilder response_builder = new StringBuilder();
             char read_char;
-            while((read_char = (char)in.read()) != (char)-1){
+            while ((read_char = (char) in.read()) != (char) -1) {
                 response_builder.append(read_char);
             }
             response = response_builder.toString();
@@ -159,7 +151,7 @@ public class Get {
             if (cookieman.getCookieStore().getCookies().size() > 0) {
                 List<HttpCookie> cookieList = cookieman.getCookieStore().getCookies();
                 List<String> cookieStringList = new LinkedList<>();
-                for (HttpCookie httpCookie : cookieList){
+                for (HttpCookie httpCookie : cookieList) {
                     String str = httpCookie.getName() + "=" + httpCookie.getValue();
                     cookieStringList.add(str);
                 }
@@ -170,8 +162,8 @@ public class Get {
         }
 
         //do not disconnect, keep alive
-        if (success_resp_text != null){
-            if (!response.contains(success_resp_text)){
+        if (success_resp_text != null) {
+            if (!response.contains(success_resp_text)) {
                 //if cookie_delimiter != null but no server cookie, set_cookie = ""
                 //if no response, response = ""
                 return new HttpConnectionAndCode(cnt, -6, response, set_cookie, resp_code);

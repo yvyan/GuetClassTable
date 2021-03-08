@@ -1,5 +1,6 @@
 package top.yvyan.guettable.data;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -8,6 +9,7 @@ import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.service.table.fetch.Net;
 
 public class TokenData {
+    @SuppressLint("StaticFieldLeak")
     private static TokenData tokenData;
     private final SharedPreferences.Editor editor;
     private final Context context;
@@ -39,6 +41,7 @@ public class TokenData {
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     private TokenData(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -196,28 +199,16 @@ public class TokenData {
         editor.apply();
     }
 
-    public String getTGTToken() {
-        return TGTToken;
-    }
-
     public void setTGTToken(String TGTToken) {
         this.TGTToken = TGTToken;
         editor.putString(TGT_TOKEN, TGTToken);
         editor.apply();
     }
 
-    public String getVPNToken() {
-        return VPNToken;
-    }
-
     public void setVPNToken(String VPNToken) {
         this.VPNToken = VPNToken;
         editor.putString(VPN_TOKEN, VPNToken);
         editor.apply();
-    }
-
-    public String getBkjwCookie() {
-        return bkjwCookie;
     }
 
     public void setBkjwCookie(String bkjwCookie) {

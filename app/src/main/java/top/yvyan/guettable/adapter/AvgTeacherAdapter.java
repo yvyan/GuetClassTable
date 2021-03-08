@@ -14,7 +14,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.AvgTeacherBean;
 
 public class AvgTeacherAdapter extends RecyclerView.Adapter<AvgTeacherAdapter.AvgTeacherViewHolder> {
-    private List<AvgTeacherBean> avgTeacherBeans;
+    private final List<AvgTeacherBean> avgTeacherBeans;
 
     public AvgTeacherAdapter(List<AvgTeacherBean> avgTeacherBeans) {
         this.avgTeacherBeans = avgTeacherBeans;
@@ -40,8 +40,9 @@ public class AvgTeacherAdapter extends RecyclerView.Adapter<AvgTeacherAdapter.Av
         return avgTeacherBeans.size();
     }
 
-    public class AvgTeacherViewHolder extends RecyclerView.ViewHolder {
+    public static class AvgTeacherViewHolder extends RecyclerView.ViewHolder {
         TextView courseName, teacherName, teacherHint;
+
         public AvgTeacherViewHolder(@NonNull View itemView) {
             super(itemView);
             courseName = itemView.findViewById(R.id.course_Name);
