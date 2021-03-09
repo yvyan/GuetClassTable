@@ -212,6 +212,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                     return;
                 }
                 autoUpdate.update();
+                AppUtil.reportFunc(getContext(), "手动同步");
                 break;
             case R.id.day_test_schedule:
                 intent = new Intent(getContext(), ExamActivity.class);

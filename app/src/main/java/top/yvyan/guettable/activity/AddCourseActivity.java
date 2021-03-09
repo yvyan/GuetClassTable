@@ -52,7 +52,8 @@ public class AddCourseActivity extends AppCompatActivity {
         BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_add_course);
         TextView title = findViewById(R.id.title);
-        title.setText("添加课程");
+        title.setText(getResources().getString(R.string.course_add));
+        AppUtil.reportFunc(getApplicationContext(), getString(R.string.course_add));
         //透明状态栏
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

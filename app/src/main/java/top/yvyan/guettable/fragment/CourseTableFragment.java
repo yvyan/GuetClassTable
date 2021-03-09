@@ -42,7 +42,6 @@ import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
-@SuppressWarnings("ConstantConditions")
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
 
     @SuppressLint("StaticFieldLeak")
@@ -89,6 +88,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         LinearLayout linearLayout = view.findViewById(R.id.id_class_layout);
         linearLayout.setOnClickListener(this);
         mWeekView = view.findViewById(R.id.id_weekview);
+        mWeekView.setVisibility(View.VISIBLE);
         mTimetableView = view.findViewById(R.id.id_timetableView);
         setBackground(BackgroundUtil.isSetBackground(getContext()));
         initTimetableView();
