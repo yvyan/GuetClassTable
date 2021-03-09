@@ -167,6 +167,8 @@
     <string name="moreFun_url_more"> 更多链接 </string>
     <string name="moreFun_evaluating_teachers"> 评价教师 </string>
     <string name="moreFun_evaluating_textbooks"> 评价教材 </string>
+    <string name="course_add">添加课程</string>
+    <string name="course_delete">删除课程</string>
     <string name="person_login">点击登录</string>
     <string name="person_grade">年级</string>
     <string name="person_term">学年</string>
