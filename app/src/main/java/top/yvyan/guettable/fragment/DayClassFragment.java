@@ -4,11 +4,16 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,10 +22,14 @@ import com.umeng.umcrash.UMCrash;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleSupport;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
@@ -50,6 +59,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private static DayClassFragment dayClassFragment;
 
     private View view;
+    private DayClassHandler handler = null;
+    private Timer timer = null;
+    private TimerTask timerTask = null;
 
     private TextView textView;
     private RecyclerView recyclerView;
@@ -73,6 +85,13 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             dayClassFragment = new DayClassFragment();
         }
         return dayClassFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        handler = new DayClassHandler(Looper.getMainLooper(), new WeakReference<>(this));
+        timer = new Timer();
     }
 
     @Override
@@ -108,7 +127,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             autoUpdate.start();
         }
         recyclerView = view.findViewById(R.id.day_class_detail_recycleView);
-
         return view;
     }
 
@@ -124,7 +142,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      * 更新日课表视图
      */
     @SuppressLint("SetTextI18n")
-    public void updateView() {
+    public void updateView(int... order) {
         List<Schedule> allClass = getData();
         List<Schedule> todayList, tomorrowList;
         if (allClass != null) {
@@ -142,7 +160,12 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             todayList = new ArrayList<>();
             tomorrowList = new ArrayList<>();
         }
-        DayClassAdapter dayClassAdapter = new DayClassAdapter(getContext(), todayList, tomorrowList);
+        DayClassAdapter dayClassAdapter;
+        if (order.length == 0) {
+            dayClassAdapter = new DayClassAdapter(getContext(), todayList, tomorrowList);
+        } else {
+            dayClassAdapter = new DayClassAdapter(getContext(), todayList, tomorrowList, order[0]);
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(dayClassAdapter);
 
@@ -179,15 +202,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             titleBar.getBackground().setAlpha(255);
             addStatus.getBackground().setAlpha(255);
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        setBackground(BackgroundUtil.isSetBackground(getContext()));
-        initData();
-        autoUpdate.updateView();
-        updateView();
     }
 
     /**
@@ -268,5 +282,139 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             }
         }
         return list;
+    }
+
+    //  定时任务，一分钟检查一次时间
+    class timeTask extends TimerTask {
+        @Override
+        public void run() {
+            if (handler != null) {
+                int currentOrder;
+                if ((currentOrder = getCurrentOrder()) != -1) {
+                    Message msg = new Message();
+                    msg.arg1 = currentOrder;
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendEmptyMessage(2);
+                }
+            }
+        }
+    }
+
+    //  没有打开Fragment的时候停止计时
+    @Override
+    public void onPause() {
+        super.onPause();
+        timerTask.cancel();
+        timerTask = null;
+    }
+
+    //  Timer回收
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
+        timer.purge();
+    }
+
+    //  定时任务周期半分钟
+    @Override
+    public void onStart() {
+        super.onStart();
+        setBackground(BackgroundUtil.isSetBackground(getContext()));
+        initData();
+        timerTask = new timeTask();
+        timer.schedule(timerTask, 1800000, 1800000);
+        autoUpdate.updateView();
+        if (getCurrentOrder() != -1) {
+            updateView(getCurrentOrder());
+        } else {
+            updateView();
+        }
+    }
+
+    //  接收定时器通信的Handler，在其中调用updateView()来刷新日课表
+    static class DayClassHandler extends Handler {
+        WeakReference<DayClassFragment> weakReference;
+
+        public DayClassHandler(@NonNull Looper looper, WeakReference<DayClassFragment> weakReference) {
+            super(looper);
+            this.weakReference = weakReference;
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            if (msg.what == 1) {
+                weakReference.get().updateView(msg.arg1);
+            } else if (msg.what == 2) {
+                weakReference.get().updateView();
+            }
+        }
+    }
+
+    //  获取当前正在进行的课程节次，若没有在上课，返回-1
+    static int getCurrentOrder() {
+        // 8:25 ~ 10:00  10:25~12:00  14:25~16:05  16:25~18:05  19:00~20:30  21:00~22:30
+        Calendar cal = Calendar.getInstance();
+        int h = cal.get(Calendar.HOUR_OF_DAY);
+        int m = cal.get(Calendar.MINUTE);
+        int current = -1;
+        switch (h) {
+            case 8:
+                if (m < 25) {
+                    break;
+                }
+            case 9:
+                current = 1;
+                break;
+            case 10:
+                if (m == 0) {
+                    current = 1;
+                } else if (m >= 25) {
+                    current = 3;
+                }
+                break;
+            case 11:
+                current = 3;
+                break;
+            case 14:
+                if (m >= 25) {
+                    current = 5;
+                }
+                break;
+            case 15:
+                current = 5;
+                break;
+            case 16:
+                if (m < 5) {
+                    current = 5;
+                } else if (m >= 25) {
+                    current = 7;
+                }
+                break;
+            case 17:
+                current = 7;
+                break;
+            case 19:
+                current = 9;
+                break;
+            case 20:
+                if (m < 30) {
+                    current = 9;
+                }
+                break;
+            case 21:
+                current = 11;
+                break;
+            case 22:
+                if (m < 30) {
+                    current = 11;
+                }
+                break;
+            default:
+                break;
+        }
+        return current;
     }
 }

@@ -24,11 +24,20 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
     private final List<Schedule> todayList;
     private final List<Schedule> tomorrowList;
     private final Context context;
+    private int starting;
 
     public DayClassAdapter(Context context, List<Schedule> todayList, List<Schedule> tomorrowList) {
         this.context = context;
         this.todayList = todayList;
         this.tomorrowList = tomorrowList;
+        this.starting = -1;
+    }
+
+    public DayClassAdapter(Context context, List<Schedule> todayList, List<Schedule> tomorrowList, int starting) {
+        this.context = context;
+        this.todayList = todayList;
+        this.tomorrowList = tomorrowList;
+        this.starting = starting;
     }
 
     @NonNull
@@ -53,6 +62,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
 
             TypedValue tv = new TypedValue();
             context.getTheme().resolveAttribute(R.attr.color_text, tv, true);
+
             holder.textView1.setTextColor(context.getResources().getColor(tv.resourceId));
             holder.textView1.setTextSize(20);
             int size;
@@ -102,7 +112,12 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
         } else { //理论课和课内实验
             CourseBean courseBean = new CourseBean();
             courseBean.setFromSchedule(schedule);
-            holder.textView1.setText(courseBean.getName());
+            if (schedule.getStart() == starting) {
+                holder.textView1.setText(courseBean.getName() + "   上课中...");
+                holder.textView1.setTextColor(context.getResources().getColor(R.color.app_green));
+            } else {
+                holder.textView1.setText(courseBean.getName());
+            }
             if (courseBean.getTeacher() == null) {
                 holder.textView3.setVisibility(View.GONE);
             } else {
