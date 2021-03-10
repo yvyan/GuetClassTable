@@ -1,16 +1,23 @@
 package top.yvyan.guettable.bean;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.Nullable;
 
+import com.umeng.umcrash.UMCrash;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleEnable;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
+import top.yvyan.guettable.util.BeanAttributeUtil;
+
+public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil.BeanAttribute {
     private static final long serialVersionUID = -193709177883443178L;
     public static String NUMBER = "number";
     public static String TIME = "time";
@@ -46,18 +53,12 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         if (obj.getClass() != this.getClass())
             return false;
         ExamBean bean = (ExamBean) obj;
-        if (room == null && bean.room != null || room != null && bean.room == null) {
-            return false;
-        }
-        if (room == null && bean.room == null || room != null && room.equals(bean.room)) {
-            return number.equals(bean.number)
-                    && week == bean.week
-                    && day == bean.day
-                    && time.equals(bean.time)
-                    && comm.equals(bean.comm);
-        } else {
-            return false;
-        }
+        return getRoom().equals(bean.getRoom())
+                && getNumber().equals(bean.getNumber())
+                && getWeek() == bean.getWeek()
+                && getDay() == bean.getDay()
+                && getTime().equals(bean.getTime())
+                && getComm().equals(bean.getComm());
     }
 
     public ExamBean() {
@@ -76,7 +77,22 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         this.comm = examBean.getComm();
     }
 
-    public ExamBean(String number, String name, String teacher, int week, int day, int classNum, String time, Date date, String room, String comm) {
+    @SuppressLint("SimpleDateFormat")
+    public ExamBean(String number, String name, String teacher, int week, int day, int classNum, String time, String examdate, String room, String comm) {
+        SimpleDateFormat format;
+        if (examdate == null) {
+            examdate = "";
+        }
+        if (examdate.contains("-")) {
+            format = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            format = new SimpleDateFormat("MM dd yyyy");
+        }
+        try {
+            this.date = format.parse(examdate);
+        } catch (ParseException e) {
+            UMCrash.generateCustomLog(e, "ExamInfo.toExamBean");
+        }
         this.number = number;
         this.name = name;
         this.teacher = teacher;
@@ -84,11 +100,7 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         this.day = day;
         this.classNum = classNum;
         this.time = time;
-        this.date = date;
         this.room = room;
-        if (comm == null) {
-            comm = "";
-        }
         this.comm = comm;
     }
 
@@ -103,9 +115,6 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
         time = (String) schedule.getExtras().get(TIME);
         date = (Date) schedule.getExtras().get(DATE);
         comm = (String) schedule.getExtras().get(COMM);
-        if (comm == null) {
-            comm = "";
-        }
     }
 
     @Override
@@ -124,18 +133,24 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
 
         schedule.putExtras(TIME, time);
         schedule.putExtras(DATE, date);
-        schedule.putExtras(NUMBER, number);
+        schedule.putExtras(NUMBER, getNumber());
         //类型: 0:理论课; 1:实验课; 2:考试安排
         schedule.putExtras(TYPE, 2);
-        schedule.putExtras(COMM, comm);
+        schedule.putExtras(COMM, getComm());
         return schedule;
     }
 
     public String getNumber() {
+        if (number == null) {
+            number = "";
+        }
         return number;
     }
 
     public String getName() {
+        if (name == null) {
+            name = "";
+        }
         return name;
     }
 
@@ -144,6 +159,9 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
     }
 
     public String getTeacher() {
+        if (teacher == null) {
+            teacher = "";
+        }
         return teacher;
     }
 
@@ -164,6 +182,9 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
     }
 
     public String getTime() {
+        if (time == null) {
+            time = "";
+        }
         return time;
     }
 
@@ -172,6 +193,9 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
     }
 
     public String getRoom() {
+        if (room == null) {
+            room = "";
+        }
         return room;
     }
 
@@ -184,10 +208,6 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttribute {
             comm = "";
         }
         return comm;
-    }
-
-    public void setComm(String comm) {
-        this.comm = comm;
     }
 
     @Override

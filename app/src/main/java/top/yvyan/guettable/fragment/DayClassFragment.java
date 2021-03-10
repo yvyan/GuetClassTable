@@ -220,17 +220,20 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             case R.id.day_class_hint:
                 if ("去登录".contentEquals(textView.getText())) {
                     MainActivity mainActivity = (MainActivity) getActivity();
-                    mainActivity.onClick(3);
+                    if (mainActivity != null) {
+                        mainActivity.onClick(3);
+                    }
                     return;
                 }
                 autoUpdate.update();
+                AppUtil.reportFunc(getContext(), "手动同步");
                 break;
             case R.id.day_test_schedule:
                 intent = new Intent(getContext(), ExamActivity.class);
                 startActivity(intent);
                 break;
             case R.id.day_url_bkjw:
-                uri = Uri.parse(UrlReplaceUtil.getUrlByInternational(generalData.isInternational(), getContext().getResources().getString(R.string.url_bkjw)));
+                uri = Uri.parse(UrlReplaceUtil.getUrlByInternational(generalData.isInternational(), Objects.requireNonNull(getContext()).getResources().getString(R.string.url_bkjw)));
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;

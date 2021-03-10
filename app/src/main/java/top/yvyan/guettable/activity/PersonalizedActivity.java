@@ -95,15 +95,15 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
         TextView dateAlphaTextView = findViewById(R.id.textView_date_alpha);
         TextView slideAlphaTextView = findViewById(R.id.textView_slide_alpha);
         TextView itemAlphaTextView = findViewById(R.id.textView_item_alpha);
-        TextView titleBarAlphaTextView = findViewById(R.id.textView_titleBar_alpha);            // .
+        TextView titleBarAlphaTextView = findViewById(R.id.textView_titleBar_alpha);
         dateAlphaSeekBar.setProgress((int) (singleSettingData.getDateAlpha() * 20));
         slideAlphaSeekBar.setProgress((int) (singleSettingData.getSlideAlpha() * 20));
         itemAlphaSeekBar.setProgress((int) (singleSettingData.getItemAlpha() * 20));
-        titleBarAlphaSeekBar.setProgress((int) (singleSettingData.getTitleBarAlpha() / 12.75f));    // .
+        titleBarAlphaSeekBar.setProgress((int) (singleSettingData.getTitleBarAlpha() / 12.75f));
         dateAlphaTextView.setText(String.valueOf((int) (singleSettingData.getDateAlpha() * 20)));
         slideAlphaTextView.setText(String.valueOf((int) (singleSettingData.getSlideAlpha() * 20)));
         itemAlphaTextView.setText(String.valueOf((int) (singleSettingData.getItemAlpha() * 20)));
-        titleBarAlphaTextView.setText(String.valueOf((int) (singleSettingData.getTitleBarAlpha() / 12.75f)));     // .
+        titleBarAlphaTextView.setText(String.valueOf((int) (singleSettingData.getTitleBarAlpha() / 12.75f)));
         dateAlphaSeekBar.setOnSeekBarChangeListener(onAlphaSeekBarListener);
         slideAlphaSeekBar.setOnSeekBarChangeListener(onAlphaSeekBarListener);
         itemAlphaSeekBar.setOnSeekBarChangeListener(onAlphaSeekBarListener);
@@ -133,6 +133,7 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
                 titleBarAlpha = 12.75f * i;
                 TextView titleBarTextView = findViewById(R.id.textView_titleBar_alpha);
                 titleBarTextView.setText(String.valueOf(i));
+                ToastUtil.showToast(getApplicationContext(), "状态栏返回生效！");
             }
             if (BackgroundUtil.isSetBackground(getApplicationContext())) {
                 singleSettingData.setAlpha(dateAlpha, slideAlpha, itemAlpha, titleBarAlpha);

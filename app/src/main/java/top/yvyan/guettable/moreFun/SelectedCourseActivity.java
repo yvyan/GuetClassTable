@@ -14,7 +14,7 @@ import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.service.table.IMoreFun;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
-import top.yvyan.guettable.util.ComparatorBeanAttribute;
+import top.yvyan.guettable.util.BeanAttributeUtil;
 
 public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun {
 
@@ -44,8 +44,8 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
         List<SelectedCourseBean> selectedCourseBeans;
         selectedCourseBeans = StaticService.getSelectedCourse(this, cookie, generalData.getTerm());
         if (selectedCourseBeans != null) {
-            ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
-            Collections.sort(selectedCourseBeans, comparatorBeanAttribute);
+            BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+            Collections.sort(selectedCourseBeans, beanAttributeUtil);
             moreDate.setSelectedCoursesBeans(selectedCourseBeans);
             update = true;
             return 5;

@@ -3,12 +3,13 @@ package top.yvyan.guettable.bean;
 import java.io.Serializable;
 
 import top.yvyan.guettable.Gson.SelectedCourse;
+import top.yvyan.guettable.util.BeanAttributeUtil;
 
-public class SelectedCourseBean implements Serializable, BeanAttribute {
+public class SelectedCourseBean implements Serializable, BeanAttributeUtil.BeanAttribute {
 
     private static final long serialVersionUID = -1665366365756246306L;
 
-    private double courseCredit;
+    private final double courseCredit;
     private String courseName;
     private String selectType;
     private String courseQuality;
@@ -24,32 +25,25 @@ public class SelectedCourseBean implements Serializable, BeanAttribute {
         return courseCredit;
     }
 
-    public void setCourseCredit(double courseCredit) {
-        this.courseCredit = courseCredit;
-    }
-
     public String getCourseName() {
+        if (courseName == null) {
+            courseName = "";
+        }
         return courseName;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
-
     public String getSelectType() {
+        if (selectType == null) {
+            selectType = "";
+        }
         return selectType;
     }
 
-    public void setSelectType(String selectType) {
-        this.selectType = selectType;
-    }
-
     public String getCourseQuality() {
+        if (courseQuality == null) {
+            courseQuality = "";
+        }
         return courseQuality;
-    }
-
-    public void setCourseQuality(String courseQuality) {
-        this.courseQuality = courseQuality;
     }
 
     @Override

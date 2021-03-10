@@ -1,7 +1,5 @@
 package top.yvyan.guettable.moreFun;
 
-import android.view.View;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 

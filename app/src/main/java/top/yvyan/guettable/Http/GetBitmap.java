@@ -23,14 +23,12 @@ import top.yvyan.guettable.util.SSLUtils;
 
 public class GetBitmap {
     /**
-     * @non-ui
      * @return
      * - 0 GET success
      * - -1 cannot open url
      * - -5 cannot get response
      * - -6 response check fail
      * - -7 302
-     * @clear
      */
     public static HttpConnectionAndCode get(@NonNull final String u,
                                             @Nullable final String[] parms,
@@ -38,11 +36,11 @@ public class GetBitmap {
                                             @NonNull final String referer,
                                             @Nullable final String cookie,
                                             @Nullable final String cookie_delimiter){
-        URL url = null;
-        HttpURLConnection cnt = null;
-        String response = null;
-        Bitmap bmp = null;
-        int resp_code = 0;
+        URL url;
+        HttpURLConnection cnt;
+        String response;
+        Bitmap bmp;
+        int resp_code;
         try {
             StringBuilder u_bulider = new StringBuilder();
             u_bulider.append(u);
@@ -64,11 +62,9 @@ public class GetBitmap {
             cnt.setConnectTimeout(2000);
             if (cnt instanceof HttpsURLConnection) { // 判断是否为https请求
                 SSLContext sslContext = SSLUtils.getSSLContextWithoutCer();
-                if (sslContext != null) {
-                    SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-                    ((HttpsURLConnection) cnt).setSSLSocketFactory(sslSocketFactory);
-                    ((HttpsURLConnection) cnt).setHostnameVerifier(SSLUtils.hostnameVerifier);
-                }
+                SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+                ((HttpsURLConnection) cnt).setSSLSocketFactory(sslSocketFactory);
+                ((HttpsURLConnection) cnt).setHostnameVerifier(SSLUtils.hostnameVerifier);
             }
             cnt.connect();
         } catch (Exception e) {

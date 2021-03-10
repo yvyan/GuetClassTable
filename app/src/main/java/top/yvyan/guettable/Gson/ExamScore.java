@@ -19,7 +19,7 @@ public class ExamScore {
     private float xf;
 
     public ExamScoreBean toExamScoreBean() {
-        return new ExamScoreBean(cid, cname, cno, term, zpxs, score, pscj, sycj, khcj, xf, typeno);
+        return new ExamScoreBean(cid, cname, cno, term, zpxs, score, pscj, khcj, xf, typeno);
     }
 
     public void setName(String name) {

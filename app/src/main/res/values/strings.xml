@@ -90,6 +90,12 @@
     <string name="url_cet">http://cet.neea.edu.cn/</string>
     <string name="text_mail">桂电学生邮箱</string>
     <string name="url_mail">http://mail.guet.edu.cn/</string>
+    <string name="text_training">培养方案(内网)</string>
+    <string name="url_training">http://utsc.guet.edu.cn/training.aspx?mCode=001101</string>
+    <string name="text_calendar">教学日历(内网)</string>
+    <string name="url_calendar">http://utsc.guet.edu.cn/calendar.aspx?mCode=0010</string>
+    <string name="text_lib_open">图书馆开放时间</string>
+    <string name="url_lib_open">https://www.guet.edu.cn/lib/info/1064/2891.htm</string>
 
     <string name="share_text">新的桂电课程表，简洁、好用，分享给你，点击链接下载：http://app.xiaomi.com/detail/1288502 \n(小米官方链接，请放心访问，建议使用浏览器打开)</string>
     <string name="first_about">该项目与学校官方无关。个人开发者作品，不含广告，永久免费。\n\n 该项目会一直开源，一直保证代码库最新，保证和小伙伴使用的APP源码一致。开源是为了接受大家的监督，也是保护小伙伴教务隐私的有效手段，感谢大家的支持！</string>
@@ -161,6 +167,8 @@
     <string name="moreFun_url_more"> 更多链接 </string>
     <string name="moreFun_evaluating_teachers"> 评价教师 </string>
     <string name="moreFun_evaluating_textbooks"> 评价教材 </string>
+    <string name="course_add">添加课程</string>
+    <string name="course_delete">删除课程</string>
     <string name="person_login">点击登录</string>
     <string name="person_grade">年级</string>
     <string name="person_term">学年</string>

@@ -22,7 +22,7 @@ import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
-import top.yvyan.guettable.util.ComparatorBeanAttribute;
+import top.yvyan.guettable.util.BeanAttributeUtil;
 import top.yvyan.guettable.util.ExamUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
@@ -119,8 +119,8 @@ public class ExamActivity extends BaseFuncActivity {
         List<ExamBean> examBeans;
         examBeans = StaticService.getExam(this, cookie, generalData.getTerm());
         if (examBeans != null) {
-            ComparatorBeanAttribute comparatorBeanAttribute = new ComparatorBeanAttribute();
-            Collections.sort(examBeans, comparatorBeanAttribute);
+            BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+            Collections.sort(examBeans, beanAttributeUtil);
             if (!AppUtil.equalList(examBeans, scheduleData.getExamBeans())) {
                 scheduleData.setExamBeans(examBeans);
                 update = true;
