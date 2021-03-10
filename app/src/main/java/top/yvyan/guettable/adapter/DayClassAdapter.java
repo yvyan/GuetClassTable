@@ -20,7 +20,6 @@ import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.util.TimeUtil;
 
-@SuppressWarnings("ConstantConditions")
 public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassDetailViewHolder> {
     private final List<Schedule> todayList;
     private final List<Schedule> tomorrowList;
@@ -118,7 +117,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             } else {
                 holder.textView1.setText(courseBean.getName());
             }
-            if (courseBean.getTeacher() == null) {
+            if (courseBean.getTeacher().isEmpty()) {
                 holder.textView3.setVisibility(View.GONE);
             } else {
                 holder.textView3.setText("教师：" + courseBean.getTeacher());
