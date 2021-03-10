@@ -7,13 +7,20 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.util.Objects;
+
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.BackgroundUtil;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -21,10 +28,16 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SingleSettingData singleSettingData = SingleSettingData.newInstance(this);
+        BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_setting);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        View addStatus = findViewById(R.id.add_status);
+        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
+        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getApplicationContext()));
+        addStatus.setLayoutParams(lp);
         ConstraintLayout header = findViewById(R.id.func_base_constraintLayout);
         header.getBackground().setAlpha(255);
-
         TextView title = findViewById(R.id.title);
         title.setText(getResources().getString(R.string.person_setting));
     }
