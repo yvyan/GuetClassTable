@@ -14,7 +14,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
 
 public class ExperimentScoreAdapter extends RecyclerView.Adapter<ExperimentScoreAdapter.ExperimentScoreViewHolder> {
-    private List<ExperimentScoreBean> experimentScoreBeans;
+    private final List<ExperimentScoreBean> experimentScoreBeans;
 
     public ExperimentScoreAdapter(List<ExperimentScoreBean> experimentScoreBeans) {
         this.experimentScoreBeans = experimentScoreBeans;
@@ -24,7 +24,7 @@ public class ExperimentScoreAdapter extends RecyclerView.Adapter<ExperimentScore
     @Override
     public ExperimentScoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.score_cardview,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.score_cardview, parent, false);
         return new ExperimentScoreViewHolder(itemView);
     }
 
@@ -48,8 +48,9 @@ public class ExperimentScoreAdapter extends RecyclerView.Adapter<ExperimentScore
         return experimentScoreBeans.size();
     }
 
-    public class ExperimentScoreViewHolder extends RecyclerView.ViewHolder {
+    public static class ExperimentScoreViewHolder extends RecyclerView.ViewHolder {
         TextView headerTerm, experimentScoreName, experimentScoreFinal, experimentScoreUsually, courseNo, experimentScoreCheck;
+
         public ExperimentScoreViewHolder(@NonNull View itemView) {
             super(itemView);
             headerTerm = itemView.findViewById(R.id.header_term);

@@ -14,6 +14,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.IntRange;
 
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.umcrash.UMCrash;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +36,7 @@ public class AppUtil {
             PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
             versioncode = pi.versionCode;
         } catch (Exception e) {
-            Log.e("VersionInfo", "Exception", e);
+            UMCrash.generateCustomLog(e, "getAppVersionCode");
         }
         return versioncode;
     }
@@ -51,25 +52,26 @@ public class AppUtil {
                     .getPackageInfo(context.getPackageName(), 0);
             appVersionName = packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e("", e.getMessage());
+            UMCrash.generateCustomLog(e, "getAppVersionName");
         }
         return appVersionName;
     }
 
     /**
      * 编码
-     * @Author     telephone
+     *
      * @param text 原字符串
-     * @return     编码后的字符串
+     * @return 编码后的字符串
+     * @Author telephone
      */
-    public static String encode(String text){
+    public static String encode(String text) {
         StringBuilder sb = new StringBuilder();
-        if (text != null){
+        if (text != null) {
             char[] chs = text.toCharArray();
-            for (char ch : chs){
-                if (ch < 128){
+            for (char ch : chs) {
+                if (ch < 128) {
                     sb.append(ch);
-                }else {
+                } else {
                     sb.append('\\').append('u').append(String.format("%04x", (int) ch).toLowerCase());
                 }
             }
@@ -81,17 +83,12 @@ public class AppUtil {
      * 判断是否为WIFI
      *
      * @param context context
-     * @return        是否为WIFI
+     * @return 是否为WIFI
      */
     public static boolean isWifi(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
-        if (activeNetInfo != null
-                && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            return true;
-        }
-        return false;
+        return activeNetInfo != null && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
     /****************
@@ -108,7 +105,7 @@ public class AppUtil {
         try {
             context.startActivity(intent);
         } catch (Exception e) {
-            // 未安装手Q或安装的版本不支持
+            UMCrash.generateCustomLog(e, "joinQQGroup");
         }
     }
 

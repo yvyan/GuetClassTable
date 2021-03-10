@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -61,7 +62,7 @@ public class UpdateApp {
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) {
                     try {
-                        String result = response.body().string();
+                        String result = Objects.requireNonNull(response.body()).string();
                         UpdateInfo updateInfo = new Gson().fromJson(result, UpdateInfo.class);
                         if (updateInfo.getVersioncode() > AppUtil.getAppVersionCode(activity)) {
                             if (type == 2) {
@@ -200,10 +201,6 @@ public class UpdateApp {
         private String comm;
         private String url;
 
-        public void setVersioncode(int versioncode) {
-            this.versionCode = versioncode;
-        }
-
         public int getVersioncode() {
             return versionCode;
         }
@@ -216,28 +213,8 @@ public class UpdateApp {
             return version;
         }
 
-        public void setForce(int force) {
-            this.force = force;
-        }
-
         public int getForce() {
             return force;
-        }
-
-        public void setRedText(String redText) {
-            this.redText = redText;
-        }
-
-        public String getRedText() {
-            return redText;
-        }
-
-        public void setComm(String comm) {
-            this.comm = comm;
-        }
-
-        public String getComm() {
-            return comm;
         }
 
         public void setUrl(String url) {

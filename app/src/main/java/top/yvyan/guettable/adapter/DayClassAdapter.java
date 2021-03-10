@@ -20,6 +20,7 @@ import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.util.TimeUtil;
 
+@SuppressWarnings("ConstantConditions")
 public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassDetailViewHolder> {
     private final List<Schedule> todayList;
     private final List<Schedule> tomorrowList;
@@ -62,7 +63,6 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
 
             TypedValue tv = new TypedValue();
             context.getTheme().resolveAttribute(R.attr.color_text, tv, true);
-
             holder.textView1.setTextColor(context.getResources().getColor(tv.resourceId));
             holder.textView1.setTextSize(20);
             int size;
@@ -123,7 +123,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             } else {
                 holder.textView3.setText("教师：" + courseBean.getTeacher());
             }
-            if (courseBean.getRoom() == null) {
+            if (courseBean.getRoom().isEmpty()) {
                 holder.textView4.setVisibility(View.GONE);
             } else {
                 holder.textView4.setText("教室：" + courseBean.getRoom());
@@ -134,7 +134,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             }
             holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + n + "大节");
 
-            if (courseBean.getRemarks() == null || "".equals(courseBean.getRemarks())) {
+            if (courseBean.getRemarks().isEmpty()) {
                 holder.textView6.setVisibility(View.GONE);
                 holder.textView7.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
             } else {
@@ -146,7 +146,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             if (courseBean.isLab()) { //课内实验
                 holder.textView2.setText("名称：" + courseBean.getLabName());
             } else { //理论课
-                if (courseBean.getNumber() == null || "".equals(courseBean.getNumber())) {
+                if (courseBean.getNumber().isEmpty()) {
                     holder.textView2.setVisibility(View.GONE);
                 } else {
                     holder.textView2.setVisibility(View.VISIBLE);

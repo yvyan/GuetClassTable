@@ -39,7 +39,7 @@ public class PlannedCourseAdapter extends RecyclerView.Adapter<PlannedCourseAdap
         }
         holder.courseName.setText(plannedCourseBeans.get(position).getName());
         holder.credits.setText(plannedCourseBeans.get(position).getCredits());
-        holder.degree.setText(plannedCourseBeans.get(position).getDegree() == "null" ? "" : plannedCourseBeans.get(position).getDegree());
+        holder.degree.setText(plannedCourseBeans.get(position).getDegree());
     }
 
     @Override
@@ -47,8 +47,9 @@ public class PlannedCourseAdapter extends RecyclerView.Adapter<PlannedCourseAdap
         return plannedCourseBeans.size();
     }
 
-    public class PlannedCourseViewHolder extends RecyclerView.ViewHolder {
+    public static class PlannedCourseViewHolder extends RecyclerView.ViewHolder {
         TextView headerName, courseName, credits, degree;
+
         public PlannedCourseViewHolder(@NonNull View itemView) {
             super(itemView);
             headerName = itemView.findViewById(R.id.planned_course_header_name);

@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.Nullable;
+
 import com.xuexiang.xui.widget.tabbar.TabControlView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
@@ -31,6 +33,8 @@ import top.yvyan.guettable.util.ToastUtil;
 import static com.xuexiang.xui.XUI.getContext;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
+    public static int REQUEST_CODE = 13;
+    public static int OK = 10;
 
     private Boolean bPwdSwitch = false;
     private Boolean bPwdSwitch2 = false;
@@ -175,8 +179,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     generalData.setTerm(studentInfo.getTerm());
                     generalData.setGrade(studentInfo.getGrade());
                     Intent intent = new Intent(this, SetTermActivity.class);
-                    startActivity(intent);
-                    finish();
+                    startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
+                    runOnUiThread(this::setEnClick);
                 } else { //若获取个人信息失败，则登出，否则会导致后续获取不到年级等信息导致闪退
                     runOnUiThread(() -> {
                         ToastUtil.showToast(this, getResources().getString(R.string.login_fail_getInfo));
@@ -208,6 +212,16 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 });
             }
         }).start();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SetTermActivity.REQUEST_CODE && resultCode == SetTermActivity.OK) {
+            Intent intent = getIntent();
+            setResult(OK, intent);
+            finish();
+        }
     }
 
     /**

@@ -11,9 +11,6 @@ public class AccountData {
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String PASSWORD2 = "password2";
-    private static final String IS_SAVE_COURSE = "isCourseSave";
-    private static final String COURSE = "course";
-    private static final String UPDATE_COURSE = "updateCourse";
     SharedPreferences sharedPreferences;
 
     private boolean isSave;
@@ -58,14 +55,6 @@ public class AccountData {
         saveUser();
     }
 
-    public void delUser() {
-        this.isLogin = false;
-        this.isSave = false;
-        this.username = "";
-        this.password = "";
-        clearUser();
-    }
-
     public void logoff() {
         this.isLogin = false;
         saveUser();
@@ -85,12 +74,6 @@ public class AccountData {
         editor.putBoolean(IS_LOGIN, isLogin);
         editor.putString(USERNAME, username);
         editor.putString(PASSWORD, password);
-        editor.apply();
-    }
-
-    private void clearUser() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
         editor.apply();
     }
 

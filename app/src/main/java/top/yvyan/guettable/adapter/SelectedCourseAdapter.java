@@ -32,9 +32,9 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
     @Override
     public void onBindViewHolder(@NonNull SelectedCourseViewHolder holder, int position) {
         holder.courseCredit.setText(String.valueOf(dataList.get(position).getCourseCredit()));
-        holder.courseName.setText(String.valueOf(dataList.get(position).getCourseName()));
-        holder.courseType.setText(String.valueOf(dataList.get(position).getSelectType()));
-        holder.courseQuality.setText(String.valueOf(dataList.get(position).getCourseQuality()));
+        holder.courseName.setText(dataList.get(position).getCourseName());
+        holder.courseType.setText(dataList.get(position).getSelectType());
+        holder.courseQuality.setText(dataList.get(position).getCourseQuality());
     }
 
     @Override

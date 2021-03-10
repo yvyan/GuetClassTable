@@ -3,12 +3,11 @@ package top.yvyan.guettable.bean;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleEnable;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("ConstantConditions")
 public class CourseBean implements ScheduleEnable, Serializable {
     private static final long serialVersionUID = 989531884520541236L;
     public static String IS_LAB = "isLab";
@@ -48,9 +47,6 @@ public class CourseBean implements ScheduleEnable, Serializable {
     private String remarks;
     //实验id
     private long labId;
-
-    //一个随机数，用于对应课程的颜色
-    private int colorRandom = 0;
 
     public CourseBean() {
     }
@@ -97,7 +93,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     public void setFromSchedule(Schedule schedule) {
-        isLab = (boolean)schedule.getExtras().get(IS_LAB);
+        isLab = (boolean) schedule.getExtras().get(IS_LAB);
         weekStart = (int) schedule.getExtras().get(WEEK_START);
         weekEnd = (int) schedule.getExtras().get(WEEK_END);
         remarks = (String) schedule.getExtras().get(REMARKS);
@@ -117,7 +113,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
 
     @Override
     public Schedule getSchedule() {
-        Schedule schedule=new Schedule();
+        Schedule schedule = new Schedule();
         schedule.setDay(getDay());
         schedule.setName(getName());
         schedule.setRoom(getRoom());
@@ -151,19 +147,17 @@ public class CourseBean implements ScheduleEnable, Serializable {
         return isLab;
     }
 
-    public void setLab(boolean lab) {
-        isLab = lab;
-    }
-
     public String getNumber() {
+        if (number == null) {
+            number = "";
+        }
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public String getName() {
+        if (name == null) {
+            name = "";
+        }
         return name;
     }
 
@@ -172,19 +166,17 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     public String getLabName() {
+        if (labName == null) {
+            labName = "";
+        }
         return labName;
     }
 
-    public void setLabName(String labName) {
-        this.labName = labName;
-    }
-
     public String getRoom() {
+        if (room == null) {
+            room = "";
+        }
         return room;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
     }
 
     public int getTime() {
@@ -196,87 +188,36 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     public String getTeacher() {
+        if (teacher == null) {
+            teacher = "";
+        }
         return teacher;
     }
 
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
-
     public String getRemarks() {
+        if (remarks == null) {
+            remarks = "";
+        }
         return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public int getColorRandom() {
-        return colorRandom;
-    }
-
-    public void setColorRandom(int colorRandom) {
-        this.colorRandom = colorRandom;
     }
 
     public int getDay() {
         return day;
     }
 
-    public void setDay(int day) {
-        this.day = day;
-    }
-
     public List<Integer> getWeekList() {
         return weekList;
-    }
-
-    public void setWeekList(List<Integer> weekList) {
-        this.weekList = weekList;
     }
 
     public int getWeekStart() {
         return weekStart;
     }
 
-    public void setWeekStart(int weekStart) {
-        this.weekStart = weekStart;
-    }
-
     public int getWeekEnd() {
         return weekEnd;
     }
 
-    public void setWeekEnd(int weekEnd) {
-        this.weekEnd = weekEnd;
-    }
-
     public long getLabId() {
         return labId;
-    }
-
-    public void setLabId(long labId) {
-        this.labId = labId;
-    }
-
-    @NotNull
-    @Override
-    public String toString() {
-        return "CourseBean{" +
-                "id=" + id +
-                ", isLab=" + isLab +
-                ", number='" + number + '\'' +
-                ", name='" + name + '\'' +
-                ", libName='" + labName + '\'' +
-                ", room='" + room + '\'' +
-                ", weekStart=" + weekStart +
-                ", weekEnd=" + weekEnd +
-                ", weekList=" + weekList +
-                ", day=" + day +
-                ", time=" + time +
-                ", teacher='" + teacher + '\'' +
-                ", remarks='" + remarks + '\'' +
-                ", colorRandom=" + colorRandom +
-                '}';
     }
 }

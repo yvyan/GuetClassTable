@@ -11,10 +11,6 @@ public class AvgTeacherBean {
         this.hint = hint;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
-
     public String getCourseName() {
         return courseName;
     }
@@ -25,10 +21,6 @@ public class AvgTeacherBean {
 
     public String getHint() {
         return hint;
-    }
-
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
     }
 
     public String getTeacherName() {

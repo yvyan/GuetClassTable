@@ -20,18 +20,10 @@ public class PlannedCourseBean implements Serializable {
             return false;
 
         PlannedCourseBean bean = (PlannedCourseBean) obj;
-        if (degree == null) {
-            if (bean.degree != null) {
-                return false;
-            }
-        } else {
-            if (!(bean.degree != null && degree.equals(bean.degree))) {
-                return false;
-            }
-        }
-        return name.equals(bean.name)
-                && credits.equals(bean.credits)
-                && type.equals(bean.type);
+        return getDegree().equals(bean.getDegree())
+                && getName().equals(bean.getName())
+                && getCredits().equals(bean.getCredits())
+                && getType().equals(bean.getType());
     }
 
     public PlannedCourseBean(String name, String credits, String degree, String type, String typeName) {
@@ -42,10 +34,10 @@ public class PlannedCourseBean implements Serializable {
         this.typeName = typeName;
     }
 
-    public PlannedCourseBean() {
-    }
-
     public String getName() {
+        if (name == null) {
+            name = "";
+        }
         return name;
     }
 
@@ -54,22 +46,23 @@ public class PlannedCourseBean implements Serializable {
     }
 
     public String getCredits() {
+        if (credits == null) {
+            credits = "";
+        }
         return credits;
     }
 
-    public void setCredits(String credits) {
-        this.credits = credits;
-    }
-
     public String getDegree() {
+        if (degree == null) {
+            degree = "";
+        }
         return degree;
     }
 
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-
     public String getType() {
+        if (type == null) {
+            type = "";
+        }
         return type;
     }
 
@@ -78,21 +71,9 @@ public class PlannedCourseBean implements Serializable {
     }
 
     public String getTypeName() {
+        if (typeName == null) {
+            typeName = "";
+        }
         return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    @Override
-    public String toString() {
-        return "PlannedCourseBean{" +
-                "name='" + name + '\'' +
-                ", credits='" + credits + '\'' +
-                ", degree='" + degree + '\'' +
-                ", type='" + type + '\'' +
-                ", typeName='" + typeName + '\'' +
-                '}';
     }
 }

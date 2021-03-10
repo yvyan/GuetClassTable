@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 
 import top.yvyan.guettable.R;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class BackgroundUtil {
 
     /**
@@ -47,24 +48,35 @@ public class BackgroundUtil {
         }
     }
 
+    /**
+     * 给某一视图设置背景图片
+     *
+     * @param context   context
+     * @param imageView 背景图片视图
+     */
     public static void setBackground(Context context, ImageView imageView) {
         if (isSetBackground(context)) {
             try {
                 FileInputStream stream = new FileInputStream(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + "/userBackground.jpg");
                 Bitmap bitmap = BitmapFactory.decodeStream(stream);
-                imageView.setImageBitmap(bitmap);
+                if (imageView != null) {
+                    imageView.setImageBitmap(bitmap);
+                }
             } catch (FileNotFoundException e) {
                 deleteBackground(context);
             }
         }
     }
 
+    /**
+     * 设置主题
+     *
+     * @param context context
+     * @param themeID 主题id
+     */
     public static void setPageTheme(Context context, int themeID) {
-        if(context != null){
+        if (context != null) {
             switch (themeID) {
-                case 0:
-                    context.setTheme(R.style.AppTheme);
-                    break;
                 case 1:
                     context.setTheme(R.style.AppTheme_Pink);
                     break;
@@ -76,6 +88,9 @@ public class BackgroundUtil {
                     break;
                 case 4:
                     context.setTheme(R.style.AppTheme_Green);
+                    break;
+                default:
+                    context.setTheme(R.style.AppTheme);
                     break;
             }
         }

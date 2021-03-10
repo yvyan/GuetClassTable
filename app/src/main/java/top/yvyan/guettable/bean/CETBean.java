@@ -2,11 +2,13 @@ package top.yvyan.guettable.bean;
 
 import androidx.annotation.Nullable;
 
-import org.jetbrains.annotations.NotNull;
+import com.umeng.umcrash.UMCrash;
 
 import java.io.Serializable;
 
-public class CETBean implements Serializable, BeanAttribute {
+import top.yvyan.guettable.util.BeanAttributeUtil;
+
+public class CETBean implements Serializable, BeanAttributeUtil.BeanAttribute {
     private static final long serialVersionUID = -4533762023709527528L;
     //等级名称 CET4 CET6
     private String name;
@@ -17,9 +19,9 @@ public class CETBean implements Serializable, BeanAttribute {
     //折算成绩
     private float score;
     //证书编号
-    private final String card;
+    private String card;
     //推送时间
-    private final String postDate;
+    private String postDate;
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -28,11 +30,10 @@ public class CETBean implements Serializable, BeanAttribute {
         if (obj.getClass() != this.getClass())
             return false;
         CETBean cetBean = (CETBean) obj;
-        if (cetBean.getCard() == null && this.getCard() != null || cetBean.getCard() != null && this.getCard() == null) {
-            return false;
-        }
-        return this.card.equals(cetBean.card)
-                && this.stage == cetBean.stage;
+        return getCard().equals(cetBean.getCard())
+                && getPostDate().equals(cetBean.getPostDate())
+                && getTerm().equals(cetBean.getTerm())
+                && getStage() == cetBean.getStage();
     }
 
     public CETBean(String name, String term, int stage, float score, String card, String postDate) {
@@ -45,6 +46,9 @@ public class CETBean implements Serializable, BeanAttribute {
     }
 
     public String getName() {
+        if (name == null) {
+            name = "";
+        }
         return name;
     }
 
@@ -54,14 +58,25 @@ public class CETBean implements Serializable, BeanAttribute {
 
     @Override
     public String getTerm() {
+        if (term == null) {
+            term = "";
+        }
         return term;
     }
 
     @Override
     public long getOrder() {
         int year = Integer.parseInt(term.substring(0, 4));
-        year = year * 10 + Integer.parseInt(term.substring(10, 11));
-        return year;
+        try {
+            return year * 10 + Integer.parseInt(term.substring(10, 11));
+        } catch (Exception e) {
+            try {
+                return year * 10 + Integer.parseInt(term.substring(4, 5));
+            } catch (Exception e1) {
+                UMCrash.generateCustomLog(e1, "CETBean.getOrder");
+            }
+        }
+        return 0;
     }
 
     public void setTerm(String term) {
@@ -81,23 +96,16 @@ public class CETBean implements Serializable, BeanAttribute {
     }
 
     public String getCard() {
+        if (card == null) {
+            card = "";
+        }
         return card;
     }
 
     public String getPostDate() {
+        if (postDate == null) {
+            postDate = "";
+        }
         return postDate;
-    }
-
-    @NotNull
-    @Override
-    public String toString() {
-        return "CETBean{" +
-                "name='" + name + '\'' +
-                ", term='" + term + '\'' +
-                ", stage=" + stage +
-                ", score=" + score +
-                ", card='" + card + '\'' +
-                ", postDate='" + postDate + '\'' +
-                '}';
     }
 }

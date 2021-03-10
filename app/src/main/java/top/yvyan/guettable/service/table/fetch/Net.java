@@ -918,8 +918,8 @@ public class Net {
     /**
      * 查询已选课程
      *
-     * @param context
-     * @param cookie
+     * @param context context
+     * @param cookie  cookie
      * @param isVPN   是否外网
      * @return 操作结果
      */

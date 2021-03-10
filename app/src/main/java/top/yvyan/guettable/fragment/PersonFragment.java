@@ -1,6 +1,5 @@
 package top.yvyan.guettable.fragment;
 
-
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -15,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
+import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.activity.AboutActivity;
 import top.yvyan.guettable.activity.HelpTestActivity;
@@ -181,11 +182,12 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 if (accountData.getIsLogin()) {
                     AppUtil.reportFunc(getContext(), "设置学期");
                     intent = new Intent(getContext(), SetTermActivity.class);
+                    startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
                 } else {
                     AppUtil.reportFunc(getContext(), "登录");
                     intent = new Intent(getContext(), LoginActivity.class);
+                    startActivityForResult(intent, LoginActivity.REQUEST_CODE);
                 }
-                startActivity(intent);
                 break;
             case R.id.btn_quit:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.btn_quit));
@@ -245,6 +247,18 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             default:
                 ToastUtil.showToast(getContext(), "尽请期待");
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == SetTermActivity.OK || resultCode == LoginActivity.OK) {
+            updateView();
+            MainActivity mainActivity = (MainActivity) getActivity();
+            if (mainActivity != null) {
+                mainActivity.onClick(0); //切换页面0
+            }
         }
     }
 

@@ -15,7 +15,7 @@ import top.yvyan.guettable.bean.ExamScoreBean;
 
 public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.ExamScoreViewHolder> {
 
-    private List<ExamScoreBean> examScoreBeans;
+    private final List<ExamScoreBean> examScoreBeans;
 
     public ExamScoreAdapter(List<ExamScoreBean> examScoreBeans) {
         this.examScoreBeans = examScoreBeans;
@@ -49,8 +49,9 @@ public class ExamScoreAdapter extends RecyclerView.Adapter<ExamScoreAdapter.Exam
         return examScoreBeans.size();
     }
 
-    public class ExamScoreViewHolder extends RecyclerView.ViewHolder {
+    public static class ExamScoreViewHolder extends RecyclerView.ViewHolder {
         TextView headerTerm, examScoreName, examScoreScore, examScoreUsually, courseNo, examScoreCheck;
+
         public ExamScoreViewHolder(@NonNull View itemView) {
             super(itemView);
             headerTerm = itemView.findViewById(R.id.header_term);

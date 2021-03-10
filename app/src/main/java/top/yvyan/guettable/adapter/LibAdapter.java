@@ -1,5 +1,6 @@
 package top.yvyan.guettable.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,8 @@ import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
-    private List<Schedule> schedules;
-    private int week;
+    private final List<Schedule> schedules;
+    private final int week;
 
     public LibAdapter(List<Schedule> schedules, int week) {
         this.schedules = schedules;
@@ -29,10 +30,11 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
     @Override
     public LibViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.detail_cardview,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.detail_cardview, parent, false);
         return new LibViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull LibViewHolder holder, int position) {
         CourseBean courseBean = new CourseBean();
@@ -40,13 +42,13 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
         if (position == 0 || !schedules.get(position - 1).getName().equals(schedules.get(position).getName())) {
             holder.textView1.setVisibility(View.VISIBLE);
             holder.textView1.setText(courseBean.getName());
-            if (courseBean.getTeacher() == null) {
+            if (courseBean.getTeacher().isEmpty()) {
                 holder.textView3.setVisibility(View.GONE);
             } else {
                 holder.textView3.setVisibility(View.VISIBLE);
                 holder.textView3.setText("教师：" + courseBean.getTeacher());
             }
-            if (courseBean.getRoom() == null) {
+            if (courseBean.getRoom().isEmpty()) {
                 holder.textView4.setVisibility(View.GONE);
             } else {
                 holder.textView4.setVisibility(View.VISIBLE);
@@ -89,6 +91,7 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
     static class LibViewHolder extends RecyclerView.ViewHolder {
         View card;
         TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
+
         public LibViewHolder(@NonNull View itemView) {
             super(itemView);
             card = itemView.findViewById(R.id.detail_card);
