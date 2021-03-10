@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.umeng.cconfig.UMRemoteConfig;
+
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
@@ -49,7 +51,7 @@ public class AboutActivity extends AppCompatActivity {
 
     public void privacy(View view) {
         Intent intent = new Intent(getContext(), WebViewActivity.class);
-        intent.putExtra(WebViewActivity.WEB_URL, getContext().getResources().getString(R.string.privacy_url));
+        intent.putExtra(WebViewActivity.WEB_URL, UMRemoteConfig.getInstance().getConfigValue("privacyUrl"));
         intent.putExtra(WebViewActivity.WEB_TITLE, "隐私政策");
         startActivity(intent);
     }

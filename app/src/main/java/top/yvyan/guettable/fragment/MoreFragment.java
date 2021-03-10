@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.cconfig.UMRemoteConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -220,7 +221,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.more_url_index:
-                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.guet_yvyan_top));
+                openBrowser(UMRemoteConfig.getInstance().getConfigValue("guetYvyanTop"));
                 break;
             case R.id.more_evaluating_teachers:
                 if (generalData.isInternational()) {

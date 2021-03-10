@@ -4,4 +4,27 @@
         <key>updateUrl</key>
         <value>http://update.guet.yvyan.top/</value>
     </entry>
+
+    <entry>
+        <key>updateUrl</key>
+        <value>新的桂电课程表，简洁、好用，分享给你，点击链接下载：https://www.coolapk.com/apk/279989
+            \n(酷安官方链接，请放心访问，建议使用浏览器打开)
+        </value>
+    </entry>
+
+    <entry>
+        <key>cloudUrl</key>
+        <value>https://cloud.yvyan.top/index.php/s/8EczotKAbSjfXPk</value>
+    </entry>
+
+    <entry>
+        <key>privacyUrl</key>
+        <value>http://privacy.guet.yvyan.top/</value>
+    </entry>
+
+    <entry>
+        <key>guetYvyanTop</key>
+        <value>http://guet.yvyan.top/</value>
+    </entry>
+
 </defaultsMap>
