@@ -166,6 +166,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         } else {
             dayClassAdapter = new DayClassAdapter(getContext(), todayList, tomorrowList, order[0]);
         }
+        dayClassAdapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(dayClassAdapter);
 
