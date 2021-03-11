@@ -112,7 +112,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             CourseBean courseBean = new CourseBean();
             courseBean.setFromSchedule(schedule);
             if (schedule.getStart() == starting) {
-                holder.textView1.setText(courseBean.getName() + "   上课中...");
+                holder.textView1.setText(courseBean.getName() + "   上课中");
                 holder.textView1.setTextColor(context.getResources().getColor(R.color.app_green));
             } else {
                 holder.textView1.setText(courseBean.getName());
