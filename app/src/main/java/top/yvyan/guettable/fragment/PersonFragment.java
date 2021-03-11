@@ -265,7 +265,11 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     }
 
     public void downloadAllApk() {
-        Uri uri = Uri.parse(UMRemoteConfig.getInstance().getConfigValue("cloudUrl"));
+        String url = UMRemoteConfig.getInstance().getConfigValue("cloudUrl");
+        if (url == null || url.isEmpty()) {
+            DialogUtil.showTextDialog(getContext(), "功能维护中！");
+        }
+        Uri uri = Uri.parse(url);
         Intent webIntent = new Intent();
         webIntent.setAction("android.intent.action.VIEW");
         webIntent.setData(uri);

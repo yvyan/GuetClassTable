@@ -253,6 +253,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     }
 
     public void openBrowser(String url) {
+        if (url == null || url.isEmpty()) {
+            DialogUtil.showTextDialog(getContext(), "功能维护中！");
+        }
         Map<String, Object> urlMap = new HashMap<>();
         urlMap.put("url", url);
         MobclickAgent.onEventObject(getContext(), "openUrl", urlMap);
