@@ -27,4 +27,9 @@
         <value>http://guet.yvyan.top/</value>
     </entry>
 
+    <entry>
+        <key>notificationUrl</key>
+        <value>http://update.guet.yvyan.top/notification/</value>
+    </entry>
+
 </defaultsMap>

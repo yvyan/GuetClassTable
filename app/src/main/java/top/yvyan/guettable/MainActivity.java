@@ -32,6 +32,7 @@ import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.helper.ViewPagerAdapter;
+import top.yvyan.guettable.service.app.Notification;
 import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.util.BackgroundUtil;
 
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
 
         UpdateApp.check(this, 1);
+        Notification.getNotification(this);
     }
 
     @Override

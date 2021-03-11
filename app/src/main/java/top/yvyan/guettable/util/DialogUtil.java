@@ -97,4 +97,31 @@ public class DialogUtil {
         btn_hint_yes.setOnClickListener(arg0 -> dialog.dismiss());
     }
 
+    /**
+     * 显示通知
+     *
+     * @param context 上下文
+     * @param title   标题
+     * @param text    自定义显示的文字
+     */
+    public static void showNotificationDialog(final Context context, String title, String text) {
+        AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        dialog = builder.create();
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.notification_dailog);
+        TextView comm = window.findViewById(R.id.notification_text);
+        comm.setText(text);
+        TextView tvTitle = window.findViewById(R.id.notification_title);
+        tvTitle.setText(title);
+
+        Button btn_hint_yes = window.findViewById(R.id.btn_text_yes);
+        btn_hint_yes.setOnClickListener(arg0 -> dialog.dismiss());
+    }
+
 }
