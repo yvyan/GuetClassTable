@@ -329,7 +329,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         setBackground(BackgroundUtil.isSetBackground(getContext()));
         initData();
         timerTask = new timeTask();
-        timer.schedule(timerTask, 1800000, 1800000);
+        timer.schedule(timerTask, 30000, 30000);
         autoUpdate.updateView();
         if (getCurrentOrder() != -1) {
             updateView(getCurrentOrder());
