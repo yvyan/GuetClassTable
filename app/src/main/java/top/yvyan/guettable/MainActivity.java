@@ -4,8 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Process;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
@@ -183,7 +187,23 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (themeID != singleSettingData.getThemeId()) {
             themeID = singleSettingData.getThemeId();
-            recreate();
+            BackgroundUtil.setPageTheme(this, themeID);
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = getTheme();
+            theme.resolveAttribute(R.attr.color_bar, typedValue, true);
+            int[][] states = new int[2][];
+            int[] color = new int[2];
+            TypedArray typedArray = this.obtainStyledAttributes(new int[]{R.attr.color_bar});
+            int attrColor = typedArray.getColor(0, 0);
+            typedArray.recycle();
+            states[0] = new int[]{android.R.attr.state_checked};
+            states[1] = new int[]{-android.R.attr.state_checked};
+            color[0] = attrColor;
+            color[1] = R.color.tab_unchecked;
+            ColorStateList itemIconTintList = new ColorStateList(states, color);
+            bottomNavigationView.setItemIconTintList(itemIconTintList);
+            bottomNavigationView.setItemTextColor(itemIconTintList);
+            viewPager.setCurrentItem(0, false);
         }
     }
 
