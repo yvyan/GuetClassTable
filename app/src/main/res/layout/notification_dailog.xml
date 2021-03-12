@@ -13,12 +13,20 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_dialog"
+            android:id="@+id/notification_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_gravity="center"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/notification_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:textSize="16sp" />
 
         <RelativeLayout

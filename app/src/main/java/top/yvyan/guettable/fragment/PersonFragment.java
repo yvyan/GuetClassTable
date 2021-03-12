@@ -17,6 +17,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.umeng.cconfig.UMRemoteConfig;
+
 import java.util.Objects;
 
 import top.yvyan.guettable.MainActivity;
@@ -263,7 +265,11 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     }
 
     public void downloadAllApk() {
-        Uri uri = Uri.parse(Objects.requireNonNull(getContext()).getResources().getString(R.string.downloadAll_url));
+        String url = UMRemoteConfig.getInstance().getConfigValue("cloudUrl");
+        if (url == null || url.isEmpty()) {
+            DialogUtil.showTextDialog(getContext(), "功能维护中！");
+        }
+        Uri uri = Uri.parse(url);
         Intent webIntent = new Intent();
         webIntent.setAction("android.intent.action.VIEW");
         webIntent.setData(uri);
@@ -273,7 +279,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     public void shareText() {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_text));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, UMRemoteConfig.getInstance().getConfigValue("shareText"));
         shareIntent.setType("text/plain");
         //设置分享列表的标题，并且每次都显示分享列表
         startActivity(Intent.createChooser(shareIntent, "分享给同学"));
