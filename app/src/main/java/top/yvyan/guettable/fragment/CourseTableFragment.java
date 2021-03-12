@@ -164,7 +164,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                         if ((int) schedule.getExtras().get(ExamBean.TYPE) == 2) {
                             return "(考试)" + schedule.getName() + "@" + schedule.getRoom();
                         } else { //理论课和课内实验
-                            if (schedule.getRoom() != null) {
+                            if (!schedule.getRoom().isEmpty()) {
                                 return schedule.getName() + "@" + schedule.getRoom();
                             } else {
                                 return schedule.getName();
