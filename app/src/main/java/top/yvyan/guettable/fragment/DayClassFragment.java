@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.umcrash.UMCrash;
 import com.zhuangfei.timetable.model.Schedule;
@@ -27,7 +28,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -240,7 +243,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.day_url_bkjw:
-                uri = Uri.parse(UrlReplaceUtil.getUrlByInternational(generalData.isInternational(), Objects.requireNonNull(getContext()).getResources().getString(R.string.url_bkjw)));
+                String url = UrlReplaceUtil.getUrlByInternational(generalData.isInternational(), Objects.requireNonNull(getContext()).getResources().getString(R.string.url_bkjw));
+                uri = Uri.parse(url);
+                Map<String, Object> urlMap = new HashMap<>();
+                urlMap.put("url", url);
+                MobclickAgent.onEventObject(getContext(), "openUrl", urlMap);
                 webIntent.setData(uri);
                 startActivity(webIntent);
                 break;
@@ -343,7 +350,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         } else {
             updateView();
         }
-        updateView();
     }
 
     //  接收定时器通信的Handler，在其中调用updateView()来刷新日课表
@@ -377,7 +383,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         }
         switch (i) {
             case 0:
-                current = 0;
+                current = 13;
                 break;
             case 1:
                 current = 1;

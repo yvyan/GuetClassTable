@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.cconfig.UMRemoteConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +50,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private GeneralData generalData;
 
     public MoreFragment() {
-        // Required empty public constructor
     }
 
     public static MoreFragment newInstance() {
@@ -67,7 +67,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
         generalData = GeneralData.newInstance(getContext());
         singleSettingData = SingleSettingData.newInstance(getContext());
-
+        //透明状态栏
         View addStatus = view.findViewById(R.id.add_status);
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
         lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
@@ -130,6 +130,11 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         generalData = GeneralData.newInstance(getContext());
     }
 
+    /**
+     * 设置背景
+     *
+     * @param setBackground 是否设置背景
+     */
     private void setBackground(boolean setBackground) {
         View addStatus = view.findViewById(R.id.add_status);
         View titleBar = view.findViewById(R.id.title_bar);
@@ -220,7 +225,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.more_url_index:
-                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.guet_yvyan_top));
+                openBrowser(UMRemoteConfig.getInstance().getConfigValue("guetYvyanTop"));
                 break;
             case R.id.more_evaluating_teachers:
                 if (generalData.isInternational()) {
@@ -251,7 +256,15 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * 使用浏览器打开链接
+     *
+     * @param url url
+     */
     public void openBrowser(String url) {
+        if (url == null || url.isEmpty()) {
+            DialogUtil.showTextDialog(getContext(), "功能维护中！");
+        }
         Map<String, Object> urlMap = new HashMap<>();
         urlMap.put("url", url);
         MobclickAgent.onEventObject(getContext(), "openUrl", urlMap);
