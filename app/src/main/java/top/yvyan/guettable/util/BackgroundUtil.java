@@ -1,14 +1,19 @@
 package top.yvyan.guettable.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 
 import top.yvyan.guettable.R;
 
@@ -93,6 +98,22 @@ public class BackgroundUtil {
                     context.setTheme(R.style.AppTheme);
                     break;
             }
+        }
+    }
+
+    /**
+     * 设置无背景图Activity的沉浸式状态栏+满透明度
+     *
+     * @param context Activity
+     */
+    public static void setFullAlphaStatus(Activity context) {
+        if (context != null) {
+            context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            View addStatus = context.findViewById(R.id.add_status);
+            ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
+            lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(context.getApplicationContext()));
+            addStatus.setLayoutParams(lp);
+            addStatus.getBackground().setAlpha(255);
         }
     }
 }

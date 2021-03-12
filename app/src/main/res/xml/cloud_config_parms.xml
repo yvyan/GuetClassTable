@@ -4,4 +4,8 @@
         <key>updateUrl</key>
         <value>http://update.guet.yvyan.top/</value>
     </entry>
+    <entry>
+        <key>classTime</key>
+        <value>13:00~14:30;8:25~10:00;10:25~12:00;14:25~16:05;16:25~18:05;19:00~20:30;21:00~22:30</value>
+    </entry>
 </defaultsMap>
