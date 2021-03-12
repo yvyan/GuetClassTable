@@ -58,7 +58,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private TextView person_term;
     private TextView person_week;
 
-    private SingleSettingData singleSettingData;
     private AccountData accountData;
     private GeneralData generalData;
 
@@ -89,7 +88,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private void initData() {
         accountData = AccountData.newInstance(getContext());
         generalData = GeneralData.newInstance(getContext());
-        singleSettingData = SingleSettingData.newInstance(getContext());
     }
 
     private void initView() {
@@ -132,6 +130,9 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         helpMe.setOnClickListener(this);
     }
 
+    /**
+     * 设置个人信息
+     */
     @SuppressLint("SetTextI18n")
     public void updateView() {
         if (accountData.getIsLogin()) {
@@ -155,9 +156,15 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * 设置背景
+     *
+     * @param setBackground 是否设置了背景
+     */
     private void setBackground(boolean setBackground) {
         View addStatus = view.findViewById(R.id.add_status);
         View titleBar = view.findViewById(R.id.title_bar);
+        SingleSettingData singleSettingData = SingleSettingData.newInstance(getContext());
         if (setBackground) {
             titleBar.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
             addStatus.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
@@ -174,6 +181,9 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         initData();
     }
 
+    /**
+     * 点击处理事件
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -255,7 +265,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == SetTermActivity.OK || resultCode == LoginActivity.OK) {
+        if (resultCode == SetTermActivity.OK || resultCode == LoginActivity.OK) { //若登录成功或者切换时间则刷新个人信息并且切换到第一页进行课程信息同步
             updateView();
             MainActivity mainActivity = (MainActivity) getActivity();
             if (mainActivity != null) {
@@ -264,10 +274,15 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * 下载所有版本的安装包(nextCloud)
+     */
     public void downloadAllApk() {
+        AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_download_all));
         String url = UMRemoteConfig.getInstance().getConfigValue("cloudUrl");
         if (url == null || url.isEmpty()) {
             DialogUtil.showTextDialog(getContext(), "功能维护中！");
+            return;
         }
         Uri uri = Uri.parse(url);
         Intent webIntent = new Intent();
@@ -276,6 +291,9 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         startActivity(webIntent);
     }
 
+    /**
+     * 分享给同学
+     */
     public void shareText() {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
@@ -285,6 +303,9 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         startActivity(Intent.createChooser(shareIntent, "分享给同学"));
     }
 
+    /**
+     * 协助测试
+     */
     public void helpTest() {
         if (SettingData.newInstance(getContext()).isDevelopMode()) {
             if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {

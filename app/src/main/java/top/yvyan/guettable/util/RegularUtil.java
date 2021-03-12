@@ -8,8 +8,8 @@ public class RegularUtil {
     /**
      * 正则表达式匹配String返回匹配数组
      *
-     * @param str
-     * @param regex
+     * @param str   字符串
+     * @param regex 匹配规则
      * @return ArrayList<String>
      */
     public static ArrayList<String> getAllSatisfyStr(String str, String regex) {
