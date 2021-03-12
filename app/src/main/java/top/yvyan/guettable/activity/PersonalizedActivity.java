@@ -42,7 +42,7 @@ import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
-public class PersonalizedActivity extends AppCompatActivity implements OnItemSelectedListener {
+public class PersonalizedActivity extends AppCompatActivity implements OnItemSelectedListener<Object> {
 
     private static final String[] themes = {"桂电蓝", "B站粉", "京东红", "淘宝橙", "微信绿"};
     private SingleSettingData singleSettingData;
@@ -133,7 +133,7 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
                 titleBarAlpha = 12.75f * i;
                 TextView titleBarTextView = findViewById(R.id.textView_titleBar_alpha);
                 titleBarTextView.setText(String.valueOf(i));
-                ToastUtil.showToast(getApplicationContext(), "状态栏返回生效！");
+//                ToastUtil.showToast(getApplicationContext(), "状态栏返回生效！");
             }
             if (BackgroundUtil.isSetBackground(getApplicationContext())) {
                 singleSettingData.setAlpha(dateAlpha, slideAlpha, itemAlpha, titleBarAlpha);
@@ -278,18 +278,14 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
             try {
                 photoClip(uri);
             } catch (Exception e) {
-                try {
-                    ContentResolver resolver = getContentResolver();
-                    FileInputStream inputStream = (FileInputStream) resolver.openInputStream(uri);
-                    FileOutputStream outputStream = new FileOutputStream(BackgroundUtil.getPath(getApplicationContext()));
+                ContentResolver resolver = getContentResolver();
+                try (FileInputStream inputStream = (FileInputStream) resolver.openInputStream(uri);
+                     FileOutputStream outputStream = new FileOutputStream(BackgroundUtil.getPath(getApplicationContext()));) {
                     byte[] buffer = new byte[1024];
                     int byteRead;
                     while (-1 != (byteRead = inputStream.read(buffer))) {
                         outputStream.write(buffer, 0, byteRead);
                     }
-                    inputStream.close();
-                    outputStream.flush();
-                    outputStream.close();
                     ToastUtil.showToast(getApplicationContext(), "设置背景成功！");
                 } catch (IOException e1) {
                     ToastUtil.showToast(getApplicationContext(), "读取错误，背景设计失败！");

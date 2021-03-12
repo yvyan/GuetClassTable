@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.umcrash.UMCrash;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleSupport;
@@ -70,6 +71,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private AutoUpdate autoUpdate;
 
+    private long[][] classTimeSection;
+    private String times;
+
     private SingleSettingData singleSettingData;
     private AccountData accountData;
     private GeneralData generalData;
@@ -90,8 +94,10 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        times = UMRemoteConfig.getInstance().getConfigValue("classTime");
         handler = new DayClassHandler(Looper.getMainLooper(), new WeakReference<>(this));
         timer = new Timer();
+        initMillTime();
     }
 
     @Override
@@ -295,7 +301,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             if (handler != null) {
                 int currentOrder;
                 if ((currentOrder = getCurrentOrder()) != -1) {
-                    Message msg = new Message();
+                    Message msg = handler.obtainMessage();
                     msg.arg1 = currentOrder;
                     msg.what = 1;
                     handler.sendMessage(msg);
@@ -328,11 +334,12 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         super.onStart();
         setBackground(BackgroundUtil.isSetBackground(getContext()));
         initData();
+        autoUpdate.updateView();
         timerTask = new timeTask();
         timer.schedule(timerTask, 30000, 30000);
-        autoUpdate.updateView();
-        if (getCurrentOrder() != -1) {
-            updateView(getCurrentOrder());
+        int order = getCurrentOrder();
+        if (order != -1) {
+            updateView(order);
         } else {
             updateView();
         }
@@ -355,70 +362,74 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 weakReference.get().updateView();
             }
         }
+
     }
 
     //  获取当前正在进行的课程节次，若没有在上课，返回-1
-    static int getCurrentOrder() {
-        // 8:25 ~ 10:00  10:25~12:00  14:25~16:05  16:25~18:05  19:00~20:30  21:00~22:30
-        Calendar cal = Calendar.getInstance();
-        int h = cal.get(Calendar.HOUR_OF_DAY);
-        int m = cal.get(Calendar.MINUTE);
-        int current = -1;
-        switch (h) {
-            case 8:
-                if (m < 25) {
-                    break;
-                }
-            case 9:
+    int getCurrentOrder() {
+        long mills = System.currentTimeMillis();
+        int current = -1, i;
+        for (i = 0; i < 7; i++) {
+            if (mills >= classTimeSection[i][0] && mills <= classTimeSection[i][1]) {
+                break;
+            }
+        }
+        switch (i) {
+            case 0:
+                current = 0;
+                break;
+            case 1:
                 current = 1;
                 break;
-            case 10:
-                if (m == 0) {
-                    current = 1;
-                } else if (m >= 25) {
-                    current = 3;
-                }
-                break;
-            case 11:
+            case 2:
                 current = 3;
                 break;
-            case 14:
-                if (m >= 25) {
-                    current = 5;
-                }
-                break;
-            case 15:
+            case 3:
                 current = 5;
                 break;
-            case 16:
-                if (m < 5) {
-                    current = 5;
-                } else if (m >= 25) {
-                    current = 7;
-                }
-                break;
-            case 17:
+            case 4:
                 current = 7;
                 break;
-            case 19:
+            case 5:
                 current = 9;
                 break;
-            case 20:
-                if (m < 30) {
-                    current = 9;
-                }
-                break;
-            case 21:
+            case 6:
                 current = 11;
                 break;
-            case 22:
-                if (m < 30) {
-                    current = 11;
-                }
-                break;
             default:
-                break;
         }
         return current;
+    }
+
+    /**
+     * 通过在线参数获取7个课程时间段的小时与分钟数
+     * 作为参数为日历对象设置时间后，计算出对应时间段毫秒的上下限
+     * 之后直接使用当前毫秒数所在的区间段来判断是否上课即可
+     */
+    void initMillTime() {
+        try {
+            String[] classTime = times.replaceAll(" ", "").split(";");
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            classTimeSection = new long[7][2];
+            String[][] temp = new String[2][2];   // 1列为小时，2列为分钟
+            for (int i = 0; i < 7; i++) {
+                int index = classTime[i].indexOf("~");
+                temp[0] = classTime[i].substring(0, index).split(":");
+                temp[1] = classTime[i].substring(index + 1).split(":");
+                for (int j = 0; j < 2; j++) {
+                    cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(temp[j][0].trim()));
+                    cal.set(Calendar.MINUTE, Integer.parseInt(temp[j][1].trim()));
+                    classTimeSection[i][j] = cal.getTimeInMillis();
+                }
+            }
+            Message msg = handler.obtainMessage();
+            msg.arg1 = getCurrentOrder();
+            msg.what = 1;
+            handler.sendMessage(msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

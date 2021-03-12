@@ -3,8 +3,6 @@ package top.yvyan.guettable.moreFun;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -15,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,11 +66,7 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
         title.setText(getString(R.string.moreFun_evaluating_textbooks));
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_evaluating_textbooks));
 
-        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        View addStatus = findViewById(R.id.add_status);
-        ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
-        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getApplicationContext()));
-        addStatus.setLayoutParams(lp);
+        BackgroundUtil.setFullAlphaStatus(this);
 
         MoreFunService moreFunService = new MoreFunService(this, this);
         moreFunService.update();
