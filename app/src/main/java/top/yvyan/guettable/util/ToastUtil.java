@@ -1,5 +1,6 @@
 package top.yvyan.guettable.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -8,11 +9,12 @@ import android.widget.Toast;
  * Blog:http://blog.csdn.net/student9128
  * Description: the utils for toast.
  */
-
+@SuppressLint("ShowToast")
 public class ToastUtil {
 
     private static Toast mShortToast;
     private static Toast mLongToast;
+
 
     public static void showToast(Context context, String message) {
         if (mShortToast == null) {

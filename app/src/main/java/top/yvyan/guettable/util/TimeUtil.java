@@ -1,12 +1,13 @@
 package top.yvyan.guettable.util;
 
+import android.annotation.SuppressLint;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class TimeUtil {
-    private static final long DAY = (1000 * 60 * 60 * 24);
 
     /**
      * 计算天数相差 (date2 - date1)
@@ -36,7 +37,6 @@ public class TimeUtil {
                         timeDistance += 365;
                     }
                 }
-                return timeDistance + (day2 - day1);
             } else {
                 for (int i = year2; i < year1; i++) {
                     if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0) {  //闰年
@@ -45,8 +45,8 @@ public class TimeUtil {
                         timeDistance -= 365;
                     }
                 }
-                return timeDistance + (day2 - day1);
             }
+            return timeDistance + (day2 - day1);
         } else { //同一年
             return day2 - day1;
         }
@@ -115,7 +115,7 @@ public class TimeUtil {
      * @return       "星期几"
      */
     public static String whichDay(int number){
-        String s = new String();
+        String s = "";
         switch (number){
             case 1:
                 s = "星期一";
@@ -142,8 +142,14 @@ public class TimeUtil {
         return s;
     }
 
+    /**
+     * 将日期类型转化为字符串
+     *
+     * @param date date
+     * @return 字符串(yyyy年MM月dd日)
+     */
     public static String timeFormat(Date date) {
-        DateFormat fmt = new SimpleDateFormat("yyyy年MM月dd日");
+        @SuppressLint("SimpleDateFormat") DateFormat fmt = new SimpleDateFormat("yyyy年MM月dd日");
         if (date == null) {
             return "";
         }
