@@ -2,6 +2,8 @@ package top.yvyan.guettable.service.table;
 
 import android.app.Activity;
 
+import com.umeng.umcrash.UMCrash;
+
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.TokenData;
 
@@ -23,7 +25,12 @@ public class MoreFunService {
         new Thread(() -> {
             if (accountData.getIsLogin()) {
                 setView(91); //显示：尝试同步
-                int state = iMoreFun.updateData(tokenData.getCookie());
+                int state = -2;
+                try {
+                    state = iMoreFun.updateData(tokenData.getCookie());
+                } catch (Exception e) {
+                    UMCrash.generateCustomLog(e, "update");
+                }
                 if (state == 5 || state == -2) { //同步成功或网络错误
                     setView(state);
                     return;
