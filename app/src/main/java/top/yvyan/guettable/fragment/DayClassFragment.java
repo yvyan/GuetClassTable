@@ -320,7 +320,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         timerTask = null;
     }
 
-    //  Timer回收
+//      Timer回收
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -343,6 +343,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         } else {
             updateView();
         }
+        updateView();
     }
 
     //  接收定时器通信的Handler，在其中调用updateView()来刷新日课表
@@ -424,10 +425,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                     classTimeSection[i][j] = cal.getTimeInMillis();
                 }
             }
-            Message msg = handler.obtainMessage();
-            msg.arg1 = getCurrentOrder();
-            msg.what = 1;
-            handler.sendMessage(msg);
         } catch (Exception e) {
             e.printStackTrace();
         }
