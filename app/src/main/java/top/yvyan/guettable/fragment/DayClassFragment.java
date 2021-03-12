@@ -323,16 +323,20 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-        timerTask.cancel();
-        timerTask = null;
+        if (timerTask != null) {
+            timerTask.cancel();
+            timerTask = null;
+        }
     }
 
 //      Timer回收
     @Override
     public void onDestroy() {
         super.onDestroy();
-        timer.cancel();
-        timer.purge();
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+        }
     }
 
     //  定时任务周期半分钟
