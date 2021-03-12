@@ -350,7 +350,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         } else {
             updateView();
         }
-        updateView();
     }
 
     //  接收定时器通信的Handler，在其中调用updateView()来刷新日课表
@@ -384,7 +383,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         }
         switch (i) {
             case 0:
-                current = 0;
+                current = 13;
                 break;
             case 1:
                 current = 1;
