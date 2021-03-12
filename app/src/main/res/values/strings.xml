@@ -75,10 +75,7 @@
     <string name="url_bkjw">/</string>
     <string name="url_xsgl">https://xsgl.guet.edu.cn/</string>
     <string name="url_lijiang">http://www.gxljxt.cn/</string>
-    <string name="guet_yvyan_top">http://guet.yvyan.top/</string>
     <string name="downloadApp_url">http://app.xiaomi.com/detail/1288502</string>
-    <string name="downloadAll_url">https://cloud.yvyan.top/index.php/s/8EczotKAbSjfXPk</string>
-    <string name="privacy_url">http://privacy.guet.yvyan.top/</string>
 
     <string name="text_school_song">桂电校歌 (我们从东西南北走过来)</string>
     <string name="url_school_song">https://music.163.com/#/song?id=469744200</string>
@@ -97,7 +94,6 @@
     <string name="text_lib_open">图书馆开放时间</string>
     <string name="url_lib_open">https://www.guet.edu.cn/lib/info/1064/2891.htm</string>
 
-    <string name="share_text">新的桂电课程表，简洁、好用，分享给你，点击链接下载：http://app.xiaomi.com/detail/1288502 \n(小米官方链接，请放心访问，建议使用浏览器打开)</string>
     <string name="first_about">该项目与学校官方无关。个人开发者作品，不含广告，永久免费。\n\n 该项目会一直开源，一直保证代码库最新，保证和小伙伴使用的APP源码一致。开源是为了接受大家的监督，也是保护小伙伴教务隐私的有效手段，感谢大家的支持！</string>
     <string name="about_1">仍然记得刚入学时看到同学发来的“桂电课程表”时的激动，一个简单的APP，却能够给桂电学子带来切实的便利，自己又何尝不想成为这样一个人…</string>
     <string name="about_2">两年过去了，学长的那个课程表已经跟不上时代了，近期，学校关停了老版的教务系统，学长的课程表接入的正是这个系统，所以自然也无法使用；我也借Android课设的机会，完成自己的一个愿望，也是对学长的致敬。</string>

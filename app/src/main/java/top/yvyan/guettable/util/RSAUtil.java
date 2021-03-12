@@ -30,7 +30,7 @@ public class RSAUtil {
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] encryptData = cipher.doFinal(text.getBytes());
             return byte2hex(encryptData);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return null;
     }
@@ -74,24 +74,24 @@ public class RSAUtil {
     /**
      * 字节数组转换为十六进制字符串
      *
-     * @param b       需要转换的字节数组
+     * @param b 需要转换的字节数组
      * @return String 十六进制字符串
      */
-    public static final String byte2hex(byte b[]) {
+    public static String byte2hex(byte[] b) {
         if (b == null) {
             throw new IllegalArgumentException(
                     "Argument b ( byte array ) is null! ");
         }
-        String hs = "";
-        String stmp = "";
-        for (int n = 0; n < b.length; n++) {
-            stmp = Integer.toHexString(b[n] & 0xff);
+        StringBuilder hs = new StringBuilder();
+        String stmp;
+        for (byte value : b) {
+            stmp = Integer.toHexString(value & 0xff);
             if (stmp.length() == 1) {
-                hs = hs + "0" + stmp;
+                hs.append("0").append(stmp);
             } else {
-                hs = hs + stmp;
+                hs.append(stmp);
             }
         }
-        return hs;
+        return hs.toString();
     }
 }
