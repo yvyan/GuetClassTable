@@ -348,7 +348,12 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         autoUpdate.updateView();
         timerTask = new timeTask();
         timer.schedule(timerTask, 30000, 30000);
-        int order = getCurrentOrder();
+        int order = -1;
+        try {
+            order = getCurrentOrder();
+        } catch (Exception e) {
+            UMCrash.generateCustomLog(e, "getCurrentOrder");
+        }
         if (order != -1) {
             updateView(order);
         } else {
@@ -380,6 +385,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     int getCurrentOrder() {
         long mills = System.currentTimeMillis();
         int current = -1, i;
+        if (classTimeSection == null) {
+            return -1;
+        }
         for (i = 0; i < 7; i++) {
             if (mills >= classTimeSection[i][0] && mills <= classTimeSection[i][1]) {
                 break;
