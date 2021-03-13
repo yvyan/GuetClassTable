@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="day_entities">
+        <item>每次</item>
         <item>1天</item>
         <item>3天</item>
         <item>7天</item>
     </string-array>
     <string-array name="day_values">
+        <item>0</item>
         <item>1</item>
         <item>3</item>
         <item>7</item>

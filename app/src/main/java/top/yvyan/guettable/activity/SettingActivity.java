@@ -79,7 +79,7 @@ public class SettingActivity extends AppCompatActivity {
             });
 
             refreshDataFrequency = (ListPreference) findPreference(REFRESH_DATA_FREQUENCY);
-            refreshDataFrequency.setSummary("刷新频率：" + refreshDataFrequency.getValue() + "天");
+            refreshDataFrequency.setSummary("刷新频率：" + refreshDataFrequency.getEntry());
             refreshDataFrequency.setOnPreferenceChangeListener((preference, newValue) -> {
                 refreshDataFrequency.setSummary("刷新频率：" + newValue.toString() + "天");
                 return true;
