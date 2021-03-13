@@ -3,6 +3,7 @@
 
 这是基于Android开发的桂电课程表APP，项目验收已经完成，计划将持续更新，持续完善，欢迎支持，使用请注明出处。
 (最新)码云:https://gitee.com/fireworkwing/GuetClassTable
+
 (可能不是最新)github地址:https://github.com/yvyan/GuetClassTable
 
 ## APP目前已经上架：
