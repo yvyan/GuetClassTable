@@ -13,6 +13,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         dataBinding.enabled = true
+
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
     }
 
     buildTypes {
@@ -62,4 +66,6 @@ dependencies {
     implementation 'com.umeng.umsdk:apm:1.1.0'
     //友盟在线参数
     implementation  'com.umeng.umsdk:abtest:1.0.0' //使用ABTest模块必选
+    //EMAS hotfix
+    implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.18'
 }
