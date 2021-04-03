@@ -211,7 +211,7 @@ public class AutoUpdate {
                         generalData.setLastUpdateTime(System.currentTimeMillis());
                         activity.runOnUiThread(() -> {
                             CourseTableFragment.newInstance().updateTable();
-                            DayClassFragment.newInstance().updateView();
+                            DayClassFragment.newInstance().onStart();
                             ToastUtil.showToast(activity, "同步成功");
                         });
                     }
