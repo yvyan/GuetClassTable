@@ -80,6 +80,18 @@ public class DialogUtil {
      * @param text    自定义显示的文字
      */
     public static void showTextDialog(final Context context, String text) {
+        showProgress(context, text, "好的", new IDialogService() {
+            @Override
+            public void onClickYes() {
+            }
+
+            @Override
+            public void onClickBack() {
+            }
+        });
+    }
+
+    public static AlertDialog showProgress(final Context context, String text, String btnText, IDialogService dialogService) {
         AlertDialog dialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         dialog = builder.create();
@@ -93,8 +105,13 @@ public class DialogUtil {
         TextView tv_scan_number = window
                 .findViewById(R.id.text_dialog);
         tv_scan_number.setText(text);
-        Button btn_hint_yes = window.findViewById(R.id.btn_text_yes);
-        btn_hint_yes.setOnClickListener(arg0 -> dialog.dismiss());
+        Button buttonYes = window.findViewById(R.id.btn_text_yes);
+        buttonYes.setText(btnText);
+        buttonYes.setOnClickListener(view -> {
+            dialogService.onClickYes();
+            dialog.dismiss();
+        });
+        return dialog;
     }
 
     /**

@@ -12,6 +12,7 @@ import com.umeng.cconfig.UMRemoteConfig;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.SingleSettingData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DialogUtil;
