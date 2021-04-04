@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -271,7 +273,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             final boolean[] noLogin = {false};
             TokenData tokenData = TokenData.newInstance(activity);
             Intent intent = new Intent(getContext(), WebViewActivity.class);
-            intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/")));
+            intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/Login/MainDesktop")));
+            intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/")));
             DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
                 @Override
                 public void onClickYes() {
@@ -289,11 +292,15 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
             tokenData.refresh();
             if (!noLogin[0]) {
+                activity.runOnUiThread(() -> {
+                    dialog[0].dismiss();
+                    CookieManager.getInstance().removeAllCookies(aBoolean -> {
+                    });
+                });
                 intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/Login/MainDesktop")));
                 intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/")));
                 intent.putExtra(WebViewActivity.WEB_REFERER, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/")));
                 intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
-                activity.runOnUiThread(() -> dialog[0].dismiss());
                 AppUtil.reportFunc(getContext(), "登录教务-免登录");
                 startActivity(intent);
             }
