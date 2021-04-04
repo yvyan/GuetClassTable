@@ -13,6 +13,7 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -114,6 +115,9 @@ public class MainActivity extends AppCompatActivity {
 
         UpdateApp.check(this, 1);
         Notification.getNotification(this);
+        //每次APP被关闭后清除cookie
+        CookieManager.getInstance().removeAllCookies(aBoolean -> {
+        });
     }
 
     @Override

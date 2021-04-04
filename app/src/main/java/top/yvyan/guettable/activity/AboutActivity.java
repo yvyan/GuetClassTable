@@ -1,7 +1,5 @@
 package top.yvyan.guettable.activity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,7 +10,7 @@ import com.umeng.cconfig.UMRemoteConfig;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.service.table.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DialogUtil;
@@ -47,7 +45,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void myGit(View view) {
-        openBrowser(getResources().getString(R.string.github_url));
+        CommFunc.openBrowser(this, getResources().getString(R.string.github_url));
     }
 
     public void open(View view) {
@@ -55,18 +53,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void privacy(View view) {
-        Intent intent = new Intent(getContext(), WebViewActivity.class);
-        intent.putExtra(WebViewActivity.WEB_URL, UMRemoteConfig.getInstance().getConfigValue("privacyUrl"));
-        intent.putExtra(WebViewActivity.WEB_TITLE, "隐私政策");
-        startActivity(intent);
-    }
-
-    public void openBrowser(String url) {
-        Uri uri = Uri.parse(url);
-        Intent webIntent = new Intent();
-        webIntent.setAction("android.intent.action.VIEW");
-        webIntent.setData(uri);
-        startActivity(webIntent);
+        CommFunc.openUrl(this, "隐私政策", UMRemoteConfig.getInstance().getConfigValue("privacyUrl"), false);
     }
 
     public void join_us(View view) {
