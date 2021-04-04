@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -26,7 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.table.CommFunc;
+import top.yvyan.guettable.util.BackgroundUtil;
 
 public class WebViewActivity extends AppCompatActivity {
     public static String WEB_URL = "webURL";
@@ -46,8 +51,9 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BackgroundUtil.setPageTheme(this, SingleSettingData.newInstance(getApplicationContext()).getThemeId());
         setContentView(R.layout.activity_web_view);
-
+        BackgroundUtil.setFullAlphaStatus(this);
         init();
     }
 
@@ -80,7 +86,7 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             webView.loadUrl(url);
         }
-
+        Log.d("1586", "cookie:" + cookie + "; url:" + url + "; referer:" + referer);
         webView.setWebChromeClient(webChromeClient);
         webView.setWebViewClient(webViewClient);
 
@@ -112,6 +118,14 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {//页面开始加载
             progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            CookieManager cookieManager = CookieManager.getInstance();
+
+            Log.e("1586", request.getUrl() + "; " + request.getRequestHeaders() + "; " + cookieManager.getCookie(request.getUrl().toString()));
+            return super.shouldInterceptRequest(view, request);
         }
 
         @Override
