@@ -1,7 +1,5 @@
 package top.yvyan.guettable.moreFun;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -9,13 +7,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.umeng.analytics.MobclickAgent;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.SingleSettingData;
+import top.yvyan.guettable.service.table.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 
@@ -39,14 +33,7 @@ public class MoreUrlActivity extends AppCompatActivity {
     }
 
     public void openBrowser(String url) {
-        Map<String, Object> urlMap = new HashMap<>();
-        urlMap.put("url", url);
-        MobclickAgent.onEventObject(this, "openUrl", urlMap);
-        Uri uri = Uri.parse(url);
-        Intent webIntent = new Intent();
-        webIntent.setAction("android.intent.action.VIEW");
-        webIntent.setData(uri);
-        startActivity(webIntent);
+        CommFunc.openUrl(this, null, url, true);
     }
 
     public void doBack(View view) {

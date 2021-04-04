@@ -35,6 +35,7 @@ import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.app.UpdateApp;
+import top.yvyan.guettable.service.table.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DialogUtil;
@@ -295,12 +296,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
      * 分享给同学
      */
     public void shareText() {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, UMRemoteConfig.getInstance().getConfigValue("shareText"));
-        shareIntent.setType("text/plain");
-        //设置分享列表的标题，并且每次都显示分享列表
-        startActivity(Intent.createChooser(shareIntent, "分享给同学"));
+        CommFunc.shareText(getActivity(), "分享给同学", UMRemoteConfig.getInstance().getConfigValue("shareText"));
     }
 
     /**
