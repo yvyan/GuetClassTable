@@ -32,7 +32,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_margin="5dp"
                 android:padding="8dp"
-                android:text="好的"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
