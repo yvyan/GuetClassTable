@@ -4,9 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,19 +79,19 @@ public class WebViewActivity extends AppCompatActivity {
             title = "正在加载...";
         }
         webTitle.setText(title);
-        if (referer != null) {
-            Map<String, String> header = new HashMap<>();
-            header.put("Referer", referer);
-            webView.loadUrl(url, header);
-        } else {
-            webView.loadUrl(url);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) { //显示图片
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        Log.d("1586", "cookie:" + cookie + "; url:" + url + "; referer:" + referer);
         webView.setWebChromeClient(webChromeClient);
         webView.setWebViewClient(webViewClient);
-
+        webView.setDownloadListener((s, s1, s2, s3, l) -> { //实现下载
+            Uri uri = Uri.parse(s);
+            Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent1);
+        });
         WebSettings settings = webView.getSettings();
-        settings.setUseWideViewPort(true);//设定支持viewport
+        settings.setBlockNetworkImage(false); //显示图片
+        settings.setUseWideViewPort(true);    //设定支持viewport
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setLoadWithOverviewMode(true);
@@ -100,6 +101,13 @@ public class WebViewActivity extends AppCompatActivity {
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
 
+        if (referer != null) {
+            Map<String, String> header = new HashMap<>();
+            header.put("Referer", referer);
+            webView.loadUrl(url, header);
+        } else {
+            webView.loadUrl(url);
+        }
         if (share) {
             moreButton = findViewById(R.id.more);
             moreButton.setVisibility(View.VISIBLE);

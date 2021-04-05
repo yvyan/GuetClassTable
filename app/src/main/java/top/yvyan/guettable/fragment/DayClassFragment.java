@@ -2,7 +2,6 @@ package top.yvyan.guettable.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.umeng.analytics.MobclickAgent;
 import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.umcrash.UMCrash;
 import com.zhuangfei.timetable.model.Schedule;
@@ -28,9 +26,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,13 +45,13 @@ import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.service.table.AutoUpdate;
+import top.yvyan.guettable.service.table.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
-import top.yvyan.guettable.util.UrlReplaceUtil;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
@@ -225,7 +221,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         Intent intent;
         Intent webIntent = new Intent();
         webIntent.setAction("android.intent.action.VIEW");
-        Uri uri;
         switch (view.getId()) {
             case R.id.day_class_hint:
                 if ("去登录".contentEquals(textView.getText())) {
@@ -243,13 +238,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.day_url_bkjw:
-                String url = UrlReplaceUtil.getUrlByInternational(generalData.isInternational(), Objects.requireNonNull(getContext()).getResources().getString(R.string.url_bkjw));
-                uri = Uri.parse(url);
-                Map<String, Object> urlMap = new HashMap<>();
-                urlMap.put("url", url);
-                MobclickAgent.onEventObject(getContext(), "openUrl", urlMap);
-                webIntent.setData(uri);
-                startActivity(webIntent);
+                CommFunc.noLoginWebBKJW(getActivity());
                 break;
             case R.id.day_test_scores:
                 intent = new Intent(getContext(), ExamScoreActivity.class);
@@ -329,7 +318,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-//      Timer回收
+    //      Timer回收
     @Override
     public void onDestroy() {
         super.onDestroy();
