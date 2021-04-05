@@ -21,7 +21,7 @@
     <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
 
     <application
-        android:name="top.yvyan.guettable.SophixStubApplication"
+        android:name=".SophixStubApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -30,6 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,UnusedAttribute">
+        <activity android:name=".moreFun.QQGroupActivity" />
         <activity android:name=".moreFun.SelectedCourseActivity" />
         <activity
             android:name=".activity.AddCourseActivity"
@@ -124,8 +125,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/xiaomi_update_sdk_file_paths" />
-        </provider>
-        <!--EMAS hotfix-->
+        </provider> <!-- EMAS hotfix -->
         <meta-data
             android:name="com.taobao.android.hotfix.IDSECRET"
             android:value="333403919" />

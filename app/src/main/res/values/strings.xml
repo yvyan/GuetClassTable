@@ -73,7 +73,6 @@
     <string name="smart_campus">http://icampus.guet.edu.cn/</string>
     <string name="url_vpn">https://v.guet.edu.cn/</string>
     <string name="url_bkjw">/</string>
-    <string name="url_xsgl">https://xsgl.guet.edu.cn/</string>
     <string name="url_lijiang">http://www.gxljxt.cn/</string>
     <string name="downloadApp_url">http://app.xiaomi.com/detail/1288502</string>
 
@@ -97,6 +96,15 @@
     <string name="url_map_hj">https://www.guet.edu.cn/xxjj/hjxqpmdt.htm</string>
     <string name="text_map_jjl">金鸡岭校区地图</string>
     <string name="url_map_jjl">https://www.guet.edu.cn/xxjj/jjlxqpmdt.htm</string>
+    <string name="text_staff">智慧学工</string>
+    <string name="url_staff">https://xsgl.guet.edu.cn/</string>
+
+    <string name="text_guetClassTable">桂电课程表交流群</string>
+    <string name="key_guetClassTable">b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP</string>
+    <string name="text_guilin_love">桂林高校表白墙</string>
+    <string name="key_guilin_love">7ZSUyJ-ZHyXuoOsyBGsfCq6PVZQJjHsR</string>
+
+    <string name="text_qqGroup_add">若您有面向同学免费开放的非盈利群聊，能够切实为同学提供帮助，我们希望能够相互宣传，欢迎加群(桂电课程表交流群)合作！</string>
 
     <string name="first_about">该项目与学校官方无关。个人开发者作品，不含广告，永久免费。\n\n 该项目会一直开源，一直保证代码库最新，保证和小伙伴使用的APP源码一致。开源是为了接受大家的监督，也是保护小伙伴教务隐私的有效手段，感谢大家的支持！</string>
     <string name="about_1">仍然记得刚入学时看到同学发来的“桂电课程表”时的激动，一个简单的APP，却能够给桂电学子带来切实的便利，自己又何尝不想成为这样一个人…</string>
@@ -162,8 +170,9 @@
     <string name="moreFun_url_bkjw"> 教务系统 </string>
     <string name="moreFun_url_vpn"> 校内VPN </string>
     <string name="moreFun_url_campus"> 智慧校园 </string>
-    <string name="moreFun_url_staff"> 智慧学工 </string>
     <string name="moreFun_url_lijiang"> 漓江学堂 </string>
+    <string name="moreFun_url_index">桂电导航</string>
+    <string name="moreFun_qqGroup">资源群聊</string>
     <string name="moreFun_url_more"> 更多链接 </string>
     <string name="moreFun_evaluating_teachers"> 评价教师 </string>
     <string name="moreFun_evaluating_textbooks"> 评价教材 </string>
@@ -185,7 +194,6 @@
     <string name="person_help_me">支持开发者</string>
     <string name="person_setting">设置</string>
     <string name="first_login_help">输入智慧校园的密码，也即统一登录平台，若之前没有登录过，需要先在浏览器上登录一次，成功后即可在APP上正常登录，若不知道密码，请联系辅导员或加群寻求帮助；点击下方按钮进行首次登录。(国际学院学生请使用教务登录方式)</string>
-    <string name="moreFun_url_index">桂电导航</string>
     <string name="moreFun_innovation_score">创新积分</string>
     <string name="more_func_empty">暂无数据</string>
     <string name="more_func_fail">加载失败</string>

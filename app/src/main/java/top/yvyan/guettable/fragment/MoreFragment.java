@@ -27,6 +27,7 @@ import top.yvyan.guettable.moreFun.InnovationScoreActivity;
 import top.yvyan.guettable.moreFun.LibActivity;
 import top.yvyan.guettable.moreFun.MoreUrlActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
+import top.yvyan.guettable.moreFun.QQGroupActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
 import top.yvyan.guettable.moreFun.SelectedCourseActivity;
 import top.yvyan.guettable.moreFun.TestActivity;
@@ -98,14 +99,14 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         urlVPN.setOnClickListener(this);
         View urlCampus = view.findViewById(R.id.more_url_campus);
         urlCampus.setOnClickListener(this);
-        View urlStaff = view.findViewById(R.id.more_url_staff);
-        urlStaff.setOnClickListener(this);
         View urlLiJiang = view.findViewById(R.id.more_url_lijiang);
         urlLiJiang.setOnClickListener(this);
         View urlMore = view.findViewById(R.id.more_url_more);
         urlMore.setOnClickListener(this);
         View urlIndex = view.findViewById(R.id.more_url_index);
         urlIndex.setOnClickListener(this);
+        View qqGroup = view.findViewById(R.id.more_qq_group);
+        qqGroup.setOnClickListener(this);
 
         View evaluatingTeachers = view.findViewById(R.id.more_evaluating_teachers);
         evaluatingTeachers.setOnClickListener(this);
@@ -183,6 +184,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getContext(), LibActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.more_qq_group:
+                intent = new Intent(getContext(), QQGroupActivity.class);
+                startActivity(intent);
+                break;
 
             case R.id.more_plan_courses:
                 intent = new Intent(getContext(), PlannedCoursesActivity.class);
@@ -210,9 +215,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             case R.id.more_url_campus:
                 openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.smart_campus));
                 break;
-            case R.id.more_url_staff:
-                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_xsgl));
-                break;
+
             case R.id.more_url_lijiang:
                 openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_lijiang));
                 break;
