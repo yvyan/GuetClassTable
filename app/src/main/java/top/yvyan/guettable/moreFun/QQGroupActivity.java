@@ -43,12 +43,10 @@ public class QQGroupActivity extends AppCompatActivity {
         setting = UMRemoteConfig.getInstance().getConfigValue("groupSetting");
     }
 
-    public void guetClassTable(View view) {
-        addGroup(getResources().getString(R.string.text_guetClassTable), getResources().getString(R.string.key_guetClassTable), 0);
-    }
-
-    public void guiLinLove(View view) {
-        addGroup(getResources().getString(R.string.text_guilin_love), getResources().getString(R.string.key_guilin_love), 1);
+    public void report(Context context, String funcName) {
+        Map<String, Object> funcMap = new HashMap<>();
+        funcMap.put("name", funcName);
+        MobclickAgent.onEventObject(context, "addGroup", funcMap);
     }
 
     public void addGroup(String name, String key, int num) {
@@ -60,10 +58,15 @@ public class QQGroupActivity extends AppCompatActivity {
         }
     }
 
-    public void report(Context context, String funcName) {
-        Map<String, Object> funcMap = new HashMap<>();
-        funcMap.put("name", funcName);
-        MobclickAgent.onEventObject(context, "addGroup", funcMap);
+    public void guetClassTable(View view) {
+        addGroup(getResources().getString(R.string.text_guetClassTable), getResources().getString(R.string.key_guetClassTable), 0);
     }
 
+    public void guetFind3(View view) {
+        addGroup(getResources().getString(R.string.text_guet_find_3), getResources().getString(R.string.key_guet_find_3), 1);
+    }
+
+    public void guiLinLove(View view) {
+        addGroup(getResources().getString(R.string.text_guilin_love), getResources().getString(R.string.key_guilin_love), 2);
+    }
 }
