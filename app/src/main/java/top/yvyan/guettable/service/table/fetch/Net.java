@@ -154,9 +154,6 @@ public class Net {
                 resources.getString(R.string.SSO_context_type)
         );
         if (login_res.code == 0) {
-            if (session != null) {
-                session.append(resources.getString(R.string.cookie_delimiter));
-            }
             assert session != null;
             session.append(login_res.cookie);
         }

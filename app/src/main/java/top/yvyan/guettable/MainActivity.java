@@ -31,6 +31,7 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.yvyan.guettable.activity.WebViewActivity;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
@@ -115,9 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         UpdateApp.check(this, 1);
         Notification.getNotification(this);
-        //每次APP被关闭后清除cookie
-        CookieManager.getInstance().removeAllCookies(aBoolean -> {
-        });
+        WebViewActivity.cleanCash(this);
     }
 
     @Override

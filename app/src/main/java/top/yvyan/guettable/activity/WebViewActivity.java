@@ -1,6 +1,7 @@
 package top.yvyan.guettable.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,8 +13,6 @@ import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -121,14 +120,6 @@ public class WebViewActivity extends AppCompatActivity {
         }
 
         @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-            CookieManager cookieManager = CookieManager.getInstance();
-
-            Log.e("1586", request.getUrl() + "; " + request.getRequestHeaders() + "; " + cookieManager.getCookie(request.getUrl().toString()));
-            return super.shouldInterceptRequest(view, request);
-        }
-
-        @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.startsWith("http://") || url.startsWith("https://")) {
                 view.loadUrl(url);
@@ -136,7 +127,6 @@ public class WebViewActivity extends AppCompatActivity {
             }
             return false;
         }
-
     };
 
     private final WebChromeClient webChromeClient = new WebChromeClient() {
@@ -225,11 +215,13 @@ public class WebViewActivity extends AppCompatActivity {
             String[] cookieArray = cookie.split(";"); //多个Cookie是使用分号分隔的
             for (String s : cookieArray) {
                 int position = s.indexOf("="); //在Cookie中键值使用等号分隔
-                String cookieName = s.substring(0, position);   //获取键
-                String cookieValue = s.substring(position + 1); //获取值
+                if (position != -1) {
+                    String cookieName = s.substring(0, position);   //获取键
+                    String cookieValue = s.substring(position + 1); //获取值
 
-                String value = cookieName + "=" + cookieValue;  //键值对拼接成 value
-                CookieManager.getInstance().setCookie(getDomain(url), value); //设置 Cookie
+                    String value = cookieName + "=" + cookieValue;  //键值对拼接成 value
+                    CookieManager.getInstance().setCookie(getDomain(url), value); //设置 Cookie
+                }
             }
         }
     }
@@ -251,5 +243,18 @@ public class WebViewActivity extends AppCompatActivity {
             return true;
         });
         popup.show();
+    }
+
+    /**
+     * 清除WebView数据
+     *
+     * @param context context
+     */
+    public static void cleanCash(Context context) {
+        context.deleteDatabase("webview.db");
+        context.deleteDatabase("webviewCache.db");
+        //清除cookie
+        CookieManager.getInstance().removeAllCookies(aBoolean -> {
+        });
     }
 }

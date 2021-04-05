@@ -294,8 +294,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             if (!noLogin[0]) {
                 activity.runOnUiThread(() -> {
                     dialog[0].dismiss();
-                    CookieManager.getInstance().removeAllCookies(aBoolean -> {
-                    });
+                    WebViewActivity.cleanCash(Objects.requireNonNull(getContext()));
                 });
                 intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/Login/MainDesktop")));
                 intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/")));
