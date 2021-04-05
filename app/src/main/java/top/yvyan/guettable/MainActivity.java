@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import top.yvyan.guettable.activity.WebViewActivity;
+import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
@@ -40,6 +41,7 @@ import top.yvyan.guettable.helper.ViewPagerAdapter;
 import top.yvyan.guettable.service.app.Notification;
 import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.util.BackgroundUtil;
+import top.yvyan.guettable.util.PermissionUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -116,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
         UpdateApp.check(this, 1);
         Notification.getNotification(this);
         WebViewActivity.cleanCash(this);
+        if (SettingData.newInstance(getApplicationContext()).isDevelopMode()) {
+            PermissionUtils.isGrantExternalRW(this, 1);
+        }
     }
 
     @Override

@@ -152,7 +152,7 @@
     <!-- 更多功能 -->
     <string name="text_test"> 测试 </string>
 
-    <string name="titleBar_1">课表</string>
+    <string name="titleBar_1">日课表</string>
     <string name="titleBar_3">更多功能</string>
     <string name="titleBar_4">个人信息</string>
     <string name="moreFun_jiaowu"> 教务查询 </string>

@@ -296,7 +296,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
      * 分享给同学
      */
     public void shareText() {
-        CommFunc.shareText(getActivity(), "分享给同学", UMRemoteConfig.getInstance().getConfigValue("shareText"));
+        CommFunc.shareText(Objects.requireNonNull(getActivity()), "分享给同学", UMRemoteConfig.getInstance().getConfigValue("shareText"));
     }
 
     /**
