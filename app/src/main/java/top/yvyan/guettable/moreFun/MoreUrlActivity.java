@@ -79,4 +79,8 @@ public class MoreUrlActivity extends AppCompatActivity {
     public void mapJjl(View view) {
         openBrowser(getResources().getString(R.string.url_map_jjl));
     }
+
+    public void staff(View view) {
+        openBrowser(getResources().getString(R.string.url_staff));
+    }
 }
