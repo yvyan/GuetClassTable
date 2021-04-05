@@ -1,16 +1,12 @@
 package top.yvyan.guettable.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.umeng.cconfig.UMRemoteConfig;
@@ -18,10 +14,8 @@ import com.umeng.cconfig.UMRemoteConfig;
 import java.util.Objects;
 
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.activity.WebViewActivity;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.moreFun.AverageTeacherActivity;
 import top.yvyan.guettable.moreFun.AverageTextbookActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
@@ -41,7 +35,6 @@ import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
-import top.yvyan.guettable.util.UrlReplaceUtil;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
     @SuppressLint("StaticFieldLeak")
@@ -209,7 +202,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.more_url_bkjw:
-                noLoginWebBKJW(getActivity());
+                CommFunc.noLoginWebBKJW(getActivity());
                 break;
             case R.id.more_url_vpn:
                 openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_vpn));
@@ -266,43 +259,5 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
      */
     public void openBrowser(String url) {
         CommFunc.openUrl(getActivity(), null, url, true);
-    }
-
-    public void noLoginWebBKJW(Activity activity) {
-        new Thread(() -> {
-            final boolean[] noLogin = {false};
-            TokenData tokenData = TokenData.newInstance(activity);
-            Intent intent = new Intent(getContext(), WebViewActivity.class);
-            intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/Login/MainDesktop")));
-            intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/")));
-            DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
-                @Override
-                public void onClickYes() {
-                    AppUtil.reportFunc(getContext(), "登录教务-跳过");
-                    startActivity(intent);
-                    noLogin[0] = true;
-                }
-
-                @Override
-                public void onClickBack() {
-                }
-            };
-            final AlertDialog[] dialog = new AlertDialog[1];
-            activity.runOnUiThread(() -> dialog[0] = DialogUtil.showProgress(activity, "自动登录中...", "跳过", iDialogService));
-
-            tokenData.refresh();
-            if (!noLogin[0]) {
-                activity.runOnUiThread(() -> {
-                    dialog[0].dismiss();
-                    WebViewActivity.cleanCash(Objects.requireNonNull(getContext()));
-                });
-                intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/Login/MainDesktop")));
-                intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/")));
-                intent.putExtra(WebViewActivity.WEB_REFERER, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(getActivity()).isInternational(), "/")));
-                intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
-                AppUtil.reportFunc(getContext(), "登录教务-免登录");
-                startActivity(intent);
-            }
-        }).start();
     }
 }

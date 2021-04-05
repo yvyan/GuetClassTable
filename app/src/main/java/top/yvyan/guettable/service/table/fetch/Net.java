@@ -21,7 +21,7 @@ public class Net {
      * 测试连接
      *
      * @param context context
-     * @return 0 -- 内外
+     * @return 0 -- 内网
      * else -- 外网
      */
     public static int testNet(Context context) {

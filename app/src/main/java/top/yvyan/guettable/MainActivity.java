@@ -13,7 +13,6 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.CookieManager;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
