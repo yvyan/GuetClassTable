@@ -98,6 +98,10 @@
     <string name="url_map_jjl">https://www.guet.edu.cn/xxjj/jjlxqpmdt.htm</string>
     <string name="text_staff">智慧学工</string>
     <string name="url_staff">https://xsgl.guet.edu.cn/</string>
+    <string name="text_course_arrange">教学安排查询</string>
+    <string name="url_course_arrange">http://utsc.guet.edu.cn/CourseArrange.aspx</string>
+    <string name="text_empty_room">空教室查询</string>
+    <string name="url_empty_room">http://utsc.guet.edu.cn/EmptyClassRoom.aspx</string>
 
     <string name="text_guetClassTable">桂电课程表交流群</string>
     <string name="key_guetClassTable">b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP</string>

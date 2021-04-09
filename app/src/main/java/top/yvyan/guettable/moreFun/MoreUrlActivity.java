@@ -83,4 +83,12 @@ public class MoreUrlActivity extends AppCompatActivity {
     public void staff(View view) {
         openBrowser(getResources().getString(R.string.url_staff));
     }
+
+    public void courseArrange(View view) {
+        openBrowser(getResources().getString(R.string.url_course_arrange));
+    }
+
+    public void emptyRoom(View view) {
+        openBrowser(getResources().getString(R.string.url_empty_room));
+    }
 }
