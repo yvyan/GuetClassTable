@@ -1,12 +1,12 @@
 package top.yvyan.guettable.moreFun;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.cconfig.UMRemoteConfig;
@@ -19,7 +19,6 @@ import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DialogUtil;
-import top.yvyan.guettable.util.ToastUtil;
 
 public class QQGroupActivity extends AppCompatActivity {
     private String setting;
@@ -65,8 +64,6 @@ public class QQGroupActivity extends AppCompatActivity {
     public void guetFind3(View view) {
         addGroup(getResources().getString(R.string.text_guet_find_3), getResources().getString(R.string.key_guet_find_3), 1);
     }
+    //2 桂林高校表白墙
 
-    public void guiLinLove(View view) {
-        addGroup(getResources().getString(R.string.text_guilin_love), getResources().getString(R.string.key_guilin_love), 2);
-    }
 }
