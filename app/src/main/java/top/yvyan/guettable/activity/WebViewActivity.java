@@ -15,6 +15,7 @@ import android.webkit.CookieManager;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -261,6 +262,7 @@ public class WebViewActivity extends AppCompatActivity {
     public static void cleanCash(Context context) {
         context.deleteDatabase("webview.db");
         context.deleteDatabase("webviewCache.db");
+        WebStorage.getInstance().deleteAllData(); //清空WebView的localStorage
         //清除cookie
         CookieManager.getInstance().removeAllCookies(aBoolean -> {
         });

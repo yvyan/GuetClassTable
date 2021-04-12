@@ -197,10 +197,13 @@ public class ScheduleData {
         }
     }
 
-    public void deleteAll() {
+    public void deleteInputCourse() {
         setCourseBeans(new ArrayList<>());
         setLibBeans(new ArrayList<>());
         setExamBeans(new ArrayList<>());
+    }
+
+    public void deleteUserCourse() {
         setUserCourseNo(1);
         setUserCourseBeans(new ArrayList<>());
     }
