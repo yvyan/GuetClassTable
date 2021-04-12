@@ -939,4 +939,31 @@ public class Net {
                 null
         );
     }
+
+    /**
+     * 获取学生个人信息
+     *
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @param isVPN   是否为外网
+     * @return gson格式的个人信息
+     */
+    public static HttpConnectionAndCode getGrades(Context context, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(false, resources.getString(R.string.lan_get_grades_url))),
+                null,
+                resources.getString(R.string.user_agent),
+                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_grades_success_contain_response_text),
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
 }

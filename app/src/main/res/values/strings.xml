@@ -36,6 +36,9 @@
     <string name="lan_get_student_url">/student/StuInfo</string>
     <string name="lan_get_student_success_contain_response_text">\"name\"</string>
 
+    <string name="lan_get_grades_url">/student/getbyxw</string>
+    <string name="lan_get_grades_success_contain_response_text">\"xfj\":</string>
+
     <string name="lan_get_terms_url">/Comm/GetTerm</string>
     <string name="lan_get_terms_success_contain_response_text">\"success\":true</string>
 

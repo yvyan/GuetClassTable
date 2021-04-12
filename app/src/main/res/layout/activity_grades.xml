@@ -252,7 +252,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="45dp"
-                    android:text="学分绩查询属于公测阶段，正在逐步优化，目前计算方法为只统计对应年度及格的必修和限选课程，若您有更好的计算方法，欢迎进群反馈，我们一起让它变好！(V2)"
+                    android:text="学分绩查询属于公测阶段，正在逐步优化，目前计算方法为只统计对应年度及格的必修和限选课程，若您有更好的计算方法，欢迎进群反馈，我们一起让它变好！(V3)"
                     android:textSize="13sp" />
 
             </RelativeLayout>

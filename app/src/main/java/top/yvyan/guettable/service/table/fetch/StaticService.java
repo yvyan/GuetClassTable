@@ -33,6 +33,7 @@ import top.yvyan.guettable.Gson.EffectiveCredit;
 import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamScore;
 import top.yvyan.guettable.Gson.ExperimentScore;
+import top.yvyan.guettable.Gson.Grades;
 import top.yvyan.guettable.Gson.InnovationScore;
 import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.PlannedCourse;
@@ -972,6 +973,18 @@ public class StaticService {
                 }
                 y++;
             }
+            //教务总学分绩替换
+            HttpConnectionAndCode httpConnectionAndCode = Net.getGrades(context, cookie, TokenData.isVPN);
+            if (httpConnectionAndCode.code == 0) {
+                try {
+                    BaseResponse<List<Grades>> baseResponse = new Gson().fromJson(httpConnectionAndCode.comment, new TypeToken<BaseResponse<List<Grades>>>() {
+                    }.getType());
+                    if (baseResponse.getData().size() == 1) {
+                        grades[0] = baseResponse.getData().get(0).getXfj();
+                    }
+                } catch (Exception ignored) {
+                }
+            }
             return grades;
         } else {
             return null;
@@ -990,7 +1003,8 @@ public class StaticService {
         if (httpConnectionAndCode.comment != null) {
             BaseResponse<InnovationScore> result;
             try {
-                result = new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {}.getType());
+                result = new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {
+                }.getType());
             } catch (Exception ignored) {
                 return null;
             }
