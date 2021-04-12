@@ -55,7 +55,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void myGit(View view) {
-        CommFunc.openBrowser(this, getResources().getString(R.string.github_url));
+        CommFunc.openBrowser(this, getResources().getString(R.string.gitee_url));
     }
 
     public void open(View view) {
