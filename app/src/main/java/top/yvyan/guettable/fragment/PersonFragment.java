@@ -1,9 +1,6 @@
 package top.yvyan.guettable.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,16 +21,13 @@ import java.util.Objects;
 import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.activity.AboutActivity;
-import top.yvyan.guettable.activity.HelpTestActivity;
 import top.yvyan.guettable.activity.LoginActivity;
 import top.yvyan.guettable.activity.PersonalizedActivity;
 import top.yvyan.guettable.activity.SetTermActivity;
 import top.yvyan.guettable.activity.SettingActivity;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.app.UpdateApp;
 import top.yvyan.guettable.service.table.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
@@ -125,8 +119,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         downloadAll.setOnClickListener(this);
         View about = view.findViewById(R.id.person_about);
         about.setOnClickListener(this);
-        View helpTest = view.findViewById(R.id.person_help_test);
-        helpTest.setOnClickListener(this);
         View helpMe = view.findViewById(R.id.person_help_me);
         helpMe.setOnClickListener(this);
     }
@@ -230,10 +222,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_download_all));
                 downloadAllApk();
                 break;
-            case R.id.person_help_test:
-                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_help_test));
-                helpTest();
-                break;
             case R.id.person_about:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_about));
                 intent = new Intent(getContext(), AboutActivity.class);
@@ -297,42 +285,5 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
      */
     public void shareText() {
         CommFunc.shareText(Objects.requireNonNull(getActivity()), "分享给同学", UMRemoteConfig.getInstance().getConfigValue("shareText"));
-    }
-
-    /**
-     * 协助测试
-     */
-    public void helpTest() {
-        if (SettingData.newInstance(getContext()).isDevelopMode()) {
-            if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {
-                DialogUtil.showTextDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后进行测试。");
-            } else {
-                Intent intent = new Intent(getContext(), HelpTestActivity.class);
-                startActivity(intent);
-            }
-        } else {
-            if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {
-                DialogUtil.showTextDialog(getContext(), "为了保证测试顺利，请关闭WIFI，连接数据网络后获取凭证。");
-            } else {
-                ToastUtil.showToast(getContext(), "请不要切换网络，正在获取凭证，请稍后！");
-                new Thread(() -> {
-                    TokenData tokenData = TokenData.newInstance(getContext());
-                    int n = tokenData.refresh();
-                    Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
-                        if (n == 0) {
-                            //获取剪贴板管理器：
-                            ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                            // 创建普通字符型ClipData
-                            ClipData mClipData = ClipData.newPlainText("Label", tokenData.getCookie());
-                            // 将ClipData内容放到系统剪贴板里。
-                            cm.setPrimaryClip(mClipData);
-                            DialogUtil.showTextDialog(getContext(), "感谢协助，凭证复制成功，您现在可以发送给开发者了！");
-                        } else {
-                            DialogUtil.showTextDialog(getContext(), "获取失败，请稍后重试。");
-                        }
-                    });
-                }).start();
-            }
-        }
     }
 }
