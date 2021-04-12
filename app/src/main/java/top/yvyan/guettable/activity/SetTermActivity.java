@@ -19,6 +19,7 @@ import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.fragment.PersonFragment;
+import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class SetTermActivity extends AppCompatActivity implements View.OnClickListener {
@@ -121,28 +122,53 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.input:
                 //保存学年
+                ScheduleData scheduleData = ScheduleData.newInstance(getApplicationContext());
                 int year = Integer.parseInt(generalData.getGrade()) + (int) spinnerYear.getSelectedItemId();
                 int num = (int) spinnerTerm.getSelectedItemId() + 1;
+                boolean changeTerm = false;
                 if (generalData.isInternational()) {
                     if (!(year + "" + num).equals(generalData.getTerm())) {
-                        ScheduleData.newInstance(getApplicationContext()).deleteAll();
+                        scheduleData.deleteInputCourse();
+                        changeTerm = true;
                     }
                     generalData.setTerm(year + "" + num);
                 } else {
                     if (!(year + "-" + (year + 1) + "_" + num).equals(generalData.getTerm())) {
-                        ScheduleData.newInstance(getApplicationContext()).deleteAll();
+                        scheduleData.deleteInputCourse();
+                        changeTerm = true;
                     }
                     generalData.setTerm(year + "-" + (year + 1) + "_" + num);
                 }
-                //保存星期
-                int week = seekBar.getSelectedNumber() / 10;
-                generalData.setWeek(week);
-                generalData.setLastUpdateTime(-1);
-                ToastUtil.showToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待，不要滑动页面");
-                Intent intent = getIntent();
-                setResult(OK, intent);
-                finish();
+                if (changeTerm && scheduleData.getUserCourseBeans().size() != 0) {
+                    DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                        @Override
+                        public void onClickYes() {
+                            importCourse();
+                        }
+
+                        @Override
+                        public void onClickBack() {
+                            scheduleData.deleteUserCourse();
+                            importCourse();
+                        }
+                    };
+                    DialogUtil.showDialog(this, "提示", false, "保留", "删除", "您修改了学期/账号，是否保留手动添加的课程？\r\n\r\nTip:若您只是临时切换，建议保留。", service);
+                } else {
+                    importCourse();
+                }
                 break;
         }
     }
+
+    private void importCourse() {
+        //保存星期
+        int week = seekBar.getSelectedNumber() / 10;
+        generalData.setWeek(week);
+        generalData.setLastUpdateTime(-1);
+        ToastUtil.showToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待，不要滑动页面");
+        Intent intent = getIntent();
+        setResult(OK, intent);
+        finish();
+    }
+
 }
