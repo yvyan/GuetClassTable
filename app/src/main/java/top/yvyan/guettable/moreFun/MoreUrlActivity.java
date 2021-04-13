@@ -91,4 +91,12 @@ public class MoreUrlActivity extends AppCompatActivity {
     public void emptyRoom(View view) {
         openBrowser(getResources().getString(R.string.url_empty_room));
     }
+
+    public void news1(View view) {
+        openBrowser(getResources().getString(R.string.url_news_1));
+    }
+
+    public void news2(View view) {
+        openBrowser(getResources().getString(R.string.url_new_2));
+    }
 }

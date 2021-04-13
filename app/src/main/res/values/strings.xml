@@ -105,11 +105,17 @@
     <string name="url_course_arrange">http://utsc.guet.edu.cn/CourseArrange.aspx</string>
     <string name="text_empty_room">空教室查询</string>
     <string name="url_empty_room">http://utsc.guet.edu.cn/EmptyClassRoom.aspx</string>
+    <string name="text_news_1">校内公告</string>
+    <string name="url_news_1">http://weixin.guet.edu.cn/News?type=0</string>
+    <string name="text_news_2">校内通知</string>
+    <string name="url_new_2">http://weixin.guet.edu.cn/News?type=4</string>
 
-    <string name="text_guetClassTable">桂电课程表交流群</string>
-    <string name="key_guetClassTable">b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP</string>
+    <string name="text_guet_class_table">桂电课程表交流群</string>
+    <string name="key_guet_class_table">b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP</string>
     <string name="text_guet_find_3">桂电人失物招领3群(官方)</string>
     <string name="key_guet_find_3">MENv-n3_z8D6h4F9nyn-oiK-Z-FBM5Pr</string>
+    <string name="text_stdio_music">校园广播电台点歌群(官方)</string>
+    <string name="key_stdio_music">0uf7sem6bkCUjKTKR8CJp4rFRfO182tq</string>
 
     <string name="text_qqGroup_add">若您有面向同学免费开放的非盈利群聊，能够切实为同学提供帮助，我们希望能够相互宣传，欢迎加群(桂电课程表交流群)合作！</string>
 

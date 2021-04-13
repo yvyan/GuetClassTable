@@ -58,12 +58,17 @@ public class QQGroupActivity extends AppCompatActivity {
     }
 
     public void guetClassTable(View view) {
-        addGroup(getResources().getString(R.string.text_guetClassTable), getResources().getString(R.string.key_guetClassTable), 0);
+        addGroup(getResources().getString(R.string.text_guet_class_table), getResources().getString(R.string.key_guet_class_table), 0);
     }
 
     public void guetFind3(View view) {
         addGroup(getResources().getString(R.string.text_guet_find_3), getResources().getString(R.string.key_guet_find_3), 1);
     }
+
     //2 桂林高校表白墙
+
+    public void stdioMusic(View view) {
+        addGroup(getResources().getString(R.string.text_stdio_music), getResources().getString(R.string.key_stdio_music), 3);
+    }
 
 }
