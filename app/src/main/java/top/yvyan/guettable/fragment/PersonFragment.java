@@ -85,6 +85,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         generalData = GeneralData.newInstance(getContext());
     }
 
+    @SuppressLint("SetTextI18n")
     private void initView() {
         View addStatus = view.findViewById(R.id.add_status);
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
@@ -106,7 +107,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         person_term = view.findViewById(R.id.person_term);
         person_week = view.findViewById(R.id.person_week);
         TextView profileVersion = view.findViewById(R.id.tv_profile_version);
-        profileVersion.setText(AppUtil.getAppVersionName(Objects.requireNonNull(getContext())));
+        profileVersion.setText(AppUtil.getAppVersionName(Objects.requireNonNull(getContext())) + "(" + 3 + ")");
 
         //    private View info;
         View personPersonalized = view.findViewById(R.id.person_personalized);
