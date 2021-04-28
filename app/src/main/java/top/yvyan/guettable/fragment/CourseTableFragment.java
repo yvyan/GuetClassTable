@@ -259,8 +259,10 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AddCourseActivity.REQUEST_CODE && resultCode == AddCourseActivity.ADD) {
             updateTable();
+            scheduleData.setUpdate(true);
         } else if (requestCode == DetailActivity.REQUEST_CODE && resultCode == DetailActivity.ALTER) {
             updateTable();
+            scheduleData.setUpdate(true);
         }
     }
 
