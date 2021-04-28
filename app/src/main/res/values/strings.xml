@@ -78,6 +78,7 @@
     <string name="url_bkjw">/</string>
     <string name="url_lijiang">http://www.gxljxt.cn/</string>
     <string name="downloadApp_url">http://app.xiaomi.com/detail/1288502</string>
+    <string name="url_change_vpn_pwd">https://172.18.8.21:4102/auth?service=https%3A%2F%2F172.18.8.21%3A4102%2F%23%2Fpassword%2FpasswordModify</string>
 
     <string name="text_school_song">桂电校歌</string>
     <string name="url_school_song">https://music.163.com/#/song?id=469744200</string>
@@ -141,11 +142,16 @@
     </string>
 
     <string name="login_fail">登录失败, 请稍后重试</string>
+    <string name="login_net_bkjw">请连接校园网后重试</string>
     <string name="login_fail_ck">验证码错误，登录失败</string>
     <string name="login_fail_pwd">密码错误，登录失败</string>
     <string name="login_fail_vpn">VPN密码错误，登录失败</string>
     <string name="login_fail_bkjw">教务密码错误，登录失败</string>
     <string name="login_fail_getInfo">获取个人信息失败，请稍后重试</string>
+    <string name="log_change_pwd">即将为您打开修改智慧校园/VPN密码的网页，请连接校园网。\n\n 登录成功后，输入原密码和新密码(包含大小写和数字)确认即可。\n\n Tip:本次只会修改智慧校园和VPN登录密码，不会修改教务系统的密码，密码修改后可能需要一段儿时间才会生效。</string>
+    <string name="log_vpn_net_error">VPN出现网络/未知错误，您可以选择重试，或继续登录(之后仅可使用校园网进行数据同步)。\n\nTip:若VPN系统出现问题，尝试后仍无法登录，请选择“仍然继续”。</string>
+    <string name="log_vpn_pwd_error">VPN密码错误，您可以选择重试，或继续登录(之后仅可使用校园网进行数据同步)。\n\nTip:若VPN系统出现问题，尝试后仍无法登录，请选择“仍然继续”。</string>
+    <string name="log_vpn_pwd_easy">VPN已禁止使用简单密码登录，请修改密码后重新登录，你也可以选择“仍然继续”，之后仅可使用校园网进行数据同步。</string>
 
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36</string>
     <string name="cookie_delimiter">"; "</string>
@@ -206,7 +212,7 @@
     <string name="person_help_test">协助测试</string>
     <string name="person_help_me">支持开发者</string>
     <string name="person_setting">设置</string>
-    <string name="first_login_help">输入智慧校园的密码，也即统一登录平台，若之前没有登录过，需要先在浏览器上登录一次，成功后即可在APP上正常登录，若不知道密码，请联系辅导员或加群寻求帮助；点击下方按钮进行首次登录。(国际学院学生请使用教务登录方式)</string>
+    <string name="first_login_help">输入智慧校园的密码，若之前没有登录过，需要先在浏览器上登录一次，成功后即可在APP上正常登录，若不知道密码，请联系辅导员或加群寻求帮助；点击下方按钮进行首次登录。(国际学院学生请使用教务登录方式)</string>
     <string name="moreFun_innovation_score">创新积分</string>
     <string name="more_func_empty">暂无数据</string>
     <string name="more_func_fail">加载失败</string>

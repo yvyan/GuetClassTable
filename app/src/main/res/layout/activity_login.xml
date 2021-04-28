@@ -146,7 +146,7 @@
             android:layout_marginStart="56dp"
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="4dp"
-            android:hint="VPN密码(相同可以忽略)"
+            android:hint="请输入VPN密码"
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:maxLines="1"
@@ -237,7 +237,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.xuexiang.xui.widget.button.ButtonView
-            android:id="@+id/develop_start"
+            android:id="@+id/button_login_first"
             style="@style/ButtonView.Blue"
             android:layout_width="160dp"
             android:layout_height="40dp"
@@ -253,5 +253,15 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.xuexiang.xui.widget.button.ButtonView
+        style="@style/ButtonView.Green"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:onClick="changePwd"
+        android:text=" 修改智慧校园/VPN登录密码 "
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
 
 </LinearLayout>
