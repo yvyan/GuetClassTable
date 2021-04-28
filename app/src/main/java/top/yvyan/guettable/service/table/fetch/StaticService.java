@@ -60,14 +60,14 @@ public class StaticService {
      * @param context  context
      * @param account  学号
      * @param password 密码
-     * @param isVPN    是否为外网登录
+     * @param VPNToken VPNToken
      * @return TGT令牌
      * ERROR0 : 网络错误
      * ERROR1 : 密码错误
      * ERROR2 : 需要使用外网网址进行访问
      */
-    public static String SSOLogin(Context context, String account, String password, boolean isVPN) {
-        HttpConnectionAndCode response = Net.getTGT(context, account, password, isVPN);
+    public static String SSOLogin(Context context, String account, String password, String VPNToken) {
+        HttpConnectionAndCode response = Net.getTGT(context, account, password, VPNToken);
         if (response.code != 0) {
             if (response.code == -5) {
                 return "ERROR2";
@@ -87,21 +87,21 @@ public class StaticService {
     /**
      * 获取SSO ST令牌
      *
-     * @param context context
-     * @param TGT     TGT令牌
-     * @param service ST令牌的服务端
-     * @param isVPN   是否为外网登录
+     * @param context  context
+     * @param TGT      TGT令牌
+     * @param service  ST令牌的服务端
+     * @param VPNToken VPNToken
      * @return ST令牌
      * ERROR0 : 网络错误
      * ERROR1 : TGT失效
      * ERROR2 : 需要使用外网网址进行访问 或 TGT失效(上层调用时，若内网返回此错误，
      * 则先尝试外网，若是TGT失效，则重新获取；若正常获取，则需要将全局网络设置为外网)
      */
-    public static String SSOGetST(Context context, String TGT, String service, boolean isVPN) {
-        HttpConnectionAndCode response = Net.getST(context, TGT, service, isVPN);
+    public static String SSOGetST(Context context, String TGT, String service, String VPNToken) {
+        HttpConnectionAndCode response = Net.getST(context, TGT, service, VPNToken);
         if (response.code != 0) {
             if (response.code == -5) {
-                if (isVPN) {
+                if (VPNToken != null) {
                     return "ERROR1";
                 }
                 return "ERROR2";
@@ -113,44 +113,6 @@ public class StaticService {
                 return html;
             }
             return "ERROR1";
-        }
-    }
-
-    /**
-     * 通过ST令牌登录VPN
-     *
-     * @param ST    ST令牌
-     * @param token 用于接收登录后的cookie
-     * @return 登录结果
-     * 0 -- 登录成功
-     * -1 -- 登录失败
-     * -2 -- 发生异常
-     */
-    public static int loginVPNST(String ST, String token) {
-
-        String url = "https://v.guet.edu.cn/https/77726476706e69737468656265737421e6b94689222426557a1dc7af96/login?cas_login=true&ticket=";
-        url = url + ST;
-        OkHttpClient okHttpClient = new OkHttpClient();
-        if (token == null) {
-            token = "";
-        }
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Cookie", token)
-                .build();
-        final Call call = okHttpClient.newCall(request);
-
-        try {
-            Response response = call.execute();
-            response.close();
-            if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("html lang=\"zh-cmn\"")) {
-                return -1;
-            } else {
-                return 0;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return -2;
         }
     }
 
@@ -233,19 +195,22 @@ public class StaticService {
      * 0 -- 登录成功
      * -1 -- 密码错误
      * -2 -- 网络错误
-     * -3 -- 未知错误
+     * -3 -- 弱密码
+     * -4 -- 未知错误
      */
     public static int loginVPN(Context context, String VPNToken, String account, String password) {
         HttpConnectionAndCode result = Net.loginVPN(context, VPNToken, account, password);
         if (result.code != 0) {
             return -2;
         } else {
-            if (result.comment.contains("\"success\": true") || result.comment.contains("WEEK_PASSWORD_CHECK")) {
+            if (result.comment.contains("\"success\": true")) {
                 return 0;
             } else if (result.comment.contains("INVALID_ACCOUNT")) {
                 return -1;
-            } else {
+            } else if (result.comment.contains("WEEK_PASSWORD_FORBID")) {
                 return -3;
+            } else {
+                return -4;
             }
         }
     }

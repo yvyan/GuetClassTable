@@ -1,6 +1,5 @@
 package top.yvyan.guettable.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -15,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 
+import com.umeng.umcrash.UMCrash;
 import com.xuexiang.xui.widget.tabbar.TabControlView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
@@ -25,8 +25,8 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.service.table.fetch.Net;
+import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -77,12 +77,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         ivPwdSwitch.setOnClickListener(showPwdClickListener());
         ivPwdSwitch2.setOnClickListener(showPwdClickListener());
         progressBar = findViewById(R.id.progressBar2);
-
+        //获取账号密码
         if (accountData.getIsSave()) {
             etAccount.setText(accountData.getUsername());
             etPwd.setText(accountData.getPassword());
             etPwd2.setText(accountData.getPassword2());
         }
+        //选择登录方式
         TabControlView tabControlView = findViewById(R.id.TabControl);
         try {
             tabControlView.setDefaultSelection(type);
@@ -109,6 +110,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         });
     }
 
+    /**
+     * 显示密码图标点击回调
+     *
+     * @return View.OnClickListener
+     */
     @NotNull
     private View.OnClickListener showPwdClickListener() {
         return (View view) -> {
@@ -130,6 +136,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         };
     }
 
+    /**
+     * 登录按钮点击回调
+     *
+     * @param view view
+     */
     @Override
     public void onClick(View view) {
         setUnClick();
@@ -137,79 +148,121 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         String pwd = etPwd.getText().toString();
         String pwd2 = etPwd2.getText().toString();
         new Thread(() -> {
-            int state;
+            //区分是否为国际学院
             generalData.setInternational(isInternational(account));
-            if (type == 0) { //CAS登录
-                if (generalData.isInternational()) {
-                    runOnUiThread(() -> {
-                        DialogUtil.showTextDialog(this, "国际学院同学目前只支持教务登录，请点击上方切换教务登录重试！");
-                        setEnClick();
-                    });
-                    return;
-                }
-                state = testLoginCAS(account, pwd);
-                if (state == -2) {
-                    TokenData.isVPN = true;
-                    state = testLoginCAS(account, pwd);
-                }
-            } else if (type == 1) { //VPN + 教务登录
-                state = testLoginBkjw(account, pwd, pwd2);
-            } else {
-                state = -2;
-            }
-            if (state == 0) {
-                runOnUiThread(() -> button.setText("正在登录"));
-                TokenData tokenData = TokenData.newInstance(this);
-                tokenData.setLoginType(type);
-                accountData.setUser(account, pwd, cbRememberPwd.isChecked());
-                if (type == 1) {
-                    if (pwd2.isEmpty()) {
-                        accountData.setPassword2(pwd);
-                    } else {
-                        accountData.setPassword2(pwd2);
-                    }
-                }
-                tokenData.refresh();
-                runOnUiThread(() -> button.setText("获取个人信息"));
-                StudentInfo studentInfo = StaticService.getStudentInfo(this, TokenData.newInstance(this).getCookie());
-                GeneralData generalData = GeneralData.newInstance(this);
-                if (studentInfo != null) {
-                    generalData.setNumber(studentInfo.getStid());
-                    generalData.setName(studentInfo.getName());
-                    generalData.setTerm(studentInfo.getTerm());
-                    generalData.setGrade(studentInfo.getGrade());
-                    Intent intent = new Intent(this, SetTermActivity.class);
-                    startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
-                    runOnUiThread(this::setEnClick);
-                } else { //若获取个人信息失败，则登出，否则会导致后续获取不到年级等信息导致闪退
-                    runOnUiThread(() -> {
-                        ToastUtil.showToast(this, getResources().getString(R.string.login_fail_getInfo));
-                        accountData.logoff();
-                        setEnClick();
-                    });
-                }
-            } else {
-                int finalState = state;
-                runOnUiThread(() -> {
-                    switch (finalState) {
-                        case -1:
-                            if (type == 0) {
-                                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_pwd));
-                            } else {
-                                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_bkjw));
+            //区分登录方式
+            String VPNToken = Net.getVPNToken(this);
+            if (type == 0) { //智慧校园
+                int n = StaticService.loginVPN(this, VPNToken, account, pwd);
+                if (n != 0) { //VPN异常
+                    if (n == -3) { //修改密码
+                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                            @Override
+                            public void onClickYes() {
+                                //修改密码
+                                setEnClick();
+                                changePwd(view);
                             }
-                            break;
-                        case -2:
-                            ToastUtil.showToast(this, getResources().getString(R.string.login_fail));
-                            break;
-                        case -3:
-                            ToastUtil.showToast(this, getResources().getString(R.string.login_fail_ck));
-                            break;
-                        case -4:
-                            ToastUtil.showToast(this, getResources().getString(R.string.login_fail_vpn));
+
+                            @Override
+                            public void onClickBack() {
+                                testCAS(account, pwd);
+                            }
+                        };
+                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "修改密码", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_easy), service));
+
+                    } else if (n == -1) { //密码错误
+                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                            @Override
+                            public void onClickYes() {
+                                //重试
+                                setEnClick();
+                            }
+
+                            @Override
+                            public void onClickBack() {
+                                testCAS(account, pwd);
+                            }
+                        };
+                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_error), service));
+
+                    } else { //网络或VPN系统异常
+                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                            @Override
+                            public void onClickYes() {
+                                //重试
+                                setEnClick();
+                            }
+
+                            @Override
+                            public void onClickBack() {
+                                testCAS(account, pwd);
+                            }
+                        };
+                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_net_error), service));
                     }
-                    setEnClick();
-                });
+                } else { //正常登录VPN
+                    TokenData tokenData = TokenData.newInstance(this);
+                    tokenData.setLoginType(0);
+                    tokenData.setTGTToken("TGT-");
+                    accountData.setUser(account, pwd, cbRememberPwd.isChecked());
+                    getInfo();
+                }
+            } else if (type == 1) {
+                int n = StaticService.loginVPN(this, VPNToken, account, pwd2);
+                if (n != 0) { //VPN异常
+                    if (n == -3) { //修改密码
+                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                            @Override
+                            public void onClickYes() {
+                                //修改密码
+                                setEnClick();
+                                changePwd(view);
+                            }
+
+                            @Override
+                            public void onClickBack() {
+                                testBKJW(account, pwd);
+                            }
+                        };
+                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "修改密码", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_easy), service));
+
+                    } else if (n == -1) { //密码错误
+                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                            @Override
+                            public void onClickYes() {
+                                //重试
+                                setEnClick();
+                            }
+
+                            @Override
+                            public void onClickBack() {
+                                testBKJW(account, pwd);
+                            }
+                        };
+                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_error), service));
+
+                    } else { //网络或VPN系统异常
+                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                            @Override
+                            public void onClickYes() {
+                                //重试
+                                setEnClick();
+                            }
+
+                            @Override
+                            public void onClickBack() {
+                                accountData.setPassword2(pwd2);
+                                testBKJW(account, pwd);
+                            }
+                        };
+                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_net_error), service));
+                    }
+
+                } else { //正常登录VPN
+                    accountData.setPassword2(pwd2);
+                    testBKJW_VPN(account, pwd, VPNToken);
+                }
             }
         }).start();
     }
@@ -221,6 +274,139 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             Intent intent = getIntent();
             setResult(OK, intent);
             finish();
+        }
+    }
+
+    private void testBKJW(String account, String password) {
+        new Thread(() -> {
+            runOnUiThread(() -> button.setText("验证教务"));
+            StringBuilder cookie_builder = new StringBuilder();
+            int state = StaticService.autoLogin(
+                    this,
+                    account,
+                    password,
+                    cookie_builder
+            );
+            if (state == 0) {
+                TokenData tokenData = TokenData.newInstance(this);
+                tokenData.setBkjwCookie(cookie_builder.toString());
+                tokenData.setLoginType(1);
+                accountData.setUser(account, password, cbRememberPwd.isChecked());
+                getInfo();
+            } else {
+                showErrorToast(state);
+            }
+        }).start();
+    }
+
+    private void testBKJW_VPN(String account, String password, String VPNToken) {
+        new Thread(() -> {
+            int state;
+            TokenData tokenData = TokenData.newInstance(this);
+            runOnUiThread(() -> button.setText("验证教务"));
+            if (TokenData.isVPN) {
+                state = StaticService.autoLoginV(this, account, password, VPNToken);
+                if (state == 0) {
+                    tokenData.setVPNToken(VPNToken);
+                }
+            } else {
+                StringBuilder cookie_builder = new StringBuilder();
+                state = StaticService.autoLogin(
+                        this,
+                        accountData.getUsername(),
+                        accountData.getPassword(),
+                        cookie_builder
+                );
+                if (state == 0) {
+                    tokenData.setBkjwCookie(cookie_builder.toString());
+
+                }
+            }
+            if (state == 0) {
+                tokenData.setLoginType(1);
+                accountData.setUser(account, password, cbRememberPwd.isChecked());
+                getInfo();
+            } else {
+                showErrorToast(state);
+            }
+        }).start();
+    }
+
+    private void testCAS(String account, String password) {
+        new Thread(() -> {
+            runOnUiThread(() -> button.setText("正在认证"));
+            String TGTTokenStr = StaticService.SSOLogin(this, account, password, null);
+            if (TGTTokenStr.contains("TGT-")) {
+                TokenData tokenData = TokenData.newInstance(this);
+                tokenData.setTGTToken(TGTTokenStr);
+                tokenData.setLoginType(0);
+                accountData.setUser(account, password, cbRememberPwd.isChecked());
+                getInfo();
+            } else {
+                if (TGTTokenStr.equals("ERROR1")) {
+                    showErrorToast(-4);
+                } else if (TGTTokenStr.equals("ERROR2")) {
+                    showErrorToast(-2);
+                } else {
+                    showErrorToast(-8);
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * 显示登录错误信息
+     *
+     * @param n -1 : 教务密码错误
+     *          -2 : 使用校园网
+     *          -3 : 验证码错误
+     *          -4 : 密码错误
+     *          else : 未知错误
+     */
+    private void showErrorToast(int n) {
+        runOnUiThread(() -> {
+            setEnClick();
+            if (n == -1) {
+                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_bkjw));
+            } else if (n == -2) {
+                ToastUtil.showToast(this, getResources().getString(R.string.login_net_bkjw));
+            } else if (n == -3) {
+                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_ck));
+            } else if (n == -4) {
+                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_pwd));
+            } else {
+                ToastUtil.showToast(this, getResources().getString(R.string.login_fail));
+            }
+        });
+    }
+
+    /**
+     * 获取个人信息
+     */
+    private void getInfo() {
+        runOnUiThread(() -> button.setText("获取个人信息"));
+        TokenData.newInstance(this).refresh();
+        StudentInfo studentInfo = null;
+        try {
+            studentInfo = StaticService.getStudentInfo(this, TokenData.newInstance(this).getCookie());
+        } catch (Exception e) {
+            UMCrash.generateCustomLog(e, "getInfo");
+        }
+        GeneralData generalData = GeneralData.newInstance(this);
+        if (studentInfo != null) {
+            generalData.setNumber(studentInfo.getStid());
+            generalData.setName(studentInfo.getName());
+            generalData.setTerm(studentInfo.getTerm());
+            generalData.setGrade(studentInfo.getGrade());
+            Intent intent = new Intent(this, SetTermActivity.class);
+            startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
+            runOnUiThread(this::setEnClick);
+        } else { //若获取个人信息失败，则登出，否则会导致后续获取不到年级等信息导致闪退
+            runOnUiThread(() -> {
+                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_getInfo));
+                accountData.logoff();
+                setEnClick();
+            });
         }
     }
 
@@ -237,81 +423,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     /**
-     * 测试CAS登录
-     *
-     * @param account  学号
-     * @param password 密码
-     * @return 操作结果
-     */
-    public int testLoginCAS(String account, String password) {
-        String TGTTokenStr = StaticService.SSOLogin(this, account, password, TokenData.isVPN);
-        runOnUiThread(() -> button.setText("正在认证"));
-        if (TGTTokenStr.equals("ERROR2")) {
-            return -2;
-        }
-        if (TGTTokenStr.contains("TGT-")) {
-            TokenData.newInstance(this).setTGTToken(TGTTokenStr);
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-
-    /**
-     * 测试教务登录
-     *
-     * @param account  学号
-     * @param password 密码
-     * @param passwordVPN VPN密码
-     * @return 操作结果
-     *  0 -- 登录成功
-     * -1 -- 教务密码错误
-     * -2 -- 网络错误/未知错误
-     * -3 -- 验证码连续错误
-     * -4 -- VPN密码错误
-     */
-    @SuppressLint("SetTextI18n")
-    public int testLoginBkjw(String account, String password, String passwordVPN) {
-        TokenData tokenData = TokenData.newInstance(this);
-        String VPNToken = Net.getVPNToken(this);
-        tokenData.setVPNToken(VPNToken);
-        if (passwordVPN.isEmpty()) {
-            passwordVPN = password;
-        }
-        runOnUiThread(() -> button.setText("验证VPN"));
-        int n = StaticService.loginVPN(this, VPNToken, account, passwordVPN);
-        if (n != 0) {
-            n = -4;
-        }
-        if (TokenData.isVPN) {
-            if (n == 0) {
-                runOnUiThread(() -> button.setText("验证教务"));
-                n = StaticService.autoLoginV(this, account, password, VPNToken);
-            }
-        } else {
-            if (n == 0) {
-                StringBuilder cookie_builder = new StringBuilder();
-                int state = StaticService.autoLogin(
-                        this,
-                        accountData.getUsername(),
-                        accountData.getPassword(),
-                        cookie_builder
-                );
-                if (state == 0) {
-                    TokenData.newInstance(this).setBkjwCookie(cookie_builder.toString());
-                }
-                return state;
-            }
-        }
-        return n;
-    }
-
-    /**
      * 设置按钮可点击
      */
     private void setEnClick() {
         button.setText("登录");
         button.setEnabled(true);
+        etAccount.setEnabled(true);
+        etPwd.setEnabled(true);
+        etPwd2.setEnabled(true);
         progressBar.setVisibility(View.GONE);
     }
 
@@ -321,7 +440,18 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private void setUnClick() {
         button.setText("网络初始化");
         button.setEnabled(false);
+        etAccount.setEnabled(false);
+        etPwd.setEnabled(false);
+        etPwd2.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void openUrl(String url) {
+        Intent webIntent = new Intent();
+        webIntent.setAction("android.intent.action.VIEW");
+        Uri uri = Uri.parse(url);
+        webIntent.setData(uri);
+        startActivity(webIntent);
     }
 
     /**
@@ -330,10 +460,25 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      * @param view view
      */
     public void firstLogin(View view) {
-        Intent webIntent = new Intent();
-        webIntent.setAction("android.intent.action.VIEW");
-        Uri uri = Uri.parse(getContext().getResources().getString(R.string.smart_campus));
-        webIntent.setData(uri);
-        startActivity(webIntent);
+        openUrl(getContext().getResources().getString(R.string.smart_campus));
+    }
+
+    /**
+     * 打开修改智慧校园/vpn密码网址
+     *
+     * @param view view
+     */
+    public void changePwd(View view) {
+        DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
+            @Override
+            public void onClickYes() {
+                openUrl(getContext().getResources().getString(R.string.url_change_vpn_pwd));
+            }
+
+            @Override
+            public void onClickBack() {
+            }
+        };
+        DialogUtil.showProgress(this, getContext().getResources().getString(R.string.log_change_pwd), "好的", iDialogService);
     }
 }

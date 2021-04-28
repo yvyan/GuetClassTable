@@ -76,21 +76,21 @@ public class Net {
      * @param context  context
      * @param account  学号
      * @param password 密码
-     * @param isVPN    是否外网登录
+     * @param VPNToken VPNToken
      * @return TGT令牌
      */
-    public static HttpConnectionAndCode getTGT(Context context, String account, String password, boolean isVPN) {
+    public static HttpConnectionAndCode getTGT(Context context, String account, String password, String VPNToken) {
         Resources resources = context.getResources();
         password = new StringBuffer(password).reverse().toString(); //密码倒序
         password = RSAUtil.CASEncryption(password); //密码加密
         String body = "username=" + account + "&password=" + password + "&service=http%3A%2F%2Ficampus.guet.edu.cn%2FCampusPortal&loginType=";
         return Post.post(
-                isVPN ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_get_TGT),
+                VPNToken != null ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_get_TGT),
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.SSO_referer),
                 body,
-                null,
+                VPNToken,
                 "}",
                 resources.getString(R.string.cookie_delimiter),
                 null,
@@ -103,21 +103,21 @@ public class Net {
     /**
      * 获取SSO ST令牌
      *
-     * @param context context
-     * @param TGT     TGT令牌
-     * @param service ST令牌的服务端
-     * @param isVPN   是否外网登录
+     * @param context  context
+     * @param TGT      TGT令牌
+     * @param service  ST令牌的服务端
+     * @param VPNToken VPNToken
      * @return ST令牌
      */
-    public static HttpConnectionAndCode getST(Context context, String TGT, String service, boolean isVPN) {
+    public static HttpConnectionAndCode getST(Context context, String TGT, String service, String VPNToken) {
         Resources resources = context.getResources();
         return Post.post(
-                isVPN ? resources.getString(R.string.url_get_ST_vpn) + TGT : resources.getString(R.string.url_get_ST) + TGT,
+                VPNToken != null ? resources.getString(R.string.url_get_ST_vpn) + TGT : resources.getString(R.string.url_get_ST) + TGT,
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.SSO_referer),
                 service,
-                null,
+                VPNToken,
                 "}",
                 resources.getString(R.string.cookie_delimiter),
                 resources.getString(R.string.SSO_success_contain_ST),
