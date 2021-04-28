@@ -90,6 +90,15 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && scheduleData != null && scheduleData.isUpdate()) {
+            onStart();
+            scheduleData.setUpdate(false);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_day_class, container, false);

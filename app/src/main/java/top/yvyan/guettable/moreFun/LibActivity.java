@@ -54,10 +54,7 @@ public class LibActivity extends BaseFuncActivity {
         List<CourseBean> libBeans = StaticService.getLab(this, cookie, generalData.getTerm());
         if (libBeans != null) {
             scheduleData.setLibBeans(libBeans);
-            runOnUiThread(() -> {
-                CourseTableFragment.newInstance().updateTable();
-                DayClassFragment.newInstance().updateView();
-            });
+            scheduleData.setUpdate(true);
             return 5;
         }
         return 1;

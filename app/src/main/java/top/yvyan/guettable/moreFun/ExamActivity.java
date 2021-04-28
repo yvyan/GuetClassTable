@@ -124,10 +124,7 @@ public class ExamActivity extends BaseFuncActivity {
             if (!AppUtil.equalList(examBeans, scheduleData.getExamBeans())) {
                 scheduleData.setExamBeans(examBeans);
                 update = true;
-                runOnUiThread(() -> {
-                    CourseTableFragment.newInstance().updateTable();
-                    DayClassFragment.newInstance().updateView();
-                });
+                scheduleData.setUpdate(true);
             }
             return 5;
         }

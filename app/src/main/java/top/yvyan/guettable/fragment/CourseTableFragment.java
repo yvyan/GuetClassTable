@@ -137,7 +137,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     } else {
                         generalData.setWeek(target);
                         mWeekView.curWeek(target).updateView();
-                        DayClassFragment.newInstance().updateView();
+                        scheduleData.setUpdate(true);
                         ToastUtil.showToast(getActivity(), "设置第" + target + "周为当前周");
                         mTimetableView.changeWeekForce(target);
                     }
@@ -203,6 +203,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && scheduleData != null && scheduleData.isUpdate()) {
             updateTable();
+            scheduleData.setUpdate(false);
         }
     }
 
