@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setOffscreenPageLimit(4);
+        //viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(viewPagerAdapter);
         List<Fragment> list = new ArrayList<>();
         list.add(DayClassFragment.newInstance());
