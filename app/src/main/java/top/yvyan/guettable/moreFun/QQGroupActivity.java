@@ -42,6 +42,10 @@ public class QQGroupActivity extends AppCompatActivity {
         setting = UMRemoteConfig.getInstance().getConfigValue("groupSetting");
     }
 
+    public void doBack(View view) {
+        finish();
+    }
+
     public void report(Context context, String funcName) {
         Map<String, Object> funcMap = new HashMap<>();
         funcMap.put("name", funcName);
