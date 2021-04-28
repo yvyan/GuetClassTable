@@ -69,6 +69,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private long[][] classTimeSection;
     private String times;
+    private int currentOrder;
 
     private SingleSettingData singleSettingData;
     private AccountData accountData;
@@ -293,12 +294,15 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         @Override
         public void run() {
             if (handler != null) {
-                int currentOrder;
-                if ((currentOrder = getCurrentOrder()) != -1) {
-                    Message msg = handler.obtainMessage();
-                    msg.arg1 = currentOrder;
-                    msg.what = 1;
-                    handler.sendMessage(msg);
+                int order;
+                if ((order = getCurrentOrder()) != -1) {
+                    if (currentOrder != order) {
+                        Message msg = handler.obtainMessage();
+                        msg.arg1 = order;
+                        currentOrder = order;
+                        msg.what = 1;
+                        handler.sendMessage(msg);
+                    }
                 } else {
                     handler.sendEmptyMessage(2);
                 }
@@ -335,10 +339,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             initData();
             autoUpdate.updateView();
             timerTask = new timeTask();
-            timer.schedule(timerTask, 30000, 30000);
+            timer.schedule(timerTask, 60000, 60000);
             int order = -1;
             try {
                 order = getCurrentOrder();
+                currentOrder = order;
             } catch (Exception e) {
                 UMCrash.generateCustomLog(e, "getCurrentOrder");
             }
