@@ -30,6 +30,7 @@ public class ScheduleData {
     private List<ExamBean> examBeans;
     private long userCourseNo;
     private List<CourseBean> userCourseBeans;
+    private boolean isUpdate = false; //用于同步数据后周课表继续刷新
 
     @SuppressLint("CommitPrefEdits")
     private ScheduleData(Context context) {
@@ -228,5 +229,13 @@ public class ScheduleData {
                 break;
             }
         }
+    }
+
+    public boolean isUpdate() {
+        return isUpdate;
+    }
+
+    public void setUpdate(boolean update) {
+        isUpdate = update;
     }
 }

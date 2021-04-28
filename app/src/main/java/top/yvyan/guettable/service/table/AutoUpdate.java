@@ -1,6 +1,5 @@
 package top.yvyan.guettable.service.table;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import com.umeng.umcrash.UMCrash;
@@ -12,11 +11,10 @@ import java.util.List;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.data.ScheduleData;
-import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SettingData;
-import top.yvyan.guettable.fragment.CourseTableFragment;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.service.table.fetch.StaticService;
 import top.yvyan.guettable.util.BeanAttributeUtil;
@@ -25,9 +23,8 @@ import top.yvyan.guettable.util.ToastUtil;
 
 public class AutoUpdate {
 
-    @SuppressLint("StaticFieldLeak")
-    private static AutoUpdate autoUpdate;
     private final Activity activity;
+    private final DayClassFragment fragment;
 
     private final AccountData accountData;
     private final ScheduleData scheduleData;
@@ -37,8 +34,9 @@ public class AutoUpdate {
 
     private int state;
 
-    private AutoUpdate(Activity activity) {
-        this.activity = activity;
+    public AutoUpdate(DayClassFragment fragment) {
+        this.fragment = fragment;
+        this.activity = fragment.getActivity();
         accountData = AccountData.newInstance(activity);
         scheduleData = ScheduleData.newInstance(activity);
         generalData = GeneralData.newInstance(activity);
@@ -54,13 +52,6 @@ public class AutoUpdate {
             updateView(2);
         }
         updateView(state);
-    }
-
-    public static AutoUpdate newInstance(Activity activity) {
-        if (autoUpdate == null) {
-            autoUpdate = new AutoUpdate(activity);
-        }
-        return autoUpdate;
     }
 
     /**
@@ -136,7 +127,7 @@ public class AutoUpdate {
         final String out = text;
         activity.runOnUiThread(() -> {
             try {
-                DayClassFragment.newInstance().updateText(out);
+                fragment.updateText(out);
             } catch (Exception ignored) {
             }
         });
@@ -208,10 +199,10 @@ public class AutoUpdate {
                     if (getLab != null) {
                         updateView(5);
                         scheduleData.setLibBeans(getLab);
+                        scheduleData.setUpdate(true);
                         generalData.setLastUpdateTime(System.currentTimeMillis());
                         activity.runOnUiThread(() -> {
-                            CourseTableFragment.newInstance().updateTable();
-                            DayClassFragment.newInstance().onStart();
+                            fragment.onStart();
                             ToastUtil.showToast(activity, "同步成功");
                         });
                     }

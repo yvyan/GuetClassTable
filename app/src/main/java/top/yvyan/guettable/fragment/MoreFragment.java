@@ -38,28 +38,19 @@ import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
-    @SuppressLint("StaticFieldLeak")
-    private static MoreFragment moreFragment;
 
     private View view;
 
     private SingleSettingData singleSettingData;
     private GeneralData generalData;
 
-    public MoreFragment() {
-    }
-
     public static MoreFragment newInstance() {
-        if (moreFragment == null) {
-            moreFragment = new MoreFragment();
-        }
-        return moreFragment;
+        return new MoreFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        moreFragment = this;
         view = inflater.inflate(R.layout.fragement_more, container, false);
 
         generalData = GeneralData.newInstance(getContext());
