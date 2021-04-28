@@ -43,9 +43,6 @@ import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
-
-    @SuppressLint("StaticFieldLeak")
-    private static CourseTableFragment courseTableFragment;
     //控件
     private TimetableView mTimetableView;
     private WeekView mWeekView;
@@ -63,16 +60,12 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     int target;
 
     public static CourseTableFragment newInstance() {
-        if (courseTableFragment == null) {
-            courseTableFragment = new CourseTableFragment();
-        }
-        return courseTableFragment;
+        return new CourseTableFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        courseTableFragment = this;
         view = inflater.inflate(R.layout.fragment_table, container, false);
         moreButton = view.findViewById(R.id.id_more);
         moreButton.setOnClickListener(view -> showPopMenu());
@@ -203,6 +196,14 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             mTimetableView.changeWeekOnly(target);
         });
         updateTable();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && scheduleData != null && scheduleData.isUpdate()) {
+            updateTable();
+        }
     }
 
     public void updateTable() {

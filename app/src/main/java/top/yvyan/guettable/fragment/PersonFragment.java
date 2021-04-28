@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,10 +35,7 @@ import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
-    @SuppressLint("StaticFieldLeak")
-    private static PersonFragment personFragment;
 
-    private static final String TAG = "PersonFragment";
     private View view;
 
     private View person_userNameAndNo;
@@ -56,21 +52,13 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private AccountData accountData;
     private GeneralData generalData;
 
-    public PersonFragment() {
-    }
-
     public static PersonFragment newInstance() {
-        if (personFragment == null) {
-            personFragment = new PersonFragment();
-        }
-        return personFragment;
+        return new PersonFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        personFragment = this;
-        Log.d(TAG, "createPersonFragmentView");
         view = inflater.inflate(R.layout.fragement_person, container, false);
         initData();
         initView();

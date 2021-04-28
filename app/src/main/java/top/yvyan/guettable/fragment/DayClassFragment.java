@@ -55,9 +55,6 @@ import top.yvyan.guettable.util.ToastUtil;
 
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
-    @SuppressLint("StaticFieldLeak")
-    private static DayClassFragment dayClassFragment;
-
     private View view;
     private DayClassHandler handler = null;
     private Timer timer = null;
@@ -79,15 +76,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private SettingData settingData;
     private ScheduleData scheduleData;
 
-    public DayClassFragment() {
-        // Required empty public constructor
-    }
-
     public static DayClassFragment newInstance() {
-        if (dayClassFragment == null) {
-            dayClassFragment = new DayClassFragment();
-        }
-        return dayClassFragment;
+        return new DayClassFragment();
     }
 
     @Override
@@ -102,7 +92,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        dayClassFragment = this;
         view = inflater.inflate(R.layout.fragment_day_class, container, false);
         View tools = view.findViewById(R.id.day_class_tools);
         if (!SettingData.newInstance(getContext()).isShowTools()) {
@@ -127,7 +116,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         View credits = view.findViewById(R.id.day_credits);
         credits.setOnClickListener(this);
 
-        autoUpdate = AutoUpdate.newInstance(getActivity());
+        autoUpdate = new AutoUpdate(this);
         if (accountData.getIsLogin()) {
             autoUpdate.start();
         }
@@ -331,22 +320,26 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     //  定时任务周期半分钟
     @Override
     public void onStart() {
-        super.onStart();
-        setBackground(BackgroundUtil.isSetBackground(getContext()));
-        initData();
-        autoUpdate.updateView();
-        timerTask = new timeTask();
-        timer.schedule(timerTask, 30000, 30000);
-        int order = -1;
         try {
-            order = getCurrentOrder();
+            super.onStart();
+            setBackground(BackgroundUtil.isSetBackground(getContext()));
+            initData();
+            autoUpdate.updateView();
+            timerTask = new timeTask();
+            timer.schedule(timerTask, 30000, 30000);
+            int order = -1;
+            try {
+                order = getCurrentOrder();
+            } catch (Exception e) {
+                UMCrash.generateCustomLog(e, "getCurrentOrder");
+            }
+            if (order != -1) {
+                updateView(order);
+            } else {
+                updateView();
+            }
         } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "getCurrentOrder");
-        }
-        if (order != -1) {
-            updateView(order);
-        } else {
-            updateView();
+            UMCrash.generateCustomLog(e, "DayClassFragmentStart");
         }
     }
 
