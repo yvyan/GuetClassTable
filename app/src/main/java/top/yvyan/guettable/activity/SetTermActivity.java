@@ -25,6 +25,7 @@ import top.yvyan.guettable.util.ToastUtil;
 public class SetTermActivity extends AppCompatActivity implements View.OnClickListener {
     public static int REQUEST_CODE = 14;
     public static int OK = 10;
+    public static int OFF = 11;
 
     private TextView stuId;
     private TextView stuName;
@@ -117,7 +118,8 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         switch (view.getId()) {
             case R.id.logoff:
                 AccountData.newInstance(this).logoff();
-                PersonFragment.newInstance().updateView();
+                Intent intent = getIntent();
+                setResult(OFF, intent);
                 finish();
                 break;
             case R.id.input:

@@ -249,6 +249,8 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
             if (mainActivity != null) {
                 mainActivity.onClick(0); //切换页面0
             }
+        } else if (resultCode == SetTermActivity.OFF) {
+            updateView();
         }
     }
 
