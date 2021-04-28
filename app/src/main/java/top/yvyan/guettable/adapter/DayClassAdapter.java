@@ -24,7 +24,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
     private final List<Schedule> todayList;
     private final List<Schedule> tomorrowList;
     private final Context context;
-    private int starting;
+    private final int starting;
 
     public DayClassAdapter(Context context, List<Schedule> todayList, List<Schedule> tomorrowList) {
         this.context = context;
@@ -82,74 +82,82 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
                 }
             }
             holder.textView1.setText(text);
-            return;
-        }
-        //课程显示
-        Schedule schedule;
-        if (position <= todayList.size()) {
-            schedule = todayList.get(position - 1);
         } else {
-            schedule = tomorrowList.get(position - todayList.size() - 2);
-        }
-        if ((int) schedule.getExtras().get(ExamBean.TYPE) == 2) { //考试安排
-            ExamBean examBean = new ExamBean();
-            examBean.setFromSchedule(schedule);
-            holder.textView1.setText("(考试)" + examBean.getName());
-            holder.textView2.setText("课号：" + examBean.getNumber());
-            holder.textView3.setText("教师：" + examBean.getTeacher());
-            holder.textView4.setText("教室：" + examBean.getRoom());
-            holder.textView5.setText("时间：" + examBean.getTime());
-            String date = "日期：" + TimeUtil.timeFormat(examBean.getDate()) + "(第" + examBean.getWeek() + "周 " + TimeUtil.whichDay(examBean.getDay()) + ")";
-            if (examBean.getComm().isEmpty()) {
-                holder.textView6.setVisibility(View.GONE);
-                holder.textView7.setText(date);
+            //课程显示
+            Schedule schedule;
+            if (position <= todayList.size()) {
+                schedule = todayList.get(position - 1);
             } else {
-                holder.textView6.setVisibility(View.VISIBLE);
-                holder.textView6.setText(date);
-                holder.textView7.setText(examBean.getComm());
+                schedule = tomorrowList.get(position - todayList.size() - 2);
             }
-        } else { //理论课和课内实验
-            CourseBean courseBean = new CourseBean();
-            courseBean.setFromSchedule(schedule);
-            if (schedule.getStart() == starting && position <= todayList.size()) {
-                holder.textView1.setText(courseBean.getName() + "   上课中");
-                holder.textView1.setTextColor(context.getResources().getColor(R.color.app_green));
-            } else {
-                holder.textView1.setText(courseBean.getName());
-            }
-            if (courseBean.getTeacher().isEmpty()) {
-                holder.textView3.setVisibility(View.GONE);
-            } else {
-                holder.textView3.setText("教师：" + courseBean.getTeacher());
-            }
-            if (courseBean.getRoom().isEmpty()) {
-                holder.textView4.setVisibility(View.GONE);
-            } else {
-                holder.textView4.setText("教室：" + courseBean.getRoom());
-            }
-            int n = courseBean.getTime();
-            if (n == 7) {
-                n = 0;
-            }
-            holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + n + "大节");
-
-            if (courseBean.getRemarks().isEmpty()) {
-                holder.textView6.setVisibility(View.GONE);
-                holder.textView7.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
-            } else {
-                holder.textView6.setVisibility(View.VISIBLE);
-                holder.textView6.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
-                holder.textView7.setText(courseBean.getRemarks());
-            }
-
-            if (courseBean.isLab()) { //课内实验
-                holder.textView2.setText("名称：" + courseBean.getLabName());
-            } else { //理论课
-                if (courseBean.getNumber().isEmpty()) {
-                    holder.textView2.setVisibility(View.GONE);
+            holder.textView2.setVisibility(View.VISIBLE);
+            holder.textView3.setVisibility(View.VISIBLE);
+            holder.textView4.setVisibility(View.VISIBLE);
+            holder.textView5.setVisibility(View.VISIBLE);
+            holder.textView6.setVisibility(View.VISIBLE);
+            holder.textView7.setVisibility(View.VISIBLE);
+            holder.textView1.setTextSize(18);
+            holder.textView1.setTextColor(0xFF000000);
+            if ((int) schedule.getExtras().get(ExamBean.TYPE) == 2) { //考试安排
+                ExamBean examBean = new ExamBean();
+                examBean.setFromSchedule(schedule);
+                holder.textView1.setText("(考试)" + examBean.getName());
+                holder.textView2.setText("课号：" + examBean.getNumber());
+                holder.textView3.setText("教师：" + examBean.getTeacher());
+                holder.textView4.setText("教室：" + examBean.getRoom());
+                holder.textView5.setText("时间：" + examBean.getTime());
+                String date = "日期：" + TimeUtil.timeFormat(examBean.getDate()) + "(第" + examBean.getWeek() + "周 " + TimeUtil.whichDay(examBean.getDay()) + ")";
+                if (examBean.getComm().isEmpty()) {
+                    holder.textView6.setVisibility(View.GONE);
+                    holder.textView7.setText(date);
                 } else {
-                    holder.textView2.setVisibility(View.VISIBLE);
-                    holder.textView2.setText("课号：" + courseBean.getNumber());
+                    holder.textView6.setVisibility(View.VISIBLE);
+                    holder.textView6.setText(date);
+                    holder.textView7.setText(examBean.getComm());
+                }
+            } else { //理论课和课内实验
+                CourseBean courseBean = new CourseBean();
+                courseBean.setFromSchedule(schedule);
+                if (schedule.getStart() == starting && position <= todayList.size()) {
+                    holder.textView1.setText(courseBean.getName() + "   上课中");
+                    holder.textView1.setTextColor(context.getResources().getColor(R.color.app_green));
+                } else {
+                    holder.textView1.setText(courseBean.getName());
+                }
+                if (courseBean.getTeacher().isEmpty()) {
+                    holder.textView3.setVisibility(View.GONE);
+                } else {
+                    holder.textView3.setText("教师：" + courseBean.getTeacher());
+                }
+                if (courseBean.getRoom().isEmpty()) {
+                    holder.textView4.setVisibility(View.GONE);
+                } else {
+                    holder.textView4.setText("教室：" + courseBean.getRoom());
+                }
+                int n = courseBean.getTime();
+                if (n == 7) {
+                    n = 0;
+                }
+                holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + n + "大节");
+
+                if (courseBean.getRemarks().isEmpty()) {
+                    holder.textView6.setVisibility(View.GONE);
+                    holder.textView7.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
+                } else {
+                    holder.textView6.setVisibility(View.VISIBLE);
+                    holder.textView6.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
+                    holder.textView7.setText(courseBean.getRemarks());
+                }
+
+                if (courseBean.isLab()) { //课内实验
+                    holder.textView2.setText("名称：" + courseBean.getLabName());
+                } else { //理论课
+                    if (courseBean.getNumber().isEmpty()) {
+                        holder.textView2.setVisibility(View.GONE);
+                    } else {
+                        holder.textView2.setVisibility(View.VISIBLE);
+                        holder.textView2.setText("课号：" + courseBean.getNumber());
+                    }
                 }
             }
         }
