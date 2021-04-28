@@ -95,7 +95,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             etPwd.setHint("请输入教务密码");
             passwordHelp.setVisibility(View.GONE);
         }
+
         tabControlView.setOnTabSelectionChangedListener((title, value) -> {
+            ToastUtil.showToast(getContext(), "您已切换登录方式，请核对密码是否正确");
             if ("教务登录".equals(title)) { // 切换第二个密码框的显示
                 passwordSecondView.setVisibility(View.VISIBLE);
                 etPwd.setHint("请输入教务密码");
