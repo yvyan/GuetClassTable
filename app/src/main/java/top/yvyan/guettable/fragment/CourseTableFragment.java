@@ -155,6 +155,11 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     public String getItemText(Schedule schedule, boolean isThisWeek) {
                         //考试安排
                         if ((int) schedule.getExtras().get(ExamBean.TYPE) == 2) {
+                            String time = (String) schedule.getExtras().get(ExamBean.TIME);
+
+                            if (time != null && time.contains("-") && time.indexOf('-') > 0) {
+                                return "(" + time.substring(0, time.indexOf('-')) + "考试)" + schedule.getName() + "@" + schedule.getRoom();
+                            }
                             return "(考试)" + schedule.getName() + "@" + schedule.getRoom();
                         } else { //理论课和课内实验
                             if (!schedule.getRoom().isEmpty()) {
