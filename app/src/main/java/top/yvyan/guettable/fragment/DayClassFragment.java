@@ -2,6 +2,7 @@ package top.yvyan.guettable.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -64,6 +65,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private long[][] classTimeSection;
     private String times;
+    public static int currentOrder;
 
     private SingleSettingData singleSettingData;
     private AccountData accountData;
@@ -98,7 +100,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_day_class, container, false);
         View tools = view.findViewById(R.id.day_class_tools);
-        if (!SettingData.newInstance(getContext()).isShowTools()) {
+        if (!SettingData.newInstance(getContext()).isShowTools() || !(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)) {
             tools.setVisibility(View.GONE);
         }
         initData();
@@ -297,17 +299,16 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         try {
             super.onStart();
-            setBackground(BackgroundUtil.isSetBackground(getContext()));
+            setBackground(BackgroundUtil.isSetBackground(Objects.requireNonNull(getContext())));
             initData();
             autoUpdate.updateView();
-            int order = -1;
             try {
-                order = getCurrentOrder();
+                currentOrder = getCurrentOrder();
             } catch (Exception e) {
                 UMCrash.generateCustomLog(e, "getCurrentOrder");
             }
-            if (order != -1) {
-                updateView(order);
+            if (currentOrder != -1) {
+                updateView(currentOrder);
             } else {
                 updateView();
             }
@@ -329,7 +330,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             if (msg.what == 1) {
                 int order = weak.get().getCurrentOrder();
                 if (order > 0) {
-                    weak.get().updateView(order);
+                    if (order != currentOrder) {
+                        weak.get().updateView(order);
+                        currentOrder = order;
+                    }
+
                 } else {
                     weak.get().updateView();
                 }
