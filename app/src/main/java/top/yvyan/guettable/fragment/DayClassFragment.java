@@ -28,8 +28,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
@@ -56,9 +54,6 @@ import top.yvyan.guettable.util.ToastUtil;
 public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private View view;
-    private DayClassHandler handler = null;
-    private Timer timer = null;
-    private TimerTask timerTask = null;
 
     private TextView textView;
     private RecyclerView recyclerView;
@@ -69,7 +64,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
 
     private long[][] classTimeSection;
     private String times;
-    private int currentOrder;
 
     private SingleSettingData singleSettingData;
     private AccountData accountData;
@@ -85,9 +79,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         times = UMRemoteConfig.getInstance().getConfigValue("classTime");
-        handler = new DayClassHandler(Looper.getMainLooper(), new WeakReference<>(this));
-        timer = new Timer();
+        DayClassHandler handler = new DayClassHandler(Looper.getMainLooper(), new WeakReference<>(this));
         initMillTime();
+        handler.sendEmptyMessageDelayed(1, 60000);
     }
 
     @Override
@@ -289,48 +283,16 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         return list;
     }
 
-    //  定时任务，一分钟检查一次时间
-    class timeTask extends TimerTask {
-        @Override
-        public void run() {
-            if (handler != null) {
-                int order;
-                if ((order = getCurrentOrder()) != -1) {
-                    if (currentOrder != order) {
-                        Message msg = handler.obtainMessage();
-                        msg.arg1 = order;
-                        currentOrder = order;
-                        msg.what = 1;
-                        handler.sendMessage(msg);
-                    }
-                } else {
-                    handler.sendEmptyMessage(2);
-                }
-            }
-        }
-    }
-
-    //  没有打开Fragment的时候停止计时
     @Override
     public void onPause() {
         super.onPause();
-        if (timerTask != null) {
-            timerTask.cancel();
-            timerTask = null;
-        }
     }
 
-    //      Timer回收
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (timer != null) {
-            timer.cancel();
-            timer.purge();
-        }
     }
 
-    //  定时任务周期半分钟
     @Override
     public void onStart() {
         try {
@@ -338,12 +300,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             setBackground(BackgroundUtil.isSetBackground(getContext()));
             initData();
             autoUpdate.updateView();
-            timerTask = new timeTask();
-            timer.schedule(timerTask, 60000, 60000);
             int order = -1;
             try {
                 order = getCurrentOrder();
-                currentOrder = order;
             } catch (Exception e) {
                 UMCrash.generateCustomLog(e, "getCurrentOrder");
             }
@@ -357,21 +316,24 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    //  接收定时器通信的Handler，在其中调用updateView()来刷新日课表
     static class DayClassHandler extends Handler {
-        WeakReference<DayClassFragment> weakReference;
+        WeakReference<DayClassFragment> weak;
 
         public DayClassHandler(@NonNull Looper looper, WeakReference<DayClassFragment> weakReference) {
             super(looper);
-            this.weakReference = weakReference;
+            this.weak = weakReference;
         }
 
         @Override
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == 1) {
-                weakReference.get().updateView(msg.arg1);
-            } else if (msg.what == 2) {
-                weakReference.get().updateView();
+                int order = weak.get().getCurrentOrder();
+                if (order > 0) {
+                    weak.get().updateView(order);
+                } else {
+                    weak.get().updateView();
+                }
+                sendEmptyMessageDelayed(1, 60000);
             }
         }
 
