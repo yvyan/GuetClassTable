@@ -3,10 +3,8 @@ package top.yvyan.guettable.activity;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -22,10 +20,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.umeng.umcrash.UMCrash;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner.OnItemSelectedListener;
+import com.yalantis.ucrop.UCrop;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,6 +41,8 @@ import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ToastUtil;
+
+import static top.yvyan.guettable.util.BackgroundUtil.fileName;
 
 public class PersonalizedActivity extends AppCompatActivity implements OnItemSelectedListener<Object> {
 
@@ -205,8 +207,8 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
         List<Schedule> schedules = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             Schedule schedule = new Schedule();
-            schedule.setName("示例课程" + i + 1);
-            schedule.setRoom("教室" + i + 1);
+            schedule.setName("示例课程" + (i + 1));
+            schedule.setRoom("教室" + (i + 1));
             schedule.setStart(1);
             schedule.setStep(2);
             schedule.setDay(i * 2 + 1);
@@ -218,8 +220,8 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
         }
         for (int i = 0; i < 2; i++) {
             Schedule schedule = new Schedule();
-            schedule.setName("示例课程" + (i) / 2 + 3);
-            schedule.setRoom("教室" + (i) / 2 + 3);
+            schedule.setName("示例课程" + (i + 3));
+            schedule.setRoom("教室" + (i + 3));
             schedule.setStart(1);
             schedule.setStep(2);
             schedule.setDay(i + 5);
@@ -276,11 +278,18 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
                 return;
             Uri uri = data.getData();
             try {
-                photoClip(uri);
+                File file = new File(this.getFilesDir(), fileName);
+                UCrop.of(uri, Uri.fromFile(file))
+                        .withAspectRatio(9, 16)
+                        .withMaxResultSize(1080, 1920)
+                        .start(this);
             } catch (Exception e) {
                 ContentResolver resolver = getContentResolver();
-                try (FileInputStream inputStream = (FileInputStream) resolver.openInputStream(uri);
-                     FileOutputStream outputStream = new FileOutputStream(BackgroundUtil.getPath(getApplicationContext()));) {
+
+                try {
+                    FileInputStream inputStream = (FileInputStream) resolver.openInputStream(uri);
+                    FileOutputStream outputStream = openFileOutput("userBackground.jpg", MODE_PRIVATE);
+
                     byte[] buffer = new byte[1024];
                     int byteRead;
                     while (-1 != (byteRead = inputStream.read(buffer))) {
@@ -288,15 +297,10 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
                     }
                     ToastUtil.showToast(getApplicationContext(), "设置背景成功！");
                 } catch (IOException e1) {
-                    ToastUtil.showToast(getApplicationContext(), "读取错误，背景设计失败！");
+                    e1.printStackTrace();
+                    ToastUtil.showToast(getApplicationContext(), "读取错误，背景设置失败！");
                     UMCrash.generateCustomLog(e1, "IOException");
                 }
-            }
-        } else if (requestCode == 3) {
-            if (resultCode == RESULT_OK) {
-                ToastUtil.showToast(getApplicationContext(), "设置背景成功！");
-            } else {
-                ToastUtil.showToast(getApplicationContext(), "取消设置，已恢复默认背景！");
             }
         }
     }
@@ -324,26 +328,6 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
             mTimetableView.alpha(1, 1, 1);
         }
         mTimetableView.updateView();
-    }
-
-    private void photoClip(Uri uri) {
-        // 调用系统中自带的图片剪裁
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        Uri imageUri = Uri.parse("file://" + "/" + BackgroundUtil.getPath(this));
-        BackgroundUtil.deleteBackground(this);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-        intent.putExtra("noFaceDetection", true);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        intent.setDataAndType(uri, "image/*");
-        // 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
-        intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽高的比例
-        intent.putExtra("aspectX", 9);
-        intent.putExtra("aspectY", 16);
-        intent.putExtra("return-data", false);
-        intent.putExtra("output", imageUri);
-        startActivityForResult(intent, 3);
     }
 
     public void showOtherWeek(View view) {
