@@ -64,6 +64,10 @@
         <activity android:name=".activity.SetTermActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".MainActivity" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <service
             android:name="com.xiaomi.push.service.XMPushService"

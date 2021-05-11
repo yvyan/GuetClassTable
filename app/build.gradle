@@ -68,4 +68,8 @@ dependencies {
     implementation  'com.umeng.umsdk:abtest:1.0.0' //使用ABTest模块必选
     //EMAS hotfix
     implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.18'
+    //快速权限申请
+    implementation 'com.permissionx.guolindev:permissionx:1.4.0'
+    //图片裁剪
+    implementation 'com.github.yalantis:ucrop:2.2.4'
 }

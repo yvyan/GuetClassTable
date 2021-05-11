@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -20,15 +19,7 @@ import top.yvyan.guettable.R;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class BackgroundUtil {
 
-    /**
-     * 获得背景图片存放路径
-     *
-     * @param context context
-     * @return 路径
-     */
-    public static String getPath(Context context) {
-        return context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + "/userBackground.jpg";
-    }
+    public static final String fileName = "userBackground.jpg";
 
     /**
      * 判断用户是否设置背景(根据是否有背景图片文件)
@@ -37,7 +28,7 @@ public class BackgroundUtil {
      * @return 结果
      */
     public static boolean isSetBackground(Context context) {
-        File imageFile = new File(BackgroundUtil.getPath(context));
+        File imageFile = new File(context.getFilesDir(), fileName);
         return imageFile.exists();
     }
 
@@ -47,7 +38,7 @@ public class BackgroundUtil {
      * @param context context
      */
     public static void deleteBackground(Context context) {
-        File imageFile = new File(BackgroundUtil.getPath(context));
+        File imageFile = new File(context.getFilesDir(), fileName);
         if (imageFile.exists()) {
             imageFile.delete();
         }
@@ -62,8 +53,8 @@ public class BackgroundUtil {
     public static void setBackground(Context context, ImageView imageView) {
         if (isSetBackground(context)) {
             try {
-                FileInputStream stream = new FileInputStream(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + "/userBackground.jpg");
-                Bitmap bitmap = BitmapFactory.decodeStream(stream);
+                FileInputStream fis = context.openFileInput(fileName);
+                Bitmap bitmap = BitmapFactory.decodeStream(fis);
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
                 }
