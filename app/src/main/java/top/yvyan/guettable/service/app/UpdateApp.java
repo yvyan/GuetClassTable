@@ -16,8 +16,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.google.gson.Gson;
 import com.umeng.cconfig.UMRemoteConfig;
-import com.xiaomi.market.sdk.UpdateStatus;
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -56,7 +54,7 @@ public class UpdateApp {
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    checkUpdate(activity, type);
+                    ToastUtil.showToast(activity, "更新服务器连接失败，请加群更新！");
                 }
 
                 @Override
@@ -84,64 +82,13 @@ public class UpdateApp {
                             }
                         }
                     } catch (Exception e) {
-                        checkUpdate(activity, type);
+                        ToastUtil.showToast(activity, "更新服务器连接失败，请加群更新！");
                     }
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 检查更新(小米应用商店)
-     *
-     * @param type 1: 自动事件; 2: 用户点击;
-     */
-    public static void checkUpdate(Context context, int type) {
-        GeneralData generalData = GeneralData.newInstance(context);
-        XiaomiUpdateAgent.update(context);
-        XiaomiUpdateAgent.setUpdateAutoPopup(false);
-        XiaomiUpdateAgent.setUpdateListener((i, updateResponse) -> {
-            switch (i) {
-                case UpdateStatus.STATUS_UPDATE: //有更新
-                    if (type == 2) {
-                        //显示弹窗
-                        showUpdateDialog(context, updateResponse.updateLog, updateResponse.versionName, null);
-                    } else {
-                        if (SettingData.newInstance(context).isAppCheckUpdate()) {
-                            if (generalData.getAppLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getAppLastUpdateTime()), new Date()) >= 1) {
-                                // 显示弹窗
-                                showUpdateDialog(context, updateResponse.updateLog, updateResponse.versionName, null);
-                                // 刷新时间
-                                generalData.setAppLastUpdateTime(System.currentTimeMillis());
-                            }
-                        }
-                    }
-                    break;
-                case UpdateStatus.STATUS_NO_UPDATE:
-                    if (type == 2) {
-                        ToastUtil.showToast(context, "已是最新版本！");
-                    }
-                    break;
-                case UpdateStatus.STATUS_NO_NET:
-                    if (type == 2) {
-                        ToastUtil.showToast(context, "网络未连接！");
-                    }
-                    break;
-                case UpdateStatus.STATUS_FAILED:
-                    if (type == 2) {
-                        ToastUtil.showToast(context, "服务器错误，请稍后重试！");
-                    }
-                    break;
-                case UpdateStatus.STATUS_LOCAL_APP_FAILED:
-                    if (type == 2) {
-                        ToastUtil.showToast(context, "应用信息检查失败，请稍后重试！");
-                    }
-                default:
-                    break;
-            }
-        });
     }
 
     /**

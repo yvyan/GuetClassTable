@@ -725,7 +725,7 @@ public class StaticService {
         }
         postBody = new Gson().toJson(data);
         HttpConnectionAndCode result = Net.saveTextbookForm(context, cookie, avgTextbook.getTerm(), avgTextbook.getCourseid(), avgTextbook.getLsh(), postBody, TokenData.isVPN);
-        if (result.comment.contains("操作成功")) {
+        if (result.comment != null && result.comment.contains("操作成功")) {
             return 0;
         }
         return -1;

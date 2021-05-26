@@ -64,7 +64,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private AutoUpdate autoUpdate;
 
     private long[][] classTimeSection;
-    private String times;
     public static int currentOrder;
 
     private SingleSettingData singleSettingData;
@@ -80,7 +79,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        times = UMRemoteConfig.getInstance().getConfigValue("classTime");
+        initData();
         DayClassHandler handler = new DayClassHandler(Looper.getMainLooper(), new WeakReference<>(this));
         initMillTime();
         handler.sendEmptyMessageDelayed(1, 60000);
@@ -179,8 +178,10 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 showExam.setVisibility(View.VISIBLE);
 
                 int n = TimeUtil.calcDayOffset(new Date(), examBeans.get(0).getDate());
-                if (n >= 1) {
+                if (n > 1) {
                     showExamDay.setText("您" + n + "天后有考试");
+                } else if (n == 1) {
+                    showExamDay.setText("您明天有考试");
                 } else {
                     showExamDay.setText("您今天有考试");
                 }
@@ -263,7 +264,11 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     private List<Schedule> getData() {
         List<Schedule> list;
-        if (!ScheduleData.newInstance(getActivity()).getCourseBeans().isEmpty()) {
+        //防止出现空指针闪退
+        if (scheduleData == null) {
+            initData();
+        }
+        if (!scheduleData.getCourseBeans().isEmpty()) {
             list = ScheduleSupport.transform(scheduleData.getCourseBeans());
         } else {
             list = new ArrayList<>();
@@ -283,16 +288,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             }
         }
         return list;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -390,6 +385,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      */
     void initMillTime() {
         try {
+            String times = UMRemoteConfig.getInstance().getConfigValue("classTime");
             String[] classTime = times.replaceAll(" ", "").split(";");
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.SECOND, 0);

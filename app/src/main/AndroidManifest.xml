@@ -121,16 +121,8 @@
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.ERROR" />
             </intent-filter>
-        </receiver> <!-- 小米检查更新SDK -->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="top.yvyan.guettable.selfupdate.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/xiaomi_update_sdk_file_paths" />
-        </provider> <!-- EMAS hotfix -->
+        </receiver>
+        <!-- EMAS hotfix -->
         <meta-data
             android:name="com.taobao.android.hotfix.IDSECRET"
             android:value="333403919" />
