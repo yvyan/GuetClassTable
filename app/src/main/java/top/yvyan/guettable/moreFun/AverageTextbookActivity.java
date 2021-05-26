@@ -119,7 +119,13 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
             for (int i = 0; i < dataOuters.size(); i++) {
                 String courseName = avgTextbookOuter.getData().get(i).getCname();
                 String textbookName = avgTextbookOuter.getData().get(i).getName();
-                String hint = dataOuters.get(i).getData() == null ? "未评价" : "已评价";
+                BaseResponse<AvgTextbookData> data = dataOuters.get(i);
+                String hint;
+                if (data != null) {
+                    hint = data.getData() == null ? "未评价" : "已评价";
+                } else {
+                    hint = "未评价";
+                }
                 avgTextbookBeans.add(new AvgTextbookBean(courseName, textbookName, hint));
             }
             return 5;

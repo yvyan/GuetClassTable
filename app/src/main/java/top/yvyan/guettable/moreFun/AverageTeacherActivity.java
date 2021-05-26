@@ -2,7 +2,6 @@ package top.yvyan.guettable.moreFun;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.umeng.umcrash.UMCrash;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,19 +112,23 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
         new Thread(() -> {
             int index = 0;
             for (AvgTeacher avgTeacher : avgTeachers) {
-                Log.d("", avgTeacher.getName());
-                if (avgTeacher.getChk() == 0) {
-                    int n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
-                    if (n == 0) {
-                        avgTeacherBeans.get(index).setHint("已评教");
-                    } else {
-                        n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
-                        if (n != 0) {
-                            avgTeacherBeans.get(index).setHint("失败");
-                        } else {
+                try {
+                    if (avgTeacher.getChk() == 0) {
+                        int n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
+                        if (n == 0) {
                             avgTeacherBeans.get(index).setHint("已评教");
+                        } else {
+                            n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
+                            if (n != 0) {
+                                avgTeacherBeans.get(index).setHint("失败");
+                            } else {
+                                avgTeacherBeans.get(index).setHint("已评教");
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    avgTeacherBeans.get(index).setHint("失败");
+                    UMCrash.generateCustomLog(e, "avgTeacher");
                 }
                 runOnUiThread(this::updateView);
                 index++;

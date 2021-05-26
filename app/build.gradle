@@ -57,8 +57,6 @@ dependencies {
     implementation 'com.github.xuexiangjys:XUI:1.1.5'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-    //小米检查更新
-    implementation 'mi-appstore:xiaomi-update-sdk:4.0.3'
     //友盟移动统计
     implementation  'com.umeng.umsdk:common:9.3.6'
     implementation  'com.umeng.umsdk:asms:1.2.0' // asms包依赖
