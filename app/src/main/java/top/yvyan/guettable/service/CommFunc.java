@@ -111,6 +111,8 @@ public class CommFunc {
                     dialog[0].dismiss();
                     WebViewActivity.cleanCash(Objects.requireNonNull(activity));
                 });
+                intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/Login/MainDesktop")));
+                intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/")));
                 intent.putExtra(WebViewActivity.WEB_REFERER, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/")));
                 intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
                 AppUtil.reportFunc(activity, "登录教务-免登录");
@@ -129,7 +131,7 @@ public class CommFunc {
             final boolean[] noLogin = {false};
             TokenData tokenData = TokenData.newInstance(activity);
             Intent intent = new Intent(activity, WebViewActivity.class);
-            intent.putExtra(WebViewActivity.WEB_URL, "https://v.guet.edu.cn");
+            intent.putExtra(WebViewActivity.WEB_URL, "https://v.guet.edu.cn/");
             DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
                 @Override
                 public void onClickYes() {
@@ -151,9 +153,9 @@ public class CommFunc {
                     dialog[0].dismiss();
                     WebViewActivity.cleanCash(Objects.requireNonNull(activity));
                 });
-                intent.putExtra(WebViewActivity.WEB_REFERER, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/")));
+                intent.putExtra(WebViewActivity.WEB_REFERER, "https://v.guet.edu.cn/login");
                 if (token != null) {
-                    intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
+                    intent.putExtra(WebViewActivity.WEB_COOKIE, token);
                 }
                 AppUtil.reportFunc(activity, "登录VPN-免登录");
                 activity.startActivity(intent);

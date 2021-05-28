@@ -28,6 +28,8 @@ public class TokenData {
 
     //开发者调试
     private boolean isDevelop;
+    //强制获取vpn
+    private boolean forceVPN = false;
 
     private String TGTToken;   //统一登录TGT令牌
     private String VPNToken;   //VPN认证Token
@@ -47,16 +49,10 @@ public class TokenData {
      * @return VPNToken
      */
     public String getVpnToken() {
-        String VPNTokenStr = Net.getVPNToken(context);
-        if (VPNTokenStr == null) {
-            return null;
-        }
-        int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getPassword());
-        if (n == 0) {
-            return VPNTokenStr;
-        } else {
-            return null;
-        }
+        forceVPN = true;
+        refresh();
+        //isVPN = Net.testNet(context) != 0;
+        return VPNToken;
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -94,7 +90,12 @@ public class TokenData {
             return 0;
         }
         if (accountData.getIsLogin()) {
-            isVPN = Net.testNet(context) != 0;
+            if (forceVPN) {
+                isVPN = true;
+                forceVPN = false;
+            } else {
+                isVPN = Net.testNet(context) != 0;
+            }
             if (loginType == 0) {
                 if (isVPN) { //外网
                     String VPNTokenStr = Net.getVPNToken(context);

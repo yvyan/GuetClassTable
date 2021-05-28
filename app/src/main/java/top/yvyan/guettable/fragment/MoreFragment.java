@@ -201,7 +201,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 CommFunc.noLoginWebBKJW(getActivity());
                 break;
             case R.id.more_url_vpn:
-                CommFunc.noLoginWebVPN(getActivity());
+                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_vpn));
+                //CommFunc.noLoginWebVPN(getActivity());
                 break;
             case R.id.more_url_campus:
                 openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.smart_campus));
