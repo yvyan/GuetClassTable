@@ -19,6 +19,7 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".SophixStubApplication"
@@ -132,6 +133,20 @@
         <meta-data
             android:name="com.taobao.android.hotfix.RSASECRET"
             android:value="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCnYZCwdjbn/E2OdJKlCnaLRXprfQifPty4oXWYhbazXMtvHVe6p+ORlhG0BIYLQf/kXSFvAoSNc1CLzbl/qpJhn3/A6OF9eLMDG1iQfVQO7WXS7CzCRm+/GiMFKhmDd/Lj0+RfJwycmENe2vYrE+KYkF3le+jWjQBW0jBGBetJ+956Y1mB71Bqmo2tPYiuLGWbZj6KnWq+LyO5bUUHeO/9smahmHM7PsZ/jOIBirkrXsOou5UoS8Q0NejzDNNc63uLwn7QisVLEyAP3lanTWkOnaFRi1+k0RzEfSXzszJzjPnE/S/QvVDLK24VaLU3whVmamHOC3J0ScGVLNYpim05AgMBAAECggEAB7PtvLE0BakOyKeEuCOrIO2pnJi8dNenwLdtef9tUQPMOOjYyLZBOsn1Npuer5Xx+MhwaXNsNjZAVq65Aq8O3X9BmdcdyXBsjJANm1ipLaavMO29gZNMQTcqtWoiknJKs0FlGRvq8KnxL8RT39eibfL230C8jmMeyOATaKWNFnJ1r91lO5PDoCIUIJdRQtEaVzBvf/PqvpeEW8VvrSgYxpatrMUXCeaR5bwyZ5zF1GKC9VL2svet0XO+CHseMfd4kVj09+/flku9ZXpS8QGa/vJjWYn2vdW3sOx3TLmq1vIdegtU35nZwrSuHVZYMzUqe9YrDdiH0/Aj9F58wkRuoQKBgQDqOWLqSn6ZWLHUDLFZCwjxVnTFGjEx2R2rPiIDL1dVBEZEFd3dgxx43VRNUTA80b8De8CJsEpROakP5vUvzv1sqX16iU74XNB2BlXPSL7Vz+rwpHzEX4QZQLV5sIZ5GcAJLq1l0/YTTOZRABEwBZTI2+TsraRZwVh6St5wjaM/XwKBgQC28UqyXAYsNsW7cAsCo53sb3zKNmn0xv+Qpevl8/3KnnoIcwxtD+8NcCIpE5BY8QWpx/q0DCzXYaHxImczFJQ1hRxqvPn5OVoeDPPIRmeHp341b33yNKARNgQWxXgijPzGz/Y/Npr8mOKVGmVPa3C4bJaHHr2IXLTaQqElCSDSZwKBgQDBytlcoGY+2nPHzvitg8PSaoYSzqkFZW520OGzYOgRH4hDrRP0wxY7qmSl1BblO2WfrDSRt5rFub93uNAEzm5ACbwYNqNwOtr/zB4Tc0zx+yWYFYBlueHCQxfjp3qbmAKbllNBfS6MqYOmYTfXU8bWqZmvebwRxzc9d9Szq3z2YQKBgC1s0qBhC0NVQlndY05/dAouUK0hP8QA2ZqAKIgLwpvaJ/ELKC24hCIxErpiWjhLeJ2Ew3KLh2LfokduxHNBi9+SMtEqJWPF4uONUccL/E8JvuPj0EEg4hID+JXy6HajzWxMXRerJmbMS468ZCWJRw70H5hjgKpoYpvDaaH5l0XHAoGAL6Bq6loQo+M3l+gBfRBe7jvBbLsAOXpwxcwN53/OnhTUELNUDEkIooH3tAJ8qraR+ewL5KaRee96PW7W5vodtxcy6txOFxcpr75swGeWJvs15Lhnbur4W/1rldjx1I1bI4/KuXptCgTZrPiVxbXvHwAxUfjk3BWWUilwVBa6shc=" />
+        <!--update-->
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="top.yvyan.guettable.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>
