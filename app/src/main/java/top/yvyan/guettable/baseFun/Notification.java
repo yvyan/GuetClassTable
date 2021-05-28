@@ -108,7 +108,13 @@ public class Notification {
                     public void onClickBack() {
                     }
                 };
-                DialogUtil.showDialog(activity, info.title, true, info.button, "好的", info.comm, service);
+                String buttonText;
+                if (info.button == null || info.button.isEmpty()) {
+                    buttonText = "查看详情";
+                } else {
+                    buttonText = info.button;
+                }
+                DialogUtil.showDialog(activity, info.title, true, buttonText, "好的", info.comm, service);
             }
         });
 

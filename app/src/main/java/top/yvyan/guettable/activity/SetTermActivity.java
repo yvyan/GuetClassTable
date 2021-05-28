@@ -18,7 +18,6 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
-import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 

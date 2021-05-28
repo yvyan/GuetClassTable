@@ -51,7 +51,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void devSay(View view) {
-        DialogUtil.showTextDialog(this, getResources().getString(R.string.about_1) + "\r\n\r\n" + getResources().getString(R.string.about_2));
+        DialogUtil.showTextDialog(this, getResources().getString(R.string.about));
     }
 
     public void myGit(View view) {

@@ -52,15 +52,18 @@ public class CommFunc {
     public static void openBrowser(Activity activity, String url) {
         if (url == null || url.isEmpty()) {
             DialogUtil.showTextDialog(activity, "功能维护中！");
+            return;
         }
-        Map<String, Object> urlMap = new HashMap<>();
-        urlMap.put("url", url);
-        MobclickAgent.onEventObject(activity, "openUrl", urlMap);
-        Uri uri = Uri.parse(url);
-        Intent webIntent = new Intent();
-        webIntent.setAction("android.intent.action.VIEW");
-        webIntent.setData(uri);
-        activity.startActivity(webIntent);
+        if (url.startsWith("http://") || url.startsWith("https://")) {
+            Map<String, Object> urlMap = new HashMap<>();
+            urlMap.put("url", url);
+            MobclickAgent.onEventObject(activity, "openUrl", urlMap);
+            Uri uri = Uri.parse(url);
+            Intent webIntent = new Intent();
+            webIntent.setAction("android.intent.action.VIEW");
+            webIntent.setData(uri);
+            activity.startActivity(webIntent);
+        }
     }
 
     /**
