@@ -108,11 +108,51 @@ public class CommFunc {
                     dialog[0].dismiss();
                     WebViewActivity.cleanCash(Objects.requireNonNull(activity));
                 });
-                intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/Login/MainDesktop")));
-                intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/")));
                 intent.putExtra(WebViewActivity.WEB_REFERER, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/")));
                 intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
                 AppUtil.reportFunc(activity, "登录教务-免登录");
+                activity.startActivity(intent);
+            }
+        }).start();
+    }
+
+    /**
+     * 自动登录VPN
+     *
+     * @param activity activity
+     */
+    public static void noLoginWebVPN(Activity activity) {
+        new Thread(() -> {
+            final boolean[] noLogin = {false};
+            TokenData tokenData = TokenData.newInstance(activity);
+            Intent intent = new Intent(activity, WebViewActivity.class);
+            intent.putExtra(WebViewActivity.WEB_URL, "https://v.guet.edu.cn");
+            DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
+                @Override
+                public void onClickYes() {
+                    AppUtil.reportFunc(activity, "登录VPN-跳过");
+                    activity.startActivity(intent);
+                    noLogin[0] = true;
+                }
+
+                @Override
+                public void onClickBack() {
+                }
+            };
+            final AlertDialog[] dialog = new AlertDialog[1];
+            activity.runOnUiThread(() -> dialog[0] = DialogUtil.showProgress(activity, "自动登录中...(最长需要20s)", "跳过", iDialogService));
+
+            String token = tokenData.getVpnToken();
+            if (!noLogin[0]) {
+                activity.runOnUiThread(() -> {
+                    dialog[0].dismiss();
+                    WebViewActivity.cleanCash(Objects.requireNonNull(activity));
+                });
+                intent.putExtra(WebViewActivity.WEB_REFERER, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/")));
+                if (token != null) {
+                    intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
+                }
+                AppUtil.reportFunc(activity, "登录VPN-免登录");
                 activity.startActivity(intent);
             }
         }).start();
