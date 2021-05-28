@@ -15,7 +15,7 @@ import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BeanAttributeUtil;
 

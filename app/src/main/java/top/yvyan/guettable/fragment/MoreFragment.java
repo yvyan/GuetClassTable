@@ -31,7 +31,7 @@ import top.yvyan.guettable.moreFun.QQGroupActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
 import top.yvyan.guettable.moreFun.SelectedCourseActivity;
 import top.yvyan.guettable.moreFun.TestActivity;
-import top.yvyan.guettable.service.table.CommFunc;
+import top.yvyan.guettable.service.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DialogUtil;

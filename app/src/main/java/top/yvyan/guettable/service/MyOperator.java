@@ -1,4 +1,4 @@
-package top.yvyan.guettable.service.table;
+package top.yvyan.guettable.service;
 
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleSupport;

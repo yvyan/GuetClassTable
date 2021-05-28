@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.service.table.fetch.Net;
-import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.service.fetch.Net;
+import top.yvyan.guettable.service.fetch.StaticService;
 
 public class TokenData {
     @SuppressLint("StaticFieldLeak")

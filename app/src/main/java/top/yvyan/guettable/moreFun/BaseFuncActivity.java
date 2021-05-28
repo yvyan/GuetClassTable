@@ -16,8 +16,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.service.table.IMoreFun;
-import top.yvyan.guettable.service.table.MoreFunService;
+import top.yvyan.guettable.service.IMoreFun;
+import top.yvyan.guettable.service.MoreFunService;
 import top.yvyan.guettable.util.BackgroundUtil;
 
 public abstract class BaseFuncActivity extends AppCompatActivity implements IMoreFun {

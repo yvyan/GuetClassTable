@@ -10,7 +10,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.CETAdapter;
 import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.data.MoreDate;
-import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BeanAttributeUtil;
 

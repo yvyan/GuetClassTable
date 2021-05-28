@@ -1,4 +1,4 @@
-package top.yvyan.guettable.service.table;
+package top.yvyan.guettable.service;
 
 import android.app.Activity;
 

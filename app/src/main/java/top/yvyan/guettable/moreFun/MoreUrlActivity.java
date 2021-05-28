@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.service.table.CommFunc;
+import top.yvyan.guettable.service.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 
