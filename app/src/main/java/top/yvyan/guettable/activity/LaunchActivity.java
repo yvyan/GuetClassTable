@@ -20,8 +20,8 @@ import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.service.app.FirstLoad;
-import top.yvyan.guettable.service.table.fetch.Net;
+import top.yvyan.guettable.baseFun.FirstLoad;
+import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.util.DialogUtil;
 
 public class LaunchActivity extends AppCompatActivity {

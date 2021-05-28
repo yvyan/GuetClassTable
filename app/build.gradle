@@ -50,7 +50,7 @@ dependencies {
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     //XUI
@@ -70,4 +70,7 @@ dependencies {
     implementation 'com.permissionx.guolindev:permissionx:1.4.0'
     //图片裁剪
     implementation 'com.github.yalantis:ucrop:2.2.4'
+    //update
+    implementation 'com.tencent.bugly:crashreport_upgrade:1.5.1'
+    implementation 'com.tencent.bugly:nativecrashreport:3.9.1'
 }

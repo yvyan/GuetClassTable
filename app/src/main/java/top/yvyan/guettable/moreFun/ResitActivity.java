@@ -9,7 +9,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ResitAdapter;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.data.MoreDate;
-import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 
 import static com.xuexiang.xui.XUI.getContext;

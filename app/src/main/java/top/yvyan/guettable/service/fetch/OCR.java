@@ -1,4 +1,4 @@
-package top.yvyan.guettable.service.table.fetch;
+package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
 import android.graphics.Bitmap;

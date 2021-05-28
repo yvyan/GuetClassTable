@@ -35,7 +35,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.service.table.MyOperator;
+import top.yvyan.guettable.service.MyOperator;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DensityUtil;

@@ -11,8 +11,8 @@ import top.yvyan.guettable.adapter.SelectedCourseAdapter;
 import top.yvyan.guettable.bean.SelectedCourseBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
-import top.yvyan.guettable.service.table.IMoreFun;
-import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.service.IMoreFun;
+import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BeanAttributeUtil;
 

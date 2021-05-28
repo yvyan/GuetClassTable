@@ -1,4 +1,4 @@
-package top.yvyan.guettable.service.table;
+package top.yvyan.guettable.service;
 
 import android.app.Activity;
 
@@ -16,7 +16,7 @@ import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.fragment.DayClassFragment;
-import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.BeanAttributeUtil;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;

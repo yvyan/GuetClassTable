@@ -13,9 +13,7 @@ import top.yvyan.guettable.adapter.LibAdapter;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
-import top.yvyan.guettable.fragment.CourseTableFragment;
-import top.yvyan.guettable.fragment.DayClassFragment;
-import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 
 import static com.xuexiang.xui.XUI.getContext;

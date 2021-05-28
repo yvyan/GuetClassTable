@@ -25,8 +25,8 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.service.table.fetch.Net;
-import top.yvyan.guettable.service.table.fetch.StaticService;
+import top.yvyan.guettable.service.fetch.Net;
+import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
