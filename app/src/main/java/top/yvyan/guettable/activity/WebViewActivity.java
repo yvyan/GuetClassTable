@@ -34,7 +34,6 @@ import java.util.Map;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.CommFunc;
-import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 
 public class WebViewActivity extends AppCompatActivity {
@@ -124,9 +123,6 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {//页面加载完成
             progressBar.setVisibility(View.GONE);
-            CookieManager cookieManager = CookieManager.getInstance();
-            String CookieStr = cookieManager.getCookie(url);
-            AppUtil.Log(CookieStr);
         }
 
         @Override
