@@ -41,6 +41,24 @@ public class TokenData {
         }
     }
 
+    /**
+     * 获取最新的VPNToken
+     *
+     * @return VPNToken
+     */
+    public String getVpnToken() {
+        String VPNTokenStr = Net.getVPNToken(context);
+        if (VPNTokenStr == null) {
+            return null;
+        }
+        int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getPassword());
+        if (n == 0) {
+            return VPNTokenStr;
+        } else {
+            return null;
+        }
+    }
+
     @SuppressLint("CommitPrefEdits")
     private TokenData(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
