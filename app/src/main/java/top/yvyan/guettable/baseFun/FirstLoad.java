@@ -18,22 +18,21 @@ public class FirstLoad {
     private static final String VERSION_CODE = "versionCode";
 
     private final Context context;
-    SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     int versionCode;
 
     @SuppressLint("CommitPrefEdits")
     public FirstLoad(Context context) {
         this.context = context;
-        sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        versionCode = sharedPreferences.getInt(VERSION_CODE, 23); //两个版本之后修改默认为当前版本号
+        versionCode = sharedPreferences.getInt(VERSION_CODE, AppUtil.getAppVersionCode(context));
     }
 
     public void check() {
         int nowVersionCode = AppUtil.getAppVersionCode(context);
         if (nowVersionCode > versionCode) {
-            for (int i = nowVersionCode - 1; i >= versionCode; i--) {
+            for (int i = versionCode; i < nowVersionCode; i++) {
                 updateDate(i);
             }
             editor.putInt(VERSION_CODE, nowVersionCode);
@@ -47,11 +46,32 @@ public class FirstLoad {
      */
     private void updateDate(int i) {
         switch (i) {
+            case 34:
+                //调整密码存储
+                update_34_35();
+                break;
             case 24:
                 update_24_25();
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 34->35需要进行的操作
+     */
+    private void update_34_35() {
+        //调整密码存储方式，修复了更换登录方式需要重新输入密码的问题
+        SharedPreferences sharedPreferences = context.getSharedPreferences("tokenData", Context.MODE_PRIVATE);
+        int loginType = sharedPreferences.getInt("loginType", 1);
+        sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        String password = sharedPreferences.getString("password", "");
+        if (loginType == 0) { //CAS
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("password", "");
+            editor.putString("password2", password);
+            editor.apply();
         }
     }
 
