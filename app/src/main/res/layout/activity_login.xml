@@ -72,7 +72,7 @@
             android:layout_marginStart="56dp"
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="4dp"
-            android:hint="请输入学号"
+            android:hint="@string/hint_account"
             android:importantForAutofill="no"
             android:inputType="text"
             android:maxLines="1"
@@ -82,6 +82,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/bkjwPassword"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="16dp">
@@ -103,7 +104,7 @@
             android:layout_marginStart="56dp"
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="4dp"
-            android:hint="请输入智慧校园密码"
+            android:hint="@string/hint_BKJW_password"
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:maxLines="1"
@@ -124,7 +125,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/password_second"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="16dp">
@@ -139,14 +139,14 @@
             tools:ignore="ContentDescription" />
 
         <EditText
-            android:id="@+id/et_pwd_VPN"
+            android:id="@+id/et_pwd2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="56dp"
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="4dp"
-            android:hint="请输入VPN密码"
+            android:hint="@string/hint_vpn_password"
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:maxLines="1"
@@ -179,7 +179,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="4dp"
-            android:text="记住密码"
+            android:text="@string/remember_password"
             android:textColor="@color/theme_black" />
 
     </RelativeLayout>
@@ -189,7 +189,7 @@
         style="@style/SuperButton.Primary.Login"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="6dp"
-        android:text="登录" />
+        android:text="@string/login" />
 
     <ProgressBar
         android:id="@+id/progressBar2"
@@ -202,6 +202,7 @@
         android:id="@+id/password_help"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="10dp">
 
         <androidx.constraintlayout.widget.Guideline
@@ -243,7 +244,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:onClick="firstLogin"
-            android:text="第一次登录智慧校园"
+            android:text="@string/first_login"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -259,8 +260,9 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
+
         android:onClick="changePwd"
-        android:text=" 修改智慧校园/VPN登录密码 "
+        android:text="@string/change_password"
         android:textColor="#FFFFFF"
         android:textSize="15sp" />
 

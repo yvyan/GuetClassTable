@@ -104,7 +104,7 @@ public class TokenData {
                     } else {
                         return -2;
                     }
-                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getPassword());
+                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getVPNPwd());
                     //登录教务
                     if (n == 0) {
                         String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);
@@ -156,9 +156,9 @@ public class TokenData {
                     } else {
                         return -2;
                     }
-                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getPassword2());
+                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getVPNPwd());
                     if (n == 0) {
-                        n = StaticService.autoLoginV(context, accountData.getUsername(), accountData.getPassword(), VPNToken);
+                        n = StaticService.autoLoginV(context, accountData.getUsername(), accountData.getBkjwPwd(), VPNToken);
                     }
                     return n;
                 } else {
@@ -166,7 +166,7 @@ public class TokenData {
                     int state = StaticService.autoLogin(
                             context,
                             accountData.getUsername(),
-                            accountData.getPassword(),
+                            accountData.getBkjwPwd(),
                             cookie_builder
                     );
                     if (state == 0) {
@@ -191,7 +191,7 @@ public class TokenData {
      * @return 操作结果
      */
     public int refreshTGT(String VPNToken) {
-        String TGTTokenStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getPassword(), VPNToken);
+        String TGTTokenStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getVPNPwd(), VPNToken);
         if (TGTTokenStr.equals("ERROR2")) {
             return -2;
         }
