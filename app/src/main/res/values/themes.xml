@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+
     <style name="ThemeText">
         <item name="colorControlActivated">?attr/color_bar</item>
         <item name="android:colorAccent">?attr/color_bar</item>
+    </style>
+
+    <style name="ThemeOverlay.GuetTable.AppWidgetContainer" parent="">
+        <item name="appWidgetBackgroundColor">@color/light_blue_600</item>
+        <item name="appWidgetTextColor">@color/light_blue_50</item>
     </style>
 </resources>

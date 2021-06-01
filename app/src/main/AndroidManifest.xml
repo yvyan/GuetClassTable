@@ -30,6 +30,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,UnusedAttribute">
+        <receiver android:name=".widget.GuetTableAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/guet_table_app_widget_info" />
+        </receiver>
+
         <activity android:name=".moreFun.QQGroupActivity" />
         <activity android:name=".moreFun.SelectedCourseActivity" />
         <activity
@@ -121,8 +131,7 @@
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.ERROR" />
             </intent-filter>
-        </receiver>
-        <!-- EMAS hotfix -->
+        </receiver> <!-- EMAS hotfix -->
         <meta-data
             android:name="com.taobao.android.hotfix.IDSECRET"
             android:value="333403919" />
