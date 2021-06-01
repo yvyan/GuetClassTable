@@ -11,9 +11,13 @@
     <color name="ic_launcher_background">#FFFFFF</color>
     <color name="writeTransparent">#C0ffffff</color>
 
-    <color name="color_background_blue"> #2ABFFD </color>
+    <color name="color_background_blue">#2ABFFD</color>
     <color name="color_background_red">#F92824</color>
     <color name="color_background_pink">#FB7299</color>
     <color name="color_background_orange">#FF6705</color>
     <color name="color_background_green">#06C160</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
 </resources>
