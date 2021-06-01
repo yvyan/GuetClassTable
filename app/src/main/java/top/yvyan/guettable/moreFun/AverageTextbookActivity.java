@@ -11,6 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.umeng.umcrash.UMCrash;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,18 +76,22 @@ public class AverageTextbookActivity extends AppCompatActivity implements View.O
 
     private void start() {
         new Thread(() -> {
-            int index = 0;
-            for (int i = 0; i < dataOuters.size(); i++) {
-                if (dataOuters.get(i).getData() == null) {
-                    int n = StaticService.averageTextbook(this, cookie, formGetOuters.get(i), avgTextbookOuter.getData().get(i));
-                    if (n == 0) {
-                        avgTextbookBeans.get(index).setHint("已评价");
-                    } else {
-                        avgTextbookBeans.get(index).setHint("失败");
+            try {
+                int index = 0;
+                for (int i = 0; i < dataOuters.size(); i++) {
+                    if (dataOuters.get(i).getData() == null) {
+                        int n = StaticService.averageTextbook(this, cookie, formGetOuters.get(i), avgTextbookOuter.getData().get(i));
+                        if (n == 0) {
+                            avgTextbookBeans.get(index).setHint("已评价");
+                        } else {
+                            avgTextbookBeans.get(index).setHint("失败");
+                        }
                     }
+                    runOnUiThread(this::updateView);
+                    index++;
                 }
-                runOnUiThread(this::updateView);
-                index++;
+            } catch (Exception e) {
+                UMCrash.generateCustomLog(e, "AverageTextbook");
             }
         }).start();
     }

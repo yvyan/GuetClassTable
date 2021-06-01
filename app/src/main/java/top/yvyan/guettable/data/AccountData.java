@@ -16,8 +16,8 @@ public class AccountData {
     private boolean isSave;
     private boolean isLogin;
     private String username;
-    private String password;
-    private String password2;
+    private String bkjwPwd;
+    private String VPNPwd;
 
     private AccountData(Context context) {
         sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -43,13 +43,12 @@ public class AccountData {
         return username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setUser(String username, String password, boolean isSave) {
+    public void setUser(String username, String bkjwPwd, String VPNPwd, boolean isSave) {
+        if (bkjwPwd != null) {
+            this.bkjwPwd = bkjwPwd;
+        }
         this.username = username;
-        this.password = password;
+        this.VPNPwd = VPNPwd;
         this.isSave = isSave;
         this.isLogin = true;
         saveUser();
@@ -64,8 +63,8 @@ public class AccountData {
         isSave = sharedPreferences.getBoolean(IS_SAVE, false);
         isLogin = sharedPreferences.getBoolean(IS_LOGIN, false);
         username = sharedPreferences.getString(USERNAME, "");
-        password = sharedPreferences.getString(PASSWORD, "");
-        password2 = sharedPreferences.getString(PASSWORD2, "");
+        bkjwPwd = sharedPreferences.getString(PASSWORD, "");
+        VPNPwd = sharedPreferences.getString(PASSWORD2, "");
     }
 
     private void saveUser() {
@@ -73,18 +72,16 @@ public class AccountData {
         editor.putBoolean(IS_SAVE, isSave);
         editor.putBoolean(IS_LOGIN, isLogin);
         editor.putString(USERNAME, username);
-        editor.putString(PASSWORD, password);
+        editor.putString(PASSWORD, bkjwPwd);
+        editor.putString(PASSWORD2, VPNPwd);
         editor.apply();
     }
 
-    public String getPassword2() {
-        return password2;
+    public String getBkjwPwd() {
+        return bkjwPwd;
     }
 
-    public void setPassword2(String password2) {
-        this.password2 = password2;
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(PASSWORD2, password2);
-        editor.apply();
+    public String getVPNPwd() {
+        return VPNPwd;
     }
 }

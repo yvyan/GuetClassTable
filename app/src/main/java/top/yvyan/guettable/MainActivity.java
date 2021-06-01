@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,7 +23,10 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.cconfig.RemoteConfigSettings;
 import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.commonsdk.UMConfigure;
+import com.umeng.umcrash.UMCrash;
 import com.xiaomi.mipush.sdk.MiPushClient;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +37,16 @@ import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.PersonFragment;
-import top.yvyan.guettable.helper.ViewPagerAdapter;
 import top.yvyan.guettable.baseFun.Notification;
 import top.yvyan.guettable.baseFun.UpdateApp;
 import top.yvyan.guettable.util.BackgroundUtil;
 
 public class MainActivity extends AppCompatActivity {
-
+    //小米推送KEY
     public static final String APP_ID = "2882303761518881128";
     public static final String APP_KEY = "5601888146128";
+    //友盟KEY
+    private static final String UMengKey = "600e610a6a2a470e8f8942f9";
 
     private SingleSettingData singleSettingData;
     private BottomNavigationView bottomNavigationView;
@@ -102,15 +108,27 @@ public class MainActivity extends AppCompatActivity {
         if (shouldInit()) {
             MiPushClient.registerPush(this, APP_ID, APP_KEY);
         }
-
         //友盟
         UMRemoteConfig.getInstance().setConfigSettings(new RemoteConfigSettings.Builder().setAutoUpdateModeEnabled(true).build()); //在线参数
         UMRemoteConfig.getInstance().setDefaults(R.xml.cloud_config_parms);
-        UMConfigure.init(this, "600e610a6a2a470e8f8942f9", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, ""); //数据统计
+        UMConfigure.init(this, UMengKey, "Umeng", UMConfigure.DEVICE_TYPE_PHONE, ""); //数据统计
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
-
-        UpdateApp.check(this, 1);
+        //通过在线参数判断更新方式0：bugly在线更新； 1：通过浏览器下载更新
+        String updateType = UMRemoteConfig.getInstance().getConfigValue("updateType");
+        int n = 0;
+        try {
+            n = Integer.parseInt(updateType);
+        } catch (Exception e) {
+            UMCrash.generateCustomLog(e, "checkUpdateType");
+        }
+        if (n == 0) {
+            UpdateApp.init(getApplicationContext());
+        } else {
+            UpdateApp.check(this, 1);
+        }
+        //获取通知
         Notification.getNotification(this);
+        //清理webView缓存
         WebViewActivity.cleanCash(this);
     }
 
@@ -188,5 +206,34 @@ public class MainActivity extends AppCompatActivity {
         if (themeID != singleSettingData.getThemeId()) {
             recreate();
         }
+    }
+}
+
+/**
+ * 底部栏Adaptor
+ */
+@SuppressWarnings("deprecation")
+class ViewPagerAdapter extends FragmentPagerAdapter {
+
+    private List<Fragment> list;
+
+    public void setList(List<Fragment> list) {
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
+    public ViewPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
+
+    @NotNull
+    @Override
+    public Fragment getItem(int position) {
+        return list.get(position);
+    }
+
+    @Override
+    public int getCount() {
+        return list != null ? list.size() : 0;
     }
 }

@@ -28,6 +28,8 @@ public class TokenData {
 
     //开发者调试
     private boolean isDevelop;
+    //强制获取vpn
+    private boolean forceVPN = false;
 
     private String TGTToken;   //统一登录TGT令牌
     private String VPNToken;   //VPN认证Token
@@ -39,6 +41,18 @@ public class TokenData {
         } else {
             return bkjwCookie;
         }
+    }
+
+    /**
+     * 获取最新的VPNToken
+     *
+     * @return VPNToken
+     */
+    public String getVpnToken() {
+        forceVPN = true;
+        refresh();
+        //isVPN = Net.testNet(context) != 0;
+        return VPNToken;
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -76,7 +90,12 @@ public class TokenData {
             return 0;
         }
         if (accountData.getIsLogin()) {
-            isVPN = Net.testNet(context) != 0;
+            if (forceVPN) {
+                isVPN = true;
+                forceVPN = false;
+            } else {
+                isVPN = Net.testNet(context) != 0;
+            }
             if (loginType == 0) {
                 if (isVPN) { //外网
                     String VPNTokenStr = Net.getVPNToken(context);
@@ -85,7 +104,7 @@ public class TokenData {
                     } else {
                         return -2;
                     }
-                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getPassword());
+                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getVPNPwd());
                     //登录教务
                     if (n == 0) {
                         String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);
@@ -137,9 +156,9 @@ public class TokenData {
                     } else {
                         return -2;
                     }
-                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getPassword2());
+                    int n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getVPNPwd());
                     if (n == 0) {
-                        n = StaticService.autoLoginV(context, accountData.getUsername(), accountData.getPassword(), VPNToken);
+                        n = StaticService.autoLoginV(context, accountData.getUsername(), accountData.getBkjwPwd(), VPNToken);
                     }
                     return n;
                 } else {
@@ -147,7 +166,7 @@ public class TokenData {
                     int state = StaticService.autoLogin(
                             context,
                             accountData.getUsername(),
-                            accountData.getPassword(),
+                            accountData.getBkjwPwd(),
                             cookie_builder
                     );
                     if (state == 0) {
@@ -172,7 +191,7 @@ public class TokenData {
      * @return 操作结果
      */
     public int refreshTGT(String VPNToken) {
-        String TGTTokenStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getPassword(), VPNToken);
+        String TGTTokenStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getVPNPwd(), VPNToken);
         if (TGTTokenStr.equals("ERROR2")) {
             return -2;
         }
