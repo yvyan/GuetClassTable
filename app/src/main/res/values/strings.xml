@@ -121,13 +121,12 @@
     <string name="text_qqGroup_add">若您有面向同学免费开放的非盈利群聊，能够切实为同学提供帮助，我们希望能够相互宣传，欢迎加群(桂电课程表交流群)合作！</string>
 
     <string name="first_about">该项目与学校官方无关。个人开发者作品，不含广告，永久免费。\n\n 该项目会一直开源，一直保证代码库最新，保证和小伙伴使用的APP源码一致。开源是为了接受大家的监督，也是保护小伙伴教务隐私的有效手段，感谢大家的支持！</string>
-    <string name="about_1">仍然记得刚入学时看到同学发来的“桂电课程表”时的激动，一个简单的APP，却能够给桂电学子带来切实的便利，自己又何尝不想成为这样一个人…</string>
-    <string name="about_2">两年过去了，学长的那个课程表已经跟不上时代了，近期，学校关停了老版的教务系统，学长的课程表接入的正是这个系统，所以自然也无法使用；我也借Android课设的机会，完成自己的一个愿望，也是对学长的致敬。</string>
+    <string name="about">仍然记得刚入学时看到同学发来的“桂电课程表”时的激动，一个简单的APP，却能够给桂电学子带来切实的便利，自己又何尝不想成为这样一个人… \n\n两年过去了，学长的那个课程表已经跟不上时代了，近期，学校关停了老版的教务系统，学长的课程表接入的正是这个系统，所以自然也无法使用；我也借Android课设的机会，完成自己的一个愿望，也是对学长的致敬。</string>
     <string name="gitee_url">https://gitee.com/fireworkwing/GuetClassTable</string>
     <string name="thanks_1">课程表控件: https://github.com/zfman/TimetableView</string>
     <string name="thanks_2">GUET课程表: https://github.com/Telephone2019/CourseTable</string>
     <string name="alipay_url">intent://platformapi/startapp?saId=10000007&amp;clientVersion=3.7.0.0718&amp;qrcode=https%3A%2F%2Fqr.alipay.com%2Ffkx10679zh5n4frnfxiye62%3F_s%3Dweb-other&amp;_t=1472443966571#Intent;scheme=alipayqr;package=com.eg.android.AlipayGphone;end</string>
-    <string name="thanks_help">桂电课程表是学生小组开发软件，没有任何收入，只为给桂电学子提供一个简洁、安全和实用的平台。如果愿意，你可以捐赠支持开发者。十分感谢！</string>
+    <string name="thanks_help">桂电课程表是学生小组开发软件，没有任何收入，只为给桂电学子提供一个简洁、安全和实用的平台。如果愿意，你可以捐赠支持我们。十分感谢！</string>
     <string name="join_us">我们开发者团队希望这个项目能够持久，我们也会一直开源，但是我们终究会离开校园，我们希望有能力喜欢奉献的你加入我们，让这个课程表可以长长久久！ \n\n看看我们自己，为了一个共同的小目标不顾一切，可能这就是青春吧！有想法？请立刻加入QQ群私聊我们！</string>
     <string name="privacy_text">\u0020\u0020在您使用过程中，桂电课程表可能会申请以下权限：\n
         1.读写手机存储权限\n
@@ -216,6 +215,13 @@
     <string name="moreFun_innovation_score">创新积分</string>
     <string name="more_func_empty">暂无数据</string>
     <string name="more_func_fail">加载失败</string>
+    <string name="hint_account">请输入学号</string>
+    <string name="hint_BKJW_password">请输入教务密码</string>
+    <string name="hint_vpn_password">请输入智慧校园(VPN)密码</string>
+    <string name="remember_password">记住密码</string>
+    <string name="login">登录</string>
+    <string name="first_login">第一次登录智慧校园</string>
+    <string name="change_password">&#160;&#160;修改智慧校园/VPN登录密码&#160;&#160;</string>
 
     <string name="appwidget_text">示例</string>
     <string name="add_widget">APP小部件</string>

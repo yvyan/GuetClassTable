@@ -15,7 +15,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.gson.Gson;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.umeng.cconfig.UMRemoteConfig;
+import com.umeng.umcrash.UMCrash;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -40,54 +43,81 @@ import top.yvyan.guettable.util.ToastUtil;
  */
 public class UpdateApp {
 
+    public static void init(Context context) {
+        Beta.upgradeDialogLayoutId = R.layout.update_dialog_new;
+        Beta.showInterruptedStrategy = true;
+        Beta.autoDownloadOnWifi = false;
+        Beta.canShowApkInfo = false;
+        Beta.enableHotfix = false;
+        Beta.autoCheckUpgrade = true;
+        Beta.initDelay = 200;
+        Beta.upgradeCheckPeriod = 5 * 1000;
+        Bugly.init(context, "e18ab2b608", true);
+    }
+
     public static void check(Activity activity, int type) {
+        String updateType = UMRemoteConfig.getInstance().getConfigValue("updateType");
+        int n = 0;
         try {
-            GeneralData generalData = GeneralData.newInstance(activity);
-            String url = UMRemoteConfig.getInstance().getConfigValue("updateUrl");
-            OkHttpClient okHttpClient = new OkHttpClient();
-            final Request request = new Request.Builder()
-                    .url(url)
-                    .get()
-                    .build();
-            Call call = okHttpClient.newCall(request);
-
-            call.enqueue(new Callback() {
-                @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    ToastUtil.showToast(activity, "更新服务器连接失败，请加群更新！");
+            n = Integer.parseInt(updateType);
+        } catch (Exception e) {
+            UMCrash.generateCustomLog(e, "checkUpdateType");
+        }
+        AppUtil.Log(n + "");
+        if (n == 0) {
+            Beta.checkAppUpgrade(type == 2, false);
+        } else {
+            try {
+                if (type == 2) {
+                    ToastUtil.showToast(activity, "正在检查更新……");
                 }
+                GeneralData generalData = GeneralData.newInstance(activity);
+                String url = UMRemoteConfig.getInstance().getConfigValue("updateUrl");
+                OkHttpClient okHttpClient = new OkHttpClient();
+                final Request request = new Request.Builder()
+                        .url(url)
+                        .get()
+                        .build();
+                Call call = okHttpClient.newCall(request);
 
-                @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) {
-                    try {
-                        String result = Objects.requireNonNull(response.body()).string();
-                        UpdateInfo updateInfo = new Gson().fromJson(result, UpdateInfo.class);
-                        if (updateInfo.getVersioncode() > AppUtil.getAppVersionCode(activity)) {
-                            if (type == 2) {
-                                //显示弹窗
-                                activity.runOnUiThread(() -> showUpdateDialog(activity, updateInfo.comm, updateInfo.getVersion(), updateInfo.url));
-                            } else {
-                                if (SettingData.newInstance(activity).isAppCheckUpdate() || updateInfo.getForce() <= 1) {
-                                    if (updateInfo.getForce() <= 2 || generalData.getAppLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getAppLastUpdateTime()), new Date()) >= 1) {
-                                        // 显示弹窗
-                                        activity.runOnUiThread(() -> showUpdateDialog(activity, updateInfo.comm, updateInfo.getVersion(), updateInfo.url));
-                                        // 刷新时间
-                                        generalData.setAppLastUpdateTime(System.currentTimeMillis());
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        activity.runOnUiThread(() -> ToastUtil.showToast(activity, "更新服务器连接失败，请加群检查更新！"));
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) {
+                        try {
+                            String result = Objects.requireNonNull(response.body()).string();
+                            UpdateInfo updateInfo = new Gson().fromJson(result, UpdateInfo.class);
+                            if (updateInfo.getVersioncode() > AppUtil.getAppVersionCode(activity)) {
+                                if (type == 2) {
+                                    //显示弹窗
+                                    activity.runOnUiThread(() -> showUpdateDialog(activity, updateInfo.comm, updateInfo.getVersion(), updateInfo.url));
+                                } else {
+                                    if (SettingData.newInstance(activity).isAppCheckUpdate() || updateInfo.getForce() <= 1) {
+                                        if (updateInfo.getForce() <= 2 || generalData.getAppLastUpdateTime() == -1 || TimeUtil.calcDayOffset(new Date(generalData.getAppLastUpdateTime()), new Date()) >= 1) {
+                                            // 显示弹窗
+                                            activity.runOnUiThread(() -> showUpdateDialog(activity, updateInfo.comm, updateInfo.getVersion(), updateInfo.url));
+                                            // 刷新时间
+                                            generalData.setAppLastUpdateTime(System.currentTimeMillis());
+                                        }
                                     }
                                 }
+                            } else {
+                                if (type == 2) {
+                                    activity.runOnUiThread(() -> ToastUtil.showToast(activity, "已是最新版本！"));
+                                }
                             }
-                        } else {
-                            if (type == 2) {
-                                activity.runOnUiThread(() -> ToastUtil.showToast(activity, "已是最新版本！"));
-                            }
+                        } catch (Exception e) {
+                            ToastUtil.showToast(activity, "更新服务器连接失败，请加群更新！");
                         }
-                    } catch (Exception e) {
-                        ToastUtil.showToast(activity, "更新服务器连接失败，请加群更新！");
                     }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

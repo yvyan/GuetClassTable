@@ -110,28 +110,32 @@ public class AverageTeacherActivity extends AppCompatActivity implements View.On
 
     private void start() {
         new Thread(() -> {
-            int index = 0;
-            for (AvgTeacher avgTeacher : avgTeachers) {
-                try {
-                    if (avgTeacher.getChk() == 0) {
-                        int n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
-                        if (n == 0) {
-                            avgTeacherBeans.get(index).setHint("已评教");
-                        } else {
-                            n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
-                            if (n != 0) {
-                                avgTeacherBeans.get(index).setHint("失败");
-                            } else {
+            try {
+                int index = 0;
+                for (AvgTeacher avgTeacher : avgTeachers) {
+                    try {
+                        if (avgTeacher.getChk() == 0) {
+                            int n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
+                            if (n == 0) {
                                 avgTeacherBeans.get(index).setHint("已评教");
+                            } else {
+                                n = StaticService.averageTeacher(this, cookie, avgTeacher, GeneralData.newInstance(this).getNumber());
+                                if (n != 0) {
+                                    avgTeacherBeans.get(index).setHint("失败");
+                                } else {
+                                    avgTeacherBeans.get(index).setHint("已评教");
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        avgTeacherBeans.get(index).setHint("失败");
+                        UMCrash.generateCustomLog(e, "avgTeacher");
                     }
-                } catch (Exception e) {
-                    avgTeacherBeans.get(index).setHint("失败");
-                    UMCrash.generateCustomLog(e, "avgTeacher");
+                    runOnUiThread(this::updateView);
+                    index++;
                 }
-                runOnUiThread(this::updateView);
-                index++;
+            } catch (Exception e) {
+                UMCrash.generateCustomLog(e, "AverageTeacher");
             }
         }).start();
     }

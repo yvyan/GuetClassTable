@@ -204,7 +204,6 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.person_update:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_update));
-                ToastUtil.showToast(getContext(), "正在检查更新……");
                 UpdateApp.check(getActivity(), 2);
                 break;
             case R.id.person_download_all:
