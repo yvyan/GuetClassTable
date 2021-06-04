@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import top.yvyan.guettable.activity.SettingActivity;
+import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.util.AppUtil;
 
 /**
@@ -72,6 +74,13 @@ public class FirstLoad {
             editor.putString("password", "");
             editor.putString("password2", password);
             editor.apply();
+        }
+
+        ScheduleData scheduleData = ScheduleData.newInstance(context);
+        for (CourseBean courseBean : scheduleData.getLibBeans()) {
+            if (courseBean.getDay() > 7) {
+                courseBean.setDay(7);
+            }
         }
     }
 

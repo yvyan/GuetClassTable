@@ -233,7 +233,10 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             }
         }
         mWeekView.data(schedules).showView();
-        mTimetableView.data(schedules).updateView();
+        try {
+            mTimetableView.data(schedules).updateView();
+        } catch (Exception ignored) {
+        }
 
         mTimetableView.onDateBuildListener().onUpdateDate(mTimetableView.curWeek(), target);
         mTimetableView.changeWeekOnly(target);
