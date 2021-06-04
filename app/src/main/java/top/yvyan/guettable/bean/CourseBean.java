@@ -68,6 +68,11 @@ public class CourseBean implements ScheduleEnable, Serializable {
         }
         this.weekStart = weekStart;
         this.weekEnd = weekEnd;
+        if (day > 7) {
+            day = 7;
+        } else if (day < 1) {
+            day = 1;
+        }
         this.day = day;
         this.time = time;
         this.teacher = teacher;
@@ -85,6 +90,11 @@ public class CourseBean implements ScheduleEnable, Serializable {
         this.weekList.add(weekStart);
         this.weekStart = weekStart;
         this.weekEnd = weekStart;
+        if (day > 7) {
+            day = 7;
+        } else if (day < 1) {
+            day = 1;
+        }
         this.day = day;
         this.time = time;
         this.teacher = teacher;
@@ -219,5 +229,14 @@ public class CourseBean implements ScheduleEnable, Serializable {
 
     public long getLabId() {
         return labId;
+    }
+
+    public void setDay(int day) {
+        if (day > 7) {
+            day = 7;
+        } else if (day < 1) {
+            day = 1;
+        }
+        this.day = day;
     }
 }
