@@ -225,5 +225,7 @@
 
     <string name="appwidget_text">示例</string>
     <string name="add_widget">APP小部件</string>
+    <string name="widget_tv_term">学期：</string>
+    <string name="widget_tv_date">日期：</string>
 
 </resources>
