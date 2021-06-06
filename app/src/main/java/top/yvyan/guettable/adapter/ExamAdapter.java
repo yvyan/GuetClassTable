@@ -40,7 +40,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
         holder.textView4.setText("教室：" + (examBeans.get(position).getRoom().isEmpty() ? "未公布" : examBeans.get(position).getRoom()));
         holder.textView5.setText("时间：" + examBeans.get(position).getTime());
         String date = "日期："
-                + (examBeans.get(position).getDate() == null ? "获取失败" : TimeUtil.timeFormat(examBeans.get(position).getDate()))
+                + (examBeans.get(position).getDate() == null ? examBeans.get(position).getDateString() : TimeUtil.timeFormat(examBeans.get(position).getDate()))
                 + "(第" + examBeans.get(position).getWeek() + "周 "
                 + TimeUtil.whichDay(examBeans.get(position).getDay()) + ")";
         if (examBeans.get(position).getComm().isEmpty()) {

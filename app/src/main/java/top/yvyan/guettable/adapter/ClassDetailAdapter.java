@@ -57,7 +57,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
             holder.textView3.setText("教师：" + examBean.getTeacher());
             holder.textView4.setText("教室：" + examBean.getRoom());
             holder.textView5.setText("时间：" + examBean.getTime());
-            String date = "日期：" + TimeUtil.timeFormat(examBean.getDate()) + "(第" + examBean.getWeek() + "周 " + TimeUtil.whichDay(examBean.getDay()) + ")";
+            String date = "日期：" + (examBean.getDate() == null ? examBean.getDateString() : TimeUtil.timeFormat(examBean.getDate())) + "(第" + examBean.getWeek() + "周 " + TimeUtil.whichDay(examBean.getDay()) + ")";
             if (examBean.getComm().isEmpty()) {
                 holder.textView6.setVisibility(View.GONE);
                 holder.textView7.setText(date);
