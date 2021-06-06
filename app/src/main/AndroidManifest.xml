@@ -31,8 +31,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,UnusedAttribute">
-        <receiver android:name=".widget.GuetTableAppWidget">
+
+        <!--        桌面小部件       -->
+        <receiver android:name=".widget.GuetTableAppWidget"
+            tools:ignore="ExportedReceiver">
             <intent-filter>
+                <action android:name="widget.refresh.action.CLICK" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
