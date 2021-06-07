@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/shape_corner"
     android:orientation="vertical"
     android:padding="@dimen/widget_margin">
 
@@ -10,15 +11,16 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/widget_tv_term"
-            android:layout_width="match_parent"
+            android:id="@+id/widget_week"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:padding="5dp"
-            android:text="@string/widget_tv_term"
+            android:text="@string/widget_week_empty"
             android:textColor="@color/xui_config_color_white"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
 
         <Button
             android:id="@+id/widget_btn_refresh"
@@ -28,28 +30,15 @@
             android:background="@drawable/ic_refresh"
             android:padding="5dp"
             tools:ignore="RelativeOverlap" />
+
     </RelativeLayout>
 
 
-    <TextView
-        android:id="@+id/widget_tv_day"
+    <ListView
+        android:id="@+id/widget_lv_class"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:text="@string/widget_tv_date"
-        android:textColor="@color/xui_config_color_white"
-        android:textSize="14sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/widget_week"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:text="第X周"
-        android:textColor="@color/xui_config_color_white"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:layout_margin="5dp" />
 
 
 </LinearLayout>

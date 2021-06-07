@@ -33,7 +33,8 @@
         tools:ignore="AllowBackup,UnusedAttribute">
 
         <!--        桌面小部件       -->
-        <receiver android:name=".widget.GuetTableAppWidget"
+        <receiver
+            android:name=".widget.GuetTableAppWidget"
             tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="widget.refresh.action.CLICK" />
@@ -103,6 +104,11 @@
         <service
             android:name="com.xiaomi.mipush.sdk.MessageHandleService"
             android:enabled="true" />
+        <!--  小部件服务   -->
+        <service
+            android:name=".widget.WidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <receiver
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
