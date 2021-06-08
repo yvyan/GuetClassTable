@@ -35,9 +35,11 @@
         <!--        桌面小部件       -->
         <receiver
             android:name=".widget.GuetTableAppWidget"
+            android:exported="false"
             tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="widget.refresh.action.CLICK" />
+                <action android:name="widget.refresh.action.USER" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
