@@ -23,7 +23,7 @@ import top.yvyan.guettable.util.TimeUtil;
 // 这里相当于ListView的适配器
 public class WidgetServiceFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private Context context;
+    private final Context context;
     private List<Schedule> dataList;
     private GeneralData generalData;
     private SettingData settingData;
@@ -73,18 +73,22 @@ public class WidgetServiceFactory implements RemoteViewsService.RemoteViewsFacto
         Schedule schedule = dataList.get(position);
         final RemoteViews rv = new RemoteViews(context.getPackageName(),
                 R.layout.course_widget_cardview);
-        CourseBean courseBean = new CourseBean();
-        courseBean.setFromSchedule(schedule);
-        rv.setTextViewText(R.id.widget_tv_course_name, schedule.getName());
-        rv.setTextViewText(R.id.widget_tv_course_number, String.valueOf(courseBean.getTime()));
-        if (schedule.getRoom() != null) {
-            if (schedule.getRoom().contains("*")) {
-                rv.setTextViewText(R.id.widget_tv_course_room, schedule.getRoom());
-            } else {
-                rv.setTextViewText(R.id.widget_tv_course_room, schedule.getRoom().concat("*"));
+        if ((int) schedule.getExtras().get(ExamBean.TYPE) == 2) {
+            ExamBean examBean = new ExamBean();
+            examBean.setFromSchedule(schedule);
+            rv.setTextViewText(R.id.widget_tv_course_name, "(" + examBean.getTime().substring(0, examBean.getTime().indexOf('-')) + "考试)" + examBean.getName());
+            rv.setTextViewText(R.id.widget_tv_course_number, String.valueOf(examBean.getClassNum()));
+            rv.setTextViewText(R.id.widget_tv_course_room, "地点:" + examBean.getRoom());
+            rv.setTextViewText(R.id.widget_tv_course_teacher, "老师:" + examBean.getTeacher());
+        } else {
+            rv.setTextViewText(R.id.widget_tv_course_name, schedule.getName());
+            rv.setTextViewText(R.id.widget_tv_course_number, String.valueOf((schedule.getStart() + 1) / 2));
+            if (schedule.getRoom() != null && !schedule.getRoom().isEmpty()) {
+                rv.setTextViewText(R.id.widget_tv_course_room, "地点:" + schedule.getRoom());
             }
+            if (schedule.getTeacher() != null && !schedule.getTeacher().isEmpty())
+                rv.setTextViewText(R.id.widget_tv_course_teacher, "老师:" + schedule.getTeacher());
         }
-        rv.setTextViewText(R.id.widget_tv_course_teacher, schedule.getTeacher());
         return rv;
     }
 
