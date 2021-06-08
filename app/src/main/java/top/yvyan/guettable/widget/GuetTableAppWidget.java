@@ -22,6 +22,7 @@ import top.yvyan.guettable.util.TimeUtil;
 public class GuetTableAppWidget extends AppWidgetProvider {
 
     public static final String CLICK_ACTION = "widget.refresh.action.CLICK";
+    public static final String USER_ACTION = "widget.refresh.action.USER";
     public static final String TAG = "GuetTableAppWidget";
     private GeneralData generalData;
 
@@ -77,7 +78,7 @@ public class GuetTableAppWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        Log.i(TAG, intent.getAction());
+        Log.i(TAG, "action: " + intent.getAction());
         if (Objects.equals(intent.getAction(), CLICK_ACTION)) {     // 小部件刷新按钮事件
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = manager.getAppWidgetIds(new ComponentName(context, GuetTableAppWidget.class));
@@ -85,6 +86,12 @@ public class GuetTableAppWidget extends AppWidgetProvider {
                 updateAppWidget(context, manager, appWidgetId);
             }
             XToast.success(context, "刷新成功").show();
+        } else if (Objects.equals(intent.getAction(), USER_ACTION)) {   // 刷新按钮之外的刷新请求
+            AppWidgetManager manager = AppWidgetManager.getInstance(context);
+            int[] appWidgetIds = manager.getAppWidgetIds(new ComponentName(context, GuetTableAppWidget.class));
+            for (int appWidgetId : appWidgetIds) {
+                updateAppWidget(context, manager, appWidgetId);
+            }
         }
     }
 

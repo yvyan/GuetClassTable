@@ -41,6 +41,7 @@ import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ExamUtil;
 import top.yvyan.guettable.util.ToastUtil;
+import top.yvyan.guettable.widget.WidgetUtil;
 
 public class CourseTableFragment extends Fragment implements View.OnClickListener {
     //控件
@@ -138,6 +139,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                         generalData.setWeek(target);
                         mWeekView.curWeek(target).updateView();
                         scheduleData.setUpdate(true);
+                        WidgetUtil.notifyWidgetUpdate(this.getActivity());
                         ToastUtil.showToast(getActivity(), "设置第" + target + "周为当前周");
                         mTimetableView.changeWeekForce(target);
                     }

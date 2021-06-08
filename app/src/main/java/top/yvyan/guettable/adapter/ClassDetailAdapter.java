@@ -23,6 +23,7 @@ import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.TimeUtil;
+import top.yvyan.guettable.widget.WidgetUtil;
 
 public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.ClassDetailViewHolder> {
     private final List<Schedule> schedules;
@@ -115,6 +116,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
                     notifyItemRemoved(position);
                     notifyDataSetChanged();
                     activity.setResult(DetailActivity.ALTER, intent);
+                    WidgetUtil.notifyWidgetUpdate(activity);
                     AppUtil.reportFunc(activity, activity.getString(R.string.course_delete));
                 });
             } else {

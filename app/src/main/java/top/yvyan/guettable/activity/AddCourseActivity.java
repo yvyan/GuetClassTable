@@ -26,6 +26,7 @@ import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
+import top.yvyan.guettable.widget.WidgetUtil;
 
 public class AddCourseActivity extends AppCompatActivity {
     public static int REQUEST_CODE = 10;
@@ -202,8 +203,9 @@ public class AddCourseActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            
             scheduleData.setUserCourseBeans(courseBeans);
+            WidgetUtil.notifyWidgetUpdate(this);
             ToastUtil.showToast(getApplicationContext(), "添加成功！");
 
             Intent intent = getIntent();
