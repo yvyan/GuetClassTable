@@ -24,6 +24,7 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil
     public static String DATE = "date";
     public static String TYPE = "type";
     public static String COMM = "comm";
+    public static String DATE_STRING = "dateString";
 
     //课号
     private String number;
@@ -45,6 +46,8 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil
     private String room;
     //备注
     private String comm;
+    //日期字符串
+    private String dateString;
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -75,29 +78,43 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil
         this.date = examBean.getDate();
         this.room = examBean.getRoom();
         this.comm = examBean.getComm();
+        this.dateString = examBean.getDateString();
     }
 
     @SuppressLint("SimpleDateFormat")
-    public ExamBean(String number, String name, String teacher, int week, int day, int classNum, String time, String examdate, String room, String comm) {
+    public ExamBean(String number, String name, String teacher, int week, int day, int classNum, String time, String examDate, String room, String comm) {
         SimpleDateFormat format;
-        if (examdate == null) {
-            examdate = "";
+        if (examDate == null) {
+            dateString = "获取失败";
+        } else {
+            dateString = examDate;
         }
-        if (examdate.contains("-")) {
+        if (dateString.contains("-")) {
             format = new SimpleDateFormat("yyyy-MM-dd");
         } else {
             format = new SimpleDateFormat("MM dd yyyy");
         }
         try {
-            this.date = format.parse(examdate);
+            this.date = format.parse(dateString);
         } catch (ParseException e) {
             UMCrash.generateCustomLog(e, "ExamInfo.toExamBean");
         }
         this.number = number;
         this.name = name;
         this.teacher = teacher;
+        if (week < 1) {
+            week = 1;
+        }
         this.week = week;
+        if (day > 7) {
+            day = 7;
+        } else if (day < 1) {
+            day = 1;
+        }
         this.day = day;
+        if (classNum < 0) {
+            classNum = 0;
+        }
         this.classNum = classNum;
         this.time = time;
         this.room = room;
@@ -114,6 +131,7 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil
         week = schedule.getWeekList().get(0);
         time = (String) schedule.getExtras().get(TIME);
         date = (Date) schedule.getExtras().get(DATE);
+        dateString = (String) schedule.getExtras().get(DATE_STRING);
         comm = (String) schedule.getExtras().get(COMM);
     }
 
@@ -133,6 +151,7 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil
 
         schedule.putExtras(TIME, time);
         schedule.putExtras(DATE, date);
+        schedule.putExtras(DATE_STRING, dateString);
         schedule.putExtras(NUMBER, getNumber());
         //类型: 0:理论课; 1:实验课; 2:考试安排
         schedule.putExtras(TYPE, 2);
@@ -218,5 +237,12 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil
     @Override
     public long getOrder() {
         return week * 7 + day;
+    }
+
+    public String getDateString() {
+        if (dateString == null) {
+            dateString = "获取失败";
+        }
+        return dateString;
     }
 }
