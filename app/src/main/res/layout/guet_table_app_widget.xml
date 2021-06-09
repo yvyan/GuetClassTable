@@ -1,13 +1,22 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_widget"
+    android:id="@+id/rl_widget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_corner"
     android:orientation="vertical"
     android:padding="@dimen/widget_margin">
 
+    <ImageView
+        android:id="@+id/img_cover"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        android:src="@drawable/shape_img_black"
+        tools:ignore="ContentDescription" />
+
     <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -34,8 +43,8 @@
 
     </RelativeLayout>
 
-
     <ListView
+        android:layout_below="@id/rl_title"
         android:id="@+id/widget_lv_class"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,4 +54,4 @@
         android:dividerHeight="0.5dp" />
 
 
-</LinearLayout>
+</RelativeLayout>
