@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -25,6 +26,7 @@ public class GuetTableAppWidget extends AppWidgetProvider {
     public static final String USER_ACTION = "widget.refresh.action.USER";
     public static final String TAG = "GuetTableAppWidget";
     private GeneralData generalData;
+    private GradientDrawable backGround;    // 待定功能
 
     //  更新部件界面信息
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
@@ -49,6 +51,7 @@ public class GuetTableAppWidget extends AppWidgetProvider {
             serviceIntent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             rv.setRemoteAdapter(R.id.widget_lv_class, serviceIntent);
             rv.setEmptyView(R.id.widget_lv_class, R.layout.empty_view_widget_lv);
+
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_lv_class);
             appWidgetManager.updateAppWidget(appWidgetId, rv);
         } catch (Exception e) {
@@ -99,6 +102,12 @@ public class GuetTableAppWidget extends AppWidgetProvider {
     private void initData(Context context) {
         if (generalData == null) {
             generalData = GeneralData.newInstance(context);
+        }
+        if (backGround == null) {
+            backGround = new GradientDrawable();
+            backGround.setShape(GradientDrawable.RECTANGLE);
+            backGround.setCornerRadius(5);
+            backGround.setAlpha(10);
         }
     }
 
