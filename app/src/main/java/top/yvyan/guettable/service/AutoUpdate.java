@@ -21,6 +21,8 @@ import top.yvyan.guettable.util.BeanAttributeUtil;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
+import static top.yvyan.guettable.widget.WidgetUtil.notifyWidgetUpdate;
+
 public class AutoUpdate {
 
     private final Activity activity;
@@ -203,6 +205,7 @@ public class AutoUpdate {
                         generalData.setLastUpdateTime(System.currentTimeMillis());
                         activity.runOnUiThread(() -> {
                             fragment.onStart();
+                            notifyWidgetUpdate(activity);
                             ToastUtil.showToast(activity, "同步成功");
                         });
                     }

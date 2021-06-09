@@ -2,8 +2,10 @@ package top.yvyan.guettable;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Process;
 import android.view.MenuItem;
@@ -29,17 +31,20 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import top.yvyan.guettable.activity.WebViewActivity;
+import top.yvyan.guettable.baseFun.Notification;
+import top.yvyan.guettable.baseFun.UpdateApp;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.PersonFragment;
-import top.yvyan.guettable.baseFun.Notification;
-import top.yvyan.guettable.baseFun.UpdateApp;
 import top.yvyan.guettable.util.BackgroundUtil;
+
+import static top.yvyan.guettable.widget.WidgetUtil.notifyWidgetUpdate;
 
 public class MainActivity extends AppCompatActivity {
     //小米推送KEY
@@ -130,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
         Notification.getNotification(this);
         //清理webView缓存
         WebViewActivity.cleanCash(this);
+        initReceiver();
+        notifyWidgetUpdate(getApplicationContext());
     }
 
     @Override
@@ -207,33 +214,72 @@ public class MainActivity extends AppCompatActivity {
             recreate();
         }
     }
+
+    /**
+     * 用于监听时间变化，在过12点后刷新微件
+     */
+    BroadcastReceiver dateChangeReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent == null) {
+                return;
+            }
+            String action = intent.getAction();
+            if (action == null || action.isEmpty()) {
+                return;
+            }
+            if (action.equals(Intent.ACTION_TIME_TICK)) {
+                Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+                if (hour == 0 && minute == 0) {
+                    notifyWidgetUpdate(getApplicationContext());
+                }
+            } else if (action.equals(Intent.ACTION_TIME_CHANGED)) {
+                notifyWidgetUpdate(getApplicationContext());
+            }
+        }
+    };
+
+    /**
+     * 注册网络监听的广播
+     */
+    private void initReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_TIME_TICK);
+        filter.addAction(Intent.ACTION_TIME_CHANGED);
+        registerReceiver(dateChangeReceiver, filter);
+    }
+
+    /**
+     * 底部栏Adaptor
+     */
+    @SuppressWarnings("deprecation")
+    private static class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> list;
+
+        public void setList(List<Fragment> list) {
+            this.list = list;
+            notifyDataSetChanged();
+        }
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @NotNull
+        @Override
+        public Fragment getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return list != null ? list.size() : 0;
+        }
+    }
+
 }
 
-/**
- * 底部栏Adaptor
- */
-@SuppressWarnings("deprecation")
-class ViewPagerAdapter extends FragmentPagerAdapter {
-
-    private List<Fragment> list;
-
-    public void setList(List<Fragment> list) {
-        this.list = list;
-        notifyDataSetChanged();
-    }
-
-    public ViewPagerAdapter(FragmentManager fm) {
-        super(fm);
-    }
-
-    @NotNull
-    @Override
-    public Fragment getItem(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public int getCount() {
-        return list != null ? list.size() : 0;
-    }
-}

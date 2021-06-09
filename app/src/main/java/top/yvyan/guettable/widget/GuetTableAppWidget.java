@@ -15,6 +15,7 @@ import com.xuexiang.xui.widget.toast.XToast;
 import java.util.Objects;
 
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.activity.LaunchActivity;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.util.TimeUtil;
 
@@ -135,6 +136,14 @@ public class GuetTableAppWidget extends AppWidgetProvider {
             intent.setComponent(new ComponentName(context, GuetTableAppWidget.class));
             PendingIntent pending = PendingIntent.getBroadcast(context, 0, intent, 0);
             rv.setOnClickPendingIntent(R.id.widget_btn_refresh, pending);
+            Intent activityIntent = new Intent(context, LaunchActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    context, 0, activityIntent, 0);
+            PendingIntent pendingIntentTemplate = PendingIntent.getBroadcast(
+                    context, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            rv.setOnClickPendingIntent(R.id.rl_empty, pendingIntent);
+            rv.setOnClickPendingIntent(R.id.rl_widget, pendingIntent);
+            rv.setPendingIntentTemplate(R.id.widget_lv_class, pendingIntentTemplate);
 
             //  设置日期
             String day = TimeUtil.whichDay(TimeUtil.getDay() + 1);
@@ -145,7 +154,7 @@ public class GuetTableAppWidget extends AppWidgetProvider {
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             serviceIntent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             rv.setRemoteAdapter(R.id.widget_lv_class, serviceIntent);
-            rv.setEmptyView(R.id.widget_lv_class, R.layout.empty_view_widget_lv);
+            rv.setEmptyView(R.id.widget_lv_class, R.id.rl_empty);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_lv_class);
             appWidgetManager.updateAppWidget(appWidgetId, rv);
         } catch (Exception e) {

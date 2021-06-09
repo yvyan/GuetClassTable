@@ -53,5 +53,17 @@
         android:divider="@color/app_white2"
         android:dividerHeight="0.5dp" />
 
+    <TextView
+        android:id="@+id/rl_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:text="@string/widget_tip_empty"
+        android:textSize="18sp"
+        android:textColor="@color/xui_config_color_white"
+        android:textStyle="bold" />
+
 
 </RelativeLayout>
