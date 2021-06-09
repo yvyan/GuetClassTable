@@ -40,6 +40,8 @@
             <intent-filter>
                 <action android:name="widget.refresh.action.CLICK" />
                 <action android:name="widget.refresh.action.USER" />
+                <action android:name="widget.refresh.action.ALPHA" />
+                <action android:name="widget.refresh.action.COLOR" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
