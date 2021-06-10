@@ -1,6 +1,7 @@
 package top.yvyan.guettable.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -11,6 +12,7 @@ import com.zhuangfei.timetable.model.ScheduleSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
@@ -73,6 +75,8 @@ public class WidgetServiceFactory implements RemoteViewsService.RemoteViewsFacto
         Schedule schedule = dataList.get(position);
         final RemoteViews rv = new RemoteViews(context.getPackageName(),
                 R.layout.course_widget_cardview);
+        Intent intent = new Intent(context, MainActivity.class);
+        rv.setOnClickFillInIntent(R.id.ll_widget_course, intent);
         if ((int) schedule.getExtras().get(ExamBean.TYPE) == 2) {
             ExamBean examBean = new ExamBean();
             examBean.setFromSchedule(schedule);

@@ -54,11 +54,11 @@
         android:dividerHeight="0.5dp" />
 
     <TextView
+        android:layout_below="@id/rl_title"
         android:id="@+id/rl_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:text="@string/widget_tip_empty"
         android:textSize="18sp"
