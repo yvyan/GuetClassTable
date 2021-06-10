@@ -14,8 +14,8 @@ import com.xuexiang.xui.widget.toast.XToast;
 
 import java.util.Objects;
 
+import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.activity.LaunchActivity;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.util.TimeUtil;
 
@@ -136,11 +136,14 @@ public class GuetTableAppWidget extends AppWidgetProvider {
             intent.setComponent(new ComponentName(context, GuetTableAppWidget.class));
             PendingIntent pending = PendingIntent.getBroadcast(context, 0, intent, 0);
             rv.setOnClickPendingIntent(R.id.widget_btn_refresh, pending);
-            Intent activityIntent = new Intent(context, LaunchActivity.class);
+
+            // 各组件的点击事件
+            Intent activityIntent = new Intent(context, MainActivity.class);
+            activityIntent.setPackage(context.getPackageName());
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     context, 0, activityIntent, 0);
-            PendingIntent pendingIntentTemplate = PendingIntent.getBroadcast(
-                    context, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntentTemplate = PendingIntent.getActivity(
+                    context, 0, activityIntent, 0);
             rv.setOnClickPendingIntent(R.id.rl_empty, pendingIntent);
             rv.setOnClickPendingIntent(R.id.rl_widget, pendingIntent);
             rv.setPendingIntentTemplate(R.id.widget_lv_class, pendingIntentTemplate);
