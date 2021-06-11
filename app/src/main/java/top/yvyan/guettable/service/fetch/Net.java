@@ -922,7 +922,7 @@ public class Net {
      */
     public static HttpConnectionAndCode getSelectedCourse(Context context, String cookie, String term, boolean isVPN) {
         Resources resources = context.getResources();
-        String[] param = {"term=".concat(term)};
+        String[] param = {"comm=1%401", "term=".concat(term)};
         return Get.get(
                 UrlReplaceUtil.getUrlByVPN(isVPN, resources.getString(R.string.lan_get_selected_course)),
                 param,
@@ -952,6 +952,33 @@ public class Net {
         Resources resources = context.getResources();
         return Get.get(
                 UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(false, resources.getString(R.string.lan_get_grades_url))),
+                null,
+                resources.getString(R.string.user_agent),
+                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                cookie,
+                "]}",
+                null,
+                resources.getString(R.string.lan_get_grades_success_contain_response_text),
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 获取所有学期
+     *
+     * @param context context
+     * @param cookie  cookie
+     * @param isVPN   isVPN
+     * @return 所有学期信息
+     */
+    public static HttpConnectionAndCode getAllTerms(Context context, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(false, resources.getString(R.string.lan_get_terms_url))),
                 null,
                 resources.getString(R.string.user_agent),
                 UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),

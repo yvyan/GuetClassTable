@@ -49,10 +49,14 @@ import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.bean.SelectedCourseBean;
+import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.util.RegularUtil;
 
 public class StaticService {
+
+
+    private static final String TAG = "StaticService";
 
     /**
      * 获取SSO登录TGT令牌
@@ -1019,4 +1023,26 @@ public class StaticService {
         }
         return list;
     }
+
+    /**
+     * 获取所有学期
+     *
+     * @param context context
+     * @param cookie  cookie
+     * @return 学期集合
+     */
+    public static List<TermBean> getTerms(Context context, String cookie) {
+        try {
+            HttpConnectionAndCode httpConnectionAndCode = Net.getAllTerms(context, cookie, TokenData.isVPN);
+            String comment = httpConnectionAndCode.comment;
+            BaseResponse<List<TermBean>> baseResponse = new Gson().fromJson(comment, new TypeToken<BaseResponse<List<TermBean>>>() {
+            }.getType());
+            return new ArrayList<>(baseResponse.getData());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }
