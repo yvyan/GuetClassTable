@@ -43,30 +43,29 @@ import top.yvyan.guettable.util.ToastUtil;
  */
 public class UpdateApp {
 
-    public static void init(Context context) {
+    public static void init(Context context, boolean autoCheckUpgrade) {
         Beta.upgradeDialogLayoutId = R.layout.update_dialog_new;
         Beta.showInterruptedStrategy = true;
         Beta.autoDownloadOnWifi = false;
         Beta.canShowApkInfo = false;
         Beta.enableHotfix = false;
-        Beta.autoCheckUpgrade = true;
+        Beta.autoCheckUpgrade = autoCheckUpgrade;
         Beta.initDelay = 200;
         Beta.upgradeCheckPeriod = 5 * 1000;
-        Bugly.init(context, "e18ab2b608", true);
+        Bugly.init(context, "e18ab2b608", false);
     }
 
     public static void check(Activity activity, int type) {
         String updateType = UMRemoteConfig.getInstance().getConfigValue("updateType");
-        int n = 0;
+        int n = 0; //远程下发更新方式
         try {
             n = Integer.parseInt(updateType);
         } catch (Exception e) {
             UMCrash.generateCustomLog(e, "checkUpdateType");
         }
-        AppUtil.Log(n + "");
-        if (n == 0) {
+        if (n == 0) { //bugly更新
             Beta.checkAppUpgrade(type == 2, false);
-        } else {
+        } else { //服务器更新
             try {
                 if (type == 2) {
                     ToastUtil.showToast(activity, "正在检查更新……");

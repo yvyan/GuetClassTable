@@ -4,7 +4,7 @@
     android:initialLayout="@layout/guet_table_app_widget"
     android:minWidth="250dp"
     android:minHeight="110dp"
-    android:previewImage="@drawable/ic_widget"
+    android:previewImage="@drawable/ic_schedule"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen" />

@@ -37,6 +37,7 @@ import java.util.List;
 import top.yvyan.guettable.activity.WebViewActivity;
 import top.yvyan.guettable.baseFun.Notification;
 import top.yvyan.guettable.baseFun.UpdateApp;
+import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
@@ -110,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
         list.add(PersonFragment.newInstance());
         viewPagerAdapter.setList(list);
 
+        new Thread(() -> {
+
+        }).start();
+
         if (shouldInit()) {
             MiPushClient.registerPush(this, APP_ID, APP_KEY);
         }
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             UMCrash.generateCustomLog(e, "checkUpdateType");
         }
         if (n == 0) {
-            UpdateApp.init(getApplicationContext());
+            UpdateApp.init(getApplicationContext(), SettingData.newInstance(getApplicationContext()).isAppCheckUpdate());
         } else {
             UpdateApp.check(this, 1);
         }
