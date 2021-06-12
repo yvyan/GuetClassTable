@@ -14,6 +14,7 @@ import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.bean.SelectedCourseBean;
+import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.util.SerializeUtil;
 
 public class MoreDate {
@@ -26,6 +27,7 @@ public class MoreDate {
     private static final String PLANNED_COURSE_STRING = "plannedCourseString";
     private static final String GRADES_STRING = "gradesString";
     private static final String SELECTED_COURSE = "selectedCourses";
+    private static final String ALL_TERM = "allTerms";
 
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
@@ -36,6 +38,7 @@ public class MoreDate {
     private List<ExperimentScoreBean> experimentScoreBeans;
     private List<PlannedCourseBean> plannedCourseBeans;
     private List<SelectedCourseBean> selectedCoursesBeans;
+    private List<TermBean> termBeans;
     private float[] grades;
 
     private MoreDate(Context context) {
@@ -52,6 +55,7 @@ public class MoreDate {
         ExperimentScoreBean[] experimentScoreBeans1 = null;
         PlannedCourseBean[] plannedCourseBeans1 = null;
         SelectedCourseBean[] selectedCourseBeans1 = null;
+        TermBean[] termBeans1 = null;
 
 
         String resitString = sharedPreferences.getString(RESIT_STRING, null);
@@ -61,6 +65,7 @@ public class MoreDate {
         String plannedCourseString = sharedPreferences.getString(PLANNED_COURSE_STRING, null);
         String gradesString = sharedPreferences.getString(GRADES_STRING, null);
         String selectedCourseString = sharedPreferences.getString(SELECTED_COURSE, null);
+        String termString = sharedPreferences.getString(ALL_TERM, null);
 
         if (resitString != null) {
             try {
@@ -127,6 +132,16 @@ public class MoreDate {
             }
             if (selectedCourseBeans1 != null) {
                 selectedCoursesBeans = Arrays.asList(selectedCourseBeans1);
+            }
+        }
+        if (termString != null) {
+            try {
+                termBeans1 = (TermBean[]) SerializeUtil.serializeToObject(termString);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (termBeans1 != null) {
+                termBeans = Arrays.asList(termBeans1);
             }
         }
     }
@@ -277,6 +292,29 @@ public class MoreDate {
         }
         if (selectCourseString != null) {
             editor.putString(SELECTED_COURSE, selectCourseString);
+            editor.apply();
+        }
+    }
+
+    public List<TermBean> getTermBeans() {
+        if (termBeans == null) {
+            termBeans = new ArrayList<>();
+        }
+        return termBeans;
+    }
+
+    public void setTermBeans(List<TermBean> termBeans) {
+        this.termBeans = termBeans;
+        String termString = null;
+        TermBean[] termBeans1 = new TermBean[termBeans.size()];
+        termBeans.toArray(termBeans1);
+        try {
+            termString = SerializeUtil.serialize(termBeans1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (termString != null) {
+            editor.putString(ALL_TERM, termString);
             editor.apply();
         }
     }
