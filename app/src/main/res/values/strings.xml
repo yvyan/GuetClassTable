@@ -12,18 +12,14 @@
 
     <string name="SSO_context_type">application/x-www-form-urlencoded;charset=UTF-8</string>
     <string name="SSO_referer">https://cas.guet.edu.cn/</string>
-    <string name="SSO_success_contain_TGT">TGT-</string>
     <string name="SSO_success_contain_ST">ST-</string>
     <string name="service_bkjw">service=http%3A%2F%2F172.16.13.22</string>
-    <string name="service_vpn">service=https%3a%2f%2fv.guet.edu.cn%2flogin%3fcas_login%3dtrue</string>
     <string name="SSO_bkjw">http://172.16.13.22/login/login</string>
-    <string name="SSO_vpn">https://v.guet.edu.cn/https/77726476706e69737468656265737421e6b94689222426557a1dc7af96/login</string>
 
     <!-- VPN直接登录 -->
     <string name="VPN_login">https://v.guet.edu.cn/do-login</string>
     <string name="VPN_referer">https://v.guet.edu.cn</string>
     <string name="VPN_context_type">application/x-www-form-urlencoded; charset=UTF-8</string>
-    <string name="VPN_bkjw_referer">https://v.guet.edu.cn/http/77726476706e69737468656265737421a1a013d2766626012d46dbfe/</string>
 
     <!-- 新版教务系统 -->
     <string name="lan_get_checkcode_url">/login/GetValidateCode?id=0.7060164569272753</string>
@@ -40,7 +36,6 @@
     <string name="lan_get_grades_success_contain_response_text">\"xfj\":</string>
 
     <string name="lan_get_terms_url">/Comm/GetTerm</string>
-    <string name="lan_get_terms_success_contain_response_text">\"success\":true</string>
 
     <string name="lan_get_table_url">/student/getstutable</string>
     <string name="lan_get_table_success_contain_response_text">\"success\":true</string>
@@ -54,7 +49,6 @@
 
     <!-- 评价教师 -->
     <string name="lan_get_this_term">/student/temsterm</string>
-    <string name="lan_get_teacher_referer">/Login/MainDesktop</string>
     <string name="lan_get_teacher_list">/student/getpjcno</string>
     <string name="lan_get_avg_thacher_data">/student/jxpgdata</string>
     <string name="lan_save_avg_teacher_data">/student/SaveJxpg</string>
@@ -67,7 +61,6 @@
     <string name="lan_save_avg_textbook_data">http://172.16.13.22/student/savetextpj</string>
     <string name="lan_commit_avg_textbook_data">http://172.16.13.22/student/Savepx/1</string>
 
-
     <!--毕业课程-->
     <string name="lan_update_effective_credits">/student/genyxxf</string>
     <string name="lan_get_effective_credits">/student/Getyxxf</string>
@@ -75,9 +68,8 @@
 
     <string name="smart_campus">http://icampus.guet.edu.cn/</string>
     <string name="url_vpn">https://v.guet.edu.cn/</string>
-    <string name="url_bkjw">/</string>
     <string name="url_lijiang">http://www.gxljxt.cn/</string>
-    <string name="downloadApp_url">http://app.xiaomi.com/detail/1288502</string>
+    <string name="downloadApp_url">https://www.coolapk.com/apk/279989</string>
     <string name="url_change_vpn_pwd">https://172.18.8.21:4102/auth?service=https%3A%2F%2F172.18.8.21%3A4102%2F%23%2Fpassword%2FpasswordModify</string>
 
     <string name="text_school_song">桂电校歌</string>
@@ -144,7 +136,6 @@
     <string name="login_net_bkjw">请连接校园网后重试</string>
     <string name="login_fail_ck">验证码错误，登录失败</string>
     <string name="login_fail_pwd">密码错误，登录失败</string>
-    <string name="login_fail_vpn">VPN密码错误，登录失败</string>
     <string name="login_fail_bkjw">教务密码错误，登录失败</string>
     <string name="login_fail_getInfo">获取个人信息失败，请稍后重试</string>
     <string name="log_change_pwd">即将为您打开修改智慧校园/VPN密码的网页，请连接校园网。\n\n 登录成功后，输入原密码和新密码(包含大小写和数字)确认即可。\n\n Tip:本次只会修改智慧校园和VPN登录密码，不会修改教务系统的密码，密码修改后可能需要一段儿时间才会生效。</string>
@@ -154,8 +145,6 @@
 
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36</string>
     <string name="cookie_delimiter">"; "</string>
-    <string name="setting">设置</string>
-    <string name="todo">TODO</string>
     <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²  |  沉山浮阳 | 迷 </string>
 
     <!-- 创新积分-->
@@ -184,7 +173,6 @@
     <string name="moreFun_selected_course"> 已选课程 </string>
     <string name="moreFun_plan_courses"> 计划课程 </string>
     <string name="moreFun_cet"> CET成绩 </string>
-    <string name="moreFun_graduation_requirement"> 毕业要求 </string>
     <string name="moreFun_url_bkjw"> 教务系统 </string>
     <string name="moreFun_url_vpn"> 校内VPN </string>
     <string name="moreFun_url_campus"> 智慧校园 </string>
@@ -223,8 +211,6 @@
     <string name="first_login">第一次登录智慧校园</string>
     <string name="change_password">&#160;&#160;修改智慧校园/VPN登录密码&#160;&#160;</string>
 
-    <string name="appwidget_text">示例</string>
-    <string name="add_widget">APP小部件</string>
     <string name="widget_tip_empty">今日暂无课程~</string>
     <string name="widget_week_empty">第X周</string>
 

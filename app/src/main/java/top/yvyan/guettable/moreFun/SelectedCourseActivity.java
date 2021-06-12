@@ -63,13 +63,12 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
             for (int i = 0; i < terms.size(); i++) {
                 if (terms.get(i).equals(curTerm)) {
                     spinner.setSelectedIndex(i);
+                    reSelectTerm();
                 }
             }
         });
 
-        findViewById(R.id.btn_query_course).setOnClickListener(v -> {
-            reSelectTerm();
-        });
+        findViewById(R.id.btn_query_course).setOnClickListener(v -> reSelectTerm());
     }
 
     @Override

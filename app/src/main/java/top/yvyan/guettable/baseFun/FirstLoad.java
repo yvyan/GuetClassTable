@@ -10,6 +10,7 @@ import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
+import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.util.AppUtil;
 
 /**
@@ -75,13 +76,18 @@ public class FirstLoad {
             editor.putString("password2", password);
             editor.apply();
         }
-
+        //修复异常数据
         ScheduleData scheduleData = ScheduleData.newInstance(context);
         for (CourseBean courseBean : scheduleData.getLibBeans()) {
             if (courseBean.getDay() > 7) {
                 courseBean.setDay(7);
             }
         }
+        //打开检查更新
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = sharedPreferences.edit();
+        editor.putBoolean(SettingActivity.SettingFragment.APP_CHECK_UPDATE, true);
+        editor.apply();
     }
 
     /**
