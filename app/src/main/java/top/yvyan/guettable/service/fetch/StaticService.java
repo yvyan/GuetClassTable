@@ -55,9 +55,6 @@ import top.yvyan.guettable.util.RegularUtil;
 
 public class StaticService {
 
-
-    private static final String TAG = "StaticService";
-
     /**
      * 获取SSO登录TGT令牌
      *
@@ -1010,18 +1007,21 @@ public class StaticService {
      * @return 操作结果
      */
     public static List<SelectedCourseBean> getSelectedCourse(Context context, String cookie, String term) {
-        HttpConnectionAndCode httpConnectionAndCode = Net.getSelectedCourse(context, cookie, term, TokenData.isVPN);
-        String comment = httpConnectionAndCode.comment;
-        List<SelectedCourseBean> list = null;
-        if (comment != null && comment.startsWith("{")) {
+        try {
+            HttpConnectionAndCode httpConnectionAndCode = Net.getSelectedCourse(context, cookie, term, TokenData.isVPN);
+            String comment = httpConnectionAndCode.comment;
+            List<SelectedCourseBean> list;
             BaseResponse<List<SelectedCourse>> result = new Gson().fromJson(comment, new TypeToken<BaseResponse<List<SelectedCourse>>>() {
             }.getType());
             list = new ArrayList<>();
             for (SelectedCourse selectedCourse : result.getData()) {
                 list.add(new SelectedCourseBean(selectedCourse));
             }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        return list;
     }
 
     /**
