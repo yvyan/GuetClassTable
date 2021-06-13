@@ -57,6 +57,12 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
         initTerm();
         spinner.setItems(terms);
         spinner.setOnItemSelectedListener(this);
+        for (int i = 0; i < terms.size(); i++) {
+            if (terms.get(i).equals(generalData.getTerm())) {
+                spinner.setSelectedIndex(i);
+                break;
+            }
+        }
 
         findViewById(R.id.btn_term_reset).setOnClickListener(v -> {
             curTerm = generalData.getTerm();
@@ -67,9 +73,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
             }
         });
 
-        findViewById(R.id.btn_query_course).setOnClickListener(v -> {
-            reSelectTerm();
-        });
+        findViewById(R.id.btn_query_course).setOnClickListener(v -> reSelectTerm());
     }
 
     @Override
@@ -141,6 +145,12 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
                     runOnUiThread(() -> {
                         if (terms.size() != spinner.getItems().size()) {
                             spinner.setItems(terms);
+                            for (int i = 0; i < terms.size(); i++) {
+                                if (terms.get(i).equals(generalData.getTerm())) {
+                                    spinner.setSelectedIndex(i);
+                                    break;
+                                }
+                            }
                         }
                     });
                 }
