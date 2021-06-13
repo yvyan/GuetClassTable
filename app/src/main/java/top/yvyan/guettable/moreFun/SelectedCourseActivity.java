@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
+import com.xuexiang.xui.widget.toast.XToast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -109,7 +110,10 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
                     adapter = new SelectedCourseAdapter(selectedCourse);
                     rv.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    XToast.success(this, "查询成功").show();
                 });
+            } else {
+                runOnUiThread(() -> XToast.error(this, "请求出错").show());
             }
         }).start();
     }
