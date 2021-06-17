@@ -86,7 +86,7 @@ public class WidgetServiceFactory implements RemoteViewsService.RemoteViewsFacto
             rv.setTextViewText(R.id.widget_tv_course_teacher, "老师:" + examBean.getTeacher());
         } else {
             rv.setTextViewText(R.id.widget_tv_course_name, schedule.getName());
-            rv.setTextViewText(R.id.widget_tv_course_number, String.valueOf((schedule.getStart() + 1) / 2));
+            rv.setTextViewText(R.id.widget_tv_course_number, String.valueOf(((schedule.getStart() + 1) / 2 == 7 ? 0 : schedule.getStart() + 1) / 2));
             if (schedule.getRoom() != null && !schedule.getRoom().isEmpty()) {
                 rv.setTextViewText(R.id.widget_tv_course_room, "地点:" + schedule.getRoom());
             }

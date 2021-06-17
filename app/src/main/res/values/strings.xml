@@ -145,7 +145,7 @@
 
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36</string>
     <string name="cookie_delimiter">"; "</string>
-    <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²  |  沉山浮阳 | 迷 </string>
+    <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²  |  沉山浮阳 | 迷 | 稚隳 </string>
 
     <!-- 创新积分-->
     <string name="lan_get_innovationScore"> http://172.16.13.22/student/getcxcy </string>
