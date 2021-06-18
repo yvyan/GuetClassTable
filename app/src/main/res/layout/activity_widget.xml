@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".widget.WidgetActivity">
+
+    <TextView
+        android:id="@+id/tv_widget_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:text="小部件颜色:"
+        android:textColor="@color/app_black"
+        android:textSize="16sp" />
+
+    <com.xuexiang.xui.widget.tabbar.VerticalTabLayout
+        android:id="@+id/tb_widget_theme"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        app:vtl_tab_margin="10dp" />
+
+    <TextView
+        android:id="@+id/tv_widget_alpha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:text="小部件透明度:"
+        android:textColor="@color/app_black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_alpha_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:textColor="@color/app_black"
+        android:textSize="14sp" />
+
+    <SeekBar
+        android:id="@+id/seekBar_alpha_widget"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:max="255"
+        android:progressTint="@color/xui_config_color_blue"
+        android:thumbTint="@color/xui_config_color_blue" />
+
+    <com.xuexiang.xui.widget.button.ButtonView
+        android:id="@+id/btn_save_widget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:text="保存设置"
+        android:textColor="@color/xui_config_color_white"
+        android:textSize="14sp"
+        app:textRadius="5dp"
+        app:textSelectedSolidColor="@color/xui_btn_green_select_color"
+        app:textSolidColor="@color/xui_btn_green_normal_color" />
+
+
+</LinearLayout>

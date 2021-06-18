@@ -41,6 +41,7 @@ import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ToastUtil;
+import top.yvyan.guettable.widget.WidgetActivity;
 
 import static top.yvyan.guettable.util.BackgroundUtil.fileName;
 
@@ -87,6 +88,11 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
 
         showOtherWeek = findViewById(R.id.switch1);
         showOtherWeek.setChecked(!singleSettingData.isHideOtherWeek());
+
+        findViewById(R.id.setting_widget).setOnClickListener(v -> {
+            Intent intent = new Intent(this, WidgetActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void initAlphaSeekBar() {
