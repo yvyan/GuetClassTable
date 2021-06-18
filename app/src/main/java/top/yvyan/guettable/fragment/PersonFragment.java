@@ -95,7 +95,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         person_term = view.findViewById(R.id.person_term);
         person_week = view.findViewById(R.id.person_week);
         TextView profileVersion = view.findViewById(R.id.tv_profile_version);
-        profileVersion.setText(AppUtil.getAppVersionName(Objects.requireNonNull(getContext())) + "(" + 1 + ")");
+        profileVersion.setText(AppUtil.getAppVersionName(Objects.requireNonNull(getContext())) + "(" + 0 + ")");
 
         //    private View info;
         View personPersonalized = view.findViewById(R.id.person_personalized);
