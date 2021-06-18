@@ -43,9 +43,13 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
-        init();
-        initView();
+        if (!AccountData.newInstance(this).getIsLogin()) {
+            ToastUtil.showToast(getApplicationContext(), "您还未登录！");
+            finish();
+        } else {
+            init();
+            initView();
+        }
     }
 
     private void init() {

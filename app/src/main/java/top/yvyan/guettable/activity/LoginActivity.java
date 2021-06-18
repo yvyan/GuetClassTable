@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -20,6 +21,8 @@ import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.AccountData;
@@ -27,6 +30,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.service.fetch.StaticService;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -76,6 +80,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         ivPwdSwitch.setOnClickListener(showPwdClickListener());
         ivPwdSwitch2.setOnClickListener(showPwdClickListener());
         progressBar = findViewById(R.id.progressBar2);
+        TextView profileVersion = findViewById(R.id.tv_profile_version);
+        profileVersion.setText(AppUtil.getAppVersionName(Objects.requireNonNull(getContext())));
         //获取账号密码
         if (accountData.getIsSave()) {
             etAccount.setText(accountData.getUsername());
