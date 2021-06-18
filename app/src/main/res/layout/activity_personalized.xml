@@ -538,8 +538,8 @@
                         android:layout_height="10dp" />
 
                     <com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner
-                        style="@style/Material.SpinnerStyle"
                         android:id="@+id/spinner_theme"
+                        style="@style/Material.SpinnerStyle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="25dp"
@@ -555,6 +555,24 @@
                         android:layout_height="10dp" />
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+                <TextView
+                    android:id="@+id/setting_widget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="小部件设置>>"
+                    android:textColor="?attr/color_text"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
