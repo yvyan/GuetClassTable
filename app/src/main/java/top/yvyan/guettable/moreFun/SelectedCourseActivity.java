@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
+import com.xuexiang.xui.widget.toast.XToast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +58,12 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
         initTerm();
         spinner.setItems(terms);
         spinner.setOnItemSelectedListener(this);
+        for (int i = 0; i < terms.size(); i++) {
+            if (terms.get(i).equals(generalData.getTerm())) {
+                spinner.setSelectedIndex(i);
+                break;
+            }
+        }
 
         findViewById(R.id.btn_term_reset).setOnClickListener(v -> {
             curTerm = generalData.getTerm();
@@ -104,7 +111,10 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
                     adapter = new SelectedCourseAdapter(selectedCourse);
                     rv.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    XToast.success(this, "查询成功").show();
                 });
+            } else {
+                runOnUiThread(() -> XToast.error(this, "请求出错").show());
             }
         }).start();
     }
@@ -140,6 +150,12 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
                     runOnUiThread(() -> {
                         if (terms.size() != spinner.getItems().size()) {
                             spinner.setItems(terms);
+                            for (int i = 0; i < terms.size(); i++) {
+                                if (terms.get(i).equals(generalData.getTerm())) {
+                                    spinner.setSelectedIndex(i);
+                                    break;
+                                }
+                            }
                         }
                     });
                 }

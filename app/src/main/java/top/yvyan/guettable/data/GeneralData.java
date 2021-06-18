@@ -22,6 +22,8 @@ public class GeneralData {
     private static final String LAST_UPDATE_TIME = "lastUpdateTime";
     private static final String APP_LAST_UPDATE_TIME = "appLastUpdateTime";
     private static final String APPLY_PRIVACY = "applyPrivacy";
+    private static final String WIDGET_THEME = "widget_theme";
+    private static final String WIDGET_ALPHA = "widget_alpha";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -38,6 +40,9 @@ public class GeneralData {
     private long appLastUpdateTime;
     //隐私协议
     private boolean applyPrivacy;
+
+    private String widget_theme;
+    private int widget_alpha;
 
     @SuppressLint("CommitPrefEdits")
     private GeneralData(Context context) {
@@ -58,6 +63,8 @@ public class GeneralData {
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
         appLastUpdateTime = sharedPreferences.getLong(APP_LAST_UPDATE_TIME, -1);
         applyPrivacy = sharedPreferences.getBoolean(APPLY_PRIVACY, false);
+        widget_theme = sharedPreferences.getString(WIDGET_THEME, "black");
+        widget_alpha = sharedPreferences.getInt(WIDGET_ALPHA, 255);
     }
 
     public static GeneralData newInstance(Context context) {
@@ -169,6 +176,28 @@ public class GeneralData {
     public void setApplyPrivacy(boolean applyPrivacy) {
         this.applyPrivacy = applyPrivacy;
         editor.putBoolean(APPLY_PRIVACY, applyPrivacy);
+        editor.apply();
+    }
+
+    public String getWidget_theme() {
+        return widget_theme;
+    }
+
+    public void setWidget_theme(String widget_theme) {
+        this.widget_theme = widget_theme;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(WIDGET_THEME, widget_theme);
+        editor.apply();
+    }
+
+    public int getWidget_alpha() {
+        return widget_alpha;
+    }
+
+    public void setWidget_alpha(int widget_alpha) {
+        this.widget_alpha = widget_alpha;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(WIDGET_ALPHA, widget_alpha);
         editor.apply();
     }
 }
