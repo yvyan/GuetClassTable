@@ -17,6 +17,7 @@ import java.util.Objects;
 import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.TimeUtil;
 
 // 桌面部件
@@ -107,12 +108,14 @@ public class GuetTableAppWidget extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
+        AppUtil.reportFunc(context, "添加日课表微件");
         initData(context);
     }
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
+        AppUtil.reportFunc(context, "移除日课表微件");
     }
 
     @Override

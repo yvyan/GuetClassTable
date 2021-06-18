@@ -34,6 +34,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
     private XSeekBar seekBar;
 
     private GeneralData generalData;
+    private ScheduleData scheduleData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         back.setOnClickListener(this);
         input.setOnClickListener(this);
         generalData = GeneralData.newInstance(this);
+        scheduleData = ScheduleData.newInstance(this);
     }
 
     @SuppressLint("SetTextI18n")
@@ -166,6 +168,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         int week = seekBar.getSelectedNumber() / 10;
         generalData.setWeek(week);
         generalData.setLastUpdateTime(-1);
+        scheduleData.setUpdate(true);
         ToastUtil.showToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待，不要滑动页面");
         Intent intent = getIntent();
         setResult(OK, intent);
