@@ -29,11 +29,33 @@ public class GuetTableAppWidget extends AppWidgetProvider {
     public static final String TAG = "GuetTableAppWidget";
     private GeneralData generalData;
 
-    //  仅更新部件界面信息
+    //  更新全部界面信息
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                  int appWidgetId) {
         initData(context);
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.guet_table_app_widget);
+        String color = generalData.getWidget_theme();
+        switch (color) {
+            case "black":
+                rv.setImageViewResource(R.id.img_cover, R.drawable.shape_img_black);
+                break;
+            case "red":
+                rv.setImageViewResource(R.id.img_cover, R.drawable.shape_img_red);
+                break;
+            case "pink":
+                rv.setImageViewResource(R.id.img_cover, R.drawable.shape_img_pink);
+                break;
+            case "blue":
+                rv.setImageViewResource(R.id.img_cover, R.drawable.shape_img_blue);
+                break;
+            case "orange":
+                rv.setImageViewResource(R.id.img_cover, R.drawable.shape_img_orange);
+                break;
+            case "green":
+                rv.setImageViewResource(R.id.img_cover, R.drawable.shape_img_green);
+                break;
+        }
+        rv.setInt(R.id.img_cover, "setImageAlpha", generalData.getWidget_alpha());
         updateWidgetInfo(context, appWidgetManager, appWidgetId, rv);
     }
 
@@ -71,6 +93,7 @@ public class GuetTableAppWidget extends AppWidgetProvider {
                 rv.setImageViewResource(R.id.img_cover, R.drawable.shape_img_green);
                 break;
         }
+        rv.setInt(R.id.img_cover, "setImageAlpha", generalData.getWidget_alpha());
         updateWidgetInfo(context, appWidgetManager, appWidgetId, rv);
     }
 
