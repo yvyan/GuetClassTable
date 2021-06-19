@@ -166,6 +166,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             dayClassAdapter = new DayClassAdapter(getContext(), todayList, tomorrowList, order[0]);
         }
         dayClassAdapter.notifyDataSetChanged();
+        if (recyclerView == null) {
+            return;
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(dayClassAdapter);
 
@@ -323,15 +326,16 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         @Override
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == 1) {
-                int order = weak.get().getCurrentOrder();
-                if (order > 0) {
-                    if (order != currentOrder) {
-                        weak.get().updateView(order);
-                        currentOrder = order;
+                if (weak.get() != null) {
+                    int order = weak.get().getCurrentOrder();
+                    if (order > 0) {
+                        if (order != currentOrder) {
+                            weak.get().updateView(order);
+                            currentOrder = order;
+                        }
+                    } else {
+                        weak.get().updateView();
                     }
-
-                } else {
-                    weak.get().updateView();
                 }
                 sendEmptyMessageDelayed(1, 60000);
             }
