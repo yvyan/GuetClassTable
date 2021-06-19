@@ -8,9 +8,7 @@ import android.preference.PreferenceManager;
 import top.yvyan.guettable.activity.SettingActivity;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.AccountData;
-import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
-import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.util.AppUtil;
 
 /**
@@ -45,16 +43,16 @@ public class FirstLoad {
 
     /**
      * 按版本号修改数据
+     *
      * @param i 源版本号
      */
     private void updateDate(int i) {
         switch (i) {
+            case 36:
+                update_36();
             case 34:
                 //调整密码存储
-                update_34_35();
-                break;
-            case 24:
-                update_24_25();
+                update_34();
                 break;
             default:
                 break;
@@ -62,16 +60,32 @@ public class FirstLoad {
     }
 
     /**
+     * 36->37需要进行的操作
+     */
+    private void update_36() {
+        //修复密码丢失导致的登录错误
+        AccountData accountData = AccountData.newInstance(context);
+        if (accountData.getIsLogin()) {
+            if (accountData.getVPNPwd() == null || accountData.getVPNPwd().isEmpty()) {
+                accountData.logoff();
+            }
+            if (accountData.getBkjwPwd() == null || accountData.getBkjwPwd().isEmpty()) {
+                accountData.logoff();
+            }
+        }
+    }
+
+    /**
      * 34->35需要进行的操作
      */
-    private void update_34_35() {
+    private void update_34() {
         //调整密码存储方式，修复了更换登录方式需要重新输入密码的问题
-        SharedPreferences sharedPreferences = context.getSharedPreferences("tokenData", Context.MODE_PRIVATE);
-        int loginType = sharedPreferences.getInt("loginType", 1);
-        sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        String password = sharedPreferences.getString("password", "");
+        SharedPreferences mSharedPreferences = context.getSharedPreferences("tokenData", Context.MODE_PRIVATE);
+        int loginType = mSharedPreferences.getInt("loginType", 1);
+        mSharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        String password = mSharedPreferences.getString("password", "");
         if (loginType == 0) { //CAS
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putString("password", "");
             editor.putString("password2", password);
             editor.apply();
@@ -84,24 +98,9 @@ public class FirstLoad {
             }
         }
         //打开检查更新
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        editor = sharedPreferences.edit();
-        editor.putBoolean(SettingActivity.SettingFragment.APP_CHECK_UPDATE, true);
-        editor.apply();
-    }
-
-    /**
-     * 24->25需要进行的操作
-     */
-    private void update_24_25() {
-        // 修复之前版本的无年级数据导致的闪退问题
-        if (GeneralData.newInstance(context).getGrade() == null) {
-            AccountData.newInstance(context).logoff();
-        }
-        // 修复课表默认同步频率错误的问题
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(SettingActivity.SettingFragment.REFRESH_DATA_FREQUENCY, "1");
-        editor.apply();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putBoolean(SettingActivity.SettingFragment.APP_CHECK_UPDATE, true);
+        mEditor.apply();
     }
 }
