@@ -193,6 +193,11 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil
     }
 
     public int getDay() {
+        if (day > 7) {
+            day = 7;
+        } else if (day < 1) {
+            day = 1;
+        }
         return day;
     }
 
@@ -236,6 +241,11 @@ public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil
 
     @Override
     public long getOrder() {
+        if (day > 7) {
+            day = 7;
+        } else if (day < 1) {
+            day = 1;
+        }
         return week * 7 + day;
     }
 
