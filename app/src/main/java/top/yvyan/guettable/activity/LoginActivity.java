@@ -21,12 +21,15 @@ import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.service.fetch.StaticService;
@@ -406,20 +409,24 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      * 获取个人信息
      */
     private void getInfo() {
+        TokenData tokenData = TokenData.newInstance(this);
         runOnUiThread(() -> button.setText("获取个人信息"));
-        TokenData.newInstance(this).refresh();
+        tokenData.refresh();
         StudentInfo studentInfo = null;
         try {
-            studentInfo = StaticService.getStudentInfo(this, TokenData.newInstance(this).getCookie());
+            studentInfo = StaticService.getStudentInfo(this, tokenData.getCookie());
         } catch (Exception e) {
             UMCrash.generateCustomLog(e, "getInfo");
         }
+        List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getCookie());
+
         GeneralData generalData = GeneralData.newInstance(this);
-        if (studentInfo != null) {
+        if (studentInfo != null && allTerm != null) {
             generalData.setNumber(studentInfo.getStid());
             generalData.setName(studentInfo.getName());
             generalData.setTerm(studentInfo.getTerm());
             generalData.setGrade(studentInfo.getGrade());
+            MoreDate.newInstance(this).setTermBeans(allTerm);
             Intent intent = new Intent(this, SetTermActivity.class);
             startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
             runOnUiThread(this::setEnClick);
