@@ -36,6 +36,7 @@ public class FirstLoad {
             for (int i = versionCode; i < nowVersionCode; i++) {
                 updateDate(i);
             }
+            openUpdate();
             editor.putInt(VERSION_CODE, nowVersionCode);
             editor.apply();
         }
@@ -97,9 +98,11 @@ public class FirstLoad {
                 courseBean.setDay(7);
             }
         }
+    }
+
+    private void openUpdate() {
         //打开检查更新
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        SharedPreferences.Editor mEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         mEditor.putBoolean(SettingActivity.SettingFragment.APP_CHECK_UPDATE, true);
         mEditor.apply();
     }
