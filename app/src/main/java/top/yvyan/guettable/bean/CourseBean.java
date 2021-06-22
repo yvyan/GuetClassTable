@@ -227,6 +227,11 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     public int getDay() {
+        if (day > 7) {
+            day = 7;
+        } else if (day < 1) {
+            day = 1;
+        }
         return day;
     }
 
