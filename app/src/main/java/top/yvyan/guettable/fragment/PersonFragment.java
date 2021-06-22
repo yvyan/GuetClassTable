@@ -24,10 +24,10 @@ import top.yvyan.guettable.activity.LoginActivity;
 import top.yvyan.guettable.activity.PersonalizedActivity;
 import top.yvyan.guettable.activity.SetTermActivity;
 import top.yvyan.guettable.activity.SettingActivity;
+import top.yvyan.guettable.baseFun.UpdateApp;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.baseFun.UpdateApp;
 import top.yvyan.guettable.service.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
@@ -173,15 +173,19 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.person_userInfo_card:
             case R.id.person_login:
-                if (accountData.getIsLogin()) {
-                    AppUtil.reportFunc(getContext(), "设置学期");
-                    intent = new Intent(getContext(), SetTermActivity.class);
-                    startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
-                } else {
-                    AppUtil.reportFunc(getContext(), "登录");
-                    intent = new Intent(getContext(), LoginActivity.class);
-                    startActivityForResult(intent, LoginActivity.REQUEST_CODE);
-                }
+                AppUtil.reportFunc(getContext(), "登录");
+                intent = new Intent(getContext(), LoginActivity.class);
+                startActivityForResult(intent, LoginActivity.REQUEST_CODE);
+
+//                if (accountData.getIsLogin()) {
+//                    AppUtil.reportFunc(getContext(), "设置学期");
+//                    intent = new Intent(getContext(), SetTermActivity.class);
+//                    startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
+//                } else {
+//                    AppUtil.reportFunc(getContext(), "登录");
+//                    intent = new Intent(getContext(), LoginActivity.class);
+//                    startActivityForResult(intent, LoginActivity.REQUEST_CODE);
+//                }
                 break;
             case R.id.btn_quit:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.btn_quit));

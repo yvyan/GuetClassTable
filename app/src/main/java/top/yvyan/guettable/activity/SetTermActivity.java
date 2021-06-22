@@ -15,8 +15,10 @@ import com.xuexiang.xui.widget.button.ButtonView;
 import com.xuexiang.xui.widget.picker.XSeekBar;
 
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
@@ -140,11 +142,20 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                     }
                     generalData.setTerm(year + "" + num);
                 } else {
-                    if (!(year + "-" + (year + 1) + "_" + num).equals(generalData.getTerm())) {
-                        scheduleData.deleteInputCourse();
-                        changeTerm = true;
+                    String term_1 = year + "-" + (year + 1) + "_" + num;
+                    for (TermBean termBean : MoreDate.newInstance(this).getTermBeans()) {
+                        String termString = termBean.getTerm();
+                        if (termString != null
+                                && termString.length() >= 11
+                                && termString.substring(0, 4).equals(String.valueOf(year))
+                                && termString.substring(10, 11).equals(String.valueOf(num))) {
+                            term_1 = termString;
+                            break;
+                        }
                     }
-                    generalData.setTerm(year + "-" + (year + 1) + "_" + num);
+                    generalData.setTerm(term_1);
+                    scheduleData.deleteInputCourse();
+                    changeTerm = true;
                 }
                 if (changeTerm && scheduleData.getUserCourseBeans().size() != 0) {
                     DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
