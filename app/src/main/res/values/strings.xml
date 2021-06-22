@@ -214,4 +214,6 @@
     <string name="widget_tip_empty">今日暂无课程~</string>
     <string name="widget_week_empty">第X周</string>
 
+    <string name="patch_version">1</string><!-- 发布新版本请归零 -->
+
 </resources>
