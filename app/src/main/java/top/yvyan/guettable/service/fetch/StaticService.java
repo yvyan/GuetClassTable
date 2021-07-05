@@ -1,6 +1,7 @@
 package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
@@ -851,14 +852,14 @@ public class StaticService {
         List<ExamScoreBean> examScoreBeansGet = getExamScore(context, cookie);
         List<PlannedCourse> plannedCoursesGet = getPlannedCourses(context, cookie);
         float[] grades = new float[]{0, 0, 0, 0, 0, 0, 0};
-        List<String> terms = new ArrayList<>();
-        terms.add("");
+        List<Integer> years = new ArrayList<>();
+        years.add(0);
         for (int i = 0; i < 6; i++) {
-            terms.add((year + i) + "-" + (year + i + 1));
+            years.add(year + i);
         }
         if (examScoreBeansGet != null && plannedCoursesGet != null) {
             int y = 0;
-            for (String term : terms) {
+            for (int year2 : years) {
                 List<ExamScoreBean> examScoreBeans = new ArrayList<>();
                 Collections.addAll(examScoreBeans, new ExamScoreBean[examScoreBeansGet.size()]);
                 Collections.copy(examScoreBeans, examScoreBeansGet);
@@ -869,8 +870,8 @@ public class StaticService {
                 //筛选年度
                 List<ExamScoreBean> examScoreBeansSelect1 = new ArrayList<>();
                 for (ExamScoreBean examScoreBean : examScoreBeans) {
-                    if (term != null) {
-                        if (examScoreBean.getTerm().contains(term)) {
+                    if (year2 != 0) {
+                        if (examScoreBean.getTerm().contains(String.valueOf(year2)) && examScoreBean.getTerm().contains(String.valueOf(year2 + 1))) {
                             examScoreBeansSelect1.add(examScoreBean);
                         }
                     } else {
@@ -899,7 +900,10 @@ public class StaticService {
                 float total = 0;
                 List<String> cnos1 = new ArrayList<>();
                 for (PlannedCourse plannedCourse : plannedCourses) {
-                    cnos1.add(plannedCourse.getCourseid());
+                    String id = plannedCourse.getCourseid();
+                    if (id.startsWith("B")) {
+                        cnos1.add(id);
+                    }
                 }
                 for (ExamScoreBean examScoreBean2 : examScoreBeansSelect2) {
                     if (!examScoreBean2.getScore().equals("旷考") && !examScoreBean2.getScore().equals("取消") && (cnos1.contains(examScoreBean2.getCno()) || examScoreBean2.getType().equals("XZ"))) {

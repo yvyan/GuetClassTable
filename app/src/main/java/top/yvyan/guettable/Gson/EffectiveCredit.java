@@ -24,7 +24,7 @@ public class EffectiveCredit {
     }
 
     public PlannedCourseBean toPlannedCourseBean() {
-        return new PlannedCourseBean(scname, String.valueOf(planxf), String.valueOf(score), stp, tname);
+        return new PlannedCourseBean(scname, String.valueOf(planxf), String.valueOf(score), stp, tname, false);
     }
 
     public void setEngname(String engname) {

@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 
@@ -40,8 +39,9 @@ public class CourseUtil {
 
     /**
      * 去掉过期的考试安排
+     *
      * @param examBeans 源考试安排
-     * @return          未过期的考试安排
+     * @return 未过期的考试安排
      */
     public static List<ExamBean> ridOfOutdatedExam(List<ExamBean> examBeans) {
         List<ExamBean> mExamBeans = new ArrayList<>();
@@ -60,7 +60,13 @@ public class CourseUtil {
      * @return 去掉必修课程中的限选和任选的计划课程
      */
     public static List<PlannedCourseBean> ridRepeatScore(List<PlannedCourseBean> plannedCourseBeans) {
-        return new ArrayList<>();
+        List<PlannedCourseBean> mPlannedCourseBeans = new ArrayList<>();
+        for (PlannedCourseBean plannedCourseBean : plannedCourseBeans) {
+            if (!(plannedCourseBean.getTypeName().equals("必修课程") && plannedCourseBean.getCanRip())) {
+                mPlannedCourseBeans.add(plannedCourseBean);
+            }
+        }
+        return mPlannedCourseBeans;
     }
 
     /**

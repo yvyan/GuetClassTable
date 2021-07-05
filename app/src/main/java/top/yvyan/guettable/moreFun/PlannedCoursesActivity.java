@@ -15,6 +15,7 @@ import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.CourseUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -26,7 +27,7 @@ public class PlannedCoursesActivity extends BaseFuncActivity {
     @Override
     protected void childInit() {
         setTitle(getResources().getString(R.string.moreFun_plan_courses));
-//        setShowMore(true);
+        setShowMore(true);
         openUpdate();
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_plan_courses));
 
@@ -39,9 +40,9 @@ public class PlannedCoursesActivity extends BaseFuncActivity {
         baseSetContentView(R.layout.activity_planned_courses);
         RecyclerView recyclerView = findViewById(R.id.planned_course_info_recycler_view);
         List<PlannedCourseBean> plannedCourseBeans = moreDate.getPlannedCourseBeans();
-//        if (singleSettingData.isHideRepeatScore()) {
-//            plannedCourseBeans = CourseUtil.ridRepeatScore(plannedCourseBeans);
-//        }
+        if (singleSettingData.isHideRepeatScore()) {
+            plannedCourseBeans = CourseUtil.ridRepeatScore(plannedCourseBeans);
+        }
         if (plannedCourseBeans.size() == 0) {
             showEmptyPage();
         } else {
@@ -55,20 +56,20 @@ public class PlannedCoursesActivity extends BaseFuncActivity {
     public void showPopMenu(View v) {
         super.showPopMenu(v);
         PopupMenu popup = new PopupMenu(this, v);
-        popup.getMenuInflater().inflate(R.menu.exam_score_popmenu, popup.getMenu());
+        popup.getMenuInflater().inflate(R.menu.planned_course_popmenu, popup.getMenu());
         if (singleSettingData.isHideRepeatScore()) {
-            popup.getMenu().findItem(R.id.exam_score_top1).setTitle("显示必修课程重复信息");
+            popup.getMenu().findItem(R.id.planned_course_top1).setTitle("显示必修课程重复信息");
         }
         popup.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.exam_score_top1) {
+            if (item.getItemId() == R.id.planned_course_top1) {
                 if (singleSettingData.isHideRepeatScore()) {
                     singleSettingData.setHideRepeatScore(false);
                     showContent();
-                    popup.getMenu().findItem(R.id.exam_score_top1).setTitle("显示必修课程重复信息");
+                    popup.getMenu().findItem(R.id.planned_course_top1).setTitle("显示必修课程重复信息");
                 } else {
                     singleSettingData.setHideRepeatScore(true);
                     showContent();
-                    popup.getMenu().findItem(R.id.exam_score_top1).setTitle("隐藏必修课程重复信息");
+                    popup.getMenu().findItem(R.id.planned_course_top1).setTitle("隐藏必修课程重复信息");
                 }
             }
             return true;

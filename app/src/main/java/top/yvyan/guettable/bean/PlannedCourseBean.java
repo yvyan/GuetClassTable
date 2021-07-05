@@ -11,6 +11,7 @@ public class PlannedCourseBean implements Serializable {
     private String degree;
     private String type;
     private String typeName;
+    private boolean canRip;
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -26,12 +27,13 @@ public class PlannedCourseBean implements Serializable {
                 && getType().equals(bean.getType());
     }
 
-    public PlannedCourseBean(String name, String credits, String degree, String type, String typeName) {
+    public PlannedCourseBean(String name, String credits, String degree, String type, String typeName, boolean canRip) {
         this.name = name;
         this.credits = credits;
         this.degree = degree;
         this.type = type;
         this.typeName = typeName;
+        this.canRip = canRip;
     }
 
     public String getName() {
@@ -75,5 +77,13 @@ public class PlannedCourseBean implements Serializable {
             typeName = "";
         }
         return typeName;
+    }
+
+    public boolean getCanRip() {
+        return canRip;
+    }
+
+    public void setCanRip(boolean canRip) {
+        this.canRip = canRip;
     }
 }
