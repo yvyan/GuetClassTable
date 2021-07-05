@@ -6,9 +6,9 @@ import com.umeng.umcrash.UMCrash;
 
 import java.io.Serializable;
 
-import top.yvyan.guettable.util.BeanAttributeUtil;
+import top.yvyan.guettable.util.CourseUtil;
 
-public class CETBean implements Serializable, BeanAttributeUtil.BeanAttribute {
+public class CETBean implements Serializable, CourseUtil.BeanAttributeUtil.BeanAttribute {
     private static final long serialVersionUID = -4533762023709527528L;
     //等级名称 CET4 CET6
     private String name;

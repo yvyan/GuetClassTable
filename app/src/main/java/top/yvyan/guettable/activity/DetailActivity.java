@@ -27,7 +27,7 @@ import top.yvyan.guettable.data.DetailClassData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
-import top.yvyan.guettable.util.ComparatorCourse;
+import top.yvyan.guettable.util.CourseUtil;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class DetailActivity extends AppCompatActivity {
@@ -106,7 +106,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void loadData(List<Schedule> schedules, int week) {
         //加载课程信息
-        ComparatorCourse comparatorCourse = new ComparatorCourse();
+        CourseUtil.ComparatorCourse comparatorCourse = new CourseUtil.ComparatorCourse();
         Collections.sort(schedules, comparatorCourse);
         RecyclerView recyclerView = findViewById(R.id.class_detail_recycleView);
         ClassDetailAdapter classDetailAdapter = new ClassDetailAdapter(getIntent(), this, schedules, week);

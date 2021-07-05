@@ -3,9 +3,9 @@ package top.yvyan.guettable.bean;
 import java.io.Serializable;
 
 import top.yvyan.guettable.Gson.SelectedCourse;
-import top.yvyan.guettable.util.BeanAttributeUtil;
+import top.yvyan.guettable.util.CourseUtil;
 
-public class SelectedCourseBean implements Serializable, BeanAttributeUtil.BeanAttribute {
+public class SelectedCourseBean implements Serializable, CourseUtil.BeanAttributeUtil.BeanAttribute {
 
     private static final long serialVersionUID = -1665366365756246306L;
 

@@ -9,9 +9,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import top.yvyan.guettable.util.BeanAttributeUtil;
+import top.yvyan.guettable.util.CourseUtil;
 
-public class ResitBean implements Serializable, BeanAttributeUtil.BeanAttribute {
+public class ResitBean implements Serializable, CourseUtil.BeanAttributeUtil.BeanAttribute {
 
     private static final long serialVersionUID = 311647067934662380L;
     //课号

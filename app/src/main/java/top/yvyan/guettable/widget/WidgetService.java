@@ -15,7 +15,7 @@ import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SettingData;
-import top.yvyan.guettable.util.ExamUtil;
+import top.yvyan.guettable.util.CourseUtil;
 import top.yvyan.guettable.util.TimeUtil;
 
 public class WidgetService extends RemoteViewsService {
@@ -57,7 +57,7 @@ public class WidgetService extends RemoteViewsService {
             list.addAll(labList);
         }
         if (settingData.getShowExamOnTable()) {
-            for (ExamBean examBean : ExamUtil.combineExam(scheduleData.getExamBeans())) {
+            for (ExamBean examBean : CourseUtil.combineExam(scheduleData.getExamBeans())) {
                 if (examBean != null && examBean.getWeek() != 0) {
                     list.add(examBean.getSchedule());
                 }

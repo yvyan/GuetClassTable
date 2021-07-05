@@ -20,8 +20,7 @@ import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
-import top.yvyan.guettable.util.BeanAttributeUtil;
-import top.yvyan.guettable.util.ExamUtil;
+import top.yvyan.guettable.util.CourseUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -49,11 +48,11 @@ public class ExamActivity extends BaseFuncActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_view_info);
         List<ExamBean> examBeans = scheduleData.getExamBeans();
         if (singleSettingData.isCombineExam()) {
-            examBeans = ExamUtil.combineExam(examBeans);
+            examBeans = CourseUtil.combineExam(examBeans);
         }
         if (singleSettingData.isHideOutdatedExam()) {
             try {
-                examBeans = ExamUtil.ridOfOutdatedExam(examBeans);
+                examBeans = CourseUtil.ridOfOutdatedExam(examBeans);
             } catch (Exception e) {
                 UMCrash.generateCustomLog(e, "ExamUtil.ridOfOutdatedExam");
             }
@@ -117,7 +116,7 @@ public class ExamActivity extends BaseFuncActivity {
         List<ExamBean> examBeans;
         examBeans = StaticService.getExam(this, cookie, generalData.getTerm());
         if (examBeans != null) {
-            BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+            CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(examBeans, beanAttributeUtil);
             if (!AppUtil.equalList(examBeans, scheduleData.getExamBeans())) {
                 scheduleData.setExamBeans(examBeans);

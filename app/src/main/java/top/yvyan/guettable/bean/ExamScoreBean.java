@@ -6,9 +6,9 @@ import com.umeng.umcrash.UMCrash;
 
 import java.io.Serializable;
 
-import top.yvyan.guettable.util.BeanAttributeUtil;
+import top.yvyan.guettable.util.CourseUtil;
 
-public class ExamScoreBean implements Serializable, BeanAttributeUtil.BeanAttribute {
+public class ExamScoreBean implements Serializable, CourseUtil.BeanAttributeUtil.BeanAttribute {
     private static final long serialVersionUID = 1033222523316336312L;
     //课程序号
     private String cno;

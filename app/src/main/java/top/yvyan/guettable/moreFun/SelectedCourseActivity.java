@@ -20,7 +20,7 @@ import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
-import top.yvyan.guettable.util.BeanAttributeUtil;
+import top.yvyan.guettable.util.CourseUtil;
 
 public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun, MaterialSpinner.OnItemSelectedListener<String> {
 
@@ -83,7 +83,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
         List<SelectedCourseBean> selectedCourseBeans;
         selectedCourseBeans = StaticService.getSelectedCourse(this, cookie, generalData.getTerm());
         if (selectedCourseBeans != null) {
-            BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+            CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(selectedCourseBeans, beanAttributeUtil);
             moreDate.setSelectedCoursesBeans(selectedCourseBeans);
             update = true;
@@ -106,7 +106,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
             List<SelectedCourseBean> selectedCourse = StaticService.getSelectedCourse(this, tokenData.getCookie(), curTerm);
             if (selectedCourse != null) {
                 runOnUiThread(() -> {
-                    BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+                    CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
                     Collections.sort(selectedCourse, beanAttributeUtil);
                     adapter = new SelectedCourseAdapter(selectedCourse);
                     rv.setAdapter(adapter);

@@ -17,7 +17,7 @@ import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
-import top.yvyan.guettable.util.BeanAttributeUtil;
+import top.yvyan.guettable.util.CourseUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -45,7 +45,7 @@ public class ExamScoreActivity extends BaseFuncActivity {
         RecyclerView recyclerView = findViewById(R.id.exam_score_info_recycler_view);
         List<ExamScoreBean> examScoreBeans = moreDate.getExamScoreBeans();
         if (singleSettingData.isHideOtherTermExamScore()) {
-            examScoreBeans = BeanAttributeUtil.hideOtherTerm(examScoreBeans, generalData.getTerm());
+            examScoreBeans = CourseUtil.BeanAttributeUtil.hideOtherTerm(examScoreBeans, generalData.getTerm());
         }
         if (examScoreBeans.size() == 0) {
             showEmptyPage();
@@ -86,7 +86,7 @@ public class ExamScoreActivity extends BaseFuncActivity {
         List<ExamScoreBean> examScoreBeans;
         examScoreBeans = StaticService.getExamScore(this, cookie);
         if (examScoreBeans != null) {
-            BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+            CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(examScoreBeans, beanAttributeUtil);
             if (!AppUtil.equalList(examScoreBeans, moreDate.getExamScoreBeans())) {
                 moreDate.setExamScoreBeans(examScoreBeans);

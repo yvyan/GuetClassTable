@@ -39,7 +39,7 @@ import top.yvyan.guettable.service.MyOperator;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DensityUtil;
-import top.yvyan.guettable.util.ExamUtil;
+import top.yvyan.guettable.util.CourseUtil;
 import top.yvyan.guettable.util.ToastUtil;
 import top.yvyan.guettable.widget.WidgetUtil;
 
@@ -228,7 +228,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
             }
         }
         if (settingData.getShowExamOnTable()) {
-            for (ExamBean examBean : ExamUtil.combineExam(scheduleData.getExamBeans())) {
+            for (ExamBean examBean : CourseUtil.combineExam(scheduleData.getExamBeans())) {
                 if (examBean != null && examBean.getWeek() != 0) {
                     schedules.add(examBean.getSchedule());
                 }

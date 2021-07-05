@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import top.yvyan.guettable.util.BeanAttributeUtil;
+import top.yvyan.guettable.util.CourseUtil;
 
-public class ExamBean implements Serializable, ScheduleEnable, BeanAttributeUtil.BeanAttribute {
+public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAttributeUtil.BeanAttribute {
     private static final long serialVersionUID = -193709177883443178L;
     public static String NUMBER = "number";
     public static String TIME = "time";

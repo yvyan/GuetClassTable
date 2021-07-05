@@ -17,7 +17,7 @@ import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.service.fetch.StaticService;
-import top.yvyan.guettable.util.BeanAttributeUtil;
+import top.yvyan.guettable.util.CourseUtil;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -184,7 +184,7 @@ public class AutoUpdate {
                             generalData.getTerm()
                     );
                     if (examBeans != null) {
-                        BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+                        CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
                         Collections.sort(examBeans, beanAttributeUtil);
                         scheduleData.setExamBeans(examBeans);
                     } else {
