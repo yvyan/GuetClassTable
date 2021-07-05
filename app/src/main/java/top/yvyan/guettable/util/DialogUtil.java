@@ -37,40 +37,43 @@ public class DialogUtil {
      * @param dialogService 点击处理事件
      */
     public static void showDialog(final Context context, String title, boolean canClose, String yesText, String backText, String comm, IDialogService dialogService) {
-        AlertDialog dialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        dialog = builder.create();
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        // 以下两行代码是对话框的EditText点击后不能显示输入法的
-        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        Window window = dialog.getWindow();
-        window.setContentView(R.layout.general_dialog);
-        ImageView close = window.findViewById(R.id.dialog_close);
-        if (!canClose) {
-            close.setVisibility(View.GONE);
-        }
-        TextView titleView = window.findViewById(R.id.dialog_title);
-        TextView commView = window.findViewById(R.id.dialog_comm);
-        Button buttonYes = window.findViewById(R.id.dialog_yes);
-        Button buttonBack = window.findViewById(R.id.dialog_back);
+        try {
+            AlertDialog dialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            dialog = builder.create();
+            dialog.show();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            // 以下两行代码是对话框的EditText点击后不能显示输入法的
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Window window = dialog.getWindow();
+            window.setContentView(R.layout.general_dialog);
+            ImageView close = window.findViewById(R.id.dialog_close);
+            if (!canClose) {
+                close.setVisibility(View.GONE);
+            }
+            TextView titleView = window.findViewById(R.id.dialog_title);
+            TextView commView = window.findViewById(R.id.dialog_comm);
+            Button buttonYes = window.findViewById(R.id.dialog_yes);
+            Button buttonBack = window.findViewById(R.id.dialog_back);
 
-        titleView.setText(title);
-        commView.setText(comm);
-        close.setOnClickListener(view -> dialog.dismiss());
-        buttonYes.setText(yesText);
-        buttonYes.setOnClickListener(view -> {
-            dialogService.onClickYes();
-            dialog.dismiss();
-        });
-        buttonBack.setText(backText);
-        buttonBack.setOnClickListener(view -> {
-            dialogService.onClickBack();
-            dialog.dismiss();
-        });
+            titleView.setText(title);
+            commView.setText(comm);
+            close.setOnClickListener(view -> dialog.dismiss());
+            buttonYes.setText(yesText);
+            buttonYes.setOnClickListener(view -> {
+                dialogService.onClickYes();
+                dialog.dismiss();
+            });
+            buttonBack.setText(backText);
+            buttonBack.setOnClickListener(view -> {
+                dialogService.onClickBack();
+                dialog.dismiss();
+            });
+        } catch (Exception ignored) {
+        }
     }
 
     /**
@@ -92,26 +95,30 @@ public class DialogUtil {
     }
 
     public static AlertDialog showProgress(final Context context, String text, String btnText, IDialogService dialogService) {
-        AlertDialog dialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        dialog = builder.create();
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        Window window = dialog.getWindow();
-        window.setContentView(R.layout.text_dialog);
-        TextView tv_scan_number = window
-                .findViewById(R.id.text_dialog);
-        tv_scan_number.setText(text);
-        Button buttonYes = window.findViewById(R.id.btn_text_yes);
-        buttonYes.setText(btnText);
-        buttonYes.setOnClickListener(view -> {
-            dialogService.onClickYes();
-            dialog.dismiss();
-        });
-        return dialog;
+        try {
+            AlertDialog dialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            dialog = builder.create();
+            dialog.show();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Window window = dialog.getWindow();
+            window.setContentView(R.layout.text_dialog);
+            TextView tv_scan_number = window
+                    .findViewById(R.id.text_dialog);
+            tv_scan_number.setText(text);
+            Button buttonYes = window.findViewById(R.id.btn_text_yes);
+            buttonYes.setText(btnText);
+            buttonYes.setOnClickListener(view -> {
+                dialogService.onClickYes();
+                dialog.dismiss();
+            });
+            return dialog;
+        } catch (Exception ignore) {
+            return null;
+        }
     }
 
     /**
@@ -122,24 +129,27 @@ public class DialogUtil {
      * @param text    自定义显示的文字
      */
     public static void showNotificationDialog(final Context context, String title, String text) {
-        AlertDialog dialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        dialog = builder.create();
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        Window window = dialog.getWindow();
-        window.setContentView(R.layout.notification_dailog);
-        TextView comm = window.findViewById(R.id.notification_text);
-        comm.setText(text);
-        TextView tvTitle = window.findViewById(R.id.notification_title);
-        tvTitle.setText(title);
+        try {
+            AlertDialog dialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            dialog = builder.create();
+            dialog.show();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Window window = dialog.getWindow();
+            window.setContentView(R.layout.notification_dailog);
+            TextView comm = window.findViewById(R.id.notification_text);
+            comm.setText(text);
+            TextView tvTitle = window.findViewById(R.id.notification_title);
+            tvTitle.setText(title);
 
-        Button btn_hint_yes = window.findViewById(R.id.btn_text_yes);
-        btn_hint_yes.setOnClickListener(arg0 -> dialog.dismiss());
+            Button btn_hint_yes = window.findViewById(R.id.btn_text_yes);
+            btn_hint_yes.setOnClickListener(arg0 -> dialog.dismiss());
+        } catch (Exception ignore) {
+        }
     }
 
 }

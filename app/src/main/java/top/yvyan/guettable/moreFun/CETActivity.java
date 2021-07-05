@@ -12,7 +12,7 @@ import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
-import top.yvyan.guettable.util.BeanAttributeUtil;
+import top.yvyan.guettable.util.CourseUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
@@ -48,7 +48,7 @@ public class CETActivity extends BaseFuncActivity {
         List<CETBean> cetBeans;
         cetBeans = StaticService.getCET(this, cookie);
         if (cetBeans != null) {
-            BeanAttributeUtil beanAttributeUtil = new BeanAttributeUtil();
+            CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(cetBeans, beanAttributeUtil);
             if (!AppUtil.equalList(cetBeans, moreDate.getCetBeans())) {
                 moreDate.setCetBeans(cetBeans);

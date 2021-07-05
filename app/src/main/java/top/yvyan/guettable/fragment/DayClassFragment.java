@@ -48,7 +48,7 @@ import top.yvyan.guettable.service.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DialogUtil;
-import top.yvyan.guettable.util.ExamUtil;
+import top.yvyan.guettable.util.CourseUtil;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -175,8 +175,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         //更新考试剩余时间信息
         try {
             List<ExamBean> examBeans = scheduleData.getExamBeans();
-            examBeans = ExamUtil.combineExam(examBeans);
-            examBeans = ExamUtil.ridOfOutdatedExam(examBeans);
+            examBeans = CourseUtil.combineExam(examBeans);
+            examBeans = CourseUtil.ridOfOutdatedExam(examBeans);
             if (examBeans.size() != 0) {
                 showExam.setVisibility(View.VISIBLE);
 
@@ -284,7 +284,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             list.addAll(labList);
         }
         if (settingData.getShowExamOnTable()) {
-            for (ExamBean examBean : ExamUtil.combineExam(scheduleData.getExamBeans())) {
+            for (ExamBean examBean : CourseUtil.combineExam(scheduleData.getExamBeans())) {
                 if (examBean != null && examBean.getWeek() != 0) {
                     list.add(examBean.getSchedule());
                 }
