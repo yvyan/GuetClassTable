@@ -8,13 +8,12 @@ public class PlannedCourse {
     private String credithour;
     private String score;
     private String term;
-    private String sterm;
     private String scname;
     private String courseid;
-    private String xf;
 
     public PlannedCourseBean toPlannedCourseBean() {
-        return new PlannedCourseBean(cname, credithour, score, "1", "必修课程");
+        boolean canRip = (tname.equals("专业任选") || tname.equals("专业限选"));
+        return new PlannedCourseBean(cname, credithour, score, "1", "必修课程", canRip);
     }
 
     public void setTname(String tname) {
@@ -37,10 +36,6 @@ public class PlannedCourse {
         this.credithour = credithour;
     }
 
-    public String getCredithour() {
-        return credithour;
-    }
-
     public void setScore(String score) {
         this.score = score;
     }
@@ -57,14 +52,6 @@ public class PlannedCourse {
         return term;
     }
 
-    public void setSterm(String sterm) {
-        this.sterm = sterm;
-    }
-
-    public String getSterm() {
-        return sterm;
-    }
-
     public void setScname(String scname) {
         this.scname = scname;
     }
@@ -79,13 +66,5 @@ public class PlannedCourse {
 
     public String getCourseid() {
         return courseid;
-    }
-
-    public void setXf(String xf) {
-        this.xf = xf;
-    }
-
-    public String getXf() {
-        return xf;
     }
 }

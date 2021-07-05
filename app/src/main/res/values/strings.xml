@@ -214,6 +214,7 @@
     <string name="widget_tip_empty">今日暂无课程~</string>
     <string name="widget_week_empty">第X周</string>
 
-    <string name="patch_version">0</string><!-- 发布新版本请归零 -->
+    <string name="patch_version">0</string>
+    <string name="gradesHint">学分绩查询属于公测阶段，正在逐步优化，目前计算方法为只统计对应年度及格的必修和限选课程，若您有更好的计算方法，欢迎进群反馈，我们一起让它变好！(V4)</string><!-- 发布新版本请归零 -->
 
 </resources>
