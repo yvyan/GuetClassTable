@@ -203,6 +203,10 @@ public class AutoUpdate {
                         scheduleData.setLibBeans(getLab);
                         scheduleData.setUpdate(true);
                         generalData.setLastUpdateTime(System.currentTimeMillis());
+                        int maxWeek = scheduleData.getMaxWeek();
+                        if (maxWeek > generalData.getMaxWeek()) {
+                            generalData.setMaxWeek(maxWeek);
+                        }
                         activity.runOnUiThread(() -> {
                             fragment.onStart();
                             notifyWidgetUpdate(activity);
