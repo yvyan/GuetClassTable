@@ -5,6 +5,12 @@ import android.content.res.Resources;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import top.yvyan.guettable.Gson.LoginResponse;
 import top.yvyan.guettable.Http.Get;
 import top.yvyan.guettable.Http.GetBitmap;
@@ -20,28 +26,23 @@ public class Net {
     /**
      * 测试连接
      *
-     * @param context context
      * @return 0 -- 内网
      * else -- 外网
      */
-    public static int testNet(Context context) {
-        Resources resources = context.getResources();
-        HttpConnectionAndCode response = Get.get(
-                "http://172.16.13.22/",
-                null,
-                resources.getString(R.string.user_agent),
-                "http://172.16.13.22/",
-                null,
-                "]}",
-                null,
-                null,
-                null,
-                null,
-                200,
-                200,
-                null
-        );
-        return response.code;
+    public static int testNet() {
+        String url = "http://172.16.13.22/";
+        OkHttpClient okHttpClient = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url(url)
+                .build();
+        final Call call = okHttpClient.newCall(request);
+        try {
+            Response response = call.execute();
+            return response.code();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     /**

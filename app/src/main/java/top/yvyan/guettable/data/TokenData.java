@@ -94,7 +94,7 @@ public class TokenData {
                 isVPN = true;
                 forceVPN = false;
             } else {
-                isVPN = Net.testNet(context) != 0;
+                isVPN = Net.testNet() != 200;
             }
             if (loginType == 0) {
                 if (isVPN) { //外网

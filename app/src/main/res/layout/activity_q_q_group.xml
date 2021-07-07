@@ -125,7 +125,7 @@
                     android:layout_height="43dp"
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="13dp"
-                    android:src="@drawable/p_bangzhu"
+                    android:src="@drawable/p_info"
                     app:layout_constraintBottom_toBottomOf="@+id/textView"
                     app:layout_constraintEnd_toStartOf="@+id/guideline5"
                     app:layout_constraintHorizontal_bias="0.5"

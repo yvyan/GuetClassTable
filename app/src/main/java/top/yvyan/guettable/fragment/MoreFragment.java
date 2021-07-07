@@ -107,10 +107,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         View selectedCourse = view.findViewById(R.id.more_selected_course);
         selectedCourse.setOnClickListener(this);
 
-//        View test = view.findViewById(R.id.more_test);
-//        test.setOnClickListener(this);
-//        test.setVisibility(View.VISIBLE);
-
         return view;
     }
 
@@ -138,7 +134,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        setBackground(BackgroundUtil.isSetBackground(getContext()));
+        setBackground(BackgroundUtil.isSetBackground(Objects.requireNonNull(getContext())));
         initData();
     }
 
