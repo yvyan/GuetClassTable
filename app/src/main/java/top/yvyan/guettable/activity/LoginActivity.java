@@ -510,4 +510,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         };
         DialogUtil.showProgress(this, getContext().getResources().getString(R.string.log_change_pwd), "好的", iDialogService);
     }
+
+    public void showHelp(View view) {
+        DialogUtil.showTextDialog(this, getContext().getResources().getString(R.string.login_help));
+    }
 }
