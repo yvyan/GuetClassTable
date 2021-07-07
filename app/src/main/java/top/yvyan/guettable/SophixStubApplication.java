@@ -2,9 +2,11 @@ package top.yvyan.guettable;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import androidx.annotation.Keep;
 
+import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixApplication;
 import com.taobao.sophix.SophixEntry;
 import com.taobao.sophix.SophixManager;

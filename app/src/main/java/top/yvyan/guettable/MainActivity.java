@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.taobao.sophix.SophixManager;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.cconfig.RemoteConfigSettings;
 import com.umeng.cconfig.UMRemoteConfig;
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         WebViewActivity.cleanCash(this);
         initReceiver();
         notifyWidgetUpdate(getApplicationContext());
+        SophixManager.getInstance().queryAndLoadNewPatch();
     }
 
     @Override

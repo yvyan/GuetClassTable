@@ -174,6 +174,51 @@ public class ScheduleData {
         }
     }
 
+    /**
+     * 通过现有课程数据计算最大周数
+     *
+     * @return 最大周数
+     */
+    public int getMaxWeek() {
+        int maxWeek = 0;
+        try {
+            if (courseBeans != null) {
+                for (CourseBean courseBean : courseBeans) {
+                    if (courseBean.getWeekEnd() > maxWeek) {
+                        maxWeek = courseBean.getWeekEnd();
+                    }
+                }
+            }
+            if (libBeans != null) {
+                for (CourseBean courseBean : libBeans) {
+                    if (courseBean.getWeekEnd() > maxWeek) {
+                        maxWeek = courseBean.getWeekEnd();
+                    }
+                }
+            }
+            if (userCourseBeans != null) {
+                for (CourseBean courseBean : userCourseBeans) {
+                    if (courseBean.getWeekEnd() > maxWeek) {
+                        maxWeek = courseBean.getWeekEnd();
+                    }
+                }
+            }
+            if (examBeans != null) {
+                for (ExamBean examBean : examBeans) {
+                    if (examBean.getWeek() > maxWeek) {
+                        maxWeek = examBean.getWeek();
+                    }
+                }
+            }
+            if (maxWeek > 25) {
+                maxWeek = 25;
+            }
+            return maxWeek;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     //用户自定义课程
     public List<CourseBean> getUserCourseBeans() {
         if (userCourseBeans == null) {
