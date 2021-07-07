@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         Notification.getNotification(this);
         //清理webView缓存
         WebViewActivity.cleanCash(this);
-        initReceiver();
+        initTimeReceiver();
         notifyWidgetUpdate(getApplicationContext());
         SophixManager.getInstance().queryAndLoadNewPatch();
     }
@@ -250,9 +250,9 @@ public class MainActivity extends AppCompatActivity {
     };
 
     /**
-     * 注册网络监听的广播
+     * 注册时间监听的广播
      */
-    private void initReceiver() {
+    private void initTimeReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         filter.addAction(Intent.ACTION_TIME_CHANGED);
