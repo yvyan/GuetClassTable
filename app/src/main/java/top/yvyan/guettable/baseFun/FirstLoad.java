@@ -51,6 +51,7 @@ public class FirstLoad {
         switch (i) {
             case 36:
                 update_36();
+                break;
             case 34:
                 //调整密码存储
                 update_34();

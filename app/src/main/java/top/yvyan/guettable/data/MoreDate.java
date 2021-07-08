@@ -19,7 +19,7 @@ import top.yvyan.guettable.util.SerializeUtil;
 
 public class MoreDate {
     private static MoreDate moreDate;
-    private static final String SHP_NAME = "MoreData";
+    private static final String SHP_NAME = "MoreDate";
     private static final String RESIT_STRING = "resitString";
     private static final String CET_STRING = "CET_STRING";
     private static final String EXAM_SCORE_STRING = "EXAM_SCORE_STRING";
@@ -338,5 +338,15 @@ public class MoreDate {
             editor.putString(GRADES_STRING, gradesString);
             editor.apply();
         }
+    }
+
+    /**
+     * 清除数据
+     *
+     * @param name 空间名称
+     */
+    public void deleteData(String name) {
+        editor.putString(name, null);
+        editor.apply();
     }
 }
