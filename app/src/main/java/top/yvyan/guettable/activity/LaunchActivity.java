@@ -1,5 +1,6 @@
 package top.yvyan.guettable.activity;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,12 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.baseFun.FirstLoad;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.baseFun.FirstLoad;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.util.DialogUtil;
 
+@SuppressWarnings("deprecation")
 public class LaunchActivity extends AppCompatActivity {
 
     @Override
@@ -42,12 +44,10 @@ public class LaunchActivity extends AppCompatActivity {
         firstLoad.check();
 
         Window window = this.getWindow();
-        if (Build.VERSION.SDK_INT >= 19) {
-            //透明状态栏
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
+        //透明状态栏
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //透明导航栏
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         //网络切换检测
         initReceiver();
 
@@ -86,21 +86,20 @@ public class LaunchActivity extends AppCompatActivity {
             if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(
                         Context.CONNECTIVITY_SERVICE);
+                @SuppressLint("MissingPermission")
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
                 if (networkInfo != null && networkInfo.isAvailable()) {
                     int type2 = networkInfo.getType();
 
                     switch (type2) {
-                        case 0://移动 网络    2G 3G 4G 都是一样的 实测 mix2s 联通卡
+                        case 0://移动 网络
                             TokenData.isVPN = true;
                             break;
                         case 1: //wifi网络
-                            new Thread(() -> {
-                                TokenData.isVPN = Net.testNet() != 200;
-                            }).start();
+                            new Thread(() -> TokenData.isVPN = Net.testNet() != 200).start();
                             break;
                     }
-                }  // 无网络
+                }
             }
         }
     };

@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.umcrash.UMCrash;
 
 import java.util.Objects;
@@ -63,7 +62,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void privacy(View view) {
-        CommFunc.openUrl(this, "隐私政策", UMRemoteConfig.getInstance().getConfigValue("privacyUrl"), false);
+        DialogUtil.showTextDialog(this, getResources().getString(R.string.privacy_text));
     }
 
     public void join_us(View view) {

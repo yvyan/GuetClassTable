@@ -1,5 +1,6 @@
 package top.yvyan.guettable.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -256,7 +257,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      * @param pwd2     密码
      * @return 操作结果
      */
+    @SuppressLint("SetTextI18n")
     private int testVPNByCAS(Context context, String vpnToken, String account, String pwd2) {
+        runOnUiThread(() -> button.setText("验证VPN"));
         String TGTTokenStr = StaticService.SSOLogin(context, account, pwd2, vpnToken);
         if (TGTTokenStr.equals("ERROR2") || TGTTokenStr.equals("ERROR0")) {
             return -2;
@@ -485,8 +488,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      */
     private void getInfo() {
         TokenData tokenData = TokenData.newInstance(this);
-        runOnUiThread(() -> button.setText("获取个人信息"));
+        runOnUiThread(() -> button.setText("正在登录"));
         tokenData.refresh();
+        runOnUiThread(() -> button.setText("获取个人信息"));
         StudentInfo studentInfo = null;
         try {
             studentInfo = StaticService.getStudentInfo(this, tokenData.getCookie());
@@ -583,7 +587,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             public void onClickBack() {
             }
         };
-        DialogUtil.showProgress(this, getContext().getResources().getString(R.string.log_change_pwd), "好的", iDialogService);
+        DialogUtil.setTextDialog(this, getContext().getResources().getString(R.string.log_change_pwd), "好的", iDialogService, false);
     }
 
     public void showHelp(View view) {
