@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.List;
+
 import top.yvyan.guettable.activity.SettingActivity;
-import top.yvyan.guettable.bean.CourseBean;
+import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.util.AppUtil;
@@ -27,7 +29,7 @@ public class FirstLoad {
         this.context = context;
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        versionCode = sharedPreferences.getInt(VERSION_CODE, AppUtil.getAppVersionCode(context));
+        versionCode = sharedPreferences.getInt(VERSION_CODE, 36);
     }
 
     public void check() {
@@ -52,13 +54,27 @@ public class FirstLoad {
             case 36:
                 update_36();
                 break;
-            case 34:
-                //调整密码存储
-                update_34();
+            case 40:
+                //修复考试安排信息错误导致的闪退问题
+                update_40();
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 40->41需要进行的操作
+     */
+    private void update_40() {
+        ScheduleData scheduleData = ScheduleData.newInstance(context);
+        List<ExamBean> examBeans = scheduleData.getExamBeans();
+        for (ExamBean examBean : examBeans) {
+            if (examBean.getClassNum() < 1) {
+                examBean.setClassNum(1);
+            }
+        }
+        scheduleData.setExamBeans(examBeans);
     }
 
     /**
@@ -73,30 +89,6 @@ public class FirstLoad {
             }
             if (accountData.getBkjwPwd() == null || accountData.getBkjwPwd().isEmpty()) {
                 accountData.logoff();
-            }
-        }
-    }
-
-    /**
-     * 34->35需要进行的操作
-     */
-    private void update_34() {
-        //调整密码存储方式，修复了更换登录方式需要重新输入密码的问题
-        SharedPreferences mSharedPreferences = context.getSharedPreferences("tokenData", Context.MODE_PRIVATE);
-        int loginType = mSharedPreferences.getInt("loginType", 1);
-        mSharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        String password = mSharedPreferences.getString("password", "");
-        if (loginType == 0) { //CAS
-            SharedPreferences.Editor editor = mSharedPreferences.edit();
-            editor.putString("password", "");
-            editor.putString("password2", password);
-            editor.apply();
-        }
-        //修复异常数据
-        ScheduleData scheduleData = ScheduleData.newInstance(context);
-        for (CourseBean courseBean : scheduleData.getLibBeans()) {
-            if (courseBean.getDay() > 7) {
-                courseBean.setDay(7);
             }
         }
     }
