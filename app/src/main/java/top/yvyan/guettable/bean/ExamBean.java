@@ -112,8 +112,10 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
             day = 1;
         }
         this.day = day;
-        if (classNum < 0) {
-            classNum = 0;
+        if (classNum < 1) {
+            classNum = 1;
+        } else if (classNum > 7) {
+            classNum = 7;
         }
         this.classNum = classNum;
         this.time = time;
@@ -203,6 +205,10 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
 
     public int getClassNum() {
         return classNum;
+    }
+
+    public void setClassNum(int classNum) {
+        this.classNum = classNum;
     }
 
     public String getTime() {
