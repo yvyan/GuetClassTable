@@ -1,6 +1,7 @@
 package top.yvyan.guettable.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.umcrash.UMCrash;
 import com.xuexiang.xui.widget.tabbar.TabControlView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
@@ -154,122 +156,195 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         String account = etAccount.getText().toString();
         String pwd = etPwd.getText().toString();
         String pwd2 = etPwd2.getText().toString();
+        String vpnLoginType = UMRemoteConfig.getInstance().getConfigValue("vpnLoginType");
+        int n = 0; //vpn登录方式选择 0:CAS; 1:正常登录
+        try {
+            n = Integer.parseInt(vpnLoginType);
+        } catch (Exception e) {
+            UMCrash.generateCustomLog(e, "checkUpdateType");
+        }
+        int finalN = n;
         new Thread(() -> {
             //区分是否为国际学院
             generalData.setInternational(isInternational(account));
             //区分登录方式
             String VPNToken = Net.getVPNToken(this);
             if (type == 0) { //智慧校园
-                int n = StaticService.loginVPN(this, VPNToken, account, pwd2);
-                if (n != 0) { //VPN异常
-                    if (n == -3) { //修改密码
-                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                            @Override
-                            public void onClickYes() {
-                                //修改密码
-                                setEnClick();
-                                changePwd(view);
-                            }
-
-                            @Override
-                            public void onClickBack() {
-                                testCAS(account, pwd2);
-                            }
-                        };
-                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "修改密码", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_easy), service));
-
-                    } else if (n == -1) { //密码错误
-                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                            @Override
-                            public void onClickYes() {
-                                //重试
-                                setEnClick();
-                            }
-
-                            @Override
-                            public void onClickBack() {
-                                testCAS(account, pwd2);
-                            }
-                        };
-                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_error), service));
-
-                    } else { //网络或VPN系统异常
-                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                            @Override
-                            public void onClickYes() {
-                                //重试
-                                setEnClick();
-                            }
-
-                            @Override
-                            public void onClickBack() {
-                                testCAS(account, pwd2);
-                            }
-                        };
-                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_net_error), service));
-                    }
-                } else { //正常登录VPN，因为智慧校园和VPN密码相同，则不进行验证和登录，在getInfo()方法刷新Token时进行登录
-                    TokenData tokenData = TokenData.newInstance(this);
-                    tokenData.setLoginType(0);
-                    tokenData.setTGTToken("TGT-");
-                    accountData.setUser(account, null, pwd2, cbRememberPwd.isChecked());
-                    getInfo();
-                }
+                verifyByCAS(view, account, pwd2, VPNToken, finalN);
             } else if (type == 1) {
-                int n = StaticService.loginVPN(this, VPNToken, account, pwd2);
-                if (n != 0) { //VPN异常
-                    if (n == -3) { //修改密码
-                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                            @Override
-                            public void onClickYes() {
-                                //修改密码
-                                setEnClick();
-                                changePwd(view);
-                            }
-
-                            @Override
-                            public void onClickBack() {
-                                testBKJW(account, pwd, pwd2);
-                            }
-                        };
-                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "修改密码", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_easy), service));
-
-                    } else if (n == -1) { //密码错误
-                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                            @Override
-                            public void onClickYes() {
-                                //重试
-                                setEnClick();
-                            }
-
-                            @Override
-                            public void onClickBack() {
-                                testBKJW(account, pwd, pwd2);
-                            }
-                        };
-                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_error), service));
-
-                    } else { //网络或VPN系统异常
-                        DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                            @Override
-                            public void onClickYes() {
-                                //重试
-                                setEnClick();
-                            }
-
-                            @Override
-                            public void onClickBack() {
-                                testBKJW(account, pwd, pwd2);
-                            }
-                        };
-                        runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_net_error), service));
-                    }
-
-                } else { //正常登录VPN
-                    testBKJW_VPN(account, pwd, pwd2, VPNToken);
-                }
+                VerifyByBkjw(view, account, pwd, pwd2, VPNToken, finalN);
             }
         }).start();
+    }
+
+    /**
+     * 使用VPN + 教务验证账号
+     *
+     * @param view         view
+     * @param account      账号
+     * @param pwd          教务系统密码
+     * @param pwd2         智慧校园密码
+     * @param VPNToken     VPNToken
+     * @param vpnLoginType VPN登录方式
+     */
+    private void VerifyByBkjw(View view, String account, String pwd, String pwd2, String VPNToken, int vpnLoginType) {
+        int n;
+        if (vpnLoginType == 0) { //CAS登录VPN
+            n = testVPNByCAS(this, VPNToken, account, pwd2);
+        } else { //正常登录VPN
+            n = StaticService.loginVPN(this, VPNToken, account, pwd2);
+        }
+        if (n != 0) { //VPN异常
+            if (n == -3) { //修改密码
+                DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                    @Override
+                    public void onClickYes() {
+                        //修改密码
+                        setEnClick();
+                        changePwd(view);
+                    }
+
+                    @Override
+                    public void onClickBack() {
+                        testBKJW(account, pwd, pwd2);
+                    }
+                };
+                runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "修改密码", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_easy), service));
+
+            } else if (n == -1) { //密码错误
+                DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                    @Override
+                    public void onClickYes() {
+                        //重试
+                        setEnClick();
+                    }
+
+                    @Override
+                    public void onClickBack() {
+                        testBKJW(account, pwd, pwd2);
+                    }
+                };
+                runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_error), service));
+
+            } else { //网络或VPN系统异常
+                DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                    @Override
+                    public void onClickYes() {
+                        //重试
+                        setEnClick();
+                    }
+
+                    @Override
+                    public void onClickBack() {
+                        testBKJW(account, pwd, pwd2);
+                    }
+                };
+                runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_net_error), service));
+            }
+
+        } else { //正常登录VPN
+            testBKJW_VPN(account, pwd, pwd2, VPNToken);
+        }
+    }
+
+    /**
+     * 使用CAS验证VPN密码
+     *
+     * @param context  context
+     * @param vpnToken VPNToken
+     * @param account  账号
+     * @param pwd2     密码
+     * @return 操作结果
+     */
+    private int testVPNByCAS(Context context, String vpnToken, String account, String pwd2) {
+        String TGTTokenStr = StaticService.SSOLogin(context, account, pwd2, vpnToken);
+        if (TGTTokenStr.equals("ERROR2") || TGTTokenStr.equals("ERROR0")) {
+            return -2;
+        }
+        if (!TGTTokenStr.contains("TGT-")) {
+            return -1;
+        } else { //获取TGT成功，尝试获取ST
+            String ST_VPN = StaticService.SSOGetST(context, TGTTokenStr, context.getResources().getString(R.string.service_vpn), vpnToken);
+            if (ST_VPN.contains("ST-")) {
+                if (StaticService.loginVPNST(ST_VPN, vpnToken) != 0) {
+                    return StaticService.loginVPNST(ST_VPN, vpnToken);
+                }
+                return 0;
+            } else {
+                return -2;
+            }
+        }
+    }
+
+    /**
+     * 使用智慧校园验证账号
+     *
+     * @param view         view
+     * @param account      账号
+     * @param pwd2         智慧校园密码
+     * @param VPNToken     VPNToken
+     * @param vpnLoginType VPN登录方式
+     */
+    private void verifyByCAS(View view, String account, String pwd2, String VPNToken, int vpnLoginType) {
+        if (vpnLoginType == 0) { //CAS登录VPN，直接验证CAS账号即可
+            testCAS(account, pwd2, VPNToken);
+        } else { //正常登录VPN
+            int n = StaticService.loginVPN(this, VPNToken, account, pwd2);
+            if (n != 0) { //VPN异常
+                if (n == -3) { //修改密码
+                    DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                        @Override
+                        public void onClickYes() {
+                            //修改密码
+                            setEnClick();
+                            changePwd(view);
+                        }
+
+                        @Override
+                        public void onClickBack() {
+                            testCAS(account, pwd2, null);
+                        }
+                    };
+                    runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "修改密码", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_easy), service));
+
+                } else if (n == -1) { //密码错误
+                    DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                        @Override
+                        public void onClickYes() {
+                            //重试
+                            setEnClick();
+                        }
+
+                        @Override
+                        public void onClickBack() {
+                            testCAS(account, pwd2, null);
+                        }
+                    };
+                    runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_error), service));
+
+                } else { //网络或VPN系统异常
+                    DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                        @Override
+                        public void onClickYes() {
+                            //重试
+                            setEnClick();
+                        }
+
+                        @Override
+                        public void onClickBack() {
+                            testCAS(account, pwd2, null);
+                        }
+                    };
+                    runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_net_error), service));
+                }
+            } else { //正常登录VPN，因为智慧校园和VPN密码相同，则不进行验证和登录，在getInfo()方法刷新Token时进行登录
+                TokenData tokenData = TokenData.newInstance(this);
+                tokenData.setLoginType(0);
+                tokenData.setTGTToken("TGT-");
+                accountData.setUser(account, null, pwd2, cbRememberPwd.isChecked());
+                getInfo();
+            }
+        }
     }
 
     @Override
@@ -357,10 +432,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      * @param account  学号
      * @param password 智慧校园/VPN密码
      */
-    private void testCAS(String account, String password) {
+    private void testCAS(String account, String password, String VPNToken) {
         new Thread(() -> {
             runOnUiThread(() -> button.setText("正在认证"));
-            String TGTTokenStr = StaticService.SSOLogin(this, account, password, null);
+            String TGTTokenStr = StaticService.SSOLogin(this, account, password, VPNToken);
             if (TGTTokenStr.contains("TGT-")) {
                 TokenData tokenData = TokenData.newInstance(this);
                 tokenData.setTGTToken(TGTTokenStr);

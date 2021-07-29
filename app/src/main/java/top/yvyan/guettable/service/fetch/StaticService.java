@@ -1,7 +1,6 @@
 package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
@@ -111,10 +110,48 @@ public class StaticService {
             return "ERROR0";
         } else {
             String html = response.comment;
-            if (html.contains("ST")) {
+            if (html.contains("ST-")) {
                 return html;
             }
             return "ERROR1";
+        }
+    }
+
+    /**
+     * 通过ST令牌登录VPN
+     *
+     * @param ST    ST令牌
+     * @param token 用于接收登录后的cookie
+     * @return 登录结果
+     * 0 -- 登录成功
+     * -1 -- 登录失败
+     * -2 -- 发生异常
+     */
+    public static int loginVPNST(String ST, String token) {
+
+        String url = "https://v.guet.edu.cn/https/77726476706e69737468656265737421e6b94689222426557a1dc7af96/login?cas_login=true&ticket=";
+        url = url + ST;
+        OkHttpClient okHttpClient = new OkHttpClient();
+        if (token == null) {
+            token = "";
+        }
+        final Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Cookie", token)
+                .build();
+        final Call call = okHttpClient.newCall(request);
+
+        try {
+            Response response = call.execute();
+            response.close();
+            if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("html lang=\"zh-cmn\"")) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -2;
         }
     }
 
