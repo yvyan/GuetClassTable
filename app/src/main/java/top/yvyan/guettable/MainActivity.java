@@ -73,8 +73,7 @@ public class MainActivity extends AppCompatActivity {
         themeID = singleSettingData.getThemeId();
         BackgroundUtil.setPageTheme(this, themeID);
         setContentView(R.layout.activity_main);
-
-        //透明状态栏
+        // 透明状态栏
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
@@ -111,20 +110,16 @@ public class MainActivity extends AppCompatActivity {
         list.add(MoreFragment.newInstance());
         list.add(PersonFragment.newInstance());
         viewPagerAdapter.setList(list);
-
-        new Thread(() -> {
-
-        }).start();
-
+        // 小米推送服务
         if (shouldInit()) {
             MiPushClient.registerPush(this, APP_ID, APP_KEY);
         }
-        //友盟
+        // 友盟
         UMRemoteConfig.getInstance().setConfigSettings(new RemoteConfigSettings.Builder().setAutoUpdateModeEnabled(true).build()); //在线参数
         UMRemoteConfig.getInstance().setDefaults(R.xml.cloud_config_parms);
         UMConfigure.init(this, UMengKey, "Umeng", UMConfigure.DEVICE_TYPE_PHONE, ""); //数据统计
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
-        //通过在线参数判断更新方式0：bugly在线更新； 1：通过浏览器下载更新
+        // 通过在线参数判断更新方式0：bugly在线更新； 1：通过浏览器下载更新
         String updateType = UMRemoteConfig.getInstance().getConfigValue("updateType");
         int n = 0;
         try {
@@ -191,12 +186,12 @@ public class MainActivity extends AppCompatActivity {
         //通过ActivityManager我们可以获得系统里正在运行的activities
         //包括进程(Process)等、应用程序/包、服务(Service)、任务(Task)信息。
         ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
-        List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+        List<ActivityManager.RunningAppProcessInfo> processInfo = am.getRunningAppProcesses();
         String mainProcessName = getPackageName();
         //获取本App的唯一标识
         int myPid = Process.myPid();
         //利用一个增强for循环取出手机里的所有进程
-        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
+        for (ActivityManager.RunningAppProcessInfo info : processInfo) {
             //通过比较进程的唯一标识和包名判断进程里是否存在该App
             if (info.pid == myPid && mainProcessName.equals(info.processName)) {
                 return true;
