@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -83,7 +84,7 @@ public class DialogUtil {
      * @param text    自定义显示的文字
      */
     public static void showTextDialog(final Context context, String text) {
-        showProgress(context, text, "好的", new IDialogService() {
+        setTextDialog(context, text, "好的", new IDialogService() {
             @Override
             public void onClickYes() {
             }
@@ -91,10 +92,10 @@ public class DialogUtil {
             @Override
             public void onClickBack() {
             }
-        });
+        }, false);
     }
 
-    public static AlertDialog showProgress(final Context context, String text, String btnText, IDialogService dialogService) {
+    public static AlertDialog setTextDialog(final Context context, String text, String btnText, IDialogService dialogService, boolean showProgress) {
         try {
             AlertDialog dialog;
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -106,6 +107,12 @@ public class DialogUtil {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             Window window = dialog.getWindow();
             window.setContentView(R.layout.text_dialog);
+            ProgressBar progressBar = window.findViewById(R.id.progressBar);
+            if (showProgress) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+            }
             TextView tv_scan_number = window
                     .findViewById(R.id.text_dialog);
             tv_scan_number.setText(text);
