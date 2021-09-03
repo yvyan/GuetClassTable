@@ -243,6 +243,11 @@
                 android:background="#C0ffffff"
                 android:orientation="vertical">
 
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.2dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
                 <FrameLayout
                     android:id="@+id/person_personalized"
                     android:layout_width="match_parent"
@@ -520,6 +525,11 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.2dp"
+                    android:background="@color/xui_config_color_gray_9" />
 
             </LinearLayout>
 
