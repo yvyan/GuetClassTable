@@ -360,8 +360,8 @@ public class Net {
                 resources.getString(R.string.lan_get_table_success_contain_response_text),
                 null,
                 null,
-                null,
-                null,
+                15000,
+                15000,
                 null
         );
     }

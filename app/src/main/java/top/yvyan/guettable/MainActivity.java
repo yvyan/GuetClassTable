@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Process;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SingleSettingData singleSettingData;
     private BottomNavigationView bottomNavigationView;
+    private View bottomLine;
     private ViewPager viewPager;
     private MenuItem menuItem;
     private ImageView background;
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         background = findViewById(R.id.background);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemReselectedListener);
+        bottomLine = findViewById(R.id.bottom_line);
         viewPager = findViewById(R.id.vp);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -147,9 +150,11 @@ public class MainActivity extends AppCompatActivity {
         if (BackgroundUtil.isSetBackground(this)) {
             bottomNavigationView.getBackground().setAlpha((int) singleSettingData.getTitleBarAlpha());
             BackgroundUtil.setBackground(this, background);
+            bottomLine.setVisibility(View.GONE);
         } else {
             bottomNavigationView.getBackground().setAlpha(255);
             background.setImageBitmap(null);
+            bottomLine.setVisibility(View.VISIBLE);
         }
     }
 

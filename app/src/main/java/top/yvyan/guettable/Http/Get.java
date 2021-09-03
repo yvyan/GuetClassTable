@@ -83,12 +83,12 @@ public class Get {
                 cnt.setRequestProperty("Content-Type", content_type);
             }
             if (read_timeout == null) {
-                cnt.setReadTimeout(4000);
+                cnt.setReadTimeout(8000);
             } else {
                 cnt.setReadTimeout(read_timeout);
             }
             if (connect_timeout == null) {
-                cnt.setConnectTimeout(2000);
+                cnt.setConnectTimeout(4000);
             } else {
                 cnt.setConnectTimeout(connect_timeout);
             }
