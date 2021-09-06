@@ -494,18 +494,22 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         StudentInfo studentInfo = null;
         try {
             studentInfo = StaticService.getStudentInfo(this, tokenData.getCookie());
+            if (!generalData.isInternational()) {
+                List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getCookie());
+                if (allTerm != null) {
+                    MoreDate.newInstance(this).setTermBeans(allTerm);
+                }
+            }
         } catch (Exception e) {
             UMCrash.generateCustomLog(e, "getInfo");
         }
-        List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getCookie());
 
         GeneralData generalData = GeneralData.newInstance(this);
-        if (studentInfo != null && allTerm != null) {
+        if (studentInfo != null) {
             generalData.setNumber(studentInfo.getStid());
             generalData.setName(studentInfo.getName());
             generalData.setTerm(studentInfo.getTerm());
             generalData.setGrade(studentInfo.getGrade());
-            MoreDate.newInstance(this).setTermBeans(allTerm);
             Intent intent = new Intent(this, SetTermActivity.class);
             startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
             runOnUiThread(this::setEnClick);
