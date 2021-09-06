@@ -108,7 +108,9 @@ public class CommFunc {
             tokenData.refresh();
             if (!noLogin[0]) {
                 activity.runOnUiThread(() -> {
-                    dialog[0].dismiss();
+                    if (dialog[0] != null && dialog[0].isShowing()) {
+                        dialog[0].dismiss();
+                    }
                     WebViewActivity.cleanCash(Objects.requireNonNull(activity));
                 });
                 intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/Login/MainDesktop")));
