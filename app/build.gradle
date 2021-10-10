@@ -6,9 +6,9 @@ android {
     defaultConfig {
         applicationId "top.yvyan.guettable"
         minSdkVersion 21
-        targetSdkVersion 31
-        versionCode 43 //记得补丁版本号归零(patch_version)
-        versionName "4.3.0"
+        targetSdkVersion 30
+        versionCode 44 //记得补丁版本号归零(patch_version)
+        versionName "4.3.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         android.buildFeatures.dataBinding = true
