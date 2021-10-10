@@ -62,7 +62,9 @@
         <activity android:name=".moreFun.GradesActivity" />
         <activity android:name=".moreFun.PlannedCoursesActivity" />
         <activity android:name=".activity.WebViewActivity" />
-        <activity android:name=".activity.LaunchActivity">
+        <activity
+            android:name=".activity.LaunchActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
