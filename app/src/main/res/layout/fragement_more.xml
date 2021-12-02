@@ -618,6 +618,7 @@
                 android:layout_marginTop="10dp"
                 app:cardBackgroundColor="#C0ffffff"
                 app:cardCornerRadius="10dp"
+                android:visibility="gone"
                 app:cardElevation="0dp">
 
                 <LinearLayout
