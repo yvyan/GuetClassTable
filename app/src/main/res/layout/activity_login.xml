@@ -28,7 +28,8 @@
             android:text="@string/app_name"
             android:textSize="35sp"
             android:layout_centerHorizontal="true"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
 
         <ImageView
             android:layout_width="40dp"
@@ -210,62 +211,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/password_help"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginTop="10dp">
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.17" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="13dp"
-            android:src="@drawable/p_info"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/first_login_help"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline5"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.xuexiang.xui.widget.button.ButtonView
-            android:id="@+id/button_login_first"
-            style="@style/ButtonView.Blue"
-            android:layout_width="160dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:onClick="firstLogin"
-            android:text="@string/first_login"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.xuexiang.xui.widget.button.ButtonView
         style="@style/ButtonView.Green"

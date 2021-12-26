@@ -16,8 +16,6 @@ import java.util.Objects;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SingleSettingData;
-import top.yvyan.guettable.moreFun.AverageTeacherActivity;
-import top.yvyan.guettable.moreFun.AverageTextbookActivity;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
@@ -30,7 +28,6 @@ import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
 import top.yvyan.guettable.moreFun.QQGroupActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
 import top.yvyan.guettable.moreFun.SelectedCourseActivity;
-import top.yvyan.guettable.moreFun.TestActivity;
 import top.yvyan.guettable.service.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
@@ -74,9 +71,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         View libSchedule = view.findViewById(R.id.more_lib_schedule);
         libSchedule.setOnClickListener(this);
 
-//        View graduationRequirement = view.findViewById(R.id.more_graduation_requirement);
-//        graduationRequirement.setOnClickListener(this);
-//        graduationRequirement.setVisibility(View.GONE);
         View planCourses = view.findViewById(R.id.more_plan_courses);
         planCourses.setOnClickListener(this);
         View cet = view.findViewById(R.id.more_cet);
@@ -98,11 +92,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         urlIndex.setOnClickListener(this);
         View qqGroup = view.findViewById(R.id.more_qq_group);
         qqGroup.setOnClickListener(this);
-
-        View evaluatingTeachers = view.findViewById(R.id.more_evaluating_teachers);
-        evaluatingTeachers.setOnClickListener(this);
-        View evaluatingTextbooks = view.findViewById(R.id.more_evaluating_textbooks);
-        evaluatingTextbooks.setOnClickListener(this);
 
         View selectedCourse = view.findViewById(R.id.more_selected_course);
         selectedCourse.setOnClickListener(this);
@@ -214,29 +203,13 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             case R.id.more_url_index:
                 openBrowser(UMRemoteConfig.getInstance().getConfigValue("guetYvyanTop"));
                 break;
-            case R.id.more_evaluating_teachers:
-                if (generalData.isInternational()) {
-                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
-                } else {
-                    intent = new Intent(getContext(), AverageTeacherActivity.class);
-                    startActivity(intent);
-                }
-                break;
-            case R.id.more_evaluating_textbooks:
-                if (generalData.isInternational()) {
-                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
-                } else {
-                    intent = new Intent(getContext(), AverageTextbookActivity.class);
-                    startActivity(intent);
-                }
-                break;
-            case R.id.more_test:
-                intent = new Intent(getContext(), TestActivity.class);
-                startActivity(intent);
-                break;
             case R.id.more_selected_course:
-                intent = new Intent(getContext(), SelectedCourseActivity.class);
-                startActivity(intent);
+                if (generalData.isInternational()) {
+                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
+                } else {
+                    intent = new Intent(getContext(), SelectedCourseActivity.class);
+                    startActivity(intent);
+                }
                 break;
             default:
                 ToastUtil.showToast(getContext(), "敬请期待！");

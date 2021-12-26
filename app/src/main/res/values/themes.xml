@@ -6,8 +6,4 @@
         <item name="android:colorAccent">?attr/color_bar</item>
     </style>
 
-    <style name="ThemeOverlay.GuetTable.AppWidgetContainer" parent="">
-        <item name="appWidgetBackgroundColor">@color/light_blue_600</item>
-        <item name="appWidgetTextColor">@color/light_blue_50</item>
-    </style>
 </resources>

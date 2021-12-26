@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.umcrash.UMCrash;
 import com.xuexiang.xui.widget.tabbar.TabControlView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
@@ -54,7 +53,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private SuperButton button;
     private RelativeLayout bkjwPasswordView;
     private EditText etPwd2;
-    private View passwordHelp;
     private ImageView ivPwdSwitch;
     private ImageView ivPwdSwitch2;
     private View progressBar;
@@ -82,7 +80,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         etPwd = findViewById(R.id.et_pwd);
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
         cbRememberPwd.setChecked(true);
-        passwordHelp = findViewById(R.id.password_help);
         ivPwdSwitch.setOnClickListener(showPwdClickListener());
         ivPwdSwitch2.setOnClickListener(showPwdClickListener());
         progressBar = findViewById(R.id.progressBar2);
@@ -101,20 +98,17 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //智慧校园登录方式隐藏教务密码输入框、显示登录提示
+        //智慧校园登录方式隐藏教务密码输入框
         if (type == 0) {
             bkjwPasswordView.setVisibility(View.GONE);
-            passwordHelp.setVisibility(View.VISIBLE);
         }
 
         tabControlView.setOnTabSelectionChangedListener((title, value) -> {
-            if ("教务登录".equals(title)) { // 切换第二个密码框的显示
+            if ("国际学院".equals(title)) { // 切换第二个密码框的显示
                 bkjwPasswordView.setVisibility(View.VISIBLE);
-                passwordHelp.setVisibility(View.GONE);
                 type = 1;
             } else {
                 bkjwPasswordView.setVisibility(View.GONE);
-                passwordHelp.setVisibility(View.VISIBLE);
                 type = 0;
             }
         });
@@ -157,44 +151,30 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         String account = etAccount.getText().toString();
         String pwd = etPwd.getText().toString();
         String pwd2 = etPwd2.getText().toString();
-        String vpnLoginType = UMRemoteConfig.getInstance().getConfigValue("vpnLoginType");
-        int n = 0; //vpn登录方式选择 0:CAS; 1:正常登录
-        try {
-            n = Integer.parseInt(vpnLoginType);
-        } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "checkUpdateType");
-        }
-        int finalN = n;
         new Thread(() -> {
             //区分是否为国际学院
-            generalData.setInternational(isInternational(account));
+            generalData.setInternational(type == 1);
             //区分登录方式
             String VPNToken = Net.getVPNToken(this);
             if (type == 0) { //智慧校园
-                verifyByCAS(view, account, pwd2, VPNToken, finalN);
+                testCAS(account, pwd2, VPNToken);
             } else if (type == 1) {
-                VerifyByBkjw(view, account, pwd, pwd2, VPNToken, finalN);
+                VerifyByBkjw(view, account, pwd, pwd2, VPNToken);
             }
         }).start();
     }
 
     /**
-     * 使用VPN + 教务验证账号
+     * 使用VPN + 教务验证账号(国际学院使用)
      *
-     * @param view         view
-     * @param account      账号
-     * @param pwd          教务系统密码
-     * @param pwd2         智慧校园密码
-     * @param VPNToken     VPNToken
-     * @param vpnLoginType VPN登录方式
+     * @param view     view
+     * @param account  账号
+     * @param pwd      教务系统密码
+     * @param pwd2     智慧校园密码
+     * @param VPNToken VPNToken
      */
-    private void VerifyByBkjw(View view, String account, String pwd, String pwd2, String VPNToken, int vpnLoginType) {
-        int n;
-        if (vpnLoginType == 0) { //CAS登录VPN
-            n = testVPNByCAS(this, VPNToken, account, pwd2);
-        } else { //正常登录VPN
-            n = StaticService.loginVPN(this, VPNToken, account, pwd2);
-        }
+    private void VerifyByBkjw(View view, String account, String pwd, String pwd2, String VPNToken) {
+        int n = testVPNByCAS(this, VPNToken, account, pwd2);
         if (n != 0) { //VPN异常
             if (n == -3) { //修改密码
                 DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
@@ -275,77 +255,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 return 0;
             } else {
                 return -2;
-            }
-        }
-    }
-
-    /**
-     * 使用智慧校园验证账号
-     *
-     * @param view         view
-     * @param account      账号
-     * @param pwd2         智慧校园密码
-     * @param VPNToken     VPNToken
-     * @param vpnLoginType VPN登录方式
-     */
-    private void verifyByCAS(View view, String account, String pwd2, String VPNToken, int vpnLoginType) {
-        if (vpnLoginType == 0) { //CAS登录VPN，直接验证CAS账号即可
-            testCAS(account, pwd2, VPNToken);
-        } else { //正常登录VPN
-            int n = StaticService.loginVPN(this, VPNToken, account, pwd2);
-            if (n != 0) { //VPN异常
-                if (n == -3) { //修改密码
-                    DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                        @Override
-                        public void onClickYes() {
-                            //修改密码
-                            setEnClick();
-                            changePwd(view);
-                        }
-
-                        @Override
-                        public void onClickBack() {
-                            testCAS(account, pwd2, null);
-                        }
-                    };
-                    runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "修改密码", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_easy), service));
-
-                } else if (n == -1) { //密码错误
-                    DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                        @Override
-                        public void onClickYes() {
-                            //重试
-                            setEnClick();
-                        }
-
-                        @Override
-                        public void onClickBack() {
-                            testCAS(account, pwd2, null);
-                        }
-                    };
-                    runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_error), service));
-
-                } else { //网络或VPN系统异常
-                    DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                        @Override
-                        public void onClickYes() {
-                            //重试
-                            setEnClick();
-                        }
-
-                        @Override
-                        public void onClickBack() {
-                            testCAS(account, pwd2, null);
-                        }
-                    };
-                    runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_net_error), service));
-                }
-            } else { //正常登录VPN，因为智慧校园和VPN密码相同，则不进行验证和登录，在getInfo()方法刷新Token时进行登录
-                TokenData tokenData = TokenData.newInstance(this);
-                tokenData.setLoginType(0);
-                tokenData.setTGTToken("TGT-");
-                accountData.setUser(account, null, pwd2, cbRememberPwd.isChecked());
-                getInfo();
             }
         }
     }
@@ -523,18 +432,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     /**
-     * 确定是否为国际学院账号
-     *
-     * @param account 学号
-     * @return 是否为国际学院账号
-     */
-    private boolean isInternational(String account) {
-        if (account.isEmpty()) {
-            return false;
-        } else return account.length() == 10 && account.startsWith("611", 2);
-    }
-
-    /**
      * 设置按钮可点击
      */
     private void setEnClick() {
@@ -564,15 +461,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         Uri uri = Uri.parse(url);
         webIntent.setData(uri);
         startActivity(webIntent);
-    }
-
-    /**
-     * 打开智慧校园网址
-     *
-     * @param view view
-     */
-    public void firstLogin(View view) {
-        openUrl(getContext().getResources().getString(R.string.smart_campus));
     }
 
     /**
