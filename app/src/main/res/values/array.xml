@@ -6,6 +6,6 @@
     </string-array>
     <string-array name="loginType">
         <item>智慧校园</item>
-        <item>教务登录</item>
+        <item>国际学院</item>
     </string-array>
 </resources>

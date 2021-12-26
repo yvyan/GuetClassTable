@@ -65,7 +65,7 @@ public class TokenData {
         accountData = AccountData.newInstance(context);
         this.context = context;
 
-        loginType = sharedPreferences.getInt(LOGIN_TYPE, 1);
+        loginType = sharedPreferences.getInt(LOGIN_TYPE, 0);
         TGTToken = sharedPreferences.getString(TGT_TOKEN, "TGT-");
         VPNToken = sharedPreferences.getString(VPN_TOKEN, null);
         bkjwCookie = sharedPreferences.getString(BKJW_COOKIE, null);

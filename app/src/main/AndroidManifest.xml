@@ -71,8 +71,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".moreFun.AverageTeacherActivity" />
-        <activity android:name=".moreFun.AverageTextbookActivity" />
         <activity android:name=".activity.PersonalizedActivity" />
         <activity android:name=".activity.AboutActivity" />
         <activity android:name=".activity.SettingActivity" />
