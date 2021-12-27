@@ -86,6 +86,7 @@
     <string name="url_course_arrange">http://utsc.guet.edu.cn/CourseArrange.aspx</string>
     <string name="text_empty_room">空教室查询</string>
     <string name="url_empty_room">http://utsc.guet.edu.cn/EmptyClassRoom.aspx</string>
+    <string name="url_empty_room_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/EmptyClassRoom.aspx?mCode=001503</string>
     <string name="text_news_1">校内公告</string>
     <string name="url_news_1">http://weixin.guet.edu.cn/News?type=0</string>
     <string name="text_news_2">校内通知</string>
@@ -131,10 +132,10 @@
     <string name="log_vpn_pwd_error">VPN密码错误，您可以选择重试，或继续登录(之后仅可使用校园网进行数据同步)。\n\nTip:若VPN系统出现问题，尝试后仍无法登录，请选择“仍然继续”。</string>
     <string name="log_vpn_pwd_easy">VPN已禁止使用简单密码登录，请修改密码后重新登录，你也可以选择“仍然继续”，之后仅可使用校园网进行数据同步。</string>
     <string name="login_help">&#160;&#160;&#160;&#160;请输入智慧校园密码进行登录(建议使用校园网进行登录和数据同步！)。
-        \n&#160;&#160;&#160;&#160;非国际学院学生请使用智慧校园方式：请输入智慧校园登录密码，默认为身份证后6位，但学校不允许使用默认密码登录，请点击登录页面下方的“修改智慧校园登录密码”按钮进行快捷修改，修改后可以正常登录。
-        \n&#160;&#160;&#160;&#160;国际学院学生请使用教务登录方式：第一个密码请输入教务密码，默认为身份证后6位，您可以使用校园网在浏览器中输入：http://172.16.13.22/进行尝试；第二个密码请输入智慧校园登录密码，详情请看上一段。
+        \n&#160;&#160;&#160;&#160;非国际学院学生：请输入智慧校园登录密码，默认为身份证后6位，但学校不允许使用默认密码登录，请点击登录页面下方的“修改智慧校园密码”按钮进行快捷修改，修改后可以正常登录。
+        \n&#160;&#160;&#160;&#160;国际学院学生：第一个密码请输入教务密码，默认为身份证后6位，您可以使用校园网在浏览器中输入：https://gyjxgl.guet.edu.cn/进行尝试；第二个密码请输入智慧校园登录密码，详情请看上一段。
         \n&#160;&#160;&#160;&#160;偶尔学校网络会不稳定或者VPN被关闭，登录失败出现弹窗可以选择“仍然继续”，使用校园网进行数据同步。
-        \n&#160;&#160;&#160;&#160;若您是新生或者尝试后仍然无法解决，请加入QQ群：963908505(在关于页面可以一键加群)，我们会帮您解决！</string>
+        \n&#160;&#160;&#160;&#160;若您是新生或者尝试后仍然无法解决，请加入QQ群(在关于页面可以一键加群)，我们会帮您解决！</string>
 
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.64</string>
     <string name="cookie_delimiter">"; "</string>
@@ -196,7 +197,7 @@
     <string name="hint_vpn_password">请输入智慧校园密码</string>
     <string name="remember_password">记住密码</string>
     <string name="login">登录</string>
-    <string name="change_password">&#160;&#160;修改智慧校园登录密码&#160;&#160;</string>
+    <string name="change_password">&#160;&#160;修改智慧校园密码&#160;&#160;</string>
 
     <string name="widget_tip_empty">今日暂无课程~</string>
     <string name="widget_week_empty">第X周</string>
