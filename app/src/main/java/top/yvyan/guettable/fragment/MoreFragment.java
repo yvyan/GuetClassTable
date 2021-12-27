@@ -58,43 +58,31 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
         addStatus.setLayoutParams(lp);
 
-        View testSchedule = view.findViewById(R.id.more_test_schedule);
-        testSchedule.setOnClickListener(this);
-        View credits = view.findViewById(R.id.more_credits);
-        credits.setOnClickListener(this);
-        View testScores = view.findViewById(R.id.more_test_scores);
-        testScores.setOnClickListener(this);
-        View libScores = view.findViewById(R.id.more_lib_scores);
-        libScores.setOnClickListener(this);
-        View resitSchedule = view.findViewById(R.id.more_resit_schedule);
-        resitSchedule.setOnClickListener(this);
-        View libSchedule = view.findViewById(R.id.more_lib_schedule);
-        libSchedule.setOnClickListener(this);
+        view.findViewById(R.id.more_test_schedule).setOnClickListener(this);
+        view.findViewById(R.id.more_credits).setOnClickListener(this);
+        view.findViewById(R.id.more_test_scores).setOnClickListener(this);
+        view.findViewById(R.id.more_lib_scores).setOnClickListener(this);
+        view.findViewById(R.id.more_resit_schedule).setOnClickListener(this);
+        view.findViewById(R.id.more_lib_schedule).setOnClickListener(this);
+        view.findViewById(R.id.more_selected_course).setOnClickListener(this);
 
-        View planCourses = view.findViewById(R.id.more_plan_courses);
-        planCourses.setOnClickListener(this);
-        View cet = view.findViewById(R.id.more_cet);
-        cet.setOnClickListener(this);
-        View innovationPoints = view.findViewById(R.id.more_innovation_score);
-        innovationPoints.setOnClickListener(this);
+        view.findViewById(R.id.more_plan_courses).setOnClickListener(this);
+        view.findViewById(R.id.more_cet).setOnClickListener(this);
+        view.findViewById(R.id.more_innovation_score).setOnClickListener(this);
 
-        View urlBkjw = view.findViewById(R.id.more_url_bkjw);
-        urlBkjw.setOnClickListener(this);
-        View urlVPN = view.findViewById(R.id.more_url_vpn);
-        urlVPN.setOnClickListener(this);
-        View urlCampus = view.findViewById(R.id.more_url_campus);
-        urlCampus.setOnClickListener(this);
-        View urlLiJiang = view.findViewById(R.id.more_url_lijiang);
-        urlLiJiang.setOnClickListener(this);
-        View urlMore = view.findViewById(R.id.more_url_more);
-        urlMore.setOnClickListener(this);
-        View urlIndex = view.findViewById(R.id.more_url_index);
-        urlIndex.setOnClickListener(this);
-        View qqGroup = view.findViewById(R.id.more_qq_group);
-        qqGroup.setOnClickListener(this);
+        view.findViewById(R.id.more_url_bkjw).setOnClickListener(this);
+        view.findViewById(R.id.more_url_vpn).setOnClickListener(this);
+        view.findViewById(R.id.more_url_campus).setOnClickListener(this);
+        view.findViewById(R.id.more_url_lijiang).setOnClickListener(this);
+        view.findViewById(R.id.more_url_graduation_project).setOnClickListener(this);
+        view.findViewById(R.id.more_url_index).setOnClickListener(this);
+        view.findViewById(R.id.more_wei_chat).setOnClickListener(this);
+        view.findViewById(R.id.more_url_more).setOnClickListener(this);
 
-        View selectedCourse = view.findViewById(R.id.more_selected_course);
-        selectedCourse.setOnClickListener(this);
+        view.findViewById(R.id.more_course_arrange).setOnClickListener(this);
+        view.findViewById(R.id.more_empty_room).setOnClickListener(this);
+        view.findViewById(R.id.more_qq_group).setOnClickListener(this);
+        view.findViewById(R.id.more_tool_group).setOnClickListener(this);
 
         return view;
     }
@@ -160,10 +148,15 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getContext(), LibActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.more_qq_group:
-                intent = new Intent(getContext(), QQGroupActivity.class);
-                startActivity(intent);
+            case R.id.more_selected_course:
+                if (generalData.isInternational()) {
+                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
+                } else {
+                    intent = new Intent(getContext(), SelectedCourseActivity.class);
+                    startActivity(intent);
+                }
                 break;
+
 
             case R.id.more_plan_courses:
                 intent = new Intent(getContext(), PlannedCoursesActivity.class);
@@ -182,6 +175,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
 
+
             case R.id.more_url_bkjw:
                 CommFunc.noLoginWebBKJW(getActivity());
                 break;
@@ -189,27 +183,48 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 CommFunc.noLoginWebVPN(getActivity());
                 break;
             case R.id.more_url_campus:
-                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.smart_campus));
+                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_smart_campus));
                 break;
 
             case R.id.more_url_lijiang:
-                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_lijiang));
+                CommFunc.noLoginWebVPN(getActivity(),
+                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_lijiang),
+                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_lijiang_vpn));
+                break;
+            case R.id.more_url_graduation_project:
+                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_graduation_project));
+                break;
+            case R.id.more_url_index:
+                openBrowser(UMRemoteConfig.getInstance().getConfigValue("guetYvyanTop"));
+                break;
+            case R.id.more_wei_chat:
+                ToastUtil.showToast(getContext(), "敬请期待！");
                 break;
             case R.id.more_url_more:
                 intent = new Intent(getContext(), MoreUrlActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.more_url_index:
-                openBrowser(UMRemoteConfig.getInstance().getConfigValue("guetYvyanTop"));
+
+
+            case R.id.more_course_arrange:
+                CommFunc.noLoginWebVPN(getActivity(),
+                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_course_arrange),
+                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_course_arrange_vpn));
                 break;
-            case R.id.more_selected_course:
-                if (generalData.isInternational()) {
-                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
-                } else {
-                    intent = new Intent(getContext(), SelectedCourseActivity.class);
-                    startActivity(intent);
-                }
+            case R.id.more_empty_room:
+                CommFunc.noLoginWebVPN(getActivity(),
+                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_empty_room),
+                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_empty_room_vpn));
                 break;
+            case R.id.more_qq_group:
+                intent = new Intent(getContext(), QQGroupActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.more_tool_group:
+                ToastUtil.showToast(getContext(), "敬请期待！");
+                break;
+
+
             default:
                 ToastUtil.showToast(getContext(), "敬请期待！");
         }

@@ -15,13 +15,7 @@
     <string name="SSO_success_contain_ST">ST-</string>
     <string name="service_bkjw">service=http%3A%2F%2F172.16.13.22</string>
     <string name="service_vpn">service=https%3a%2f%2fv.guet.edu.cn%2flogin%3fcas_login%3dtrue</string>
-    <string name="service_campus">service=http%3A%2F%2Ficampus.guet.edu.cn%2FGuetAccount%2FCasLogin</string>
     <string name="SSO_bkjw">http://172.16.13.22/login/login</string>
-
-    <!-- VPN直接登录 -->
-    <string name="VPN_login">https://v.guet.edu.cn/do-login</string>
-    <string name="VPN_referer">https://v.guet.edu.cn</string>
-    <string name="VPN_context_type">application/x-www-form-urlencoded; charset=UTF-8</string>
 
     <!-- 新版教务系统 -->
     <string name="lan_get_checkcode_url">/login/GetValidateCode?id=0.7060164569272753</string>
@@ -54,16 +48,16 @@
     <string name="lan_get_effective_credits">/student/Getyxxf</string>
     <string name="lan_get_planned_credits">/student/getplancj</string>
 
-    <string name="smart_campus">http://icampus.guet.edu.cn/</string>
+    <string name="url_smart_campus">http://icampus.guet.edu.cn/</string>
+    <string name="url_graduation_project">https://co2.cnki.net/Login.html?dp=gliet&amp;r=1640591310211</string>
     <string name="url_vpn">https://v.guet.edu.cn/</string>
     <string name="url_lijiang">http://www.gxljxt.cn/</string>
+    <string name="url_lijiang_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e7e056d22028645a661cc7af96/</string>
     <string name="downloadApp_url">https://www.coolapk.com/apk/279989</string>
     <string name="url_change_vpn_pwd">https://172.18.8.21:4102/auth?service=https%3A%2F%2F172.18.8.21%3A4102%2F%23%2Fpassword%2FpasswordModify</string>
 
     <string name="text_school_song">桂电校歌</string>
     <string name="url_school_song">https://music.163.com/#/song?id=469744200</string>
-    <string name="text_resource_center">教学资源中心(网课群号)</string>
-    <string name="url_resource_center">https://www.guet.edu.cn/jxzyzx/</string>
     <string name="text_net_login">上网登录页</string>
     <string name="url_net_login">http://10.0.1.5/</string>
     <string name="text_cet">四六级官网(报名、查成绩)</string>
@@ -82,9 +76,8 @@
     <string name="url_map_jjl">https://www.guet.edu.cn/xxjj/jjlxqpmdt.htm</string>
     <string name="text_staff">智慧学工</string>
     <string name="url_staff">https://xsgl.guet.edu.cn/</string>
-    <string name="text_course_arrange">教学安排查询</string>
     <string name="url_course_arrange">http://utsc.guet.edu.cn/CourseArrange.aspx</string>
-    <string name="text_empty_room">空教室查询</string>
+    <string name="url_course_arrange_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/CourseArrange.aspx?wrdrecordvisit=1640584485000</string>
     <string name="url_empty_room">http://utsc.guet.edu.cn/EmptyClassRoom.aspx</string>
     <string name="url_empty_room_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/EmptyClassRoom.aspx?mCode=001503</string>
     <string name="text_news_1">校内公告</string>
@@ -155,7 +148,7 @@
     <string name="titleBar_4">个人信息</string>
     <string name="moreFun_jiaowu"> 教务查询 </string>
     <string name="moreFun_biye"> 毕业相关 </string>
-    <string name="moreFun_lianjie"> 常用链接 </string>
+    <string name="moreFun_guet"> 官方站点 </string>
     <string name="moreFun_test_schedule"> 考试安排 </string>
     <string name="moreFun_credits"> 学分绩 </string>
     <string name="moreFun_test_scores"> 考试成绩 </string>
@@ -170,8 +163,15 @@
     <string name="moreFun_url_campus"> 智慧校园 </string>
     <string name="moreFun_url_lijiang"> 漓江学堂 </string>
     <string name="moreFun_url_index">桂电导航</string>
-    <string name="moreFun_qqGroup">资源群聊</string>
+    <string name="moreFun_url_graduation_project">毕设管理</string>
+    <string name="moreFun_qqGroup">官方QQ群</string>
+    <string name="moreFun_wei_chat">官方公众号</string>
     <string name="moreFun_url_more"> 更多链接 </string>
+    <string name="moreFun_tools">常用工具</string>
+    <string name="moreFun_course_arrange">教学安排</string>
+    <string name="moreFun_empty_room">空教室查询</string>
+    <string name="moreFun_tool_group">万能群</string>
+
     <string name="course_add">添加课程</string>
     <string name="course_delete">删除课程</string>
     <string name="person_login">点击登录</string>
