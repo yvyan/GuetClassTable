@@ -147,7 +147,7 @@ public class CommFunc {
                 }
             };
             final AlertDialog[] dialog = new AlertDialog[1];
-            activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动登录中...(最长需要20s)", "跳过", iDialogService, true));
+            activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动建立连接中...(最长需要15s)", "跳过", iDialogService, true));
 
             String token = tokenData.getVpnToken();
             if (!noLogin[0]) {
