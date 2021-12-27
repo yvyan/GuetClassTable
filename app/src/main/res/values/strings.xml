@@ -15,6 +15,7 @@
     <string name="SSO_success_contain_ST">ST-</string>
     <string name="service_bkjw">service=http%3A%2F%2F172.16.13.22</string>
     <string name="service_vpn">service=https%3a%2f%2fv.guet.edu.cn%2flogin%3fcas_login%3dtrue</string>
+    <string name="service_campus">service=http%3A%2F%2Ficampus.guet.edu.cn%2FGuetAccount%2FCasLogin</string>
     <string name="SSO_bkjw">http://172.16.13.22/login/login</string>
 
     <!-- VPN直接登录 -->
