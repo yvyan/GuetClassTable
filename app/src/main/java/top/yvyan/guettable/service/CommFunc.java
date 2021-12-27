@@ -164,4 +164,53 @@ public class CommFunc {
             }
         }).start();
     }
+
+    /**
+     * 自动登录VPN打开相应链接
+     *
+     * @param activity activity
+     * @param web      内网网址
+     * @param vpnWeb   外网网址
+     */
+    public static void noLoginWebVPN(Activity activity, String web, String vpnWeb) {
+        TokenData tokenData = TokenData.newInstance(activity);
+        if (!tokenData.isIsVPN()) { //内网直接打开对应网址
+            openBrowser(activity, web);
+        } else { //外网登录vpn后打开对应网址
+            new Thread(() -> {
+                final boolean[] noLogin = {false};
+
+                Intent intent = new Intent(activity, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.WEB_URL, vpnWeb);
+                DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
+                    @Override
+                    public void onClickYes() {
+                        AppUtil.reportFunc(activity, "登录VPN-跳过");
+                        activity.startActivity(intent);
+                        noLogin[0] = true;
+                    }
+
+                    @Override
+                    public void onClickBack() {
+                    }
+                };
+                final AlertDialog[] dialog = new AlertDialog[1];
+                activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动建立连接中...(最长需要15s)", "跳过", iDialogService, true));
+
+                String token = tokenData.getVpnToken();
+                if (!noLogin[0]) {
+                    activity.runOnUiThread(() -> {
+                        dialog[0].dismiss();
+                        WebViewActivity.cleanCash(Objects.requireNonNull(activity));
+                    });
+                    intent.putExtra(WebViewActivity.WEB_REFERER, "https://v.guet.edu.cn/login");
+                    if (token != null) {
+                        intent.putExtra(WebViewActivity.WEB_COOKIE, token);
+                    }
+                    AppUtil.reportFunc(activity, "登录VPN-免登录");
+                    activity.startActivity(intent);
+                }
+            }).start();
+        }
+    }
 }

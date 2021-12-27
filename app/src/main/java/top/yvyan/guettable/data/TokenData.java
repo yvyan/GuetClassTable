@@ -43,6 +43,10 @@ public class TokenData {
         }
     }
 
+    public boolean isIsVPN() {
+        return isVPN;
+    }
+
     /**
      * 获取最新的VPNToken
      *
