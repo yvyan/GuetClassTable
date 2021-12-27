@@ -162,35 +162,6 @@ public class Net {
     }
 
     /**
-     * 密码登录VPN
-     *
-     * @param context  context
-     * @param VPNToken VPNToken
-     * @param account  学号
-     * @param password 密码
-     * @return 操作返回数据
-     */
-    public static HttpConnectionAndCode loginVPN(Context context, String VPNToken, String account, String password) {
-        Resources resources = context.getResources();
-        password = RSAUtil.VPNEncryption(password); //密码加密
-        String body = "auth_type=local&username=" + account + "&sms_code=&password=" + password + "&captcha=&needCaptcha=false";
-        return Post.post(
-                resources.getString(R.string.VPN_login),
-                null,
-                resources.getString(R.string.user_agent),
-                resources.getString(R.string.VPN_referer),
-                body,
-                VPNToken,
-                "}",
-                resources.getString(R.string.cookie_delimiter),
-                null,
-                null,
-                null,
-                resources.getString(R.string.VPN_context_type)
-        );
-    }
-
-    /**
      * 获取验证码
      *
      * @param context  context

@@ -4,9 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.umeng.cconfig.UMRemoteConfig;
-import com.umeng.umcrash.UMCrash;
-
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.service.fetch.StaticService;
@@ -89,13 +86,6 @@ public class TokenData {
      * 2 : 未登录
      */
     public int refresh() {
-        String vpnLoginType = UMRemoteConfig.getInstance().getConfigValue("vpnLoginType");
-        int n = 0; //vpn登录方式选择 0:CAS; 1:正常登录
-        try {
-            n = Integer.parseInt(vpnLoginType);
-        } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "checkUpdateType");
-        }
         if (isDevelop) { //调试模式不刷新凭证
             return 0;
         }
@@ -107,9 +97,9 @@ public class TokenData {
                 isVPN = Net.testNet() != 200;
             }
             if (loginType == 0) { //智慧校园登录
-                return loginBySmart(n);
+                return loginBySmart();
             } else if (loginType == 1) { //VPN+教务登录
-                return loginByBkjw(n);
+                return loginByBkjw();
             } else {
                 return 2;
             }
@@ -123,7 +113,7 @@ public class TokenData {
      *
      * @return 登录结果
      */
-    private int loginByBkjw(int vpnLoginType) {
+    private int loginByBkjw() {
         if (isVPN) {
             String VPNTokenStr = Net.getVPNToken(context);
             if (VPNTokenStr != null) {
@@ -131,12 +121,7 @@ public class TokenData {
             } else {
                 return -2;
             }
-            int n;
-            if (vpnLoginType == 0) {
-                n = loginVpnByCAS(VPNTokenStr);
-            } else {
-                n = StaticService.loginVPN(context, VPNTokenStr, accountData.getUsername(), accountData.getVPNPwd());
-            }
+            int n = loginVpnByCAS(VPNTokenStr);
             if (n == 0) {
                 n = StaticService.autoLoginV(context, accountData.getUsername(), accountData.getBkjwPwd(), VPNTokenStr);
             }
@@ -163,7 +148,7 @@ public class TokenData {
      *
      * @return 登录结果
      */
-    private int loginBySmart(int vpnLoginType) {
+    private int loginBySmart() {
         if (isVPN) { //外网
             //获取VPN的token
             String VPNTokenStr = Net.getVPNToken(context);
@@ -172,12 +157,7 @@ public class TokenData {
             } else {
                 return -2;
             }
-            int n;
-            if (vpnLoginType == 0) { //CAS方式登录vpn
-                n = loginVpnByCAS(VPNTokenStr);
-            } else {
-                n = StaticService.loginVPN(context, VPNToken, accountData.getUsername(), accountData.getVPNPwd());
-            }
+            int n = loginVpnByCAS(VPNTokenStr);
             //登录教务
             if (n == 0) {
                 String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);

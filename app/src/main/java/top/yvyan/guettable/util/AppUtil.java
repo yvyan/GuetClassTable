@@ -10,9 +10,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.IntRange;
-
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.umcrash.UMCrash;
 
@@ -141,17 +138,5 @@ public class AppUtil {
         Map<String, Object> funcMap = new HashMap<>();
         funcMap.put("name", funcName);
         MobclickAgent.onEventObject(context, "funcUsage", funcMap);
-    }
-
-    /**
-     * Set the alpha component of {@code color} to be {@code alpha}.
-     */
-    @ColorInt
-    public static int setAlphaComponent(@ColorInt int color,
-                                        @IntRange(from = 0x0, to = 0xFF) int alpha) {
-        if (alpha < 0 || alpha > 255) {
-            throw new IllegalArgumentException("alpha must be between 0 and 255.");
-        }
-        return (color & 0x00ffffff) | (alpha << 24);
     }
 }

@@ -214,37 +214,6 @@ public class StaticService {
     }
 
     /**
-     * 密码登录VPN
-     *
-     * @param context  context
-     * @param VPNToken VPNToken
-     * @param account  学号
-     * @param password 密码
-     * @return 登录结果
-     * 0 -- 登录成功
-     * -1 -- 密码错误
-     * -2 -- 网络错误
-     * -3 -- 弱密码
-     * -4 -- 未知错误
-     */
-    public static int loginVPN(Context context, String VPNToken, String account, String password) {
-        HttpConnectionAndCode result = Net.loginVPN(context, VPNToken, account, password);
-        if (result.code != 0) {
-            return -2;
-        } else {
-            if (result.comment.contains("\"success\": true")) {
-                return 0;
-            } else if (result.comment.contains("INVALID_ACCOUNT")) {
-                return -1;
-            } else if (result.comment.contains("WEEK_PASSWORD_FORBID")) {
-                return -3;
-            } else {
-                return -4;
-            }
-        }
-    }
-
-    /**
      * 刷新验证码(后台)
      *
      * @param context context
