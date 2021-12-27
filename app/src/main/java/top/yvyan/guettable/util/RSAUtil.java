@@ -6,8 +6,6 @@ import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 public class RSAUtil {
     private static final String publicExponentStr = "010001";
@@ -58,38 +56,5 @@ public class RSAUtil {
             }
         }
         return hs.toString();
-    }
-
-    public static String VPNEncryption(String text) {
-        String key = "wrdvpnisawesome!";
-        String iv = "wrdvpnisawesome!";
-        byte[] result = encrypt_AES(text, key, iv);
-        if (result != null) {
-            StringBuilder encrypt_builder = new StringBuilder();
-            encrypt_builder.append("77726476706e6973617765736f6d6521");
-            for (byte b : result) {
-                encrypt_builder.append(String.format("%02x", b));
-            }
-            return encrypt_builder.toString();
-        }
-        return null;
-    }
-
-    /**
-     * @param content 待加密内容
-     * @param key     密钥
-     * @return byte[]加密结果用byte数组表示
-     */
-    public static byte[] encrypt_AES(String content, String key, String iv) {
-        try {
-            Cipher aesECB = Cipher.getInstance("AES/CFB/NoPadding");
-            SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
-            IvParameterSpec ivSpec = new IvParameterSpec(iv.getBytes());
-            aesECB.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-            return aesECB.doFinal(content.getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
