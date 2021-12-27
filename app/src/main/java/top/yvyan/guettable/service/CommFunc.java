@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import top.yvyan.guettable.R;
 import top.yvyan.guettable.activity.WebViewActivity;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
@@ -133,7 +134,7 @@ public class CommFunc {
             final boolean[] noLogin = {false};
             TokenData tokenData = TokenData.newInstance(activity);
             Intent intent = new Intent(activity, WebViewActivity.class);
-            intent.putExtra(WebViewActivity.WEB_URL, "https://v.guet.edu.cn/");
+            intent.putExtra(WebViewActivity.WEB_URL, activity.getResources().getString(R.string.url_vpn));
             DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
                 @Override
                 public void onClickYes() {
@@ -175,7 +176,7 @@ public class CommFunc {
     public static void noLoginWebVPN(Activity activity, String web, String vpnWeb) {
         TokenData tokenData = TokenData.newInstance(activity);
         if (!tokenData.isIsVPN()) { //内网直接打开对应网址
-            openBrowser(activity, web);
+            openUrl(activity, null, web, true);
         } else { //外网登录vpn后打开对应网址
             new Thread(() -> {
                 final boolean[] noLogin = {false};

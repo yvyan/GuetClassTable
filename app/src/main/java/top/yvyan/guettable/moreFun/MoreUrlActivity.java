@@ -40,10 +40,6 @@ public class MoreUrlActivity extends AppCompatActivity {
         finish();
     }
 
-    public void resourceCenter(View view) {
-        openBrowser(getResources().getString(R.string.url_resource_center));
-    }
-
     public void schoolSong(View view) {
         openBrowser(getResources().getString(R.string.url_school_song));
     }
@@ -82,15 +78,6 @@ public class MoreUrlActivity extends AppCompatActivity {
 
     public void staff(View view) {
         openBrowser(getResources().getString(R.string.url_staff));
-    }
-
-    public void courseArrange(View view) {
-        openBrowser(getResources().getString(R.string.url_course_arrange));
-    }
-
-    public void emptyRoom(View view) {
-        CommFunc.noLoginWebVPN(this, getResources().getString(R.string.url_empty_room), "https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/EmptyClassRoom.aspx?mCode=001503");
-        //openBrowser(getResources().getString(R.string.url_empty_room));
     }
 
     public void news1(View view) {

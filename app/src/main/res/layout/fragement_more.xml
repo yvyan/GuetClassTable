@@ -239,8 +239,8 @@
                             <ImageView
                                 android:layout_width="38dp"
                                 android:layout_height="38dp"
-                                android:layout_marginTop="-3dp"
                                 android:layout_gravity="top|center"
+                                android:layout_marginTop="-3dp"
                                 android:src="@drawable/ic_selected_course"
                                 tools:ignore="ContentDescription" />
 
@@ -405,11 +405,11 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/moreFun_lianjie"
+                        android:id="@+id/moreFun_guet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="@string/moreFun_lianjie"
+                        android:text="@string/moreFun_guet"
                         android:textColor="@color/app_black"
                         android:textSize="18sp" />
 
@@ -494,38 +494,6 @@
                         </FrameLayout>
 
                         <FrameLayout
-                            android:id="@+id/more_url_more"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_weight="1">
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="top|center"
-                                android:src="@drawable/m_more"
-                                tools:ignore="ContentDescription" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom|center"
-                                android:text="@string/moreFun_url_more"
-                                android:textSize="13sp" />
-
-                        </FrameLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/container_links_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:layout_marginBottom="15dp"
-                        android:baselineAligned="false">
-
-                        <FrameLayout
                             android:id="@+id/more_url_lijiang"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -545,6 +513,39 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|center"
                                 android:text="@string/moreFun_url_lijiang"
+                                android:textSize="13sp" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/container_links_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_marginBottom="15dp"
+                        android:baselineAligned="false">
+
+                        <FrameLayout
+                            android:id="@+id/more_url_graduation_project"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:layout_width="37dp"
+                                android:layout_height="37dp"
+                                android:layout_gravity="top|center"
+                                android:layout_marginTop="-1dp"
+                                android:src="@drawable/m_graduation_project"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_url_graduation_project"
                                 android:textSize="13sp" />
 
                         </FrameLayout>
@@ -574,6 +575,140 @@
                         </FrameLayout>
 
                         <FrameLayout
+                            android:id="@+id/more_wei_chat"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="top|center"
+                                android:layout_marginTop="0dp"
+                                android:src="@drawable/m_wei_chat"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_wei_chat"
+                                android:textSize="13sp" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/more_url_more"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_more"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_url_more"
+                                android:textSize="13sp" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="#C0ffffff"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/moreFun_tool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="@string/moreFun_tools"
+                        android:textColor="@color/app_black"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_marginBottom="15dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:id="@+id/more_course_arrange"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/more_plan_courses_picture1"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:baselineAlignBottom="false"
+                                android:src="@drawable/m_course_arrange"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_course_arrange"
+                                android:textSize="13sp" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/more_empty_room"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/more_cet_picture1"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="top|center"
+                                android:baselineAlignBottom="false"
+                                android:src="@drawable/m_empty_room"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_empty_room"
+                                android:textSize="13sp" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
                             android:id="@+id/more_qq_group"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -598,11 +733,26 @@
                         </FrameLayout>
 
                         <FrameLayout
+                            android:id="@+id/more_tool_group"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
-                            tools:ignore="UselessLeaf">
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="top|center"
+                                android:layout_marginTop="0dp"
+                                android:src="@drawable/m_qq_qun"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_tool_group"
+                                android:textSize="13sp" />
 
                         </FrameLayout>
 
