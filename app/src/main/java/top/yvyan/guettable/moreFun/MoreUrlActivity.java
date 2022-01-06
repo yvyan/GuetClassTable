@@ -57,11 +57,17 @@ public class MoreUrlActivity extends AppCompatActivity {
     }
 
     public void training(View view) {
-        openBrowser(getResources().getString(R.string.url_training));
+        CommFunc.checkVpn(this,
+                getResources().getString(R.string.url_training),
+                getResources().getString(R.string.url_training_vpn),
+                "链接包含下载内容，将为您使用浏览器打开");
     }
 
     public void calendar(View view) {
-        openBrowser(getResources().getString(R.string.url_calendar));
+        CommFunc.checkVpn(this,
+                getResources().getString(R.string.url_calendar),
+                getResources().getString(R.string.url_calendar_vpn),
+                "链接包含下载内容，将为您使用浏览器打开");
     }
 
     public void libOpen(View view) {
@@ -77,7 +83,10 @@ public class MoreUrlActivity extends AppCompatActivity {
     }
 
     public void staff(View view) {
-        openBrowser(getResources().getString(R.string.url_staff));
+        CommFunc.checkVpn(this,
+                getResources().getString(R.string.url_staff),
+                getResources().getString(R.string.url_staff_vpn),
+                null);
     }
 
     public void news1(View view) {

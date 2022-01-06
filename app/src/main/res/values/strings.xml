@@ -64,10 +64,12 @@
     <string name="url_cet">http://cet.neea.edu.cn/</string>
     <string name="text_mail">桂电学生邮箱</string>
     <string name="url_mail">http://mail.guet.edu.cn/</string>
-    <string name="text_training">培养方案(内网)</string>
+    <string name="text_training">培养方案</string>
     <string name="url_training">http://utsc.guet.edu.cn/training.aspx?mCode=001101</string>
-    <string name="text_calendar">教学日历(内网)</string>
+    <string name="url_training_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/training.aspx?mCode=001101</string>
+    <string name="text_calendar">教学日历</string>
     <string name="url_calendar">http://utsc.guet.edu.cn/calendar.aspx?mCode=0010</string>
+    <string name="url_calendar_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/calendar.aspx?mCode=0010</string>
     <string name="text_lib_open">图书馆开放时间</string>
     <string name="url_lib_open">https://www.guet.edu.cn/lib/info/1064/2891.htm</string>
     <string name="text_map_hj">花江校区地图</string>
@@ -76,6 +78,7 @@
     <string name="url_map_jjl">https://www.guet.edu.cn/xxjj/jjlxqpmdt.htm</string>
     <string name="text_staff">智慧学工</string>
     <string name="url_staff">https://xsgl.guet.edu.cn/</string>
+    <string name="url_staff_vpn">https://v.guet.edu.cn/https/77726476706e69737468656265737421e8e4469069377d556a468ca88d1b203b</string>
     <string name="url_course_arrange">http://utsc.guet.edu.cn/CourseArrange.aspx</string>
     <string name="url_course_arrange_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/CourseArrange.aspx?wrdrecordvisit=1640584485000</string>
     <string name="url_empty_room">http://utsc.guet.edu.cn/EmptyClassRoom.aspx</string>

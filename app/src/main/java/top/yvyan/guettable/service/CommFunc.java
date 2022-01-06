@@ -18,6 +18,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
+import top.yvyan.guettable.util.ToastUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
 
 public class CommFunc {
@@ -164,6 +165,26 @@ public class CommFunc {
                 activity.startActivity(intent);
             }
         }).start();
+    }
+
+    /**
+     * 检查是否为校园网后使用浏览器打开
+     *
+     * @param activity activity
+     * @param web      内网网址
+     * @param vpnWeb   外网网址
+     * @param hint     提示信息
+     */
+    public static void checkVpn(Activity activity, String web, String vpnWeb, String hint) {
+        TokenData tokenData = TokenData.newInstance(activity);
+        if (hint != null) {
+            ToastUtil.showLongToast(activity, hint);
+        }
+        if (!tokenData.isIsVPN()) { //内网直接打开对应网址
+            openBrowser(activity, web);
+        } else { //外网登录vpn后打开对应网址
+            openBrowser(activity, vpnWeb);
+        }
     }
 
     /**
