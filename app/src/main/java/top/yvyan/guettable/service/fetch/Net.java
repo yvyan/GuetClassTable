@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -31,7 +32,10 @@ public class Net {
      */
     public static int testNet() {
         String url = "http://172.16.13.22/";
-        OkHttpClient okHttpClient = new OkHttpClient();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(3, TimeUnit.SECONDS)//设置连接超时时间
+                .readTimeout(3, TimeUnit.SECONDS)//设置读取超时时间
+                .build();
         final Request request = new Request.Builder()
                 .url(url)
                 .build();
