@@ -213,14 +213,14 @@
         android:visibility="gone" />
 
     <com.xuexiang.xui.widget.button.ButtonView
-        style="@style/ButtonView.Green"
+        style="@style/ButtonView.Blue"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
 
         android:onClick="changePwd"
-        android:text="@string/change_password"
+        android:text="@string/find_password"
         android:textColor="#FFFFFF"
         android:textSize="15sp" />
 
