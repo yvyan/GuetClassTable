@@ -20,7 +20,7 @@ import java.util.Map;
 public class AppUtil {
 
     public static void Log(String text) {
-        Log.d("15863", text);
+        Log.d("15863", text + "\n");
     }
 
     /**

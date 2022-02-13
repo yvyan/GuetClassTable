@@ -13,9 +13,9 @@
     <string name="SSO_context_type">application/x-www-form-urlencoded;charset=UTF-8</string>
     <string name="SSO_referer">https://cas.guet.edu.cn/</string>
     <string name="SSO_success_contain_ST">ST-</string>
-    <string name="service_bkjw">service=http%3A%2F%2F172.16.13.22</string>
+    <string name="service_bkjw">service=https%3A%2F%2Fbkjw.guet.edu.cn</string>
     <string name="service_vpn">service=https%3a%2f%2fv.guet.edu.cn%2flogin%3fcas_login%3dtrue</string>
-    <string name="SSO_bkjw">http://172.16.13.22/login/login</string>
+    <string name="SSO_bkjw">https://bkjw.guet.edu.cn/login/login</string>
 
     <!-- 新版教务系统 -->
     <string name="lan_get_checkcode_url">/login/GetValidateCode?id=0.7060164569272753</string>
@@ -138,11 +138,11 @@
     <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²  |  沉山浮阳 | 迷 | 稚隳 </string>
 
     <!-- 创新积分-->
-    <string name="lan_get_innovationScore"> http://172.16.13.22/student/getcxcy </string>
-    <string name="lan_update_innovationScore"> http://172.16.13.22/student/gencxcy </string>
+    <string name="lan_get_innovationScore"> https://bkjw.guet.edu.cn/student/getcxcy </string>
+    <string name="lan_update_innovationScore"> https://bkjw.guet.edu.cn/student/gencxcy </string>
 
     <!--已选课程-->
-    <string name="lan_get_selected_course"> http://172.16.13.22/student/GetSctCourse </string>
+    <string name="lan_get_selected_course"> https://bkjw.guet.edu.cn/student/GetSctCourse </string>
 
     <!-- 更多功能 -->
 
