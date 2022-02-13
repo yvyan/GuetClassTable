@@ -158,7 +158,7 @@ public class StaticService {
      */
     public static int loginBkjwVPNST(String ST, String VPNToken) {
 
-        String url = "https://v.guet.edu.cn/http/77726476706e69737468656265737421a1a013d2766626012d46dbfe/?ticket=";
+        String url = "https://v.guet.edu.cn/http/77726476706e69737468656265737421f2fc4b8b69377d556a468ca88d1b203b/?ticket=";
         url = url + ST;
         if (VPNToken == null) {
             VPNToken = "";

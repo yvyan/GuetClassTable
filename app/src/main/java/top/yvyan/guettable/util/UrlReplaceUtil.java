@@ -10,7 +10,7 @@ public class UrlReplaceUtil {
      * @return                完整的URL(https://gyjxgl.guet.edu.cn/Login/SubmitLogin)
      */
     public static String getUrlByInternational(boolean isInternational, String url) {
-        String path = "http://172.16.13.22";
+        String path = "https://bkjw.guet.edu.cn";
         String internationalPath = "https://gyjxgl.guet.edu.cn";
         if (isInternational) {
             return internationalPath + url;
@@ -20,9 +20,9 @@ public class UrlReplaceUtil {
     }
 
     public static String getUrlByVPN(boolean isVPN, String url) {
-        String bkjwPath = "http://172.16.13.22";
+        String bkjwPath = "https://bkjw.guet.edu.cn";
         String internationalPath = "https://gyjxgl.guet.edu.cn";
-        String bkjwVPNPath = "https://v.guet.edu.cn/http/77726476706e69737468656265737421a1a013d2766626012d46dbfe";
+        String bkjwVPNPath = "https://v.guet.edu.cn/https/77726476706e69737468656265737421f2fc4b8b69377d556a468ca88d1b203b";
         String internationalBkjwVPNPath = "https://v.guet.edu.cn/https/77726476706e69737468656265737421f7ee4b84203c26576b0d9de29d51367b8932";
         if (url.contains(bkjwPath)) {
             if (isVPN) {
