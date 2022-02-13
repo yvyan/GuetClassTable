@@ -61,7 +61,7 @@
     <string name="text_net_login">上网登录页</string>
     <string name="url_net_login">http://10.0.1.5/</string>
     <string name="text_cet">四六级官网(报名、查成绩)</string>
-    <string name="url_cet">http://cet.neea.edu.cn/</string>
+    <string name="url_cet">https://cet-bm.neea.edu.cn/</string>
     <string name="text_mail">桂电学生邮箱</string>
     <string name="url_mail">http://mail.guet.edu.cn/</string>
     <string name="text_training">培养方案</string>
@@ -200,7 +200,7 @@
     <string name="hint_vpn_password">请输入智慧校园密码</string>
     <string name="remember_password">记住密码</string>
     <string name="login">登录</string>
-    <string name="change_password">&#160;&#160;修改智慧校园密码&#160;&#160;</string>
+    <string name="find_password">&#160;&#160;找回密码&#160;&#160;</string>
 
     <string name="widget_tip_empty">今日暂无课程~</string>
     <string name="widget_week_empty">第X周</string>
