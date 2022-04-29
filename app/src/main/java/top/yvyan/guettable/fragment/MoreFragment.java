@@ -76,13 +76,11 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.more_url_lijiang).setOnClickListener(this);
         view.findViewById(R.id.more_url_graduation_project).setOnClickListener(this);
         view.findViewById(R.id.more_url_index).setOnClickListener(this);
-        view.findViewById(R.id.more_wei_chat).setOnClickListener(this);
         view.findViewById(R.id.more_url_more).setOnClickListener(this);
 
         view.findViewById(R.id.more_course_arrange).setOnClickListener(this);
         view.findViewById(R.id.more_empty_room).setOnClickListener(this);
         view.findViewById(R.id.more_qq_group).setOnClickListener(this);
-        view.findViewById(R.id.more_tool_group).setOnClickListener(this);
 
         return view;
     }
@@ -197,9 +195,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             case R.id.more_url_index:
                 openBrowser(UMRemoteConfig.getInstance().getConfigValue("guetYvyanTop"));
                 break;
-            case R.id.more_wei_chat:
-                ToastUtil.showToast(getContext(), "敬请期待！");
-                break;
             case R.id.more_url_more:
                 intent = new Intent(getContext(), MoreUrlActivity.class);
                 startActivity(intent);
@@ -219,9 +214,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             case R.id.more_qq_group:
                 intent = new Intent(getContext(), QQGroupActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.more_tool_group:
-                ToastUtil.showToast(getContext(), "敬请期待！");
                 break;
 
 

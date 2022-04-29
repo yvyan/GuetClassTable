@@ -27,11 +27,11 @@ public class Net {
     /**
      * 测试连接
      *
-     * @return 0 -- 内网
+     * @return 200 -- 内网
      * else -- 外网
      */
     public static int testNet() {
-        String url = "http://172.16.13.22/";
+        String url = "https://bkjw.guet.edu.cn/";
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(3, TimeUnit.SECONDS)//设置连接超时时间
                 .readTimeout(3, TimeUnit.SECONDS)//设置读取超时时间
