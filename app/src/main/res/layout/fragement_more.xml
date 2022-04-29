@@ -575,6 +575,30 @@
                         </FrameLayout>
 
                         <FrameLayout
+                            android:id="@+id/more_url_more"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top|center"
+                                android:src="@drawable/m_more"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="@string/moreFun_url_more"
+                                android:textSize="13sp" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:visibility="invisible"
                             android:id="@+id/more_wei_chat"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -598,28 +622,7 @@
 
                         </FrameLayout>
 
-                        <FrameLayout
-                            android:id="@+id/more_url_more"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_weight="1">
 
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="top|center"
-                                android:src="@drawable/m_more"
-                                tools:ignore="ContentDescription" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom|center"
-                                android:text="@string/moreFun_url_more"
-                                android:textSize="13sp" />
-
-                        </FrameLayout>
 
                     </LinearLayout>
 
@@ -733,6 +736,7 @@
                         </FrameLayout>
 
                         <FrameLayout
+                            android:visibility="invisible"
                             android:id="@+id/more_tool_group"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
