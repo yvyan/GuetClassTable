@@ -58,9 +58,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     //友盟移动统计
     implementation  'com.umeng.umsdk:common:9.3.6'
-    implementation  'com.umeng.umsdk:asms:1.2.0' // asms包依赖
+    implementation  'com.umeng.umsdk:asms:1.2.2' // asms包依赖
     //友盟APM
-    implementation 'com.umeng.umsdk:apm:1.1.0'
+    implementation 'com.umeng.umsdk:apm:1.4.2'
     //友盟在线参数
     implementation  'com.umeng.umsdk:abtest:1.0.0' //使用ABTest模块必选
     //EMAS hotfix
