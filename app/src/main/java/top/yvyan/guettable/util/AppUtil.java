@@ -107,7 +107,7 @@ public class AppUtil {
     }
 
     public static void addQQ(Context context) {
-        String key = "b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP";
+        String key = "l-RTk_x9Bu0TFmOIRDLnVMIOlYxVfajs";
         joinQQGroup(key, context);
     }
 
