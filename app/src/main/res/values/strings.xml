@@ -90,6 +90,8 @@
 
     <string name="text_guet_class_table">桂电课程表交流群</string>
     <string name="key_guet_class_table">b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP</string>
+    <string name="text_guet_class_table2">桂电课程表交流群②</string>
+    <string name="key_guet_class_table2">l-RTk_x9Bu0TFmOIRDLnVMIOlYxVfajs</string>
     <string name="text_guet_find_3">桂电人失物招领3群(官方)</string>
     <string name="key_guet_find_3">MENv-n3_z8D6h4F9nyn-oiK-Z-FBM5Pr</string>
     <string name="text_stdio_music">校园广播电台点歌群(官方)</string>
@@ -188,7 +190,7 @@
     <string name="person_about">关于APP</string>
     <string name="person_version">版本:</string>
     <string name="btn_quit">退出登录</string>
-    <string name="QQGroup">963908505</string>
+    <string name="QQGroup">879367241</string>
     <string name="person_help_test">协助测试</string>
     <string name="person_help_me">支持开发者</string>
     <string name="person_setting">设置</string>
