@@ -88,7 +88,7 @@ public class Net {
         Resources resources = context.getResources();
         password = new StringBuffer(password).reverse().toString(); //密码倒序
         password = RSAUtil.CASEncryption(password); //密码加密
-        String body = "username=" + account + "&password=" + password + "&service=http%3A%2F%2Ficampus.guet.edu.cn%2FCampusPortal&loginType=";
+        String body = "username=" + account + "&password=" + password + "&service=https://bkjw.guet.edu.cn";
         return Post.post(
                 VPNToken != null ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_get_TGT),
                 null,
