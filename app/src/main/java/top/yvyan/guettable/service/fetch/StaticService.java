@@ -46,29 +46,28 @@ import top.yvyan.guettable.util.RegularUtil;
 public class StaticService {
 
     /**
-     * 获取SSO登录TGT令牌
+     * 获取SSO登录CasCookie
      *
      * @param context  context
      * @param account  学号
      * @param password 密码
      * @param VPNToken VPNToken
-     * @return TGT令牌
+     * @return CAS Cookie
      * ERROR0 : 网络错误
      * ERROR1 : 密码错误
      * ERROR2 : 需要使用外网网址进行访问
      */
     public static String SSOLogin(Context context, String account, String password, String VPNToken) {
-        HttpConnectionAndCode response = Net.getTGT(context, account, password, VPNToken);
+        HttpConnectionAndCode response = Net.getCASToken(context, account, password, VPNToken);
         if (response.code != 0) {
             if (response.code == -5) {
                 return "ERROR2";
             }
             return "ERROR0";
         } else {
-            String html = response.comment;
-            if (html.contains("TGT-")) {
-                ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(html, "TGT-(.*?)\"");
-                return listExp.get(0).substring(0, listExp.get(0).length() - 1);
+            String Cookie = response.cookie;
+            if (Cookie.contains("TGT-")) {
+                return Cookie;
             } else {
                 return "ERROR1";
             }
@@ -79,7 +78,7 @@ public class StaticService {
      * 获取SSO ST令牌
      *
      * @param context  context
-     * @param TGT      TGT令牌
+     * @param CASCookie
      * @param service  ST令牌的服务端
      * @param VPNToken VPNToken
      * @return ST令牌
@@ -88,9 +87,9 @@ public class StaticService {
      * ERROR2 : 需要使用外网网址进行访问 或 TGT失效(上层调用时，若内网返回此错误，
      * 则先尝试外网，若是TGT失效，则重新获取；若正常获取，则需要将全局网络设置为外网)
      */
-    public static String SSOGetST(Context context, String TGT, String service, String VPNToken) {
-        HttpConnectionAndCode response = Net.getST(context, TGT, service, VPNToken);
-        if (response.code != 0) {
+    public static String SSOGetST(Context context, String CASCookie, String service, String VPNToken) {
+        HttpConnectionAndCode response = Net.getSTbyCas(context, CASCookie, service, VPNToken);
+        if (response.code != -7) {
             if (response.code == -5) {
                 if (VPNToken != null) {
                     return "ERROR1";
@@ -99,9 +98,9 @@ public class StaticService {
             }
             return "ERROR0";
         } else {
-            String html = response.comment;
-            if (html.contains("ST-")) {
-                return html;
+            String Location = response.c.getHeaderField("location");
+            if (Location.contains("ST-")) {
+                return Location.substring(Location.indexOf("?ticket=ST-")+8);
             }
             return "ERROR1";
         }
