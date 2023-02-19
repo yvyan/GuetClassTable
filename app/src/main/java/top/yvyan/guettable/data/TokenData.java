@@ -17,6 +17,8 @@ public class TokenData {
     private static final String SHP_NAME = "tokenData";
     private static final String LOGIN_TYPE = "loginType";
     private static final String TGT_TOKEN = "TGTToken";
+
+    private static final String CAS_Cookie = "CASCookie";
     private static final String VPN_TOKEN = "VPNToken";
     private static final String BKJW_COOKIE = "bkjwCookie";
     private static final String IS_DEVELOP = "isDevelop";
@@ -31,6 +33,7 @@ public class TokenData {
     //强制获取vpn
     private boolean forceVPN = false;
 
+    private String CASCookie; // 新版CAS认证Cookie; CASTGT/JSESSION
     private String TGTToken;   //统一登录TGT令牌
     private String VPNToken;   //VPN认证Token
     private String bkjwCookie; //教务系统认证Cookie
@@ -71,6 +74,7 @@ public class TokenData {
         VPNToken = sharedPreferences.getString(VPN_TOKEN, null);
         bkjwCookie = sharedPreferences.getString(BKJW_COOKIE, null);
         isDevelop = sharedPreferences.getBoolean(IS_DEVELOP, false);
+        CASCookie = sharedPreferences.getString(CAS_Cookie, "");
     }
 
     public static TokenData newInstance(Context context) {
@@ -164,13 +168,13 @@ public class TokenData {
             int n = loginVpnByCAS(VPNTokenStr);
             //登录教务
             if (n == 0) {
-                String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);
+                String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);
                 if (ST_BKJW.equals("ERROR0")) {
                     return -2;
                 } else if (ST_BKJW.equals("ERROR1")) { //TGT失效
                     n = refreshTGT(VPNTokenStr);
                     if (n == 0) {
-                        ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);
+                        ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);
                         if (!ST_BKJW.contains("ST-")) {
                             return -2;
                         }
@@ -186,13 +190,13 @@ public class TokenData {
             return n;
         } else { // 内网
             StringBuilder cookie_builder = new StringBuilder();
-            String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), null);
+            String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), null);
             if (!ST_BKJW.contains("ST-")) { // TGT失效
                 int n = refreshTGT(null);
                 if (n != 0) {
                     return n;
                 }
-                ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), null);
+                ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), null);
                 if (!ST_BKJW.contains("ST-")) { // 网络错误，切换为外网模式
                     return -2;
                 }
@@ -215,14 +219,14 @@ public class TokenData {
      */
     private int loginVpnByCAS(String VPNTokenStr) {
         int n;
-        String ST_VPN = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_vpn), VPNTokenStr);
+        String ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), VPNTokenStr);
         if (ST_VPN.equals("ERROR0")) {
             return -2;
         } else if (ST_VPN.equals("ERROR1")) { //TGT失效
             n = refreshTGT(VPNTokenStr); //刷新TGT
             if (n == 0) {
                 //重新获取登录vpn的st令牌
-                ST_VPN = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_vpn), VPNTokenStr);
+                ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), VPNTokenStr);
                 if (!ST_VPN.contains("ST-")) {
                     return -2;
                 }
@@ -248,16 +252,22 @@ public class TokenData {
      * @return 操作结果
      */
     public int refreshTGT(String VPNToken) {
-        String TGTTokenStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getVPNPwd(), VPNToken);
-        if (TGTTokenStr.equals("ERROR2") || TGTTokenStr.equals("ERROR0")) {
+        String CASCookieStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getVPNPwd(), VPNToken);
+        if (CASCookieStr.equals("ERROR2") || CASCookieStr.equals("ERROR0")) {
             return -2;
         }
-        if (TGTTokenStr.contains("TGT-")) {
-            setTGTToken(TGTTokenStr);
+        if (CASCookieStr.contains("TGT-")) {
+            setCASCookie(CASCookieStr);
             return 0;
         } else {
             return -1;
         }
+    }
+
+    public void setCASCookie(String CASCookie) {
+        this.CASCookie = CASCookie;
+        editor.putString(CAS_Cookie, CASCookie);
+        editor.apply();
     }
 
     public int getLoginType() {
