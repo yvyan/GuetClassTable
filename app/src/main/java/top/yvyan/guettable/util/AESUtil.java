@@ -7,6 +7,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
 import android.util.Base64;
+import android.util.Log;
 
 public class AESUtil {
     /**
@@ -20,11 +21,14 @@ public class AESUtil {
         try {
             byte[] bkey = skey.getBytes("UTF-8");
             SecretKeySpec secretKey = new SecretKeySpec(bkey, "AES");
-            IvParameterSpec Iv=new IvParameterSpec(AESUtil.getRandomString(16).getBytes("UTF-8"));
+            IvParameterSpec Iv=new IvParameterSpec(getRandomString(16).getBytes("UTF-8"));
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey,Iv);
-            String paddingText = AESUtil.getRandomString(64)+text;
-            return Base64.encode(cipher.doFinal(paddingText.getBytes("UTF-8")),Base64.DEFAULT).toString();
+            String paddingText = getRandomString(64)+text;
+            byte[] Encrypted=cipher.doFinal(paddingText.getBytes("UTF-8"));
+            String Base64Result = Base64.encodeToString(Encrypted,Base64.DEFAULT);
+        //    Log.d("AES",Encrypted);
+            return Base64Result;
         } catch (Exception ignored) {
 
         }
