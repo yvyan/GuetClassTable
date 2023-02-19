@@ -347,17 +347,17 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private void testCAS(String account, String password, String VPNToken) {
         new Thread(() -> {
             runOnUiThread(() -> button.setText("正在认证"));
-            String TGTTokenStr = StaticService.SSOLogin(this, account, password, VPNToken);
-            if (TGTTokenStr.contains("TGT-")) {
+            String CasCookie = StaticService.SSOLogin(this, account, password, VPNToken);
+            if (CasCookie.contains("TGT-")) {
                 TokenData tokenData = TokenData.newInstance(this);
-                tokenData.setTGTToken(TGTTokenStr);
+                tokenData.setCASCookie(CasCookie);
                 tokenData.setLoginType(0);
                 accountData.setUser(account, null, password, cbRememberPwd.isChecked());
                 getInfo();
             } else {
-                if (TGTTokenStr.equals("ERROR1")) {
+                if (CasCookie.equals("ERROR1")) {
                     showErrorToast(-4);
-                } else if (TGTTokenStr.equals("ERROR2")) {
+                } else if (CasCookie.equals("ERROR2")) {
                     showErrorToast(-2);
                 } else {
                     showErrorToast(-8);

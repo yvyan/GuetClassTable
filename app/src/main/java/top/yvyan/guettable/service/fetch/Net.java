@@ -6,7 +6,10 @@ import android.content.res.Resources;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import java.net.URLEncoder;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -19,7 +22,9 @@ import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.Http.Post;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
+import top.yvyan.guettable.util.AESUtil;
 import top.yvyan.guettable.util.RSAUtil;
+import top.yvyan.guettable.util.RegularUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
 
 public class Net {
@@ -76,6 +81,69 @@ public class Net {
     }
 
     /**
+     * 获取CAS 登录令牌
+     *
+     * @param context  context
+     * @param account  学号
+     * @param password 密码
+     * @param VPNToken VPNToken
+     * @return CAS服务Cookie *请求
+     */
+    public static HttpConnectionAndCode getCASToken(Context context, String account, String password, String VPNToken) {
+        StringBuilder cookie_builder=new StringBuilder();
+        try {
+            if(VPNToken!=null) cookie_builder.append(VPNToken);
+            Resources resources = context.getResources();
+            HttpConnectionAndCode loginParams = Get.get(
+                    VPNToken != null ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_Authserver),
+                    null,
+                    resources.getString(R.string.user_agent),
+                    resources.getString(R.string.SSO_referer),
+                    cookie_builder.toString(),
+                    null,
+                    resources.getString(R.string.cookie_delimiter),
+                    null,
+                    null,
+                    null,
+                    null,
+                    10000,
+                    null);
+            if (loginParams.code != 0) {
+                return new HttpConnectionAndCode(-5);
+            }
+            if(cookie_builder.length() != 0){
+                cookie_builder.append(resources.getString(R.string.cookie_delimiter));
+            }
+            cookie_builder.append(loginParams.cookie);
+            ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(loginParams.comment, "(?<=id=\"pwdEncryptSalt\" value=\")(\\w+)(?=\")");
+            String AESKey = listExp.get(0);
+            listExp = RegularUtil.getAllSatisfyStr(loginParams.comment, "(?<=name=\"execution\" value=\")(.*?)(?=\")");
+            String execution = listExp.get(0);
+            String body = "username=" + account + "&password=" + URLEncoder.encode(AESUtil.CASEncryption(password, AESKey), "UTF-8")+"&captcha=&_eventId=submit&cllt=userNameLogin&dllt=generalLogin&lt=&execution="+URLEncoder.encode(execution,"UTF-8");
+            HttpConnectionAndCode LoginRequest = Post.post(
+                    VPNToken != null ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_Authserver),
+                    null,
+                    resources.getString(R.string.user_agent),
+                    resources.getString(R.string.SSO_referer),
+                    body,
+                    cookie_builder.toString(),
+                    "}",
+                    resources.getString(R.string.cookie_delimiter),
+                    null,
+                    null,
+                    null,
+                    resources.getString(R.string.SSO_context_type));
+            if(LoginRequest.code==0) {
+                LoginRequest.cookie = cookie_builder.append(LoginRequest.cookie).toString();
+            }
+            return LoginRequest;
+        } catch (Exception igonred) {
+
+        }
+        return new HttpConnectionAndCode(-5);
+    }
+
+    /**
      * 获取SSO TGT令牌
      *
      * @param context  context
@@ -103,6 +171,35 @@ public class Net {
                 null,
                 resources.getString(R.string.SSO_context_type)
         );
+    }
+
+    /**
+     * 获取SSO ST令牌 新版CAS
+     *
+     * @param context  context
+     * @param CASCookie
+     * @param service  ST令牌的服务端
+     * @param VPNToken VPNToken #仅用于兼容性使用,此处会包含在CASCookie内
+     * @return ST令牌
+     */
+    public static HttpConnectionAndCode getSTbyCas(Context context, String CASCookie, String service, String VPNToken) {
+        Resources resources = context.getResources();
+        HttpConnectionAndCode probeST = Get.get(
+                (VPNToken != null ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_Authserver))+"?"+service,
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.SSO_referer),
+                CASCookie,
+                null,
+                resources.getString(R.string.cookie_delimiter),
+                null,
+                null,
+                false,
+                null,
+                10000,
+                null);
+        return probeST;
+        //return new HttpConnectionAndCode(-5);
     }
 
     /**
