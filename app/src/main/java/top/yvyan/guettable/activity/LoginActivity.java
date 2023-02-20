@@ -1,8 +1,8 @@
 package top.yvyan.guettable.activity;
 
-import android.annotation.SuppressLint;
+import static com.xuexiang.xui.XUI.getContext;
+
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -12,13 +12,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.umeng.umcrash.UMCrash;
-import com.xuexiang.xui.widget.tabbar.TabControlView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,48 +37,37 @@ import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
-import static com.xuexiang.xui.XUI.getContext;
-
 public class LoginActivity extends Activity implements View.OnClickListener {
     public static int REQUEST_CODE = 13;
     public static int OK = 10;
 
     private Boolean bPwdSwitch = false;
     private Boolean bPwdSwitch2 = false;
-    private EditText etPwd;
     private EditText etAccount;
     private CheckBox cbRememberPwd;
     private SuperButton button;
-    private RelativeLayout bkjwPasswordView;
     private EditText etPwd2;
-    private ImageView ivPwdSwitch;
     private ImageView ivPwdSwitch2;
     private View progressBar;
 
     private AccountData accountData;
     private GeneralData generalData;
-    private int type; //登录方式选择
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        type = TokenData.newInstance(this).getLoginType();
 
         accountData = AccountData.newInstance(getContext());
         generalData = GeneralData.newInstance(getContext());
 
-        ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
         ivPwdSwitch2 = findViewById(R.id.iv_pwd_switch_2);
         button = findViewById(R.id.login);
         button.setOnClickListener(this);
-        bkjwPasswordView = findViewById(R.id.bkjwPassword);
         etPwd2 = findViewById(R.id.et_pwd2);
         etAccount = findViewById(R.id.et_account);
-        etPwd = findViewById(R.id.et_pwd);
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
         cbRememberPwd.setChecked(true);
-        ivPwdSwitch.setOnClickListener(showPwdClickListener());
         ivPwdSwitch2.setOnClickListener(showPwdClickListener());
         progressBar = findViewById(R.id.progressBar2);
         TextView profileVersion = findViewById(R.id.tv_profile_version);
@@ -88,30 +75,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         //获取账号密码
         if (accountData.getIsSave()) {
             etAccount.setText(accountData.getUsername());
-            etPwd.setText(accountData.getBkjwPwd());
             etPwd2.setText(accountData.getVPNPwd());
         }
-        //选择登录方式
-        TabControlView tabControlView = findViewById(R.id.TabControl);
-        try {
-            tabControlView.setDefaultSelection(type);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //智慧校园登录方式隐藏教务密码输入框
-        if (type == 0) {
-            bkjwPasswordView.setVisibility(View.GONE);
-        }
-
-        tabControlView.setOnTabSelectionChangedListener((title, value) -> {
-            if ("国际学院".equals(title)) { // 切换第二个密码框的显示
-                bkjwPasswordView.setVisibility(View.VISIBLE);
-                type = 1;
-            } else {
-                bkjwPasswordView.setVisibility(View.GONE);
-                type = 0;
-            }
-        });
     }
 
     /**
@@ -125,15 +90,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             bPwdSwitch = !bPwdSwitch;
             bPwdSwitch2 = !bPwdSwitch2;
             if (bPwdSwitch) {
-                ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_24);
                 ivPwdSwitch2.setImageResource(R.drawable.ic_baseline_visibility_24);
-                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 etPwd2.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             } else {
-                ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_off_24);
                 ivPwdSwitch2.setImageResource(R.drawable.ic_baseline_visibility_off_24);
-                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
-                etPwd.setTypeface(Typeface.DEFAULT);
                 etPwd2.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
                 etPwd2.setTypeface(Typeface.DEFAULT);
             }
@@ -149,114 +109,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         setUnClick();
         String account = etAccount.getText().toString();
-        String pwd = etPwd.getText().toString();
         String pwd2 = etPwd2.getText().toString();
         new Thread(() -> {
-            //区分是否为国际学院
-            generalData.setInternational(type == 1);
-            //区分登录方式
             String VPNToken = Net.getVPNToken(this);
-            if (type == 0) { //智慧校园
-                testCAS(account, pwd2, VPNToken);
-            } else if (type == 1) {
-                VerifyByBkjw(view, account, pwd, pwd2, VPNToken);
-            }
+            testCAS(account, pwd2, VPNToken);
         }).start();
-    }
-
-    /**
-     * 使用VPN + 教务验证账号(国际学院使用)
-     *
-     * @param view     view
-     * @param account  账号
-     * @param pwd      教务系统密码
-     * @param pwd2     智慧校园密码
-     * @param VPNToken VPNToken
-     */
-    private void VerifyByBkjw(View view, String account, String pwd, String pwd2, String VPNToken) {
-        int n = testVPNByCAS(this, VPNToken, account, pwd2);
-        if (n != 0) { //VPN异常
-            if (n == -3) { //修改密码
-                DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                    @Override
-                    public void onClickYes() {
-                        //修改密码
-                        setEnClick();
-                        changePwd(view);
-                    }
-
-                    @Override
-                    public void onClickBack() {
-                        testBKJW(account, pwd, pwd2);
-                    }
-                };
-                runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "修改密码", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_easy), service));
-
-            } else if (n == -1) { //密码错误
-                DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                    @Override
-                    public void onClickYes() {
-                        //重试
-                        setEnClick();
-                    }
-
-                    @Override
-                    public void onClickBack() {
-                        testBKJW(account, pwd, pwd2);
-                    }
-                };
-                runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_pwd_error), service));
-
-            } else { //网络或VPN系统异常
-                DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                    @Override
-                    public void onClickYes() {
-                        //重试
-                        setEnClick();
-                    }
-
-                    @Override
-                    public void onClickBack() {
-                        testBKJW(account, pwd, pwd2);
-                    }
-                };
-                runOnUiThread(() -> DialogUtil.showDialog(this, "VPN异常", false, "重试", "仍然继续", getContext().getResources().getString(R.string.log_vpn_net_error), service));
-            }
-
-        } else { //正常登录VPN
-            testBKJW_VPN(account, pwd, pwd2, VPNToken);
-        }
-    }
-
-    /**
-     * 使用CAS验证VPN密码
-     *
-     * @param context  context
-     * @param vpnToken VPNToken
-     * @param account  账号
-     * @param pwd2     密码
-     * @return 操作结果
-     */
-    @SuppressLint("SetTextI18n")
-    private int testVPNByCAS(Context context, String vpnToken, String account, String pwd2) {
-        runOnUiThread(() -> button.setText("验证VPN"));
-        String TGTTokenStr = StaticService.SSOLogin(context, account, pwd2, vpnToken);
-        if (TGTTokenStr.equals("ERROR2") || TGTTokenStr.equals("ERROR0")) {
-            return -2;
-        }
-        if (!TGTTokenStr.contains("TGT-")) {
-            return -1;
-        } else { //获取TGT成功，尝试获取ST
-            String ST_VPN = StaticService.SSOGetST(context, TGTTokenStr, context.getResources().getString(R.string.service_vpn), vpnToken);
-            if (ST_VPN.contains("ST-")) {
-                if (StaticService.loginVPNST(ST_VPN, vpnToken) != 0) {
-                    return StaticService.loginVPNST(ST_VPN, vpnToken);
-                }
-                return 0;
-            } else {
-                return -2;
-            }
-        }
     }
 
     @Override
@@ -267,75 +124,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             setResult(OK, intent);
             finish();
         }
-    }
-
-    /**
-     * 验证教务密码（内网）
-     *
-     * @param account 学号
-     * @param pwdBKJW 教务密码
-     * @param pwdVPN  智慧校园/VPN密码
-     */
-    private void testBKJW(String account, String pwdBKJW, String pwdVPN) {
-        new Thread(() -> {
-            runOnUiThread(() -> button.setText("验证教务"));
-            StringBuilder cookie_builder = new StringBuilder();
-            int state = StaticService.autoLogin(
-                    this,
-                    account,
-                    pwdBKJW,
-                    cookie_builder
-            );
-            if (state == 0) {
-                TokenData tokenData = TokenData.newInstance(this);
-                tokenData.setBkjwCookie(cookie_builder.toString());
-                tokenData.setLoginType(1);
-                accountData.setUser(account, pwdBKJW, pwdVPN, cbRememberPwd.isChecked());
-                getInfo();
-            } else {
-                showErrorToast(state);
-            }
-        }).start();
-    }
-
-    /**
-     * 验证教务密码（VPN）
-     *
-     * @param account  学号
-     * @param pwdBKJW  教务密码
-     * @param pwdVPN   智慧校园/VPN密码
-     * @param VPNToken VPNToken
-     */
-    private void testBKJW_VPN(String account, String pwdBKJW, String pwdVPN, String VPNToken) {
-        new Thread(() -> {
-            int state;
-            TokenData tokenData = TokenData.newInstance(this);
-            runOnUiThread(() -> button.setText("验证教务"));
-            if (TokenData.isVPN) {
-                state = StaticService.autoLoginV(this, account, pwdBKJW, VPNToken);
-                if (state == 0) {
-                    tokenData.setVPNToken(VPNToken);
-                }
-            } else {
-                StringBuilder cookie_builder = new StringBuilder();
-                state = StaticService.autoLogin(
-                        this,
-                        account,
-                        pwdBKJW,
-                        cookie_builder
-                );
-                if (state == 0) {
-                    tokenData.setBkjwCookie(cookie_builder.toString());
-                }
-            }
-            if (state == 0) {
-                tokenData.setLoginType(1);
-                accountData.setUser(account, pwdBKJW, pwdVPN, cbRememberPwd.isChecked());
-                getInfo();
-            } else {
-                showErrorToast(state);
-            }
-        }).start();
     }
 
     /**
@@ -351,7 +139,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             if (CasCookie.contains("TGT-")) {
                 TokenData tokenData = TokenData.newInstance(this);
                 tokenData.setCASCookie(CasCookie);
-                tokenData.setLoginType(0);
+                tokenData.setBkjwCookie(null);
                 accountData.setUser(account, null, password, cbRememberPwd.isChecked());
                 getInfo();
             } else {
@@ -438,7 +226,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         button.setText("登录");
         button.setEnabled(true);
         etAccount.setEnabled(true);
-        etPwd.setEnabled(true);
         etPwd2.setEnabled(true);
         progressBar.setVisibility(View.GONE);
     }
@@ -450,7 +237,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         button.setText("网络初始化");
         button.setEnabled(false);
         etAccount.setEnabled(false);
-        etPwd.setEnabled(false);
         etPwd2.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -484,5 +270,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     public void showHelp(View view) {
         DialogUtil.showTextDialog(this, getContext().getResources().getString(R.string.login_help));
+    }
+
+    public void activateAccount(View view) {
+        openUrl(getContext().getResources().getString(R.string.url_activate_account));
     }
 }
