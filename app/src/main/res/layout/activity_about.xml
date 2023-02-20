@@ -191,7 +191,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="wing  |  ssbird  |  tank  |  uuin" />
+                    android:text="@string/developer" />
 
                 <View
                     android:layout_width="match_parent"
