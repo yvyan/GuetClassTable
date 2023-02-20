@@ -63,11 +63,20 @@ public class StaticService {
             }
             return "ERROR0";
         } else {
-            String Cookie = response.cookie;
-            if (Cookie.contains("TGT-")) {
-                return Cookie;
+            if(VPNToken == null) {
+                String Cookie = response.cookie;
+                if (Cookie.contains("TGT-")) {
+                    return Cookie;
+                } else {
+                    return "ERROR1";
+                }
             } else {
-                return "ERROR1";
+                String Cookie = response.comment;
+                if (Cookie.contains("TGT-")) {
+                     return Cookie;
+                } else {
+                    return "ERROR1";
+                }
             }
         }
     }
@@ -94,11 +103,14 @@ public class StaticService {
                 }
                 return "ERROR2";
             }
+            if(response.cookie.contains("refresh")) {
+                return "ERROR1";
+            }
             return "ERROR0";
         } else {
             String Location = response.c.getHeaderField("location");
             if (Location.contains("ST-")) {
-                return Location.substring(Location.indexOf("?ticket=ST-") + 8);
+                return Location.substring(Location.indexOf("ticket=ST-") + 7);
             }
             return "ERROR1";
         }
