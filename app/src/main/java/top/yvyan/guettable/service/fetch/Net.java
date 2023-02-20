@@ -3,27 +3,21 @@ package top.yvyan.guettable.service.fetch;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.google.gson.Gson;
-
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-import java.net.URLEncoder;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import top.yvyan.guettable.Gson.LoginResponse;
 import top.yvyan.guettable.Http.Get;
-import top.yvyan.guettable.Http.GetBitmap;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.Http.Post;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.util.AESUtil;
-import top.yvyan.guettable.util.RSAUtil;
 import top.yvyan.guettable.util.RegularUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
 
@@ -36,7 +30,7 @@ public class Net {
      * else -- 外网
      */
     public static int testNet() {
-        String url = "https://bkjw.guet.edu.cn/";
+        String url = "https://v.guet.edu.cn/";
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(3, TimeUnit.SECONDS)//设置连接超时时间
                 .readTimeout(3, TimeUnit.SECONDS)//设置读取超时时间
@@ -90,9 +84,9 @@ public class Net {
      * @return CAS服务Cookie *请求
      */
     public static HttpConnectionAndCode getCASToken(Context context, String account, String password, String VPNToken) {
-        StringBuilder cookie_builder=new StringBuilder();
+        StringBuilder cookie_builder = new StringBuilder();
         try {
-            if(VPNToken!=null) cookie_builder.append(VPNToken);
+            if (VPNToken != null) cookie_builder.append(VPNToken);
             Resources resources = context.getResources();
             HttpConnectionAndCode loginParams = Get.get(
                     VPNToken != null ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_Authserver),
@@ -111,7 +105,7 @@ public class Net {
             if (loginParams.code != 0) {
                 return new HttpConnectionAndCode(-5);
             }
-            if(cookie_builder.length() != 0){
+            if (cookie_builder.length() != 0) {
                 cookie_builder.append(resources.getString(R.string.cookie_delimiter));
             }
             cookie_builder.append(loginParams.cookie);
@@ -119,7 +113,7 @@ public class Net {
             String AESKey = listExp.get(0);
             listExp = RegularUtil.getAllSatisfyStr(loginParams.comment, "(?<=name=\"execution\" value=\")(.*?)(?=\")");
             String execution = listExp.get(0);
-            String body = "username=" + account + "&password=" + URLEncoder.encode(AESUtil.CASEncryption(password, AESKey), "UTF-8")+"&captcha=&_eventId=submit&cllt=userNameLogin&dllt=generalLogin&lt=&execution="+URLEncoder.encode(execution,"UTF-8");
+            String body = "username=" + account + "&password=" + URLEncoder.encode(AESUtil.CASEncryption(password, AESKey), "UTF-8") + "&captcha=&_eventId=submit&cllt=userNameLogin&dllt=generalLogin&lt=&execution=" + URLEncoder.encode(execution, "UTF-8");
             HttpConnectionAndCode LoginRequest = Post.post(
                     VPNToken != null ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_Authserver),
                     null,
@@ -133,59 +127,29 @@ public class Net {
                     null,
                     null,
                     resources.getString(R.string.SSO_context_type));
-            if(LoginRequest.code==0) {
+            if (LoginRequest.code == 0) {
                 LoginRequest.cookie = cookie_builder.append(LoginRequest.cookie).toString();
             }
             return LoginRequest;
-        } catch (Exception igonred) {
+        } catch (Exception ignored) {
 
         }
         return new HttpConnectionAndCode(-5);
     }
 
     /**
-     * 获取SSO TGT令牌
-     *
-     * @param context  context
-     * @param account  学号
-     * @param password 密码
-     * @param VPNToken VPNToken
-     * @return TGT令牌
-     */
-    public static HttpConnectionAndCode getTGT(Context context, String account, String password, String VPNToken) {
-        Resources resources = context.getResources();
-        password = new StringBuffer(password).reverse().toString(); //密码倒序
-        password = RSAUtil.CASEncryption(password); //密码加密
-        String body = "username=" + account + "&password=" + password + "&service=https://bkjw.guet.edu.cn";
-        return Post.post(
-                VPNToken != null ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_get_TGT),
-                null,
-                resources.getString(R.string.user_agent),
-                resources.getString(R.string.SSO_referer),
-                body,
-                VPNToken,
-                "}",
-                resources.getString(R.string.cookie_delimiter),
-                null,
-                null,
-                null,
-                resources.getString(R.string.SSO_context_type)
-        );
-    }
-
-    /**
      * 获取SSO ST令牌 新版CAS
      *
-     * @param context  context
-     * @param CASCookie
-     * @param service  ST令牌的服务端
-     * @param VPNToken VPNToken #仅用于兼容性使用,此处会包含在CASCookie内
+     * @param context   context
+     * @param CASCookie CAS Cookie
+     * @param service   ST令牌的服务端
+     * @param VPNToken  VPNToken #仅用于兼容性使用,此处会包含在CASCookie内
      * @return ST令牌
      */
     public static HttpConnectionAndCode getSTbyCas(Context context, String CASCookie, String service, String VPNToken) {
         Resources resources = context.getResources();
-        HttpConnectionAndCode probeST = Get.get(
-                (VPNToken != null ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_Authserver))+"?"+service,
+        return Get.get(
+                (VPNToken != null ? resources.getString(R.string.url_get_TGT_vpn) : resources.getString(R.string.url_Authserver)) + "?" + service,
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.SSO_referer),
@@ -198,35 +162,6 @@ public class Net {
                 null,
                 10000,
                 null);
-        return probeST;
-        //return new HttpConnectionAndCode(-5);
-    }
-
-    /**
-     * 获取SSO ST令牌
-     *
-     * @param context  context
-     * @param TGT      TGT令牌
-     * @param service  ST令牌的服务端
-     * @param VPNToken VPNToken
-     * @return ST令牌
-     */
-    public static HttpConnectionAndCode getST(Context context, String TGT, String service, String VPNToken) {
-        Resources resources = context.getResources();
-        return Post.post(
-                VPNToken != null ? resources.getString(R.string.url_get_ST_vpn) + TGT : resources.getString(R.string.url_get_ST) + TGT,
-                null,
-                resources.getString(R.string.user_agent),
-                resources.getString(R.string.SSO_referer),
-                service,
-                VPNToken,
-                "}",
-                resources.getString(R.string.cookie_delimiter),
-                resources.getString(R.string.SSO_success_contain_ST),
-                null,
-                null,
-                resources.getString(R.string.SSO_context_type)
-        );
     }
 
     /**
@@ -258,70 +193,6 @@ public class Net {
         if (login_res.code == 0) {
             assert session != null;
             session.append(login_res.cookie);
-        }
-        return login_res;
-    }
-
-    /**
-     * 获取验证码
-     *
-     * @param context  context
-     * @param VPNToken VPNToken null表示内网
-     * @return 验证码图片
-     */
-    public static HttpConnectionAndCode checkCode(Context context, String VPNToken) {
-        Resources resources = context.getResources();
-        return GetBitmap.get(
-                UrlReplaceUtil.getUrlByVPN(VPNToken != null, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_checkcode_url))),
-                null,
-                resources.getString(R.string.user_agent),
-                resources.getString(R.string.lan_get_checkcode_referer),
-                VPNToken,
-                resources.getString(R.string.cookie_delimiter)
-        );
-    }
-
-    /**
-     * 登录
-     *
-     * @param context   context
-     * @param account   学号
-     * @param pwd       密码
-     * @param checkCode 验证码
-     * @param cookie    获取验证码之后的cookie / 外网:获取VPNToken
-     * @param builder   用于接收登录后的cookie
-     * @param isVPN     是否为外网
-     * @return 登录状态
-     */
-    public static HttpConnectionAndCode login(Context context, String account, String pwd, String checkCode, String cookie, StringBuilder builder, boolean isVPN) {
-        Resources resources = context.getResources();
-        String body = "us=" + account + "&pwd=" + pwd + "&ck=" + checkCode;
-        HttpConnectionAndCode login_res = Post.post(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_login_url))),
-                null,
-                resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_login_url))),
-                body,
-                cookie,
-                "}",
-                resources.getString(R.string.cookie_delimiter),
-                resources.getString(R.string.lan_login_success_contain_response_text),
-                null,
-                null,
-                null
-        );
-        if (login_res.code == 0) {
-            LoginResponse response = new Gson().fromJson(login_res.comment, LoginResponse.class);
-            login_res.comment = response.getMsg();
-        }
-        if (login_res.code == 0 && isVPN) {
-            return login_res;
-        }
-        if (login_res.code == 0 && builder != null) {
-            if (!builder.toString().isEmpty()) {
-                builder.append(resources.getString(R.string.cookie_delimiter));
-            }
-            builder.append(login_res.cookie);
         }
         return login_res;
     }

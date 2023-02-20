@@ -15,8 +15,6 @@ public class TokenData {
     private final Context context;
 
     private static final String SHP_NAME = "tokenData";
-    private static final String LOGIN_TYPE = "loginType";
-    private static final String TGT_TOKEN = "TGTToken";
 
     private static final String CAS_Cookie = "CASCookie";
     private static final String VPN_TOKEN = "VPNToken";
@@ -25,7 +23,6 @@ public class TokenData {
 
     private final AccountData accountData;
 
-    private int loginType; //0 : VPN + CAS登录;  1 : VPN + 教务登录
     public static boolean isVPN = true;
 
     //开发者调试
@@ -34,7 +31,6 @@ public class TokenData {
     private boolean forceVPN = false;
 
     private String CASCookie; // 新版CAS认证Cookie; CASTGT/JSESSION
-    private String TGTToken;   //统一登录TGT令牌
     private String VPNToken;   //VPN认证Token
     private String bkjwCookie; //教务系统认证Cookie
 
@@ -46,8 +42,8 @@ public class TokenData {
         }
     }
 
-    public boolean isIsVPN() {
-        return isVPN;
+    public boolean isVPN() {
+        return !isVPN;
     }
 
     /**
@@ -69,8 +65,6 @@ public class TokenData {
         accountData = AccountData.newInstance(context);
         this.context = context;
 
-        loginType = sharedPreferences.getInt(LOGIN_TYPE, 0);
-        TGTToken = sharedPreferences.getString(TGT_TOKEN, "TGT-");
         VPNToken = sharedPreferences.getString(VPN_TOKEN, null);
         bkjwCookie = sharedPreferences.getString(BKJW_COOKIE, null);
         isDevelop = sharedPreferences.getBoolean(IS_DEVELOP, false);
@@ -102,52 +96,11 @@ public class TokenData {
                 isVPN = true;
                 forceVPN = false;
             } else {
-                isVPN = Net.testNet() != 200;
+                isVPN = Net.testNet() == 200;
             }
-            if (loginType == 0) { //智慧校园登录
-                return loginBySmart();
-            } else if (loginType == 1) { //VPN+教务登录
-                return loginByBkjw();
-            } else {
-                return 2;
-            }
+            return loginBySmart();
         } else {
             return 2;
-        }
-    }
-
-    /**
-     * 使用教务登录
-     *
-     * @return 登录结果
-     */
-    private int loginByBkjw() {
-        if (isVPN) {
-            String VPNTokenStr = Net.getVPNToken(context);
-            if (VPNTokenStr != null) {
-                setVPNToken(VPNTokenStr);
-            } else {
-                return -2;
-            }
-            int n = loginVpnByCAS(VPNTokenStr);
-            if (n == 0) {
-                n = StaticService.autoLoginV(context, accountData.getUsername(), accountData.getBkjwPwd(), VPNTokenStr);
-            }
-            return n;
-        } else { //内网
-            StringBuilder cookie_builder = new StringBuilder();
-            int state = StaticService.autoLogin(
-                    context,
-                    accountData.getUsername(),
-                    accountData.getBkjwPwd(),
-                    cookie_builder
-            );
-            if (state == 0) {
-                setBkjwCookie(cookie_builder.toString());
-                return 0;
-            } else {
-                return state;
-            }
         }
     }
 
@@ -267,22 +220,6 @@ public class TokenData {
     public void setCASCookie(String CASCookie) {
         this.CASCookie = CASCookie;
         editor.putString(CAS_Cookie, CASCookie);
-        editor.apply();
-    }
-
-    public int getLoginType() {
-        return loginType;
-    }
-
-    public void setLoginType(int loginType) {
-        this.loginType = loginType;
-        editor.putInt(LOGIN_TYPE, loginType);
-        editor.apply();
-    }
-
-    public void setTGTToken(String TGTToken) {
-        this.TGTToken = TGTToken;
-        editor.putString(TGT_TOKEN, TGTToken);
         editor.apply();
     }
 

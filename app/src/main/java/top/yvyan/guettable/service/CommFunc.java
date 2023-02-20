@@ -180,7 +180,7 @@ public class CommFunc {
         if (hint != null) {
             ToastUtil.showLongToast(activity, hint);
         }
-        if (!tokenData.isIsVPN()) { //内网直接打开对应网址
+        if (tokenData.isVPN()) { //内网直接打开对应网址
             openBrowser(activity, web);
         } else { //外网登录vpn后打开对应网址
             openBrowser(activity, vpnWeb);
@@ -196,7 +196,7 @@ public class CommFunc {
      */
     public static void noLoginWebVPN(Activity activity, String web, String vpnWeb) {
         TokenData tokenData = TokenData.newInstance(activity);
-        if (!tokenData.isIsVPN()) { //内网直接打开对应网址
+        if (tokenData.isVPN()) { //内网直接打开对应网址
             openUrl(activity, null, web, true);
         } else { //外网登录vpn后打开对应网址
             new Thread(() -> {

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import top.yvyan.guettable.MainActivity;
@@ -25,25 +26,23 @@ import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.util.DialogUtil;
 
-@SuppressWarnings("deprecation")
 public class LaunchActivity extends AppCompatActivity {
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = this.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(this.getResources().getColor(R.color.app_white));              //设置状态栏颜色
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); //状态栏为白色 图标显示深色
-        }
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.app_white));              //设置状态栏颜色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); //状态栏为白色 图标显示深色
 
         FirstLoad firstLoad = new FirstLoad(getApplicationContext());
         firstLoad.check();
 
-        Window window = this.getWindow();
+        window = this.getWindow();
         //透明状态栏
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
@@ -96,7 +95,7 @@ public class LaunchActivity extends AppCompatActivity {
                             TokenData.isVPN = true;
                             break;
                         case 1: //wifi网络
-                            new Thread(() -> TokenData.isVPN = Net.testNet() != 200).start();
+                            new Thread(() -> TokenData.isVPN = Net.testNet() == 200).start();
                             break;
                     }
                 }

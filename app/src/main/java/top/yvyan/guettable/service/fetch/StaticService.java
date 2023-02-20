@@ -1,7 +1,6 @@
 package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,7 +40,6 @@ import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.bean.SelectedCourseBean;
 import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.util.RegularUtil;
 
 public class StaticService {
 
@@ -77,10 +75,10 @@ public class StaticService {
     /**
      * 获取SSO ST令牌
      *
-     * @param context  context
-     * @param CASCookie
-     * @param service  ST令牌的服务端
-     * @param VPNToken VPNToken
+     * @param context   context
+     * @param CASCookie CAS Cookie
+     * @param service   ST令牌的服务端
+     * @param VPNToken  VPNToken
      * @return ST令牌
      * ERROR0 : 网络错误
      * ERROR1 : TGT失效
@@ -100,7 +98,7 @@ public class StaticService {
         } else {
             String Location = response.c.getHeaderField("location");
             if (Location.contains("ST-")) {
-                return Location.substring(Location.indexOf("?ticket=ST-")+8);
+                return Location.substring(Location.indexOf("?ticket=ST-") + 8);
             }
             return "ERROR1";
         }
@@ -207,110 +205,6 @@ public class StaticService {
                 state = -1;
             } else {
                 state = 0;
-            }
-        }
-        return state;
-    }
-
-    /**
-     * 刷新验证码(后台)
-     *
-     * @param context context
-     * @return 识别的验证码
-     */
-    public static String refreshCode(Context context, StringBuilder cookie_builder) {
-        final HttpConnectionAndCode res = Net.checkCode(context, null);
-        if (res.obj != null) {
-            final String ocr = OCR.getTextFromBitmap(context, (Bitmap) res.obj, "telephone");
-            cookie_builder.append(res.cookie);
-            return ocr;
-        }
-        return null;
-    }
-
-    /**
-     * 自动登录
-     *
-     * @param context        context
-     * @param account        学号
-     * @param password       密码
-     * @param cookie_builder cookie
-     * @return state记录当前状态
-     * 0 : 登录成功
-     * -1 : 密码错误
-     * -2 : 网络错误/未知错误
-     * -3 : 验证码连续错误
-     */
-    public static int autoLogin(Context context, String account, String password, StringBuilder cookie_builder) {
-        int state = 1;
-        for (int i = 0; i < 4; i++) {
-            String checkCode = refreshCode(context, cookie_builder);
-            HttpConnectionAndCode login_res = Net.login(context, account, password, checkCode, cookie_builder.toString(), cookie_builder, false);
-            if (login_res.code != 0) { //登录失败
-                cookie_builder.delete(0, cookie_builder.length());
-                if (login_res.comment != null && login_res.comment.contains("验证码")) {
-                    state = -3;
-                } else if (login_res.comment != null && login_res.comment.contains("密码")) {
-                    state = -1;
-                    break;
-                } else { //请连接校园网
-                    state = -2;
-                    break;
-                }
-            } else { //登录成功
-                state = 0;
-                break;
-            }
-        }
-        return state;
-    }
-
-    /**
-     * 刷新验证码(后台)VPN
-     *
-     * @param context  context
-     * @param VPNToken VPNToken
-     * @return 识别的验证码
-     */
-    public static String refreshCodeV(Context context, String VPNToken) {
-        final HttpConnectionAndCode res = Net.checkCode(context, VPNToken);
-        if (res.obj != null) {
-            return OCR.getTextFromBitmap(context, (Bitmap) res.obj, "telephone");
-        }
-        return null;
-    }
-
-    /**
-     * 自动登录
-     *
-     * @param context  context
-     * @param account  学号
-     * @param password 密码
-     * @param VPNToken VPNToken
-     * @return state记录当前状态
-     * 0 : 登录成功
-     * -1 : 密码错误
-     * -2 : 网络错误/未知错误
-     * -3 : 验证码连续错误
-     */
-    public static int autoLoginV(Context context, String account, String password, String VPNToken) {
-        int state = 1;
-        for (int i = 0; i < 4; i++) {
-            String checkCode = refreshCodeV(context, VPNToken);
-            HttpConnectionAndCode login_res = Net.login(context, account, password, checkCode, VPNToken, null, true);
-            if (login_res.code != 0) { //登录失败
-                if (login_res.comment != null && login_res.comment.contains("验证码")) {
-                    state = -3;
-                } else if (login_res.comment != null && login_res.comment.contains("密码")) {
-                    state = -1;
-                    break;
-                } else { //请连接校园网
-                    state = -2;
-                    break;
-                }
-            } else { //登录成功
-                state = 0;
-                break;
             }
         }
         return state;
