@@ -4,13 +4,11 @@
     <!-- 统一登录 -->
     <string name="vpn_url">https://v.guet.edu.cn/login</string>
     <string name="vpn_refer">https://v.guet.edu.cn</string>
-
+    <string name="vpn_get_cookie">https://v.guet.edu.cn/wengine-vpn/cookie?method=get&amp;host=cas.guet.edu.cn&amp;scheme=https&amp;path=/authserver/login</string>
     <string name="url_Authserver">https://cas.guet.edu.cn/authserver/login</string>
+    <string name="url_Authserver_VPN">https://v.guet.edu.cn/https/77726476706e69737468656265737421f3f652d220256d44300d8db9d6562d/authserver/login</string>
 
-    <string name="url_get_TGT">https://cas.guet.edu.cn/cas/v1/tickets</string>
-    <string name="url_get_TGT_vpn">https://v.guet.edu.cn/https/77726476706e69737468656265737421f3f652d220256d44300d8db9d6562d/cas/v1/tickets</string>
-    <string name="url_get_ST">https://cas.guet.edu.cn/cas/v1/tickets/</string>
-    <string name="url_get_ST_vpn">https://v.guet.edu.cn/https/77726476706e69737468656265737421f3f652d220256d44300d8db9d6562d/cas/v1/tickets/</string>
+
 
     <string name="SSO_context_type">application/x-www-form-urlencoded;charset=UTF-8</string>
     <string name="SSO_referer">https://cas.guet.edu.cn/</string>
