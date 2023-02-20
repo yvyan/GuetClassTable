@@ -7,7 +7,7 @@ android {
         applicationId "top.yvyan.guettable"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 49 //记得补丁版本号归零(patch_version)
+        versionCode 48 //记得补丁版本号归零(patch_version)
         versionName "4.5.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -67,7 +67,6 @@ dependencies {
     implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.18'
     //图片裁剪
     implementation 'com.github.yalantis:ucrop:2.2.4'
-    //update
-    implementation 'com.tencent.bugly:crashreport_upgrade:1.5.1'
+    //bugly
     implementation 'com.tencent.bugly:nativecrashreport:3.9.1'
 }

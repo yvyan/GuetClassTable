@@ -27,7 +27,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.cconfig.RemoteConfigSettings;
 import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.commonsdk.UMConfigure;
-import com.umeng.umcrash.UMCrash;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +38,6 @@ import java.util.List;
 import top.yvyan.guettable.activity.WebViewActivity;
 import top.yvyan.guettable.baseFun.Notification;
 import top.yvyan.guettable.baseFun.UpdateApp;
-import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
@@ -122,19 +120,9 @@ public class MainActivity extends AppCompatActivity {
         UMRemoteConfig.getInstance().setDefaults(R.xml.cloud_config_parms);
         UMConfigure.init(this, UMengKey, "Umeng", UMConfigure.DEVICE_TYPE_PHONE, ""); //数据统计
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
-        // 通过在线参数判断更新方式0：bugly在线更新； 1：通过浏览器下载更新
-        String updateType = UMRemoteConfig.getInstance().getConfigValue("updateType");
-        int n = 0;
-        try {
-            n = Integer.parseInt(updateType);
-        } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "checkUpdateType");
-        }
-        if (n == 0) {
-            UpdateApp.init(getApplicationContext(), SettingData.newInstance(getApplicationContext()).isAppCheckUpdate());
-        } else {
-            UpdateApp.check(this, 1);
-        }
+        // 获取更新
+        UpdateApp.check(this, 1);
+
         //获取通知
         Notification.getNotification(this);
         //清理webView缓存
