@@ -30,7 +30,7 @@ public class Net {
      * else -- 外网
      */
     public static int testNet() {
-        String url = "https://v.guet.edu.cn/";
+        String url = "http://10.0.1.5/";
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(3, TimeUnit.SECONDS)//设置连接超时时间
                 .readTimeout(3, TimeUnit.SECONDS)//设置读取超时时间

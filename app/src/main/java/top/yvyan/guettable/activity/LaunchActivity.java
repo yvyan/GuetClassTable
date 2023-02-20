@@ -95,7 +95,7 @@ public class LaunchActivity extends AppCompatActivity {
                             TokenData.isVPN = true;
                             break;
                         case 1: //wifi网络
-                            new Thread(() -> TokenData.isVPN = Net.testNet() == 200).start();
+                            new Thread(() -> TokenData.isVPN = Net.testNet() != 200).start();
                             break;
                     }
                 }

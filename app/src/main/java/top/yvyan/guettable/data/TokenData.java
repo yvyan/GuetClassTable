@@ -96,7 +96,7 @@ public class TokenData {
                 isVPN = true;
                 forceVPN = false;
             } else {
-                isVPN = Net.testNet() == 200;
+                isVPN = Net.testNet() != 200;
             }
             return loginBySmart();
         } else {
