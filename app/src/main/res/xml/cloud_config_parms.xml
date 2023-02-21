@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
-        <key>updateUrl</key>
-        <value>http://update.guet.yvyan.top/</value>
+        <key>XUpdateUrl</key>
+        <value>https://gitee.com/fireworkwing/resource/raw/master/GuetTable/update</value>
     </entry>
 
     <entry>
-        <key>updateUrl</key>
+        <key>shareText</key>
         <value>新的桂电课程表，简洁、好用，分享给你，点击链接下载：https://www.coolapk.com/apk/279989 (酷安官方链接，请放心访问，建议使用浏览器打开)
         </value>
     </entry>
@@ -28,7 +28,7 @@
 
     <entry>
         <key>notificationUrl</key>
-        <value>http://update.guet.yvyan.top/notification/</value>
+        <value>https://gitee.com/fireworkwing/resource/raw/master/GuetTable/notification</value>
     </entry>
 
     <entry>

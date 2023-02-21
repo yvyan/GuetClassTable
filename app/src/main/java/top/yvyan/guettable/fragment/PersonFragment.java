@@ -208,7 +208,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.person_update:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_update));
-                UpdateApp.check(getActivity(), 2);
+                UpdateApp.check(getActivity());
                 break;
             case R.id.person_download_all:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_download_all));
