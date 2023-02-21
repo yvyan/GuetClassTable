@@ -23,7 +23,6 @@ import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamScore;
 import top.yvyan.guettable.Gson.ExperimentScore;
 import top.yvyan.guettable.Gson.Grades;
-import top.yvyan.guettable.Gson.InnovationScore;
 import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
@@ -588,47 +587,6 @@ public class StaticService {
         } else {
             return null;
         }
-    }
-
-    /**
-     * 查询创新积分
-     *
-     * @param context context
-     * @param cookie  cookie
-     * @return 操作结果
-     */
-    public static BaseResponse<InnovationScore> getInnovationScore(Context context, String cookie) {
-        HttpConnectionAndCode httpConnectionAndCode = Net.getInnovationScore(context, cookie, TokenData.isVPN);
-        if (httpConnectionAndCode.comment != null) {
-            BaseResponse<InnovationScore> result;
-            try {
-                result = new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {
-                }.getType());
-            } catch (Exception ignored) {
-                return null;
-            }
-            return result;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * 更新创新积分
-     *
-     * @param context context
-     * @param cookie  cookie
-     * @return 更新结果
-     * -1  更新失败
-     * 0   更新成功
-     */
-    public static int updateInnovationScore(Context context, String cookie) {
-        HttpConnectionAndCode httpConnectionAndCode = Net.updateInnovationScore(context, cookie, TokenData.isVPN);
-        String comment = httpConnectionAndCode.comment;
-        if (comment != null && comment.contains("操作成功")) {
-            return 0;
-        }
-        return -1;
     }
 
     /**

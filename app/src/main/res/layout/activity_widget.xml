@@ -8,7 +8,6 @@
     tools:context=".widget.WidgetActivity">
 
     <TextView
-        android:id="@+id/tv_widget_theme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -26,7 +25,6 @@
         app:vtl_tab_margin="10dp" />
 
     <TextView
-        android:id="@+id/tv_widget_alpha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"

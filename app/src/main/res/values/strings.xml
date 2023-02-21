@@ -12,16 +12,12 @@
 
     <string name="SSO_context_type">application/x-www-form-urlencoded;charset=UTF-8</string>
     <string name="SSO_referer">https://cas.guet.edu.cn/</string>
-    <string name="SSO_success_contain_ST">ST-</string>
     <string name="service_bkjw">service=https%3A%2F%2Fbkjw.guet.edu.cn</string>
     <string name="service_vpn">service=https%3a%2f%2fv.guet.edu.cn%2flogin%3fcas_login%3dtrue</string>
     <string name="SSO_bkjw">https://bkjw.guet.edu.cn/login/login</string>
 
     <!-- 新版教务系统 -->
-    <string name="lan_get_checkcode_url">/login/GetValidateCode?id=0.7060164569272753</string>
-    <string name="lan_get_checkcode_referer">/</string>
 
-    <string name="lan_login_url">/Login/SubmitLogin</string>
     <string name="lan_referer">/</string>
     <string name="lan_login_success_contain_response_text">\"success\":true</string>
 
@@ -53,7 +49,6 @@
     <string name="url_vpn">https://v.guet.edu.cn/</string>
     <string name="url_lijiang">http://www.gxljxt.cn/</string>
     <string name="url_lijiang_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e7e056d22028645a661cc7af96/</string>
-    <string name="downloadApp_url">https://www.coolapk.com/apk/279989</string>
     <string name="url_change_vpn_pwd">https://cas.guet.edu.cn/retrieve-password/retrievePassword/index.html#/</string>
     <string name="url_activate_account">https://cas.guet.edu.cn/retrieve-password/accountActivation/index.html#/</string>
 
@@ -127,9 +122,6 @@
     <string name="login_fail_bkjw">教务密码错误，登录失败，请点击右上角问号查看帮助</string>
     <string name="login_fail_getInfo">获取个人信息失败，请稍后重试，请点击右上角问号查看帮助</string>
     <string name="log_change_pwd">即将为您打开修改智慧校园密码的网页，请连接校园网。\n\n 登录成功后，输入原密码和新密码(需要同时包含大小写字母、数字和特殊字符)确认即可。\n\n Tip:本次只会修改智慧校园登录密码，不会修改教务系统的密码，密码修改后可能需要一段儿时间才会生效。</string>
-    <string name="log_vpn_net_error">VPN出现网络/未知错误，您可以选择重试，或继续登录(之后仅可使用校园网进行数据同步)。\n\nTip:若VPN系统出现问题，尝试后仍无法登录，请选择“仍然继续”。</string>
-    <string name="log_vpn_pwd_error">VPN密码错误，您可以选择重试，或继续登录(之后仅可使用校园网进行数据同步)。\n\nTip:若VPN系统出现问题，尝试后仍无法登录，请选择“仍然继续”。</string>
-    <string name="log_vpn_pwd_easy">VPN已禁止使用简单密码登录，请修改密码后重新登录，你也可以选择“仍然继续”，之后仅可使用校园网进行数据同步。</string>
     <string name="login_help">&#160;&#160;&#160;&#160;请输入智慧校园密码进行登录(建议使用校园网进行登录和数据同步！)。
         \n&#160;&#160;&#160;&#160;请确保使用网页可以正常进入教务系统，由于学校更换系统，所有账号均需要激活后才能使用，请点击“激活账户“按钮进行激活。
         \n&#160;&#160;&#160;&#160;偶尔学校网络会不稳定或者VPN被关闭，登录失败出现弹窗可以选择“仍然继续”，使用校园网进行数据同步。
@@ -138,10 +130,6 @@
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.41</string>
     <string name="cookie_delimiter">"; "</string>
     <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²  |  沉山浮阳 | 迷 | 稚隳 </string>
-
-    <!-- 创新积分-->
-    <string name="lan_get_innovationScore"> https://bkjw.guet.edu.cn/student/getcxcy </string>
-    <string name="lan_update_innovationScore"> https://bkjw.guet.edu.cn/student/gencxcy </string>
 
     <!--已选课程-->
     <string name="lan_get_selected_course"> https://bkjw.guet.edu.cn/student/GetSctCourse </string>
@@ -194,9 +182,7 @@
     <string name="person_help_test">协助测试</string>
     <string name="person_help_me">支持开发者</string>
     <string name="person_setting">设置</string>
-    <string name="moreFun_innovation_score">创新积分</string>
     <string name="more_func_empty">暂无数据</string>
-    <string name="more_func_fail">加载失败</string>
     <string name="hint_account">请输入学号</string>
     <string name="hint_vpn_password">请输入智慧校园密码</string>
     <string name="remember_password">记住密码</string>
