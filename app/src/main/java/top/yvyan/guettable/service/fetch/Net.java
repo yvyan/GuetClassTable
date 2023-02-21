@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import java.io.IOException;
-import java.net.HttpCookie;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -131,7 +130,7 @@ public class Net {
                 if (cookies != null) {
                     cookie_builder.append("; ");
                     for (String cookie_resp : cookies) {
-                        cookie_builder.append(cookie_resp.substring(0,cookie_resp.indexOf(";")+1)+" ");
+                        cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1)).append(" ");
                     }
                 }
                 LoginRequest.cookie=cookie_builder.toString();
@@ -141,7 +140,7 @@ public class Net {
             }
             if(VPNToken != null) {
                 //获取 Cookie 判断是否登录成功
-                HttpConnectionAndCode VPNGetCookieRequest = Get.get(
+                return Get.get(
                         resources.getString(R.string.vpn_get_cookie) + "&vpn_timestamp=" + new Date().getTime(),
                         null,
                         resources.getString(R.string.user_agent),
@@ -155,7 +154,6 @@ public class Net {
                         null,
                         10000,
                         null);
-                return VPNGetCookieRequest;
             }
             return LoginRequest;
         } catch (Exception ignored) {
