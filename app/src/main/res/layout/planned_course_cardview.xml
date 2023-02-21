@@ -35,7 +35,6 @@
             app:layout_constraintGuide_percent="0.8" />
 
         <View
-            android:id="@+id/divider2"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginStart="10dp"

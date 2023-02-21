@@ -5,8 +5,4 @@
         <item>第二学期</item>
         <item>小学期</item>
     </string-array>
-    <string-array name="loginType">
-        <item>智慧校园</item>
-        <item>国际学院</item>
-    </string-array>
 </resources>

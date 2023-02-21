@@ -131,7 +131,6 @@
                 android:background="@color/xui_config_color_gray_9" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/password_help"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
@@ -144,7 +143,6 @@
                     app:layout_constraintGuide_begin="60dp" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
                     android:layout_width="37dp"
                     android:layout_height="43dp"
                     android:layout_centerVertical="true"

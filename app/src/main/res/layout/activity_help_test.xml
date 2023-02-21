@@ -34,7 +34,6 @@
                     app:layout_constraintGuide_percent="0.5" />
 
                 <com.xuexiang.xui.widget.button.ButtonView
-                    android:id="@+id/develop_start"
                     style="@style/ButtonView.Blue"
                     android:layout_width="140dp"
                     android:layout_height="40dp"

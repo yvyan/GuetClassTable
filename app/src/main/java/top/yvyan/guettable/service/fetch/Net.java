@@ -522,58 +522,6 @@ public class Net {
         );
     }
 
-    /**
-     * 查询创新积分
-     *
-     * @param context context
-     * @param cookie  cookie
-     * @param isVPN   是否外网
-     * @return 操作结果
-     */
-    public static HttpConnectionAndCode getInnovationScore(Context context, String cookie, boolean isVPN) {
-        Resources resources = context.getResources();
-        return Get.get(UrlReplaceUtil.getUrlByVPN(isVPN, resources.getString(R.string.lan_get_innovationScore)),
-                null,
-                resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
-                cookie,
-                "]}",
-                null,
-                resources.getString(R.string.lan_login_success_contain_response_text),
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-    }
-
-    /**
-     * 更新创新积分
-     *
-     * @param context context
-     * @param cookie  cookie
-     * @param isVPN   是否外网
-     * @return 操作结果
-     */
-    public static HttpConnectionAndCode updateInnovationScore(Context context, String cookie, boolean isVPN) {
-        Resources resources = context.getResources();
-        return Post.post(
-                UrlReplaceUtil.getUrlByVPN(isVPN, resources.getString(R.string.lan_update_innovationScore)),
-                null,
-                resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
-                null,
-                cookie,
-                "}",
-                null,
-                resources.getString(R.string.lan_login_success_contain_response_text),
-                null,
-                null,
-                null
-        );
-    }
-
 
     /**
      * 查询已选课程

@@ -55,7 +55,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/moreFun_jiaowu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -64,7 +63,6 @@
                         android:textSize="18sp" />
 
                     <LinearLayout
-                        android:id="@+id/container_jiaowu_1"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_marginBottom="15dp"
@@ -79,7 +77,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_test_schedule_picture"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="top|center"
@@ -103,7 +100,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_credits_picture"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="top|center"
@@ -128,7 +124,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_test_scores_picture"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="top|center"
@@ -153,7 +148,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_lib_scores_picture"
                                 android:layout_width="33dp"
                                 android:layout_height="33dp"
                                 android:layout_gravity="top|center"
@@ -173,7 +167,6 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/container_jiaowu_2"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_gravity="center"
@@ -189,7 +182,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_resit_schedule_picture"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="top|center"
@@ -213,7 +205,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_lib_schedule_picture"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:layout_gravity="top|center"
@@ -283,7 +274,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/moreFun_biye"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -306,7 +296,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_plan_courses_picture"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="top|center"
@@ -332,7 +321,6 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:id="@+id/more_cet_picture"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="top|center"
@@ -349,29 +337,13 @@
 
                         </FrameLayout>
 
+
                         <FrameLayout
-                            android:id="@+id/more_innovation_score"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="top|center"
-                                android:layout_marginTop="2dp"
-                                android:baselineAlignBottom="false"
-                                android:src="@drawable/m_innovation_score"
-                                tools:ignore="ContentDescription" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom|center"
-                                android:text="@string/moreFun_innovation_score"
-                                android:textSize="13sp" />
+                            tools:ignore="UselessLeaf">
 
                         </FrameLayout>
 
@@ -405,7 +377,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/moreFun_guet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -414,7 +385,6 @@
                         android:textSize="18sp" />
 
                     <LinearLayout
-                        android:id="@+id/container_links_1"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_marginBottom="15dp"
@@ -428,7 +398,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_url_bkjw_picture"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:layout_gravity="top|center"
@@ -453,7 +422,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_url_vpn_picture"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:layout_gravity="top|center"
@@ -477,7 +445,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_url_campus_picture"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:layout_gravity="top|center"
@@ -501,7 +468,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_url_lijiang_picture"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:layout_gravity="top|center"
@@ -520,7 +486,6 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/container_links_2"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_marginBottom="15dp"
@@ -599,7 +564,6 @@
 
                         <FrameLayout
                             android:visibility="invisible"
-                            android:id="@+id/more_wei_chat"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -645,7 +609,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/moreFun_tool"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -668,7 +631,6 @@
                             android:layout_weight="1">
 
                             <ImageView
-                                android:id="@+id/more_plan_courses_picture1"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="top|center"
@@ -694,7 +656,6 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:id="@+id/more_cet_picture1"
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
                                 android:layout_gravity="top|center"
@@ -737,7 +698,6 @@
 
                         <FrameLayout
                             android:visibility="invisible"
-                            android:id="@+id/more_tool_group"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"

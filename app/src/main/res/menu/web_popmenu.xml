@@ -5,8 +5,6 @@
         android:id="@+id/web_top1"
         android:title="浏览器打开" />
 
-    <item
-        android:id="@+id/web_top2"
-        android:title="分享链接给同学" />
+    <item android:title="分享链接给同学" />
 
 </menu>

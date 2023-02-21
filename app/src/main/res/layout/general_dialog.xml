@@ -79,7 +79,6 @@
             app:layout_constraintTop_toTopOf="@+id/dialog_back" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
