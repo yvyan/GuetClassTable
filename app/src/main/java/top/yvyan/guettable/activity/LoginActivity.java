@@ -111,7 +111,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         String account = etAccount.getText().toString();
         String pwd2 = etPwd2.getText().toString();
         new Thread(() -> {
-            String VPNToken = Net.getVPNToken(this);
+            String VPNToken = null;
+            if (Net.testNet() != 200) {
+                VPNToken = Net.getVPNToken(this);
+            }
             testCAS(account, pwd2, VPNToken);
         }).start();
     }

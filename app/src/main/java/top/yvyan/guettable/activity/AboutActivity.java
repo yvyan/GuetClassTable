@@ -1,5 +1,7 @@
 package top.yvyan.guettable.activity;
 
+import static com.xuexiang.xui.XUI.getContext;
+
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -23,8 +25,6 @@ import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
-
-import static com.xuexiang.xui.XUI.getContext;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -82,36 +82,34 @@ public class AboutActivity extends AppCompatActivity {
      * 协助测试
      */
     public void helpTest() {
-        if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {
+        if (SettingData.newInstance(getContext()).isDevelopMode()) {
+            Intent intent = new Intent(getContext(), HelpTestActivity.class);
+            startActivity(intent);
+        } else if (AppUtil.isWifi(Objects.requireNonNull(getContext()))) {
             DialogUtil.showTextDialog(this, "为了保证测试顺利，请关闭WIFI，连接数据网络后进行测试。");
         } else {
-            if (SettingData.newInstance(getContext()).isDevelopMode()) {
-                Intent intent = new Intent(getContext(), HelpTestActivity.class);
-                startActivity(intent);
-            } else {
-                ToastUtil.showToast(this, "请不要退出页面或者切换网络，正在获取凭证，最多需要30s，请稍后！");
-                new Thread(() -> {
-                    TokenData tokenData = TokenData.newInstance(getContext());
-                    int n = tokenData.refresh();
-                    runOnUiThread(() -> {
-                        try {
-                            if (n == 0) {
-                                //获取剪贴板管理器：
-                                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                                // 创建普通字符型ClipData
-                                ClipData mClipData = ClipData.newPlainText("Label", tokenData.getCookie());
-                                // 将ClipData内容放到系统剪贴板里。
-                                cm.setPrimaryClip(mClipData);
-                                DialogUtil.showTextDialog(this, "感谢协助，凭证复制成功，您现在可以发送给开发者了！");
-                            } else {
-                                DialogUtil.showTextDialog(this, "获取失败，请稍后重试。");
-                            }
-                        } catch (Exception e) {
-                            UMCrash.generateCustomLog(e, "helpTest");
+            ToastUtil.showToast(this, "请不要退出页面或者切换网络，正在获取凭证，最多需要30s，请稍后！");
+            new Thread(() -> {
+                TokenData tokenData = TokenData.newInstance(getContext());
+                int n = tokenData.refresh();
+                runOnUiThread(() -> {
+                    try {
+                        if (n == 0) {
+                            //获取剪贴板管理器：
+                            ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                            // 创建普通字符型ClipData
+                            ClipData mClipData = ClipData.newPlainText("Label", tokenData.getCookie());
+                            // 将ClipData内容放到系统剪贴板里。
+                            cm.setPrimaryClip(mClipData);
+                            DialogUtil.showTextDialog(this, "感谢协助，凭证复制成功，您现在可以发送给开发者了！");
+                        } else {
+                            DialogUtil.showTextDialog(this, "获取失败，请稍后重试。");
                         }
-                    });
-                }).start();
-            }
+                    } catch (Exception e) {
+                        UMCrash.generateCustomLog(e, "helpTest");
+                    }
+                });
+            }).start();
         }
     }
 }

@@ -63,20 +63,16 @@ public class StaticService {
             }
             return "ERROR0";
         } else {
+            String Cookie;
             if(VPNToken == null) {
-                String Cookie = response.cookie;
-                if (Cookie.contains("TGT-")) {
-                    return Cookie;
-                } else {
-                    return "ERROR1";
-                }
+                Cookie = response.cookie;
             } else {
-                String Cookie = response.comment;
-                if (Cookie.contains("TGT-")) {
-                     return Cookie;
-                } else {
-                    return "ERROR1";
-                }
+                Cookie = response.comment;
+            }
+            if (Cookie.contains("TGT-")) {
+                return Cookie;
+            } else {
+                return "ERROR1";
             }
         }
     }
