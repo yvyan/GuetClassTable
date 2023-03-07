@@ -140,7 +140,7 @@ public class Net {
             }
             if(VPNToken != null) {
                 //获取 Cookie 判断是否登录成功
-                return Get.get(
+                HttpConnectionAndCode VPNGetCookieRequest = Get.get(
                         resources.getString(R.string.vpn_get_cookie) + "&vpn_timestamp=" + new Date().getTime(),
                         null,
                         resources.getString(R.string.user_agent),
@@ -154,12 +154,84 @@ public class Net {
                         null,
                         10000,
                         null);
+                return new HttpConnectionAndCode(LoginRequest.c,VPNGetCookieRequest.code,VPNGetCookieRequest.comment);
             }
             return LoginRequest;
         } catch (Exception ignored) {
 
         }
         return new HttpConnectionAndCode(-5);
+    }
+
+    /**
+     * 获取手机验证码
+     *
+     * @param context   context
+     * @param CASCookie CAS Cookie
+     * @param account
+     * @param VPNToken  VPNToken
+     * @return Response
+     */
+    public static HttpConnectionAndCode sendPhoneOTP(Context context, String CASCookie,String account, String VPNToken) {
+        Resources resources = context.getResources();
+        return Post.post(
+                (VPNToken != null ? resources.getString(R.string.url_SendPhoneOTP_VPN) : resources.getString(R.string.url_SendPhoneOTP)),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.SSO_referer),
+                "userName="+account+"&authCodeTypeName=reAuthDynamicCodeType",
+                VPNToken == null ? CASCookie : VPNToken ,
+                null,
+                resources.getString(R.string.cookie_delimiter),
+                null,
+                null,
+                false,
+                resources.getString(R.string.SSO_context_type));
+    }
+
+    /**
+     * 认证手机验证码
+     *
+     * @param context   context
+     * @param CASCookie CAS Cookie
+     * @param OTP
+     * @param VPNToken  VPNToken
+     * @return Response
+     */
+    public static HttpConnectionAndCode verifyPhoneOTP(Context context, String CASCookie,String OTP, String VPNToken) {
+        Resources resources = context.getResources();
+        HttpConnectionAndCode VerifyRequest = Post.post(
+                (VPNToken != null ? resources.getString(R.string.url_ReAuth_VPN) : resources.getString(R.string.url_ReAuth)),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.SSO_referer),
+                "service=http%3A%2F%2Ficampus.guet.edu.cn%2FGuetAccount%2FCasLogin&reAuthType=3&isMultifactor=true&password=&dynamicCode="+OTP+"&uuid=&answer1=&answer2=&otpCode=",
+                VPNToken == null ? CASCookie : VPNToken ,
+                null,
+                resources.getString(R.string.cookie_delimiter),
+                null,
+                null,
+                false,
+                resources.getString(R.string.SSO_context_type));
+        if(VPNToken == null) {
+            return VerifyRequest;
+        } else  {
+            HttpConnectionAndCode VPNGetCookieRequest = Get.get(
+                    resources.getString(R.string.vpn_get_cookie) + "&vpn_timestamp=" + new Date().getTime(),
+                    null,
+                    resources.getString(R.string.user_agent),
+                    resources.getString(R.string.url_Authserver_VPN),
+                    VPNToken,
+                    null,
+                    resources.getString(R.string.cookie_delimiter),
+                    null,
+                    null,
+                    null,
+                    null,
+                    10000,
+                    null);
+            return new HttpConnectionAndCode(VerifyRequest.c,VerifyRequest.code,VerifyRequest.comment,VPNGetCookieRequest.comment, VerifyRequest.resp_code);
+        }
     }
 
     /**

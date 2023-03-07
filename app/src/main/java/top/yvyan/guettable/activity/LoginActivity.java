@@ -4,17 +4,24 @@ import static com.xuexiang.xui.XUI.getContext;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.umeng.umcrash.UMCrash;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
@@ -130,6 +137,33 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     /**
+     * 验证智慧校园密码 OTP Version
+     *
+     */
+    private void testCASWithOTP(String OTP,String CASCookie, String VPNToken,TokenData tokenData) {
+        String account = etAccount.getText().toString();
+        String pwd2 = etPwd2.getText().toString();
+        new Thread(() -> {
+            runOnUiThread(() -> button.setText("正在认证-手机验证码"));
+            String MulitFactorAuth = StaticService.VerifyPhoneOTP(this, CASCookie,OTP, VPNToken);
+            if(MulitFactorAuth.contains("ERROR")) {
+                if (MulitFactorAuth.equals("ERROR1")) {
+                    showErrorToast(-4);
+                } else if (MulitFactorAuth.equals("ERROR2")) {
+                    showErrorToast(-2);
+                } else {
+                    showErrorToast(-8);
+                }
+            } else {
+                tokenData.setCASCookie(CASCookie+"; "+MulitFactorAuth);
+                tokenData.setBkjwCookie(null);
+                accountData.setUser(account, null, pwd2, cbRememberPwd.isChecked());
+                getInfo();
+            }
+        }).start();
+    }
+
+    /**
      * 验证智慧校园密码
      *
      * @param account  学号
@@ -141,10 +175,34 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             String CasCookie = StaticService.SSOLogin(this, account, password, VPNToken);
             if (CasCookie.contains("TGT-")) {
                 TokenData tokenData = TokenData.newInstance(this);
-                tokenData.setCASCookie(CasCookie);
-                tokenData.setBkjwCookie(null);
-                accountData.setUser(account, null, password, cbRememberPwd.isChecked());
-                getInfo();
+                if(CasCookie.contains("ERROR5")) {
+                    tokenData.setCASCookie(CasCookie.substring(CasCookie.indexOf(";")+1));
+                    tokenData.setBkjwCookie(null);
+                    String phoneNumber = StaticService.SendPhoneOTP(this,CasCookie.substring(CasCookie.indexOf(";")+1), account, VPNToken);
+                    if (!phoneNumber.contains("ERROR")) {
+                        runOnUiThread(() -> {
+                            showPhoneOtpDialog(phoneNumber,CasCookie.substring(CasCookie.indexOf(";")+1),VPNToken,tokenData);
+                        });
+                    } else {
+                        if (phoneNumber.equals("ERROR1")) {
+                            showErrorToast(-4);
+                        } else if (phoneNumber.equals("ERROR2")) {
+                            showErrorToast(-2);
+                        } else if(phoneNumber.contains("ERROR3")) {
+                            runOnUiThread(() -> {
+                                setEnClick();
+                                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_phoneOTPSend)+phoneNumber.substring(7));
+                            });
+                        } else {
+                            showErrorToast(-8);
+                        }
+                    }
+                } else {
+                    tokenData.setCASCookie(CasCookie);
+                    tokenData.setBkjwCookie(null);
+                    accountData.setUser(account, null, password, cbRememberPwd.isChecked());
+                    getInfo();
+                }
             } else {
                 if (CasCookie.equals("ERROR1")) {
                     showErrorToast(-4);
@@ -155,6 +213,38 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 }
             }
         }).start();
+    }
+
+
+    /**
+     * 显示手机验证码2FA
+     */
+    private void showPhoneOtpDialog(String phoneNumber,String CasCookie,String VPNToken,TokenData tokenData) {
+        try {
+            AlertDialog dialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            dialog = builder.create();
+            dialog.show();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Window window = dialog.getWindow();
+            window.setContentView(R.layout.login_phoneotp);
+            TextView phoneNumberView = window
+                    .findViewById(R.id.et_phone);
+            phoneNumberView.setText(phoneNumber);
+            Button buttonYes = window.findViewById(R.id.btn_text_yes);
+            buttonYes.setOnClickListener(view -> {
+                TextView phoneOTP = window
+                        .findViewById(R.id.et_phoneotp);
+                String OTP=phoneOTP.getText().toString();
+                dialog.dismiss();
+                testCASWithOTP(OTP,CasCookie,VPNToken,tokenData);
+            });
+        } catch (Exception ignore) {
+            return;
+        }
     }
 
     /**
