@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -138,15 +137,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     /**
      * 验证智慧校园密码 OTP Version
-     *
      */
-    private void testCASWithOTP(String OTP,String CASCookie, String VPNToken,TokenData tokenData) {
+    private void testCASWithOTP(String OTP, String CASCookie, String VPNToken, TokenData tokenData) {
         String account = etAccount.getText().toString();
         String pwd2 = etPwd2.getText().toString();
         new Thread(() -> {
             runOnUiThread(() -> button.setText("正在认证-手机验证码"));
-            String MulitFactorAuth = StaticService.VerifyPhoneOTP(this, CASCookie,OTP, VPNToken);
-            if(MulitFactorAuth.contains("ERROR")) {
+            String MulitFactorAuth = StaticService.VerifyPhoneOTP(this, CASCookie, OTP, VPNToken);
+            if (MulitFactorAuth.contains("ERROR")) {
                 if (MulitFactorAuth.equals("ERROR1")) {
                     showErrorToast(-4);
                 } else if (MulitFactorAuth.equals("ERROR2")) {
@@ -155,7 +153,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     showErrorToast(-8);
                 }
             } else {
-                tokenData.setCASCookie(CASCookie+"; "+MulitFactorAuth);
+                tokenData.setCASCookie(CASCookie + "; " + MulitFactorAuth);
                 tokenData.setBkjwCookie(null);
                 accountData.setUser(account, null, pwd2, cbRememberPwd.isChecked());
                 getInfo();
@@ -175,11 +173,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             String CasCookie = StaticService.SSOLogin(this, account, password, VPNToken);
             if (CasCookie.contains("TGT-")) {
                 TokenData tokenData = TokenData.newInstance(this);
-                if(CasCookie.contains("ERROR5")) {
-                    tokenData.setCASCookie(CasCookie.substring(CasCookie.indexOf(";")+1));
+                if (CasCookie.contains("ERROR5")) {
+                    tokenData.setCASCookie(CasCookie.substring(CasCookie.indexOf(";") + 1));
                     tokenData.setBkjwCookie(null);
-                    fuck2FA(account,password,CasCookie.substring(CasCookie.indexOf(";")+1),VPNToken,tokenData);
-                    if(false) {
+                    fuck2FA(account, password, CasCookie.substring(CasCookie.indexOf(";") + 1), VPNToken, tokenData);
+                    if (false) {
                         String phoneNumber = StaticService.SendPhoneOTP(this, CasCookie.substring(CasCookie.indexOf(";") + 1), account, VPNToken);
                         if (!phoneNumber.contains("ERROR")) {
                             runOnUiThread(() -> {
@@ -219,33 +217,33 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
 
-    private void fuck2FA(String account,String password,String CASCookie,String VPNToken,TokenData tokenData) {
-        try{
-                runOnUiThread(() -> button.setText("正在尝试绕过二步验证"));
-                String MulitFactorAuth = StaticService.fuck2FA(this,password,CASCookie,VPNToken);
-                if(MulitFactorAuth.contains("ERROR")) {
-                    if (MulitFactorAuth.equals("ERROR1")) {
-                        showErrorToast(-4);
-                    } else if (MulitFactorAuth.equals("ERROR2")) {
-                        showErrorToast(-2);
-                    } else {
-                        showErrorToast(-8);
-                    }
+    private void fuck2FA(String account, String password, String CASCookie, String VPNToken, TokenData tokenData) {
+        try {
+            runOnUiThread(() -> button.setText("正在尝试绕过二步验证"));
+            String MulitFactorAuth = StaticService.fuck2FA(this, password, CASCookie, VPNToken);
+            if (MulitFactorAuth.contains("ERROR")) {
+                if (MulitFactorAuth.equals("ERROR1")) {
+                    showErrorToast(-4);
+                } else if (MulitFactorAuth.equals("ERROR2")) {
+                    showErrorToast(-2);
                 } else {
-                    tokenData.setCASCookie(CASCookie + "; " + MulitFactorAuth);
-                    tokenData.setBkjwCookie(null);
-                    accountData.setUser(account, null, password, cbRememberPwd.isChecked());
-                    getInfo();
+                    showErrorToast(-8);
                 }
+            } else {
+                tokenData.setCASCookie(CASCookie + "; " + MulitFactorAuth);
+                tokenData.setBkjwCookie(null);
+                accountData.setUser(account, null, password, cbRememberPwd.isChecked());
+                getInfo();
+            }
 
         } catch (Exception ignore) {
-            return;
         }
     }
+
     /**
      * 显示手机验证码2FA
      */
-    private void showPhoneOtpDialog(String phoneNumber,String CasCookie,String VPNToken,TokenData tokenData) {
+    private void showPhoneOtpDialog(String phoneNumber, String CasCookie, String VPNToken, TokenData tokenData) {
         try {
             AlertDialog dialog;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -264,12 +262,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             buttonYes.setOnClickListener(view -> {
                 TextView phoneOTP = window
                         .findViewById(R.id.et_phoneotp);
-                String OTP=phoneOTP.getText().toString();
+                String OTP = phoneOTP.getText().toString();
                 dialog.dismiss();
-                testCASWithOTP(OTP,CasCookie,VPNToken,tokenData);
+                testCASWithOTP(OTP, CasCookie, VPNToken, tokenData);
             });
         } catch (Exception ignore) {
-            return;
         }
     }
 
