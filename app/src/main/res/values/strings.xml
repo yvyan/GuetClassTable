@@ -11,6 +11,8 @@
     <string name="url_SendPhoneOTP_VPN">https://v.guet.edu.cn/https/77726476706e69737468656265737421f3f652d220256d44300d8db9d6562d/authserver/dynamicCode/getDynamicCodeByReauth.do</string>
     <string name="url_ReAuth">https://cas.guet.edu.cn/authserver/reAuthCheck/reAuthSubmit.do</string>
     <string name="url_ReAuth_VPN">https://v.guet.edu.cn/https/77726476706e69737468656265737421f3f652d220256d44300d8db9d6562d/authserver/reAuthCheck/reAuthSubmit.do</string>
+    <string name="url_ReAuth_Param">https://cas.guet.edu.cn/authserver/reAuthCheck/reAuthLoginView.do?isMultifactor=true&amp;service=http%3A%2F%2Ficampus.guet.edu.cn%2FGuetAccount%2FCasLogin</string>
+    <string name="url_ReAuth_Param_VPN">https://v.guet.edu.cn/https/77726476706e69737468656265737421f3f652d220256d44300d8db9d6562d/authserver/reAuthCheck/reAuthLoginView.do?isMultifactor=true&amp;service=http%3A%2F%2Ficampus.guet.edu.cn%2FGuetAccount%2FCasLogin</string>
     <string name="SSO_context_type">application/x-www-form-urlencoded;charset=UTF-8</string>
     <string name="SSO_referer">https://cas.guet.edu.cn/</string>
     <string name="service_bkjw">service=https%3A%2F%2Fbkjw.guet.edu.cn</string>

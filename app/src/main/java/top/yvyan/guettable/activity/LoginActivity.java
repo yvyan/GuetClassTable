@@ -178,23 +178,26 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 if(CasCookie.contains("ERROR5")) {
                     tokenData.setCASCookie(CasCookie.substring(CasCookie.indexOf(";")+1));
                     tokenData.setBkjwCookie(null);
-                    String phoneNumber = StaticService.SendPhoneOTP(this,CasCookie.substring(CasCookie.indexOf(";")+1), account, VPNToken);
-                    if (!phoneNumber.contains("ERROR")) {
-                        runOnUiThread(() -> {
-                            showPhoneOtpDialog(phoneNumber,CasCookie.substring(CasCookie.indexOf(";")+1),VPNToken,tokenData);
-                        });
-                    } else {
-                        if (phoneNumber.equals("ERROR1")) {
-                            showErrorToast(-4);
-                        } else if (phoneNumber.equals("ERROR2")) {
-                            showErrorToast(-2);
-                        } else if(phoneNumber.contains("ERROR3")) {
+                    fuck2FA(account,password,CasCookie.substring(CasCookie.indexOf(";")+1),VPNToken,tokenData);
+                    if(false) {
+                        String phoneNumber = StaticService.SendPhoneOTP(this, CasCookie.substring(CasCookie.indexOf(";") + 1), account, VPNToken);
+                        if (!phoneNumber.contains("ERROR")) {
                             runOnUiThread(() -> {
-                                setEnClick();
-                                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_phoneOTPSend)+phoneNumber.substring(7));
+                                showPhoneOtpDialog(phoneNumber, CasCookie.substring(CasCookie.indexOf(";") + 1), VPNToken, tokenData);
                             });
                         } else {
-                            showErrorToast(-8);
+                            if (phoneNumber.equals("ERROR1")) {
+                                showErrorToast(-4);
+                            } else if (phoneNumber.equals("ERROR2")) {
+                                showErrorToast(-2);
+                            } else if (phoneNumber.contains("ERROR3")) {
+                                runOnUiThread(() -> {
+                                    setEnClick();
+                                    ToastUtil.showToast(this, getResources().getString(R.string.login_fail_phoneOTPSend) + phoneNumber.substring(7));
+                                });
+                            } else {
+                                showErrorToast(-8);
+                            }
                         }
                     }
                 } else {
@@ -216,6 +219,29 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
 
+    private void fuck2FA(String account,String password,String CASCookie,String VPNToken,TokenData tokenData) {
+        try{
+                runOnUiThread(() -> button.setText("正在尝试绕过二步验证"));
+                String MulitFactorAuth = StaticService.fuck2FA(this,password,CASCookie,VPNToken);
+                if(MulitFactorAuth.contains("ERROR")) {
+                    if (MulitFactorAuth.equals("ERROR1")) {
+                        showErrorToast(-4);
+                    } else if (MulitFactorAuth.equals("ERROR2")) {
+                        showErrorToast(-2);
+                    } else {
+                        showErrorToast(-8);
+                    }
+                } else {
+                    tokenData.setCASCookie(CASCookie + "; " + MulitFactorAuth);
+                    tokenData.setBkjwCookie(null);
+                    accountData.setUser(account, null, password, cbRememberPwd.isChecked());
+                    getInfo();
+                }
+
+        } catch (Exception ignore) {
+            return;
+        }
+    }
     /**
      * 显示手机验证码2FA
      */

@@ -76,6 +76,31 @@ public class StaticService {
         }
     }
 
+    public static String fuck2FA(Context context, String Password,String CASCookie, String VPNToken) {
+        HttpConnectionAndCode response = Net.fuck2FA(context, Password,CASCookie, VPNToken);
+        if (response.code != 0) {
+            if (response.code == -5) {
+                return "ERROR2";
+            }
+            return "ERROR0";
+        } else {
+            if (response.comment.contains("reAuth_success")) {
+                if (VPNToken == null) {
+                    return response.cookie;
+                } else {
+                    String MultiFactorCookie = response.cookie.substring(response.cookie.indexOf("MULTIFACTOR_USERS"));
+                    int CookieEnd = MultiFactorCookie.indexOf(";");
+                    if (CookieEnd >= 0) {
+                        return MultiFactorCookie.substring(0, CookieEnd);
+                    } else {
+                        return MultiFactorCookie;
+                    }
+                }
+            }
+            return "ERROR1";
+        }
+    }
+
     /**
      * 发送手机验证码
      *

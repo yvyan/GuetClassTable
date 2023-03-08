@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.service.fetch.StaticService;
+import top.yvyan.guettable.util.ToastUtil;
 
 public class TokenData {
     @SuppressLint("StaticFieldLeak")
@@ -210,10 +211,29 @@ public class TokenData {
             return -2;
         }
         if (CASCookieStr.contains("TGT-")) {
-            setCASCookie(CASCookieStr);
+            if(CASCookieStr.contains("ERROR5")) {
+                setCASCookie(CASCookieStr.substring(CASCookieStr.indexOf(";")+1));
+               return fuck2FA(accountData.getUsername(),accountData.getVPNPwd(),CASCookieStr.substring(CASCookieStr.indexOf(";")+1),VPNToken);
+            } else {
+                setCASCookie(CASCookieStr);
+            }
             return 0;
         } else {
             return -1;
+        }
+    }
+
+    private int fuck2FA(String account,String password,String CASCookie,String VPNToken) {
+        try{
+            String MulitFactorAuth = StaticService.fuck2FA(context,password,CASCookie,VPNToken);
+            if(MulitFactorAuth.contains("ERROR")) {
+                return -1;
+            } else {
+                setCASCookie(CASCookie + "; " + MulitFactorAuth);
+            }
+            return 0;
+        } catch (Exception ignore) {
+            return 0;
         }
     }
 
