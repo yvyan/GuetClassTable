@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import java.io.IOException;
-import java.net.HttpCookie;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,27 +118,27 @@ public class Net {
                     resources.getString(R.string.user_agent),
                     resources.getString(R.string.SSO_referer),
                     body,
-                    VPNToken == null ? cookie_builder.toString() : VPNToken ,
+                    VPNToken == null ? cookie_builder.toString() : VPNToken,
                     "}",
                     resources.getString(R.string.cookie_delimiter),
                     null,
                     null,
                     false,
                     resources.getString(R.string.SSO_context_type));
-            if (VPNToken==null && LoginRequest.code == -7) {
+            if (VPNToken == null && LoginRequest.code == -7) {
                 List<String> cookies = LoginRequest.c.getHeaderFields().get("Set-Cookie");
                 if (cookies != null) {
                     cookie_builder.append("; ");
                     for (String cookie_resp : cookies) {
-                        cookie_builder.append(cookie_resp.substring(0,cookie_resp.indexOf(";")+1)+" ");
+                        cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1)).append(" ");
                     }
                 }
-                LoginRequest.cookie=cookie_builder.toString();
-                LoginRequest.cookie=LoginRequest.cookie.substring(0,LoginRequest.cookie.length()-2);
-                LoginRequest.code=0;
+                LoginRequest.cookie = cookie_builder.toString();
+                LoginRequest.cookie = LoginRequest.cookie.substring(0, LoginRequest.cookie.length() - 2);
+                LoginRequest.code = 0;
                 return LoginRequest;
             }
-            if(VPNToken != null) {
+            if (VPNToken != null) {
                 //获取 Cookie 判断是否登录成功
                 HttpConnectionAndCode VPNGetCookieRequest = Get.get(
                         resources.getString(R.string.vpn_get_cookie) + "&vpn_timestamp=" + new Date().getTime(),
@@ -155,13 +154,153 @@ public class Net {
                         null,
                         10000,
                         null);
-                return VPNGetCookieRequest;
+                return new HttpConnectionAndCode(LoginRequest.c, VPNGetCookieRequest.code, VPNGetCookieRequest.comment);
             }
             return LoginRequest;
         } catch (Exception ignored) {
 
         }
         return new HttpConnectionAndCode(-5);
+    }
+
+    /**
+     * 获取手机验证码
+     *
+     * @param context   context
+     * @param CASCookie CAS Cookie
+     * @param account
+     * @param VPNToken  VPNToken
+     * @return Response
+     */
+    public static HttpConnectionAndCode sendPhoneOTP(Context context, String CASCookie, String account, String VPNToken) {
+        Resources resources = context.getResources();
+        return Post.post(
+                (VPNToken != null ? resources.getString(R.string.url_SendPhoneOTP_VPN) : resources.getString(R.string.url_SendPhoneOTP)),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.SSO_referer),
+                "userName=" + account + "&authCodeTypeName=reAuthDynamicCodeType",
+                VPNToken == null ? CASCookie : VPNToken,
+                null,
+                resources.getString(R.string.cookie_delimiter),
+                null,
+                null,
+                false,
+                resources.getString(R.string.SSO_context_type));
+    }
+
+    /**
+     * 认证手机验证码
+     *
+     * @param context   context
+     * @param CASCookie CAS Cookie
+     * @param OTP
+     * @param VPNToken  VPNToken
+     * @return Response
+     */
+    public static HttpConnectionAndCode verifyPhoneOTP(Context context, String CASCookie, String OTP, String VPNToken) {
+        Resources resources = context.getResources();
+        HttpConnectionAndCode VerifyRequest = Post.post(
+                (VPNToken != null ? resources.getString(R.string.url_ReAuth_VPN) : resources.getString(R.string.url_ReAuth)),
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.SSO_referer),
+                "service=http%3A%2F%2Ficampus.guet.edu.cn%2FGuetAccount%2FCasLogin&reAuthType=3&isMultifactor=true&password=&dynamicCode=" + OTP + "&uuid=&answer1=&answer2=&otpCode=",
+                VPNToken == null ? CASCookie : VPNToken,
+                null,
+                resources.getString(R.string.cookie_delimiter),
+                null,
+                null,
+                false,
+                resources.getString(R.string.SSO_context_type));
+        if (VPNToken == null) {
+            return VerifyRequest;
+        } else {
+            HttpConnectionAndCode VPNGetCookieRequest = Get.get(
+                    resources.getString(R.string.vpn_get_cookie) + "&vpn_timestamp=" + new Date().getTime(),
+                    null,
+                    resources.getString(R.string.user_agent),
+                    resources.getString(R.string.url_Authserver_VPN),
+                    VPNToken,
+                    null,
+                    resources.getString(R.string.cookie_delimiter),
+                    null,
+                    null,
+                    null,
+                    null,
+                    10000,
+                    null);
+            return new HttpConnectionAndCode(VerifyRequest.c, VerifyRequest.code, VerifyRequest.comment, VPNGetCookieRequest.comment, VerifyRequest.resp_code);
+        }
+    }
+
+    /**
+     * 认证手机验证码
+     *
+     * @param context   context
+     * @param CASCookie CAS Cookie
+     * @param OTP
+     * @param VPNToken  VPNToken
+     * @return Response
+     */
+    public static HttpConnectionAndCode fuck2FA(Context context, String password, String CASCookie, String VPNToken) {
+        Resources resources = context.getResources();
+        try {
+            HttpConnectionAndCode MFAParams = Get.get(
+                    (VPNToken != null ? resources.getString(R.string.url_ReAuth_Param_VPN) : resources.getString(R.string.url_ReAuth_Param)),
+                    null,
+                    resources.getString(R.string.user_agent),
+                    resources.getString(R.string.SSO_referer),
+                    VPNToken == null ? CASCookie : VPNToken,
+                    null,
+                    resources.getString(R.string.cookie_delimiter),
+                    null,
+                    null,
+                    null,
+                    null,
+                    10000,
+                    null);
+            if (MFAParams.code != 0) {
+                return new HttpConnectionAndCode(0);
+            }
+            ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(MFAParams.comment, "(?<=\"pwdEncryptSalt\":\")(\\w+)(?=\")");
+            String AESKey = listExp.get(0);
+            HttpConnectionAndCode VerifyRequest = Post.post(
+                    (VPNToken != null ? resources.getString(R.string.url_ReAuth_VPN) : resources.getString(R.string.url_ReAuth)),
+                    null,
+                    resources.getString(R.string.user_agent),
+                    resources.getString(R.string.SSO_referer),
+                    "service=http%3A%2F%2Ficampus.guet.edu.cn%2FGuetAccount%2FCasLogin&reAuthType=2&isMultifactor=true&password=" + URLEncoder.encode(AESUtil.CASEncryption(password, AESKey), "UTF-8") + "&dynamicCode=&uuid=&answer1=&answer2=&otpCode=",
+                    VPNToken == null ? CASCookie : VPNToken,
+                    null,
+                    resources.getString(R.string.cookie_delimiter),
+                    null,
+                    null,
+                    false,
+                    resources.getString(R.string.SSO_context_type));
+            if (VPNToken == null) {
+                return VerifyRequest;
+            } else {
+                HttpConnectionAndCode VPNGetCookieRequest = Get.get(
+                        resources.getString(R.string.vpn_get_cookie) + "&vpn_timestamp=" + new Date().getTime(),
+                        null,
+                        resources.getString(R.string.user_agent),
+                        resources.getString(R.string.url_Authserver_VPN),
+                        VPNToken,
+                        null,
+                        resources.getString(R.string.cookie_delimiter),
+                        null,
+                        null,
+                        null,
+                        null,
+                        10000,
+                        null);
+                return new HttpConnectionAndCode(VerifyRequest.c, VerifyRequest.code, VerifyRequest.comment, VPNGetCookieRequest.comment, VerifyRequest.resp_code);
+            }
+        } catch (Exception ignored) {
+
+        }
+        return new HttpConnectionAndCode(0);
     }
 
     /**
@@ -520,58 +659,6 @@ public class Net {
                 null,
                 null,
                 10000,
-                null
-        );
-    }
-
-    /**
-     * 查询创新积分
-     *
-     * @param context context
-     * @param cookie  cookie
-     * @param isVPN   是否外网
-     * @return 操作结果
-     */
-    public static HttpConnectionAndCode getInnovationScore(Context context, String cookie, boolean isVPN) {
-        Resources resources = context.getResources();
-        return Get.get(UrlReplaceUtil.getUrlByVPN(isVPN, resources.getString(R.string.lan_get_innovationScore)),
-                null,
-                resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
-                cookie,
-                "]}",
-                null,
-                resources.getString(R.string.lan_login_success_contain_response_text),
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-    }
-
-    /**
-     * 更新创新积分
-     *
-     * @param context context
-     * @param cookie  cookie
-     * @param isVPN   是否外网
-     * @return 操作结果
-     */
-    public static HttpConnectionAndCode updateInnovationScore(Context context, String cookie, boolean isVPN) {
-        Resources resources = context.getResources();
-        return Post.post(
-                UrlReplaceUtil.getUrlByVPN(isVPN, resources.getString(R.string.lan_update_innovationScore)),
-                null,
-                resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
-                null,
-                cookie,
-                "}",
-                null,
-                resources.getString(R.string.lan_login_success_contain_response_text),
-                null,
-                null,
                 null
         );
     }

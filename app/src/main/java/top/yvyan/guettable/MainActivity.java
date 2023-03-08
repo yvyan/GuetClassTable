@@ -1,5 +1,7 @@
 package top.yvyan.guettable;
 
+import static top.yvyan.guettable.widget.WidgetUtil.notifyWidgetUpdate;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
@@ -44,8 +46,6 @@ import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.fragment.MoreFragment;
 import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.util.BackgroundUtil;
-
-import static top.yvyan.guettable.widget.WidgetUtil.notifyWidgetUpdate;
 
 public class MainActivity extends AppCompatActivity {
     //小米推送KEY
@@ -120,8 +120,10 @@ public class MainActivity extends AppCompatActivity {
         UMRemoteConfig.getInstance().setDefaults(R.xml.cloud_config_parms);
         UMConfigure.init(this, UMengKey, "Umeng", UMConfigure.DEVICE_TYPE_PHONE, ""); //数据统计
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+        //XUpdate初始化
+        UpdateApp.initXUpdate(this);
         // 获取更新
-        UpdateApp.check(this, 1);
+        UpdateApp.check(this);
 
         //获取通知
         Notification.getNotification(this);

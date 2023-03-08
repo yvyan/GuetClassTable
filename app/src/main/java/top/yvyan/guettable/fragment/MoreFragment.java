@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment;
 
 import com.umeng.cconfig.UMRemoteConfig;
 
-import java.util.Objects;
-
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SingleSettingData;
@@ -21,7 +19,6 @@ import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
-import top.yvyan.guettable.moreFun.InnovationScoreActivity;
 import top.yvyan.guettable.moreFun.LibActivity;
 import top.yvyan.guettable.moreFun.MoreUrlActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
@@ -55,7 +52,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         //透明状态栏
         View addStatus = view.findViewById(R.id.add_status);
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
-        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
+        lp.height = lp.height + AppUtil.getStatusBarHeight(requireContext());
         addStatus.setLayoutParams(lp);
 
         view.findViewById(R.id.more_test_schedule).setOnClickListener(this);
@@ -68,7 +65,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
         view.findViewById(R.id.more_plan_courses).setOnClickListener(this);
         view.findViewById(R.id.more_cet).setOnClickListener(this);
-        view.findViewById(R.id.more_innovation_score).setOnClickListener(this);
 
         view.findViewById(R.id.more_url_bkjw).setOnClickListener(this);
         view.findViewById(R.id.more_url_vpn).setOnClickListener(this);
@@ -109,7 +105,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        setBackground(BackgroundUtil.isSetBackground(Objects.requireNonNull(getContext())));
+        setBackground(BackgroundUtil.isSetBackground(requireContext()));
         initData();
     }
 
@@ -164,14 +160,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getContext(), CETActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.more_innovation_score:
-                if (generalData.isInternational()) {
-                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
-                } else {
-                    intent = new Intent(getContext(), InnovationScoreActivity.class);
-                    startActivity(intent);
-                }
-                break;
 
 
             case R.id.more_url_bkjw:
@@ -181,16 +169,16 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 CommFunc.noLoginWebVPN(getActivity());
                 break;
             case R.id.more_url_campus:
-                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_smart_campus));
+                openBrowser(requireContext().getResources().getString(R.string.url_smart_campus));
                 break;
 
             case R.id.more_url_lijiang:
                 CommFunc.noLoginWebVPN(getActivity(),
-                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_lijiang),
-                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_lijiang_vpn));
+                        requireContext().getResources().getString(R.string.url_lijiang),
+                        requireContext().getResources().getString(R.string.url_lijiang_vpn));
                 break;
             case R.id.more_url_graduation_project:
-                openBrowser(Objects.requireNonNull(getContext()).getResources().getString(R.string.url_graduation_project));
+                openBrowser(requireContext().getResources().getString(R.string.url_graduation_project));
                 break;
             case R.id.more_url_index:
                 openBrowser(UMRemoteConfig.getInstance().getConfigValue("guetYvyanTop"));
@@ -203,13 +191,13 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
             case R.id.more_course_arrange:
                 CommFunc.noLoginWebVPN(getActivity(),
-                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_course_arrange),
-                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_course_arrange_vpn));
+                        requireContext().getResources().getString(R.string.url_course_arrange),
+                        requireContext().getResources().getString(R.string.url_course_arrange_vpn));
                 break;
             case R.id.more_empty_room:
                 CommFunc.noLoginWebVPN(getActivity(),
-                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_empty_room),
-                        Objects.requireNonNull(getContext()).getResources().getString(R.string.url_empty_room_vpn));
+                        requireContext().getResources().getString(R.string.url_empty_room),
+                        requireContext().getResources().getString(R.string.url_empty_room_vpn));
                 break;
             case R.id.more_qq_group:
                 intent = new Intent(getContext(), QQGroupActivity.class);

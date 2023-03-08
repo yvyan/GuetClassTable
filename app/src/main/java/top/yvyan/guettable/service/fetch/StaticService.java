@@ -23,7 +23,6 @@ import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamScore;
 import top.yvyan.guettable.Gson.ExperimentScore;
 import top.yvyan.guettable.Gson.Grades;
-import top.yvyan.guettable.Gson.InnovationScore;
 import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
@@ -44,6 +43,102 @@ import top.yvyan.guettable.data.TokenData;
 public class StaticService {
 
     /**
+     * 发送手机验证码
+     *
+     * @param context   context
+     * @param CASCookie
+     * @param account   学号
+     * @param VPNToken  VPNToken
+     * @return Phone Number
+     * ERROR0 : 网络错误
+     * ERROR1 : 密码错误
+     * ERROR2 : 需要使用外网网址进行访问
+     * ERROR3 : 验证码发送CD
+     */
+    public static String SendPhoneOTP(Context context, String CASCookie, String account, String VPNToken) {
+        HttpConnectionAndCode response = Net.sendPhoneOTP(context, CASCookie, account, VPNToken);
+        if (response.code != 0) {
+            if (response.code == -5) {
+                return "ERROR2";
+            }
+            return "ERROR0";
+        } else {
+            if (response.comment.contains("success")) {
+                int PhoneIndex = response.comment.indexOf("\"mobile\":\"") + 10;
+                return response.comment.substring(PhoneIndex, PhoneIndex + 11);
+            }
+            if (response.comment.contains("code_time_fail")) {
+                int MessageIndex = response.comment.indexOf("\"returnMessage\":\"") + 17;
+                String ErrorMessage = response.comment.substring(MessageIndex);
+                return "ERROR3;" + ErrorMessage.substring(0, ErrorMessage.indexOf("\""));
+            }
+            return "ERROR0";
+        }
+    }
+
+    public static String fuck2FA(Context context, String Password,String CASCookie, String VPNToken) {
+        HttpConnectionAndCode response = Net.fuck2FA(context, Password,CASCookie, VPNToken);
+        if (response.code != 0) {
+            if (response.code == -5) {
+                return "ERROR2";
+            }
+            return "ERROR0";
+        } else {
+            if (response.comment.contains("reAuth_success")) {
+                if (VPNToken == null) {
+                    return response.cookie;
+                } else {
+                    String MultiFactorCookie = response.cookie.substring(response.cookie.indexOf("MULTIFACTOR_USERS"));
+                    int CookieEnd = MultiFactorCookie.indexOf(";");
+                    if (CookieEnd >= 0) {
+                        return MultiFactorCookie.substring(0, CookieEnd);
+                    } else {
+                        return MultiFactorCookie;
+                    }
+                }
+            }
+            return "ERROR1";
+        }
+    }
+
+    /**
+     * 发送手机验证码
+     *
+     * @param context   context
+     * @param CASCookie
+     * @param OTP       OTP手机验证码
+     * @param VPNToken  VPNToken
+     * @return 多因素身份验证令牌Cookie
+     * ERROR0 : 网络错误
+     * ERROR1 : 密码错误
+     * ERROR2 : 需要使用外网网址进行访问
+     */
+    public static String VerifyPhoneOTP(Context context, String CASCookie, String OTP, String VPNToken) {
+        HttpConnectionAndCode response = Net.verifyPhoneOTP(context, CASCookie, OTP, VPNToken);
+        if (response.code != 0) {
+            if (response.code == -5) {
+                return "ERROR2";
+            }
+            return "ERROR0";
+        } else {
+            if (response.comment.contains("reAuth_success")) {
+                if (VPNToken == null) {
+                    return response.cookie;
+                } else {
+                    String MultiFactorCookie = response.cookie.substring(response.cookie.indexOf("MULTIFACTOR_USERS"));
+                    int CookieEnd = MultiFactorCookie.indexOf(";");
+                    if (CookieEnd >= 0) {
+                        return MultiFactorCookie.substring(0, CookieEnd);
+                    } else {
+                        return MultiFactorCookie;
+                    }
+                }
+            }
+            return "ERROR1";
+        }
+    }
+
+    /**
      * 获取SSO登录CasCookie
      *
      * @param context  context
@@ -54,6 +149,7 @@ public class StaticService {
      * ERROR0 : 网络错误
      * ERROR1 : 密码错误
      * ERROR2 : 需要使用外网网址进行访问
+     * ERROR5 : 2FA Needed
      */
     public static String SSOLogin(Context context, String account, String password, String VPNToken) {
         HttpConnectionAndCode response = Net.getCASToken(context, account, password, VPNToken);
@@ -63,9 +159,13 @@ public class StaticService {
             }
             return "ERROR0";
         } else {
-            if(VPNToken == null) {
+            if (VPNToken == null) {
                 String Cookie = response.cookie;
                 if (Cookie.contains("TGT-")) {
+                    String Location = response.c.getHeaderField("location");
+                    if (Location.contains("reAuthLoginView.do")) {
+                        return "ERROR5;" + Cookie;
+                    }
                     return Cookie;
                 } else {
                     return "ERROR1";
@@ -73,7 +173,11 @@ public class StaticService {
             } else {
                 String Cookie = response.comment;
                 if (Cookie.contains("TGT-")) {
-                     return Cookie;
+                    String Location = response.c.getHeaderField("location");
+                    if (Location.contains("reAuthLoginView.do")) {
+                        return "ERROR5;" + Cookie;
+                    }
+                    return Cookie;
                 } else {
                     return "ERROR1";
                 }
@@ -103,7 +207,7 @@ public class StaticService {
                 }
                 return "ERROR2";
             }
-            if(response.cookie.contains("refresh")) {
+            if (response.cookie.contains("refresh")) {
                 return "ERROR1";
             }
             return "ERROR0";
@@ -592,47 +696,6 @@ public class StaticService {
         } else {
             return null;
         }
-    }
-
-    /**
-     * 查询创新积分
-     *
-     * @param context context
-     * @param cookie  cookie
-     * @return 操作结果
-     */
-    public static BaseResponse<InnovationScore> getInnovationScore(Context context, String cookie) {
-        HttpConnectionAndCode httpConnectionAndCode = Net.getInnovationScore(context, cookie, TokenData.isVPN);
-        if (httpConnectionAndCode.comment != null) {
-            BaseResponse<InnovationScore> result;
-            try {
-                result = new Gson().fromJson(httpConnectionAndCode.comment.replaceAll("[\\[\\]]", ""), new TypeToken<BaseResponse<InnovationScore>>() {
-                }.getType());
-            } catch (Exception ignored) {
-                return null;
-            }
-            return result;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * 更新创新积分
-     *
-     * @param context context
-     * @param cookie  cookie
-     * @return 更新结果
-     * -1  更新失败
-     * 0   更新成功
-     */
-    public static int updateInnovationScore(Context context, String cookie) {
-        HttpConnectionAndCode httpConnectionAndCode = Net.updateInnovationScore(context, cookie, TokenData.isVPN);
-        String comment = httpConnectionAndCode.comment;
-        if (comment != null && comment.contains("操作成功")) {
-            return 0;
-        }
-        return -1;
     }
 
     /**

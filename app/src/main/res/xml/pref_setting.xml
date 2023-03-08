@@ -36,12 +36,6 @@
             android:summary="开启后考试安排将在日课表和周课表显示"
             android:title="课表显示考试安排" />
 
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="app_check_update"
-            android:summary="APP每天检查一次更新"
-            android:title="自动检查更新" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="高级设置">
