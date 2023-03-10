@@ -48,15 +48,14 @@ public class StaticService {
      * @param context   context
      * @param CASCookie
      * @param account   学号
-     * @param VPNToken  VPNToken
      * @return Phone Number
      * ERROR0 : 网络错误
      * ERROR1 : 密码错误
      * ERROR2 : 需要使用外网网址进行访问
      * ERROR3 : 验证码发送CD
      */
-    public static String SendPhoneOTP(Context context, String CASCookie, String account, String VPNToken) {
-        HttpConnectionAndCode response = Net.sendPhoneOTP(context, CASCookie, account, VPNToken);
+    public static String SendPhoneOTP(Context context, String account, String CASCookie) {
+        HttpConnectionAndCode response = Net.sendPhoneOTP(context, account, CASCookie);
         if (response.code != 0) {
             if (response.code == -5) {
                 return "ERROR2";
@@ -76,8 +75,8 @@ public class StaticService {
         }
     }
 
-    public static String fuck2FA(Context context, String Password,String CASCookie, String VPNToken) {
-        HttpConnectionAndCode response = Net.fuck2FA(context, Password,CASCookie, VPNToken);
+    public static String fuck2FA(Context context, String Password, String CASCookie) {
+        HttpConnectionAndCode response = Net.fuck2FA(context, Password, CASCookie);
         if (response.code != 0) {
             if (response.code == -5) {
                 return "ERROR2";
@@ -85,17 +84,7 @@ public class StaticService {
             return "ERROR0";
         } else {
             if (response.comment.contains("reAuth_success")) {
-                if (VPNToken == null) {
-                    return response.cookie;
-                } else {
-                    String MultiFactorCookie = response.cookie.substring(response.cookie.indexOf("MULTIFACTOR_USERS"));
-                    int CookieEnd = MultiFactorCookie.indexOf(";");
-                    if (CookieEnd >= 0) {
-                        return MultiFactorCookie.substring(0, CookieEnd);
-                    } else {
-                        return MultiFactorCookie;
-                    }
-                }
+                return response.cookie;
             }
             return "ERROR1";
         }
@@ -107,14 +96,13 @@ public class StaticService {
      * @param context   context
      * @param CASCookie
      * @param OTP       OTP手机验证码
-     * @param VPNToken  VPNToken
      * @return 多因素身份验证令牌Cookie
      * ERROR0 : 网络错误
      * ERROR1 : 密码错误
      * ERROR2 : 需要使用外网网址进行访问
      */
-    public static String VerifyPhoneOTP(Context context, String CASCookie, String OTP, String VPNToken) {
-        HttpConnectionAndCode response = Net.verifyPhoneOTP(context, CASCookie, OTP, VPNToken);
+    public static String VerifyPhoneOTP(Context context, String OTP, String CASCookie) {
+        HttpConnectionAndCode response = Net.verifyPhoneOTP(context, OTP, CASCookie);
         if (response.code != 0) {
             if (response.code == -5) {
                 return "ERROR2";
@@ -122,17 +110,7 @@ public class StaticService {
             return "ERROR0";
         } else {
             if (response.comment.contains("reAuth_success")) {
-                if (VPNToken == null) {
-                    return response.cookie;
-                } else {
-                    String MultiFactorCookie = response.cookie.substring(response.cookie.indexOf("MULTIFACTOR_USERS"));
-                    int CookieEnd = MultiFactorCookie.indexOf(";");
-                    if (CookieEnd >= 0) {
-                        return MultiFactorCookie.substring(0, CookieEnd);
-                    } else {
-                        return MultiFactorCookie;
-                    }
-                }
+                return response.cookie;
             }
             return "ERROR1";
         }
@@ -144,43 +122,29 @@ public class StaticService {
      * @param context  context
      * @param account  学号
      * @param password 密码
-     * @param VPNToken VPNToken
      * @return CAS Cookie
      * ERROR0 : 网络错误
      * ERROR1 : 密码错误
      * ERROR2 : 需要使用外网网址进行访问
      * ERROR5 : 2FA Needed
      */
-    public static String SSOLogin(Context context, String account, String password, String VPNToken) {
-        HttpConnectionAndCode response = Net.getCASToken(context, account, password, VPNToken);
+    public static String SSOLogin(Context context, String account, String password, String MFACoookie) {
+        HttpConnectionAndCode response = Net.getCASToken(context, account, password, MFACoookie);
         if (response.code != 0) {
             if (response.code == -5) {
                 return "ERROR2";
             }
             return "ERROR0";
         } else {
-            if (VPNToken == null) {
-                String Cookie = response.cookie;
-                if (Cookie.contains("TGT-")) {
-                    String Location = response.c.getHeaderField("location");
-                    if (Location.contains("reAuthLoginView.do")) {
-                        return "ERROR5;" + Cookie;
-                    }
-                    return Cookie;
-                } else {
-                    return "ERROR1";
+            String Cookie = response.cookie;
+            if (Cookie.contains("TGT-")) {
+                String Location = response.c.getHeaderField("location");
+                if (Location.contains("reAuthLoginView.do")) {
+                    return "ERROR5;" + Cookie;
                 }
+                return Cookie;
             } else {
-                String Cookie = response.comment;
-                if (Cookie.contains("TGT-")) {
-                    String Location = response.c.getHeaderField("location");
-                    if (Location.contains("reAuthLoginView.do")) {
-                        return "ERROR5;" + Cookie;
-                    }
-                    return Cookie;
-                } else {
-                    return "ERROR1";
-                }
+                return "ERROR1";
             }
         }
     }
@@ -191,25 +155,23 @@ public class StaticService {
      * @param context   context
      * @param CASCookie CAS Cookie
      * @param service   ST令牌的服务端
-     * @param VPNToken  VPNToken
      * @return ST令牌
      * ERROR0 : 网络错误
      * ERROR1 : TGT失效
      * ERROR2 : 需要使用外网网址进行访问 或 TGT失效(上层调用时，若内网返回此错误，
      * 则先尝试外网，若是TGT失效，则重新获取；若正常获取，则需要将全局网络设置为外网)
      */
-    public static String SSOGetST(Context context, String CASCookie, String service, String VPNToken) {
-        HttpConnectionAndCode response = Net.getSTbyCas(context, CASCookie, service, VPNToken);
+    public static String SSOGetST(Context context, String CASCookie, String service, String MFACoookie) {
+        HttpConnectionAndCode response = Net.getSTbyCas(context, CASCookie, service, MFACoookie);
         if (response.code != -7) {
             if (response.code == -5) {
-                if (VPNToken != null) {
-                    return "ERROR1";
-                }
                 return "ERROR2";
             }
-            if (response.cookie.contains("refresh")) {
-                return "ERROR1";
-            }
+            /*
+                if (response.cookie.contains("refresh")) {
+                    return "ERROR1";
+                }
+            */
             return "ERROR0";
         } else {
             String Location = response.c.getHeaderField("location");

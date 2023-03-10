@@ -21,7 +21,7 @@ public class TokenData {
     private static final String VPN_TOKEN = "VPNToken";
     private static final String BKJW_COOKIE = "bkjwCookie";
     private static final String IS_DEVELOP = "isDevelop";
-
+    private static final String MULTIFACTOR_USERS = "MFACookie";
     private final AccountData accountData;
 
     public static boolean isVPN = true;
@@ -34,6 +34,8 @@ public class TokenData {
     private String CASCookie; // 新版CAS认证Cookie; CASTGT/JSESSION
     private String VPNToken;   //VPN认证Token
     private String bkjwCookie; //教务系统认证Cookie
+
+    private String MFACookie;
 
     public String getCookie() {
         if (isVPN) {
@@ -70,6 +72,7 @@ public class TokenData {
         bkjwCookie = sharedPreferences.getString(BKJW_COOKIE, null);
         isDevelop = sharedPreferences.getBoolean(IS_DEVELOP, false);
         CASCookie = sharedPreferences.getString(CAS_Cookie, "");
+        MFACookie = sharedPreferences.getString(MULTIFACTOR_USERS, null);
     }
 
     public static TokenData newInstance(Context context) {
@@ -122,13 +125,13 @@ public class TokenData {
             int n = loginVpnByCAS(VPNTokenStr);
             //登录教务
             if (n == 0) {
-                String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);
+                String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), MFACookie);
                 if (ST_BKJW.equals("ERROR0")) {
                     return -2;
                 } else if (ST_BKJW.equals("ERROR1")) { //TGT失效
-                    n = refreshTGT(VPNTokenStr);
+                    n = refreshTGT();
                     if (n == 0) {
-                        ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);
+                        ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), MFACookie);
                         if (!ST_BKJW.contains("ST-")) {
                             return -2;
                         }
@@ -144,13 +147,13 @@ public class TokenData {
             return n;
         } else { // 内网
             StringBuilder cookie_builder = new StringBuilder();
-            String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), null);
+            String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), MFACookie);
             if (!ST_BKJW.contains("ST-")) { // TGT失效
-                int n = refreshTGT(null);
+                int n = refreshTGT();
                 if (n != 0) {
                     return n;
                 }
-                ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), null);
+                ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), MFACookie);
                 if (!ST_BKJW.contains("ST-")) { // 网络错误，切换为外网模式
                     return -2;
                 }
@@ -173,14 +176,14 @@ public class TokenData {
      */
     private int loginVpnByCAS(String VPNTokenStr) {
         int n;
-        String ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), VPNTokenStr);
+        String ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), MFACookie);
         if (ST_VPN.equals("ERROR0")) {
             return -2;
         } else if (ST_VPN.equals("ERROR1")) { //TGT失效
-            n = refreshTGT(VPNTokenStr); //刷新TGT
+            n = refreshTGT(); //刷新TGT
             if (n == 0) {
                 //重新获取登录vpn的st令牌
-                ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), VPNTokenStr);
+                ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), MFACookie);
                 if (!ST_VPN.contains("ST-")) {
                     return -2;
                 }
@@ -202,18 +205,17 @@ public class TokenData {
     /**
      * 刷新TGT令牌
      *
-     * @param VPNToken VPNToken
      * @return 操作结果
      */
-    public int refreshTGT(String VPNToken) {
-        String CASCookieStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getVPNPwd(), VPNToken);
+    public int refreshTGT() {
+        String CASCookieStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getVPNPwd(), MFACookie);
         if (CASCookieStr.equals("ERROR2") || CASCookieStr.equals("ERROR0")) {
             return -2;
         }
         if (CASCookieStr.contains("TGT-")) {
-            if(CASCookieStr.contains("ERROR5")) {
-                setCASCookie(CASCookieStr.substring(CASCookieStr.indexOf(";")+1));
-               return fuck2FA(accountData.getUsername(),accountData.getVPNPwd(),CASCookieStr.substring(CASCookieStr.indexOf(";")+1),VPNToken);
+            if (CASCookieStr.contains("ERROR5")) {
+                setCASCookie(CASCookieStr.substring(CASCookieStr.indexOf(";") + 1));
+                return fuck2FA(accountData.getVPNPwd(), CASCookieStr.substring(CASCookieStr.indexOf(";") + 1));
             } else {
                 setCASCookie(CASCookieStr);
             }
@@ -223,13 +225,13 @@ public class TokenData {
         }
     }
 
-    private int fuck2FA(String account,String password,String CASCookie,String VPNToken) {
-        try{
-            String MulitFactorAuth = StaticService.fuck2FA(context,password,CASCookie,VPNToken);
-            if(MulitFactorAuth.contains("ERROR")) {
+    private int fuck2FA(String password, String CASCookie) {
+        try {
+            String MulitFactorAuth = StaticService.fuck2FA(context, password, CASCookie);
+            if (MulitFactorAuth.contains("ERROR")) {
                 return -1;
             } else {
-                setCASCookie(CASCookie + "; " + MulitFactorAuth);
+                setMFACookie(MulitFactorAuth);
             }
             return 0;
         } catch (Exception ignore) {
@@ -240,6 +242,12 @@ public class TokenData {
     public void setCASCookie(String CASCookie) {
         this.CASCookie = CASCookie;
         editor.putString(CAS_Cookie, CASCookie);
+        editor.apply();
+    }
+
+    public void setMFACookie(String MFACookie) {
+        this.MFACookie = MFACookie;
+        editor.putString(CAS_Cookie, MFACookie);
         editor.apply();
     }
 
