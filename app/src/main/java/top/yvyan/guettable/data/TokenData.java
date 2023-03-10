@@ -213,7 +213,7 @@ public class TokenData {
 
     public void setMFACookie(String MFACookie) {
         this.MFACookie = MFACookie;
-        editor.putString(CAS_Cookie, MFACookie);
+        editor.putString(MULTIFACTORIAL_USERS, MFACookie);
         editor.apply();
     }
 
