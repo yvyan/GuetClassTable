@@ -14,6 +14,7 @@ import java.util.Objects;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.CET;
@@ -46,7 +47,7 @@ public class StaticService {
      * 发送手机验证码
      *
      * @param context   context
-     * @param CASCookie
+     * @param CASCookie CAS Cookie
      * @param account   学号
      * @return Phone Number
      * ERROR0 : 网络错误
@@ -60,7 +61,6 @@ public class StaticService {
             if (response.code == -5) {
                 return "ERROR2";
             }
-            return "ERROR0";
         } else {
             if (response.comment.contains("success")) {
                 int PhoneIndex = response.comment.indexOf("\"mobile\":\"") + 10;
@@ -71,8 +71,8 @@ public class StaticService {
                 String ErrorMessage = response.comment.substring(MessageIndex);
                 return "ERROR3;" + ErrorMessage.substring(0, ErrorMessage.indexOf("\""));
             }
-            return "ERROR0";
         }
+        return "ERROR0";
     }
 
     public static String fuck2FA(Context context, String Password, String CASCookie) {
@@ -94,7 +94,7 @@ public class StaticService {
      * 发送手机验证码
      *
      * @param context   context
-     * @param CASCookie
+     * @param CASCookie CAS Cookie
      * @param OTP       OTP手机验证码
      * @return 多因素身份验证令牌Cookie
      * ERROR0 : 网络错误
@@ -119,17 +119,18 @@ public class StaticService {
     /**
      * 获取SSO登录CasCookie
      *
-     * @param context  context
-     * @param account  学号
-     * @param password 密码
+     * @param context   context
+     * @param account   学号
+     * @param password  密码
+     * @param MFACookie MFA Cookie
      * @return CAS Cookie
      * ERROR0 : 网络错误
      * ERROR1 : 密码错误
      * ERROR2 : 需要使用外网网址进行访问
      * ERROR5 : 2FA Needed
      */
-    public static String SSOLogin(Context context, String account, String password, String MFACoookie) {
-        HttpConnectionAndCode response = Net.getCASToken(context, account, password, MFACoookie);
+    public static String SSOLogin(Context context, String account, String password, String MFACookie) {
+        HttpConnectionAndCode response = Net.getCASToken(context, account, password, MFACookie);
         if (response.code != 0) {
             if (response.code == -5) {
                 return "ERROR2";
@@ -167,11 +168,6 @@ public class StaticService {
             if (response.code == -5) {
                 return "ERROR2";
             }
-            /*
-                if (response.cookie.contains("refresh")) {
-                    return "ERROR1";
-                }
-            */
             return "ERROR0";
         } else {
             String Location = response.c.getHeaderField("location");
@@ -218,6 +214,42 @@ public class StaticService {
             e.printStackTrace();
             return -2;
         }
+    }
+
+    /**
+     * 向VPN添加Cookie
+     *
+     * @param host   域
+     * @param path   路径
+     * @param cookie cookie
+     * @param token  VPN Token
+     * @return 0 成功
+     */
+    public static int CookieSet(String host, String path, String cookie, String token) {
+        String url = "https://v.guet.edu.cn/wengine-vpn/cookie?method=set" + "&host=" + host +
+                "&path=" + path +
+                "&scheme=https&ck_data=" + cookie;
+        OkHttpClient okHttpClient = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url(url)
+                .post(RequestBody.create("",null))
+                .addHeader("Cookie", token)
+                .build();
+        final Call call = okHttpClient.newCall(request);
+
+        try {
+            Response response = call.execute();
+            response.close();
+            if (Objects.requireNonNull(response.body()).toString().contains("success")) {
+                return 0;
+            } else {
+                return -1;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -2;
+        }
+
     }
 
     /**

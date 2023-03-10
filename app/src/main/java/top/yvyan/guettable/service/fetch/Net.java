@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -34,8 +33,8 @@ public class Net {
     public static int testNet() {
         String url = "http://10.0.1.5/";
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(3, TimeUnit.SECONDS)//设置连接超时时间
-                .readTimeout(3, TimeUnit.SECONDS)//设置读取超时时间
+                .connectTimeout(1, TimeUnit.SECONDS)//设置连接超时时间
+                .readTimeout(1, TimeUnit.SECONDS)//设置读取超时时间
                 .build();
         final Request request = new Request.Builder()
                 .url(url)
@@ -117,7 +116,7 @@ public class Net {
                     resources.getString(R.string.user_agent),
                     resources.getString(R.string.SSO_referer),
                     body,
-                    cookie_builder.toString() + (MFACookie != null ? ("; " + MFACookie) : ""),
+                    cookie_builder + (MFACookie != null ? ("; " + MFACookie) : ""),
                     "}",
                     resources.getString(R.string.cookie_delimiter),
                     null,
@@ -149,8 +148,7 @@ public class Net {
      *
      * @param context   context
      * @param CASCookie CAS Cookie
-     * @param account
-     * @param VPNToken  VPNToken
+     * @param account   account
      * @return Response
      */
     public static HttpConnectionAndCode sendPhoneOTP(Context context, String account, String CASCookie) {
@@ -175,13 +173,12 @@ public class Net {
      *
      * @param context   context
      * @param CASCookie CAS Cookie
-     * @param OTP
-     * @param VPNToken  VPNToken
+     * @param OTP       OTP
      * @return Response
      */
     public static HttpConnectionAndCode verifyPhoneOTP(Context context, String OTP, String CASCookie) {
         Resources resources = context.getResources();
-        HttpConnectionAndCode VerifyRequest = Post.post(
+        return Post.post(
                 resources.getString(R.string.url_ReAuth),
                 null,
                 resources.getString(R.string.user_agent),
@@ -194,7 +191,6 @@ public class Net {
                 null,
                 false,
                 resources.getString(R.string.SSO_context_type));
-        return VerifyRequest;
     }
 
     /**
@@ -226,7 +222,8 @@ public class Net {
             }
             ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(MFAParams.comment, "(?<=\"pwdEncryptSalt\":\")(\\w+)(?=\")");
             String AESKey = listExp.get(0);
-            HttpConnectionAndCode VerifyRequest = Post.post(
+
+            return Post.post(
                     resources.getString(R.string.url_ReAuth),
                     null,
                     resources.getString(R.string.user_agent),
@@ -239,10 +236,7 @@ public class Net {
                     null,
                     false,
                     resources.getString(R.string.SSO_context_type));
-
-            return VerifyRequest;
         } catch (Exception ignored) {
-
         }
         return new HttpConnectionAndCode(0);
     }

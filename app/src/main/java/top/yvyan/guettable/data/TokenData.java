@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.service.fetch.StaticService;
-import top.yvyan.guettable.util.ToastUtil;
 
 public class TokenData {
     @SuppressLint("StaticFieldLeak")
@@ -21,7 +20,7 @@ public class TokenData {
     private static final String VPN_TOKEN = "VPNToken";
     private static final String BKJW_COOKIE = "bkjwCookie";
     private static final String IS_DEVELOP = "isDevelop";
-    private static final String MULTIFACTOR_USERS = "MFACookie";
+    private static final String MULTIFACTORIAL_USERS = "MFACookie";
     private final AccountData accountData;
 
     public static boolean isVPN = true;
@@ -31,7 +30,7 @@ public class TokenData {
     //强制获取vpn
     private boolean forceVPN = false;
 
-    private String CASCookie; // 新版CAS认证Cookie; CASTGT/JSESSION
+    private String CASCookie; // 新版CAS认证Cookie; CASTGT/JSESSIONID
     private String VPNToken;   //VPN认证Token
     private String bkjwCookie; //教务系统认证Cookie
 
@@ -72,7 +71,7 @@ public class TokenData {
         bkjwCookie = sharedPreferences.getString(BKJW_COOKIE, null);
         isDevelop = sharedPreferences.getBoolean(IS_DEVELOP, false);
         CASCookie = sharedPreferences.getString(CAS_Cookie, "");
-        MFACookie = sharedPreferences.getString(MULTIFACTOR_USERS, null);
+        MFACookie = sharedPreferences.getString(MULTIFACTORIAL_USERS, null);
     }
 
     public static TokenData newInstance(Context context) {
@@ -114,6 +113,20 @@ public class TokenData {
      * @return 登录结果
      */
     private int loginBySmart() {
+        //尝试获取教务系统ST
+        int n;
+        String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), MFACookie);
+        if (!ST_BKJW.contains("ST-")) { // TGT失效
+            n = refreshTGT();
+            if (n != 0) {
+                return n;
+            }
+            ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), MFACookie);
+            if (!ST_BKJW.contains("ST-")) {
+                return -2;
+            }
+        }
+
         if (isVPN) { //外网
             //获取VPN的token
             String VPNTokenStr = Net.getVPNToken(context);
@@ -122,42 +135,26 @@ public class TokenData {
             } else {
                 return -2;
             }
-            int n = loginVpnByCAS(VPNTokenStr);
-            //登录教务
-            if (n == 0) {
-                String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), MFACookie);
-                if (ST_BKJW.equals("ERROR0")) {
-                    return -2;
-                } else if (ST_BKJW.equals("ERROR1")) { //TGT失效
-                    n = refreshTGT();
-                    if (n == 0) {
-                        ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), MFACookie);
-                        if (!ST_BKJW.contains("ST-")) {
-                            return -2;
-                        }
-                    } else {
-                        return n;
-                    }
-                }
+            //获取VPN-ST
+            String ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), MFACookie);
+            if (!ST_VPN.contains("ST-")) {
+                return -2;
+            }
+            n = StaticService.loginVPNST(ST_VPN, VPNTokenStr);
+            if (n != 0) {
+                n = StaticService.loginVPNST(ST_VPN, VPNTokenStr);
+            }
+            if (n != 0) {
+                return n;
+            }
+            n = StaticService.loginBkjwVPNST(ST_BKJW, VPNToken);
+            if (n != 0) {
                 n = StaticService.loginBkjwVPNST(ST_BKJW, VPNToken);
-                if (n != 0) {
-                    n = StaticService.loginBkjwVPNST(ST_BKJW, VPNToken);
-                }
             }
             return n;
-        } else { // 内网
+
+        } else { //内网
             StringBuilder cookie_builder = new StringBuilder();
-            String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), MFACookie);
-            if (!ST_BKJW.contains("ST-")) { // TGT失效
-                int n = refreshTGT();
-                if (n != 0) {
-                    return n;
-                }
-                ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), MFACookie);
-                if (!ST_BKJW.contains("ST-")) { // 网络错误，切换为外网模式
-                    return -2;
-                }
-            }
             int state = StaticService.loginBkjw(context, ST_BKJW, cookie_builder);
             if (state == 0) {
                 setBkjwCookie(cookie_builder.toString());
@@ -165,40 +162,6 @@ public class TokenData {
             } else {
                 return state;
             }
-        }
-    }
-
-    /**
-     * 使用CAS登录VPN
-     *
-     * @param VPNTokenStr vpn的Token
-     * @return 登录结果
-     */
-    private int loginVpnByCAS(String VPNTokenStr) {
-        int n;
-        String ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), MFACookie);
-        if (ST_VPN.equals("ERROR0")) {
-            return -2;
-        } else if (ST_VPN.equals("ERROR1")) { //TGT失效
-            n = refreshTGT(); //刷新TGT
-            if (n == 0) {
-                //重新获取登录vpn的st令牌
-                ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), MFACookie);
-                if (!ST_VPN.contains("ST-")) {
-                    return -2;
-                }
-                if (StaticService.loginVPNST(ST_VPN, VPNTokenStr) != 0) {
-                    return StaticService.loginVPNST(ST_VPN, VPNTokenStr);
-                }
-                return 0;
-            } else {
-                return n;
-            }
-        } else {
-            if (StaticService.loginVPNST(ST_VPN, VPNTokenStr) != 0) {
-                return StaticService.loginVPNST(ST_VPN, VPNTokenStr);
-            }
-            return 0;
         }
     }
 
@@ -225,13 +188,16 @@ public class TokenData {
         }
     }
 
+    /**
+     * pass 2FA
+     */
     private int fuck2FA(String password, String CASCookie) {
         try {
-            String MulitFactorAuth = StaticService.fuck2FA(context, password, CASCookie);
-            if (MulitFactorAuth.contains("ERROR")) {
+            String MultiFactorAuth = StaticService.fuck2FA(context, password, CASCookie);
+            if (MultiFactorAuth.contains("ERROR")) {
                 return -1;
             } else {
-                setMFACookie(MulitFactorAuth);
+                setMFACookie(MultiFactorAuth);
             }
             return 0;
         } catch (Exception ignore) {

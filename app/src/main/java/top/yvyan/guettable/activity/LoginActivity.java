@@ -37,7 +37,6 @@ import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreDate;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
@@ -116,9 +115,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         setUnClick();
         String account = etAccount.getText().toString();
         String pwd2 = etPwd2.getText().toString();
-        new Thread(() -> {
-            testCAS(account, pwd2);
-        }).start();
+        new Thread(() -> testCAS(account, pwd2)).start();
     }
 
     @Override
@@ -139,17 +136,17 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         String pwd2 = etPwd2.getText().toString();
         new Thread(() -> {
             runOnUiThread(() -> button.setText("正在认证-手机验证码"));
-            String MulitFactorAuth = StaticService.VerifyPhoneOTP(this, OTP, CASCookie);
-            if (MulitFactorAuth.contains("ERROR")) {
-                if (MulitFactorAuth.equals("ERROR1")) {
+            String MultiFactorAuth = StaticService.VerifyPhoneOTP(this, OTP, CASCookie);
+            if (MultiFactorAuth.contains("ERROR")) {
+                if (MultiFactorAuth.equals("ERROR1")) {
                     showErrorToast(-4);
-                } else if (MulitFactorAuth.equals("ERROR2")) {
+                } else if (MultiFactorAuth.equals("ERROR2")) {
                     showErrorToast(-2);
                 } else {
                     showErrorToast(-8);
                 }
             } else {
-                tokenData.setMFACookie(MulitFactorAuth);
+                tokenData.setMFACookie(MultiFactorAuth);
                 tokenData.setBkjwCookie(null);
                 accountData.setUser(account, null, pwd2, cbRememberPwd.isChecked());
                 getInfo();
@@ -161,7 +158,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      * 验证智慧校园密码
      *
      * @param account  学号
-     * @param password 智慧校园/VPN密码
+     * @param password 密码
      */
     private void testCAS(String account, String password) {
         new Thread(() -> {
@@ -173,27 +170,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     tokenData.setCASCookie(CasCookie.substring(CasCookie.indexOf(";") + 1));
                     tokenData.setBkjwCookie(null);
                     fuck2FA(account, password, CasCookie.substring(CasCookie.indexOf(";") + 1), tokenData);
-                    if (false) {
-                        String phoneNumber = StaticService.SendPhoneOTP(this, account, CasCookie.substring(CasCookie.indexOf(";") + 1));
-                        if (!phoneNumber.contains("ERROR")) {
-                            runOnUiThread(() -> {
-                                showPhoneOtpDialog(phoneNumber, CasCookie.substring(CasCookie.indexOf(";") + 1), tokenData);
-                            });
-                        } else {
-                            if (phoneNumber.equals("ERROR1")) {
-                                showErrorToast(-4);
-                            } else if (phoneNumber.equals("ERROR2")) {
-                                showErrorToast(-2);
-                            } else if (phoneNumber.contains("ERROR3")) {
-                                runOnUiThread(() -> {
-                                    setEnClick();
-                                    ToastUtil.showToast(this, getResources().getString(R.string.login_fail_phoneOTPSend) + phoneNumber.substring(7));
-                                });
-                            } else {
-                                showErrorToast(-8);
-                            }
-                        }
-                    }
                 } else {
                     tokenData.setCASCookie(CasCookie);
                     tokenData.setBkjwCookie(null);
@@ -212,21 +188,28 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }).start();
     }
 
-
+    /**
+     * 跳过二步认证
+     *
+     * @param account   学号
+     * @param password  密码
+     * @param CASCookie CAS Cookie
+     * @param tokenData tokenData
+     */
     private void fuck2FA(String account, String password, String CASCookie, TokenData tokenData) {
         try {
             runOnUiThread(() -> button.setText("正在尝试绕过二步验证"));
-            String MulitFactorAuth = StaticService.fuck2FA(this, password, CASCookie);
-            if (MulitFactorAuth.contains("ERROR")) {
-                if (MulitFactorAuth.equals("ERROR1")) {
+            String MultiFactorAuth = StaticService.fuck2FA(this, password, CASCookie);
+            if (MultiFactorAuth.contains("ERROR")) {
+                if (MultiFactorAuth.equals("ERROR1")) {
                     showErrorToast(-4);
-                } else if (MulitFactorAuth.equals("ERROR2")) {
+                } else if (MultiFactorAuth.equals("ERROR2")) {
                     showErrorToast(-2);
                 } else {
                     showErrorToast(-8);
                 }
             } else {
-                tokenData.setMFACookie(MulitFactorAuth);
+                tokenData.setMFACookie(MultiFactorAuth);
                 tokenData.setBkjwCookie(null);
                 accountData.setUser(account, null, password, cbRememberPwd.isChecked());
                 getInfo();
