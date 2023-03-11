@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
@@ -47,7 +46,6 @@ import top.yvyan.guettable.service.AutoUpdate;
 import top.yvyan.guettable.service.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
-import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.CourseUtil;
 import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.ToastUtil;
@@ -105,7 +103,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         initData();
         View addStatus = view.findViewById(R.id.add_status);
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
-        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
+        lp.height = lp.height + AppUtil.getStatusBarHeight(requireContext());
         addStatus.setLayoutParams(lp);
 
         textView = view.findViewById(R.id.day_class_hint);
@@ -140,7 +138,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     /**
      * 更新日课表视图
      */
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
     public void updateView(int... order) {
         List<Schedule> allClass = getData();
         List<Schedule> todayList, tomorrowList;
@@ -244,12 +242,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.day_credits:
-                if (generalData.isInternational()) {
-                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
-                } else {
-                    intent = new Intent(getContext(), GradesActivity.class);
-                    startActivity(intent);
-                }
+                intent = new Intent(getContext(), GradesActivity.class);
+                startActivity(intent);
                 break;
             default:
                 ToastUtil.showToast(getContext(), "敬请期待！");
@@ -297,7 +291,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         try {
             super.onStart();
-            setBackground(BackgroundUtil.isSetBackground(Objects.requireNonNull(getContext())));
+            setBackground(BackgroundUtil.isSetBackground(requireContext()));
             initData();
             autoUpdate.updateView();
             try {

@@ -24,7 +24,7 @@ public class TokenData {
     private static final String MULTIFACTOR_USERS = "MFACookie";
     private final AccountData accountData;
 
-    public static boolean isVPN = true;
+    private static boolean isVPN = true;
 
     //开发者调试
     private boolean isDevelop;
@@ -45,8 +45,12 @@ public class TokenData {
         }
     }
 
-    public boolean isVPN() {
+    public static boolean isVPN() {
         return isVPN;
+    }
+
+    public static void setIsVPN(boolean isVPN) {
+        TokenData.isVPN = isVPN;
     }
 
     /**
@@ -208,6 +212,10 @@ public class TokenData {
 
     public int setVPNCASCookie() {
         return StaticService.CookieSet(context, "cas.guet.edu.cn", "/authserver/login", MFACookie, VPNToken) | StaticService.CookieSet(context, "cas.guet.edu.cn", "/authserver/login", TGTToken, VPNToken);
+    }
+
+    public String getCASCookie() {
+        return tokenData.MFACookie + "; " + tokenData.TGTToken;
     }
 
     public void setTGTToken(String CASCookie) {

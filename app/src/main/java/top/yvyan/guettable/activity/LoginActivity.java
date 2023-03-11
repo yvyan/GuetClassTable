@@ -56,7 +56,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private View progressBar;
 
     private AccountData accountData;
-    private GeneralData generalData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_login);
 
         accountData = AccountData.newInstance(getContext());
-        generalData = GeneralData.newInstance(getContext());
 
         ivPwdSwitch2 = findViewById(R.id.iv_pwd_switch_2);
         button = findViewById(R.id.login);
@@ -286,11 +284,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         StudentInfo studentInfo = null;
         try {
             studentInfo = StaticService.getStudentInfo(this, tokenData.getCookie());
-            if (!generalData.isInternational()) {
-                List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getCookie());
-                if (allTerm != null) {
-                    MoreDate.newInstance(this).setTermBeans(allTerm);
-                }
+
+            List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getCookie());
+            if (allTerm != null) {
+                MoreDate.newInstance(this).setTermBeans(allTerm);
             }
         } catch (Exception e) {
             UMCrash.generateCustomLog(e, "getInfo");

@@ -5,18 +5,10 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.CET;
 import top.yvyan.guettable.Gson.ClassTable;
@@ -163,8 +155,8 @@ public class StaticService {
      * ERROR2 : 需要使用外网网址进行访问 或 TGT失效(上层调用时，若内网返回此错误，
      * 则先尝试外网，若是TGT失效，则重新获取；若正常获取，则需要将全局网络设置为外网)
      */
-    public static String SSOGetST(Context context, String CASCookie, String service, String MFACoookie) {
-        HttpConnectionAndCode response = Net.getSTbyCas(context, CASCookie, service, MFACoookie);
+    public static String SSOGetST(Context context, String CASCookie, String service, String MFACookie) {
+        HttpConnectionAndCode response = Net.getSTbyCas(context, CASCookie, service, MFACookie);
         if (response.code != -7) {
             if (response.code == -5) {
                 return "ERROR2";
@@ -181,9 +173,9 @@ public class StaticService {
 
     /**
      * 通过ST令牌登录VPN
-     * @param context   context
-     * @param ST    ST令牌
-     * @param token 用于接收登录后的cookie
+     * @param context  context
+     * @param ST       ST令牌
+     * @param VPNToken 用于接收登录后的cookie
      * @return 登录结果
      * 0 -- 登录成功
      * -1 -- 登录失败
@@ -273,7 +265,7 @@ public class StaticService {
      */
     public static List<ResitBean> getResit(Context context, String cookie) {
         List<ResitBean> resitBeans = new ArrayList<>();
-        HttpConnectionAndCode resitInfo = Net.getResit(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode resitInfo = Net.getResit(context, cookie, TokenData.isVPN());
         if (resitInfo.code == 0) {
             BaseResponse<List<Resit>> baseResponse = new Gson().fromJson(resitInfo.comment, new TypeToken<BaseResponse<List<Resit>>>() {
             }.getType());
@@ -294,7 +286,7 @@ public class StaticService {
      * @return 基本学生信息
      */
     public static StudentInfo getStudentInfo(Context context, String cookie) {
-        HttpConnectionAndCode studentInfo = Net.studentInfo(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode studentInfo = Net.studentInfo(context, cookie, TokenData.isVPN());
         if (studentInfo.code == 0) {
             return new Gson().fromJson(studentInfo.comment, StudentInfo.class);
         } else {
@@ -311,7 +303,7 @@ public class StaticService {
      * @return 理论课程列表
      */
     public static List<CourseBean> getClass(Context context, String cookie, String term) {
-        HttpConnectionAndCode classTable = Net.getClassTable(context, cookie, term, TokenData.isVPN);
+        HttpConnectionAndCode classTable = Net.getClassTable(context, cookie, term, TokenData.isVPN());
         if (classTable.code == 0) {
             List<CourseBean> courseBeans = new ArrayList<>();
             BaseResponse<List<ClassTable>> baseResponse = new Gson().fromJson(classTable.comment, new TypeToken<BaseResponse<List<ClassTable>>>() {
@@ -334,7 +326,7 @@ public class StaticService {
      * @return 课内实验列表
      */
     public static List<CourseBean> getLab(Context context, String cookie, String term) {
-        HttpConnectionAndCode labTable = Net.getLabTable(context, cookie, term, TokenData.isVPN);
+        HttpConnectionAndCode labTable = Net.getLabTable(context, cookie, term, TokenData.isVPN());
         if (labTable.code == 0) {
             List<CourseBean> courseBeans = new ArrayList<>();
             BaseResponse<List<LabTable>> baseResponse = new Gson().fromJson(labTable.comment, new TypeToken<BaseResponse<List<LabTable>>>() {
@@ -362,7 +354,7 @@ public class StaticService {
      */
     public static List<ExamBean> getExam(Context context, String cookie, String term) {
         List<ExamBean> examBeans = new ArrayList<>();
-        HttpConnectionAndCode examInfo = Net.getExam(context, cookie, term, TokenData.isVPN);
+        HttpConnectionAndCode examInfo = Net.getExam(context, cookie, term, TokenData.isVPN());
         if (examInfo.code == 0) {
             BaseResponse<List<ExamInfo>> baseResponse = new Gson().fromJson(examInfo.comment, new TypeToken<BaseResponse<List<ExamInfo>>>() {
             }.getType());
@@ -384,7 +376,7 @@ public class StaticService {
      */
     public static List<CETBean> getCET(Context context, String cookie) {
         List<CETBean> cetBeans = new ArrayList<>();
-        HttpConnectionAndCode cetInfo = Net.getCET(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode cetInfo = Net.getCET(context, cookie, TokenData.isVPN());
         if (cetInfo.code == 0) {
             BaseResponse<List<CET>> baseResponse = new Gson().fromJson(cetInfo.comment, new TypeToken<BaseResponse<List<CET>>>() {
             }.getType());
@@ -406,7 +398,7 @@ public class StaticService {
      */
     public static List<ExamScoreBean> getExamScore(Context context, String cookie) {
         List<ExamScoreBean> examScoreBeans = new ArrayList<>();
-        HttpConnectionAndCode examScoreInfo = Net.getExamScore(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode examScoreInfo = Net.getExamScore(context, cookie, TokenData.isVPN());
         if (examScoreInfo.code == 0) {
             BaseResponse<List<ExamScore>> baseResponse = new Gson().fromJson(examScoreInfo.comment, new TypeToken<BaseResponse<List<ExamScore>>>() {
             }.getType());
@@ -428,7 +420,7 @@ public class StaticService {
      */
     public static List<ExperimentScoreBean> getExperimentScore(Context context, String cookie) {
         List<ExperimentScoreBean> experimentScoreBeans = new ArrayList<>();
-        HttpConnectionAndCode experimentScoreInfo = Net.getExperimentScore(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode experimentScoreInfo = Net.getExperimentScore(context, cookie, TokenData.isVPN());
         if (experimentScoreInfo.code == 0) {
             BaseResponse<List<ExperimentScore>> baseResponse = new Gson().fromJson(experimentScoreInfo.comment, new TypeToken<BaseResponse<List<ExperimentScore>>>() {
             }.getType());
@@ -449,9 +441,9 @@ public class StaticService {
      * @return 有效学分列表
      */
     public static List<EffectiveCredit> getEffectiveCredits(Context context, String cookie) {
-        HttpConnectionAndCode updateResult = Net.updateEffectiveCredits(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode updateResult = Net.updateEffectiveCredits(context, cookie, TokenData.isVPN());
         if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
-            HttpConnectionAndCode getResult = Net.getEffectiveCredits(context, cookie, TokenData.isVPN);
+            HttpConnectionAndCode getResult = Net.getEffectiveCredits(context, cookie, TokenData.isVPN());
             if (getResult.code == 0) {
                 BaseResponse<List<EffectiveCredit>> baseResponse = new Gson().fromJson(getResult.comment, new TypeToken<BaseResponse<List<EffectiveCredit>>>() {
                 }.getType());
@@ -472,9 +464,9 @@ public class StaticService {
      * @return 计划课程列表
      */
     public static List<PlannedCourse> getPlannedCourses(Context context, String cookie) {
-        HttpConnectionAndCode updateResult = Net.updateEffectiveCredits(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode updateResult = Net.updateEffectiveCredits(context, cookie, TokenData.isVPN());
         if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
-            HttpConnectionAndCode getResult = Net.getPlannedCourses(context, cookie, TokenData.isVPN);
+            HttpConnectionAndCode getResult = Net.getPlannedCourses(context, cookie, TokenData.isVPN());
             if (getResult.code == 0) {
                 BaseResponse<List<PlannedCourse>> baseResponse = new Gson().fromJson(getResult.comment, new TypeToken<BaseResponse<List<PlannedCourse>>>() {
                 }.getType());
@@ -619,7 +611,7 @@ public class StaticService {
                 y++;
             }
             //教务总学分绩替换
-            HttpConnectionAndCode httpConnectionAndCode = Net.getGrades(context, cookie, TokenData.isVPN);
+            HttpConnectionAndCode httpConnectionAndCode = Net.getGrades(context, cookie, TokenData.isVPN());
             if (httpConnectionAndCode.code == 0) {
                 try {
                     BaseResponse<List<Grades>> baseResponse = new Gson().fromJson(httpConnectionAndCode.comment, new TypeToken<BaseResponse<List<Grades>>>() {
@@ -646,7 +638,7 @@ public class StaticService {
      */
     public static List<SelectedCourseBean> getSelectedCourse(Context context, String cookie, String term) {
         try {
-            HttpConnectionAndCode httpConnectionAndCode = Net.getSelectedCourse(context, cookie, term, TokenData.isVPN);
+            HttpConnectionAndCode httpConnectionAndCode = Net.getSelectedCourse(context, cookie, term, TokenData.isVPN());
             String comment = httpConnectionAndCode.comment;
             List<SelectedCourseBean> list;
             BaseResponse<List<SelectedCourse>> result = new Gson().fromJson(comment, new TypeToken<BaseResponse<List<SelectedCourse>>>() {
@@ -671,7 +663,7 @@ public class StaticService {
      */
     public static List<TermBean> getTerms(Context context, String cookie) {
         try {
-            HttpConnectionAndCode httpConnectionAndCode = Net.getAllTerms(context, cookie, TokenData.isVPN);
+            HttpConnectionAndCode httpConnectionAndCode = Net.getAllTerms(context, cookie, TokenData.isVPN());
             String comment = httpConnectionAndCode.comment;
             BaseResponse<List<TermBean>> baseResponse = new Gson().fromJson(comment, new TypeToken<BaseResponse<List<TermBean>>>() {
             }.getType());

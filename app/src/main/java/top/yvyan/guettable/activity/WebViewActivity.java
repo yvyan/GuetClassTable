@@ -40,6 +40,7 @@ public class WebViewActivity extends AppCompatActivity {
     public static String WEB_URL = "webURL";
     public static String WEB_TITLE = "webTitle";
     public static String WEB_COOKIE = "webCookie";
+    public static String WEB_COOKIE_URL = "webCookieUrl";
     public static String WEB_REFERER = "webReferer";
     public static String WEB_SHARE = "webShare";
     public static String WEB_SHARE_URL = "webShareText";
@@ -69,6 +70,7 @@ public class WebViewActivity extends AppCompatActivity {
         final String url = intent.getStringExtra(WEB_URL);
         String title = intent.getStringExtra(WEB_TITLE);
         String cookie = intent.getStringExtra(WEB_COOKIE);
+        String cookieUrl = intent.getStringExtra(WEB_COOKIE_URL);
         String referer = intent.getStringExtra(WEB_REFERER);
         boolean share = intent.getBooleanExtra(WEB_SHARE, true);
         shareUrl = intent.getStringExtra(WEB_SHARE_URL);
@@ -76,7 +78,11 @@ public class WebViewActivity extends AppCompatActivity {
             shareUrl = url;
         }
         if (cookie != null) {
-            setCookies(url, cookie);
+            if (cookieUrl == null) {
+                setCookies(url, cookie);
+            } else {
+                setCookies(cookieUrl, cookie);
+            }
         }
         if (title == null) {
             title = "正在加载...";

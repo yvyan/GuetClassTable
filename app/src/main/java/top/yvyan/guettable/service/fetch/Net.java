@@ -17,7 +17,6 @@ import top.yvyan.guettable.Http.Get;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.Http.Post;
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.util.AESUtil;
 import top.yvyan.guettable.util.RegularUtil;
 import top.yvyan.guettable.util.UrlReplaceUtil;
@@ -243,11 +242,11 @@ public class Net {
 
     public static HttpConnectionAndCode loginVPNST(Context context, String ST, String VPNToken) {
         Resources resources = context.getResources();
-        HttpConnectionAndCode LoginVPNRequset = Get.get(
+        return Get.get(
                 "https://v.guet.edu.cn/login?cas_login=true&ticket=" + ST,
                 null,
                 resources.getString(R.string.user_agent),
-                null,
+                resources.getString(R.string.SSO_referer),
                 VPNToken,
                 null,
                 resources.getString(R.string.cookie_delimiter),
@@ -257,7 +256,6 @@ public class Net {
                 null,
                 3000,
                 null);
-        return LoginVPNRequset;
     }
 
     /**
@@ -272,7 +270,7 @@ public class Net {
     public static HttpConnectionAndCode CookieSet(Context context, String host, String path, String cookie, String VPNToken) {
         Resources resources = context.getResources();
         try {
-            HttpConnectionAndCode SetCookieRequset = Get.get(
+            return Get.get(
                     "https://v.guet.edu.cn/wengine-vpn/cookie?method=set" + "&host=" + host +
                             "&path=" + path +
                             "&scheme=https&ck_data=" + URLEncoder.encode(cookie, "UTF-8"),
@@ -288,7 +286,6 @@ public class Net {
                     null,
                     3000,
                     null);
-            return SetCookieRequset;
         } catch (Exception ignore) {
         }
         return new HttpConnectionAndCode(-1);
@@ -296,7 +293,7 @@ public class Net {
 
     public static HttpConnectionAndCode loginBkjwVPNST(Context context, String ST, String VPNToken) {
         Resources resources = context.getResources();
-        HttpConnectionAndCode LoginBkjwVPNRequset = Get.get(
+        return Get.get(
                 "https://v.guet.edu.cn/http/77726476706e69737468656265737421f2fc4b8b69377d556a468ca88d1b203b?ticket=" + ST,
                 null,
                 resources.getString(R.string.user_agent),
@@ -310,7 +307,6 @@ public class Net {
                 null,
                 3000,
                 null);
-        return LoginBkjwVPNRequset;
     }
 
     /**
@@ -383,10 +379,10 @@ public class Net {
     public static HttpConnectionAndCode studentInfo(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Post.post(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_student_url))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_student_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 null,
                 cookie,
                 "}",
@@ -410,10 +406,10 @@ public class Net {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_table_url))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_table_url)),
                 param,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -439,10 +435,10 @@ public class Net {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_lab_table_url))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_lab_table_url)),
                 param,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -468,10 +464,10 @@ public class Net {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_exam_url))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_exam_url)),
                 param,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -495,10 +491,10 @@ public class Net {
     public static HttpConnectionAndCode getResit(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_resit_url))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_resit_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -522,10 +518,10 @@ public class Net {
     public static HttpConnectionAndCode getCET(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_cet_url))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_cet_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -549,10 +545,10 @@ public class Net {
     public static HttpConnectionAndCode getExamScore(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_examscore_url))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_examscore_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -576,10 +572,10 @@ public class Net {
     public static HttpConnectionAndCode getExperimentScore(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_experimentscore_url))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_experimentscore_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -603,10 +599,10 @@ public class Net {
     public static HttpConnectionAndCode updateEffectiveCredits(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Post.post(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_update_effective_credits))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_update_effective_credits)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 null,
                 cookie,
                 "}",
@@ -629,10 +625,10 @@ public class Net {
     public static HttpConnectionAndCode getEffectiveCredits(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_effective_credits))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_effective_credits)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -656,10 +652,10 @@ public class Net {
     public static HttpConnectionAndCode getPlannedCourses(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_get_planned_credits))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_planned_credits)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -685,10 +681,10 @@ public class Net {
         Resources resources = context.getResources();
         String[] param = {"comm=1%401", "term=".concat(term)};
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, resources.getString(R.string.lan_get_selected_course)),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_selected_course)),
                 param,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -712,10 +708,10 @@ public class Net {
     public static HttpConnectionAndCode getGrades(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(false, resources.getString(R.string.lan_get_grades_url))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_grades_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,
@@ -739,10 +735,10 @@ public class Net {
     public static HttpConnectionAndCode getAllTerms(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(false, resources.getString(R.string.lan_get_terms_url))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_terms_url)),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getUrlByVPN(isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(context).isInternational(), resources.getString(R.string.lan_referer))),
+                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
                 cookie,
                 "]}",
                 null,

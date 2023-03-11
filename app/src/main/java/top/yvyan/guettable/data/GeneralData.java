@@ -18,9 +18,7 @@ public class GeneralData {
     private static final String TIME = "time";
     private static final String GRADE = "grade";
     private static final String TERM = "term";
-    private static final String IS_INTERNATIONAL = "isInternational";
     private static final String LAST_UPDATE_TIME = "lastUpdateTime";
-    private static final String APP_LAST_UPDATE_TIME = "appLastUpdateTime";
     private static final String APPLY_PRIVACY = "applyPrivacy";
     private static final String WIDGET_THEME = "widget_theme";
     private static final String WIDGET_ALPHA = "widget_alpha";
@@ -34,10 +32,7 @@ public class GeneralData {
     private long time;
     private String grade;
     private String term;
-    private boolean isInternational;
     private long lastUpdateTime;
-    //控制检查更新频率
-    private long appLastUpdateTime;
     //隐私协议
     private boolean applyPrivacy;
 
@@ -59,9 +54,7 @@ public class GeneralData {
         time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
         grade = sharedPreferences.getString(GRADE, null);
         term = sharedPreferences.getString(TERM, null);
-        isInternational = sharedPreferences.getBoolean(IS_INTERNATIONAL, false);
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
-        appLastUpdateTime = sharedPreferences.getLong(APP_LAST_UPDATE_TIME, -1);
         applyPrivacy = sharedPreferences.getBoolean(APPLY_PRIVACY, false);
         widget_theme = sharedPreferences.getString(WIDGET_THEME, "black");
         widget_alpha = sharedPreferences.getInt(WIDGET_ALPHA, 255);
@@ -138,16 +131,6 @@ public class GeneralData {
         editor.apply();
     }
 
-    public boolean isInternational() {
-        return isInternational;
-    }
-
-    public void setInternational(boolean international) {
-        isInternational = international;
-        editor.putBoolean(IS_INTERNATIONAL, isInternational);
-        editor.apply();
-    }
-
     public long getLastUpdateTime() {
         return lastUpdateTime;
     }
@@ -156,16 +139,6 @@ public class GeneralData {
         this.lastUpdateTime = lastUpdateTime;
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(LAST_UPDATE_TIME, lastUpdateTime);
-        editor.apply();
-    }
-
-    public long getAppLastUpdateTime() {
-        return appLastUpdateTime;
-    }
-
-    public void setAppLastUpdateTime(long appLastUpdateTime) {
-        this.appLastUpdateTime = appLastUpdateTime;
-        editor.putLong(APP_LAST_UPDATE_TIME, appLastUpdateTime);
         editor.apply();
     }
 

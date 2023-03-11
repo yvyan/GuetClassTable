@@ -4,7 +4,6 @@
     <!-- 统一登录 -->
     <string name="vpn_url">https://v.guet.edu.cn/login</string>
     <string name="vpn_refer">https://v.guet.edu.cn</string>
-    <string name="vpn_get_cookie">https://v.guet.edu.cn/wengine-vpn/cookie?method=get&amp;host=cas.guet.edu.cn&amp;scheme=https&amp;path=/authserver/login</string>
     <string name="url_Authserver">https://cas.guet.edu.cn/authserver/login</string>
     <string name="url_SendPhoneOTP">https://cas.guet.edu.cn/authserver/dynamicCode/getDynamicCodeByReauth.do</string>
     <string name="url_ReAuth">https://cas.guet.edu.cn/authserver/reAuthCheck/reAuthSubmit.do</string>
@@ -132,7 +131,7 @@
     <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²  |  沉山浮阳 | 迷 | 稚隳 </string>
 
     <!--已选课程-->
-    <string name="lan_get_selected_course"> https://bkjw.guet.edu.cn/student/GetSctCourse </string>
+    <string name="lan_get_selected_course"> /student/GetSctCourse </string>
 
     <!-- 更多功能 -->
 

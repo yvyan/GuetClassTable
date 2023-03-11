@@ -14,7 +14,6 @@ import java.util.Objects;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.activity.WebViewActivity;
-import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
@@ -90,8 +89,8 @@ public class CommFunc {
             final boolean[] noLogin = {false};
             TokenData tokenData = TokenData.newInstance(activity);
             Intent intent = new Intent(activity, WebViewActivity.class);
-            intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/Login/MainDesktop")));
-            intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/")));
+            intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getBkjwUrlByVPN(TokenData.isVPN(), "/Login/MainDesktop"));
+            intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getBkjwUrlByVPN(TokenData.isVPN(), "/"));
             DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
                 @Override
                 public void onClickYes() {
@@ -105,10 +104,9 @@ public class CommFunc {
                 }
             };
             final AlertDialog[] dialog = new AlertDialog[1];
-            activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动登录中...(最长需要20s)", "跳过", iDialogService, true));
+            activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动登录中...(最长需要15s)", "跳过", iDialogService, true));
 
             tokenData.refresh();
-            tokenData.setVPNCASCookie();
             if (!noLogin[0]) {
                 activity.runOnUiThread(() -> {
                     if (dialog[0] != null && dialog[0].isShowing()) {
@@ -116,11 +114,66 @@ public class CommFunc {
                     }
                     WebViewActivity.cleanCash(Objects.requireNonNull(activity));
                 });
-                intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/Login/MainDesktop")));
-                intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/")));
-                intent.putExtra(WebViewActivity.WEB_REFERER, UrlReplaceUtil.getUrlByVPN(TokenData.isVPN, UrlReplaceUtil.getUrlByInternational(GeneralData.newInstance(activity).isInternational(), "/")));
+                intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getBkjwUrlByVPN(TokenData.isVPN(), "/Login/MainDesktop"));
+                intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getBkjwUrlByVPN(TokenData.isVPN(), "/"));
+                intent.putExtra(WebViewActivity.WEB_REFERER, UrlReplaceUtil.getBkjwUrlByVPN(TokenData.isVPN(), "/"));
                 intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
                 AppUtil.reportFunc(activity, "登录教务-免登录");
+                activity.startActivity(intent);
+            }
+        }).start();
+    }
+
+    /**
+     * 自动登录智慧校园
+     *
+     * @param activity activity
+     */
+    public static void noLoginWebICampus(Activity activity) {
+        new Thread(() -> {
+            final boolean[] noLogin = {false};
+            TokenData tokenData = TokenData.newInstance(activity);
+            Intent intent = new Intent(activity, WebViewActivity.class);
+            intent.putExtra(WebViewActivity.WEB_URL, activity.getResources().getString(R.string.url_smart_campus));
+            intent.putExtra(WebViewActivity.WEB_SHARE_URL, activity.getResources().getString(R.string.url_smart_campus));
+            DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
+                @Override
+                public void onClickYes() {
+                    AppUtil.reportFunc(activity, "智慧校园-跳过");
+                    activity.startActivity(intent);
+                    noLogin[0] = true;
+                }
+
+                @Override
+                public void onClickBack() {
+                }
+            };
+            final AlertDialog[] dialog = new AlertDialog[1];
+            activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动登录中...(最长需要15s)", "跳过", iDialogService, true));
+
+            tokenData.refresh();
+            if (TokenData.isVPN()) {
+                tokenData.setVPNCASCookie();
+            }
+            if (!noLogin[0]) {
+                activity.runOnUiThread(() -> {
+                    if (dialog[0] != null && dialog[0].isShowing()) {
+                        dialog[0].dismiss();
+                    }
+                    WebViewActivity.cleanCash(Objects.requireNonNull(activity));
+                });
+                intent.putExtra(WebViewActivity.WEB_URL, activity.getResources().getString(R.string.url_smart_campus));
+                intent.putExtra(WebViewActivity.WEB_SHARE_URL, activity.getResources().getString(R.string.url_smart_campus));
+                intent.putExtra(WebViewActivity.WEB_REFERER, activity.getResources().getString(R.string.url_smart_campus));
+                //设置cookie
+                if (TokenData.isVPN()) {
+                    intent.putExtra(WebViewActivity.WEB_COOKIE_URL, activity.getResources().getString(R.string.url_vpn));
+                    intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
+                } else {
+                    intent.putExtra(WebViewActivity.WEB_COOKIE_URL, activity.getResources().getString(R.string.url_Authserver));
+                    intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCASCookie());
+                }
+                AppUtil.reportFunc(activity, "智慧校园-免登录");
                 activity.startActivity(intent);
             }
         }).start();
@@ -159,7 +212,7 @@ public class CommFunc {
                     dialog[0].dismiss();
                     WebViewActivity.cleanCash(Objects.requireNonNull(activity));
                 });
-                intent.putExtra(WebViewActivity.WEB_REFERER, "https://v.guet.edu.cn/login");
+                intent.putExtra(WebViewActivity.WEB_REFERER, activity.getResources().getString(R.string.vpn_url));
                 if (token != null) {
                     intent.putExtra(WebViewActivity.WEB_COOKIE, token);
                 }
@@ -178,11 +231,10 @@ public class CommFunc {
      * @param hint     提示信息
      */
     public static void checkVpn(Activity activity, String web, String vpnWeb, String hint) {
-        TokenData tokenData = TokenData.newInstance(activity);
         if (hint != null) {
             ToastUtil.showLongToast(activity, hint);
         }
-        if (!tokenData.isVPN()) { //内网直接打开对应网址
+        if (!TokenData.isVPN()) { //内网直接打开对应网址
             openBrowser(activity, web);
         } else { //外网登录vpn后打开对应网址
             openBrowser(activity, vpnWeb);
@@ -198,7 +250,7 @@ public class CommFunc {
      */
     public static void noLoginWebVPN(Activity activity, String web, String vpnWeb) {
         TokenData tokenData = TokenData.newInstance(activity);
-        if (!tokenData.isVPN()) { //内网直接打开对应网址
+        if (!TokenData.isVPN()) { //内网直接打开对应网址
             openUrl(activity, null, web, true);
         } else { //外网登录vpn后打开对应网址
             new Thread(() -> {
