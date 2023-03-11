@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -75,8 +76,8 @@ public class StaticService {
         return "ERROR0";
     }
 
-    public static String fuck2FA(Context context, String Password, String CASCookie) {
-        HttpConnectionAndCode response = Net.fuck2FA(context, Password, CASCookie);
+    public static String bypass2FA(Context context, String Password, String CASCookie) {
+        HttpConnectionAndCode response = Net.bypass2FA(context, Password, CASCookie);
         if (response.code != 0) {
             if (response.code == -5) {
                 return "ERROR2";
@@ -180,7 +181,7 @@ public class StaticService {
 
     /**
      * 通过ST令牌登录VPN
-     *
+     * @param context   context
      * @param ST    ST令牌
      * @param token 用于接收登录后的cookie
      * @return 登录结果
@@ -188,32 +189,14 @@ public class StaticService {
      * -1 -- 登录失败
      * -2 -- 发生异常
      */
-    public static int loginVPNST(String ST, String token) {
-
-        String url = "https://v.guet.edu.cn/https/77726476706e69737468656265737421e6b94689222426557a1dc7af96/login?cas_login=true&ticket=";
-        url = url + ST;
-        OkHttpClient okHttpClient = new OkHttpClient();
-        if (token == null) {
-            token = "";
-        }
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Cookie", token)
-                .build();
-        final Call call = okHttpClient.newCall(request);
-
-        try {
-            Response response = call.execute();
-            response.close();
-            if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("html lang=\"zh-cmn\"")) {
-                return -1;
-            } else {
+    public static int loginVPNST(Context context,String ST, String VPNToken) {
+        HttpConnectionAndCode response = Net.loginVPNST(context,ST,VPNToken);
+        if(response.code == 0 ) {
+            if(response.c.getURL().toString().contains("wengine-vpn-token-login")) {
                 return 0;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return -2;
         }
+        return -1;
     }
 
     /**
@@ -222,34 +205,17 @@ public class StaticService {
      * @param host   域
      * @param path   路径
      * @param cookie cookie
-     * @param token  VPN Token
+     * @param VPNToken  VPN Token
      * @return 0 成功
      */
-    public static int CookieSet(String host, String path, String cookie, String token) {
-        String url = "https://v.guet.edu.cn/wengine-vpn/cookie?method=set" + "&host=" + host +
-                "&path=" + path +
-                "&scheme=https&ck_data=" + cookie;
-        OkHttpClient okHttpClient = new OkHttpClient();
-        final Request request = new Request.Builder()
-                .url(url)
-                .post(RequestBody.create("",null))
-                .addHeader("Cookie", token)
-                .build();
-        final Call call = okHttpClient.newCall(request);
-
-        try {
-            Response response = call.execute();
-            response.close();
-            if (Objects.requireNonNull(response.body()).toString().contains("success")) {
+    public static int CookieSet(Context context,String host, String path, String cookie, String VPNToken) {
+        HttpConnectionAndCode response = Net.CookieSet(context,host,path,cookie,VPNToken);
+        if(response.code == 0 ) {
+            if(response.comment.contains("success")) {
                 return 0;
-            } else {
-                return -1;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return -2;
         }
-
+        return -1;
     }
 
     /**
@@ -263,34 +229,12 @@ public class StaticService {
      * -2 -- 教务登录失败
      * -3 -- 发生异常
      */
-    public static int loginBkjwVPNST(String ST, String VPNToken) {
-
-        String url = "https://v.guet.edu.cn/http/77726476706e69737468656265737421f2fc4b8b69377d556a468ca88d1b203b/?ticket=";
-        url = url + ST;
-        if (VPNToken == null) {
-            VPNToken = "";
+    public static int loginBkjwVPNST(Context context,String ST, String VPNToken) {
+        HttpConnectionAndCode response = Net.loginBkjwVPNST(context,ST,VPNToken);
+        if(response.code == 0 ) {
+            return 0;
         }
-        OkHttpClient okHttpClient = new OkHttpClient();
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Cookie", VPNToken)
-                .build();
-        final Call call = okHttpClient.newCall(request);
-
-        try {
-            Response response = call.execute();
-            response.close();
-            if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("html lang=\"zh-cmn\"")) {
-                return -1;
-            } else if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("统一身份认证平台")) {
-                return -2;
-            } else {
-                return 0;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return -3;
-        }
+        return -1;
     }
 
     /**

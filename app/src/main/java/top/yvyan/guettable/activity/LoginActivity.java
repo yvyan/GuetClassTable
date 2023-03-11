@@ -167,11 +167,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             if (CasCookie.contains("TGT-")) {
                 TokenData tokenData = TokenData.newInstance(this);
                 if (CasCookie.contains("ERROR5")) {
-                    tokenData.setCASCookie(CasCookie.substring(CasCookie.indexOf(";") + 1));
+                    tokenData.setTGTToken(CasCookie.substring(CasCookie.indexOf(";") + 1));
                     tokenData.setBkjwCookie(null);
-                    fuck2FA(account, password, CasCookie.substring(CasCookie.indexOf(";") + 1), tokenData);
+                    bypass2FA(account, password, CasCookie.substring(CasCookie.indexOf(";") + 1), tokenData);
                 } else {
-                    tokenData.setCASCookie(CasCookie);
+                    tokenData.setTGTToken(CasCookie);
                     tokenData.setBkjwCookie(null);
                     accountData.setUser(account, null, password, cbRememberPwd.isChecked());
                     getInfo();
@@ -196,10 +196,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      * @param CASCookie CAS Cookie
      * @param tokenData tokenData
      */
-    private void fuck2FA(String account, String password, String CASCookie, TokenData tokenData) {
+    private void bypass2FA(String account, String password, String CASCookie, TokenData tokenData) {
         try {
             runOnUiThread(() -> button.setText("正在尝试绕过二步验证"));
-            String MultiFactorAuth = StaticService.fuck2FA(this, password, CASCookie);
+            String MultiFactorAuth = StaticService.bypass2FA(this, password, CASCookie);
             if (MultiFactorAuth.contains("ERROR")) {
                 if (MultiFactorAuth.equals("ERROR1")) {
                     showErrorToast(-4);
