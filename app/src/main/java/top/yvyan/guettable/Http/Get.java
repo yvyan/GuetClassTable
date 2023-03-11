@@ -57,7 +57,6 @@ public class Get {
             }
             url = new URL(u_bulider.toString());
             cnt = (HttpURLConnection) url.openConnection();
-            cnt.setDoOutput(true);
             cnt.setDoInput(true);
             cnt.setRequestProperty("User-Agent", user_agent);
             if (accept_encodings != null && accept_encodings.length > 0) {

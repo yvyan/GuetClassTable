@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -34,8 +33,8 @@ public class Net {
     public static int testNet() {
         String url = "http://10.0.1.5/";
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(3, TimeUnit.SECONDS)//设置连接超时时间
-                .readTimeout(3, TimeUnit.SECONDS)//设置读取超时时间
+                .connectTimeout(1, TimeUnit.SECONDS)//设置连接超时时间
+                .readTimeout(1, TimeUnit.SECONDS)//设置读取超时时间
                 .build();
         final Request request = new Request.Builder()
                 .url(url)
@@ -82,7 +81,7 @@ public class Net {
      * @param context  context
      * @param account  学号
      * @param password 密码
-     * @return CAS服务Cookie *请求
+     * @return CAS-TGT;
      */
     public static HttpConnectionAndCode getCASToken(Context context, String account, String password, String MFACookie) {
         StringBuilder cookie_builder = new StringBuilder();
@@ -117,7 +116,7 @@ public class Net {
                     resources.getString(R.string.user_agent),
                     resources.getString(R.string.SSO_referer),
                     body,
-                    cookie_builder.toString() + (MFACookie != null ? ("; " + MFACookie) : ""),
+                    cookie_builder + (MFACookie != null ? ("; " + MFACookie) : ""),
                     "}",
                     resources.getString(R.string.cookie_delimiter),
                     null,
@@ -149,8 +148,7 @@ public class Net {
      *
      * @param context   context
      * @param CASCookie CAS Cookie
-     * @param account
-     * @param VPNToken  VPNToken
+     * @param account   account
      * @return Response
      */
     public static HttpConnectionAndCode sendPhoneOTP(Context context, String account, String CASCookie) {
@@ -175,13 +173,12 @@ public class Net {
      *
      * @param context   context
      * @param CASCookie CAS Cookie
-     * @param OTP
-     * @param VPNToken  VPNToken
+     * @param OTP       OTP
      * @return Response
      */
     public static HttpConnectionAndCode verifyPhoneOTP(Context context, String OTP, String CASCookie) {
         Resources resources = context.getResources();
-        HttpConnectionAndCode VerifyRequest = Post.post(
+        return Post.post(
                 resources.getString(R.string.url_ReAuth),
                 null,
                 resources.getString(R.string.user_agent),
@@ -194,7 +191,6 @@ public class Net {
                 null,
                 false,
                 resources.getString(R.string.SSO_context_type));
-        return VerifyRequest;
     }
 
     /**
@@ -204,7 +200,7 @@ public class Net {
      * @param CASCookie CAS Cookie
      * @return Response
      */
-    public static HttpConnectionAndCode fuck2FA(Context context, String password, String CASCookie) {
+    public static HttpConnectionAndCode bypass2FA(Context context, String password, String CASCookie) {
         Resources resources = context.getResources();
         try {
             HttpConnectionAndCode MFAParams = Get.get(
@@ -226,7 +222,8 @@ public class Net {
             }
             ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(MFAParams.comment, "(?<=\"pwdEncryptSalt\":\")(\\w+)(?=\")");
             String AESKey = listExp.get(0);
-            HttpConnectionAndCode VerifyRequest = Post.post(
+
+            return Post.post(
                     resources.getString(R.string.url_ReAuth),
                     null,
                     resources.getString(R.string.user_agent),
@@ -239,12 +236,81 @@ public class Net {
                     null,
                     false,
                     resources.getString(R.string.SSO_context_type));
-
-            return VerifyRequest;
         } catch (Exception ignored) {
-
         }
         return new HttpConnectionAndCode(0);
+    }
+
+    public static HttpConnectionAndCode loginVPNST(Context context, String ST, String VPNToken) {
+        Resources resources = context.getResources();
+        HttpConnectionAndCode LoginVPNRequset = Get.get(
+                "https://v.guet.edu.cn/login?cas_login=true&ticket=" + ST,
+                null,
+                resources.getString(R.string.user_agent),
+                null,
+                VPNToken,
+                null,
+                resources.getString(R.string.cookie_delimiter),
+                null,
+                null,
+                null,
+                null,
+                3000,
+                null);
+        return LoginVPNRequset;
+    }
+
+    /**
+     * 向VPN添加Cookie
+     *
+     * @param host     域
+     * @param path     路径
+     * @param cookie   cookie
+     * @param VPNToken VPN Token
+     * @return 0 成功
+     */
+    public static HttpConnectionAndCode CookieSet(Context context, String host, String path, String cookie, String VPNToken) {
+        Resources resources = context.getResources();
+        try {
+            HttpConnectionAndCode SetCookieRequset = Get.get(
+                    "https://v.guet.edu.cn/wengine-vpn/cookie?method=set" + "&host=" + host +
+                            "&path=" + path +
+                            "&scheme=https&ck_data=" + URLEncoder.encode(cookie, "UTF-8"),
+                    null,
+                    resources.getString(R.string.user_agent),
+                    "https://v.guet.edu.cn",
+                    VPNToken,
+                    null,
+                    resources.getString(R.string.cookie_delimiter),
+                    null,
+                    null,
+                    false,
+                    null,
+                    3000,
+                    null);
+            return SetCookieRequset;
+        } catch (Exception ignore) {
+        }
+        return new HttpConnectionAndCode(-1);
+    }
+
+    public static HttpConnectionAndCode loginBkjwVPNST(Context context, String ST, String VPNToken) {
+        Resources resources = context.getResources();
+        HttpConnectionAndCode LoginBkjwVPNRequset = Get.get(
+                "https://v.guet.edu.cn/http/77726476706e69737468656265737421f2fc4b8b69377d556a468ca88d1b203b?ticket=" + ST,
+                null,
+                resources.getString(R.string.user_agent),
+                "https://v.guet.edu.cn",
+                VPNToken,
+                null,
+                resources.getString(R.string.cookie_delimiter),
+                null,
+                null,
+                true,
+                null,
+                3000,
+                null);
+        return LoginBkjwVPNRequset;
     }
 
     /**

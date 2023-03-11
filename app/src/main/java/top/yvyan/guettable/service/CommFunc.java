@@ -108,6 +108,7 @@ public class CommFunc {
             activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动登录中...(最长需要20s)", "跳过", iDialogService, true));
 
             tokenData.refresh();
+            tokenData.setVPNCASCookie();
             if (!noLogin[0]) {
                 activity.runOnUiThread(() -> {
                     if (dialog[0] != null && dialog[0].isShowing()) {
@@ -152,6 +153,7 @@ public class CommFunc {
             activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动建立连接中...(最长需要15s)", "跳过", iDialogService, true));
 
             String token = tokenData.getVpnToken();
+            tokenData.setVPNCASCookie();
             if (!noLogin[0]) {
                 activity.runOnUiThread(() -> {
                     dialog[0].dismiss();
@@ -180,7 +182,7 @@ public class CommFunc {
         if (hint != null) {
             ToastUtil.showLongToast(activity, hint);
         }
-        if (tokenData.isVPN()) { //内网直接打开对应网址
+        if (!tokenData.isVPN()) { //内网直接打开对应网址
             openBrowser(activity, web);
         } else { //外网登录vpn后打开对应网址
             openBrowser(activity, vpnWeb);
@@ -196,7 +198,7 @@ public class CommFunc {
      */
     public static void noLoginWebVPN(Activity activity, String web, String vpnWeb) {
         TokenData tokenData = TokenData.newInstance(activity);
-        if (tokenData.isVPN()) { //内网直接打开对应网址
+        if (!tokenData.isVPN()) { //内网直接打开对应网址
             openUrl(activity, null, web, true);
         } else { //外网登录vpn后打开对应网址
             new Thread(() -> {
@@ -220,6 +222,7 @@ public class CommFunc {
                 activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动建立连接中...(最长需要15s)", "跳过", iDialogService, true));
 
                 String token = tokenData.getVpnToken();
+                tokenData.setVPNCASCookie();
                 if (!noLogin[0]) {
                     activity.runOnUiThread(() -> {
                         dialog[0].dismiss();
