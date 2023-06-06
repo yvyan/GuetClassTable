@@ -46,7 +46,6 @@
         <activity
             android:name=".widget.WidgetActivity"
             android:theme="@style/dialog_style" />
-        <activity android:name=".moreFun.QQGroupActivity" />
         <activity android:name=".moreFun.SelectedCourseActivity" />
         <activity
             android:name=".activity.AddCourseActivity"

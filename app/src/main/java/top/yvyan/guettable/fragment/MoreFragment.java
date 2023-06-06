@@ -21,7 +21,6 @@ import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.moreFun.LibActivity;
 import top.yvyan.guettable.moreFun.MoreUrlActivity;
 import top.yvyan.guettable.moreFun.PlannedCoursesActivity;
-import top.yvyan.guettable.moreFun.QQGroupActivity;
 import top.yvyan.guettable.moreFun.ResitActivity;
 import top.yvyan.guettable.moreFun.SelectedCourseActivity;
 import top.yvyan.guettable.service.CommFunc;
@@ -183,8 +182,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                         requireContext().getResources().getString(R.string.url_empty_room_vpn));
                 break;
             case R.id.more_qq_group:
-                intent = new Intent(getContext(), QQGroupActivity.class);
-                startActivity(intent);
+                openBrowser(requireContext().getResources().getString(R.string.url_add_group));
                 break;
 
 

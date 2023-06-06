@@ -141,6 +141,13 @@ public class WebViewActivity extends AppCompatActivity {
             if (url.startsWith("http://") || url.startsWith("https://")) {
                 view.loadUrl(url);
                 return true;
+            } else if (url.startsWith("mqq")) { //仅允许QQ跳转
+                try {
+                    startActivity(Intent.parseUri(url, Intent.URI_INTENT_SCHEME));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return true;
             }
             return false;
         }

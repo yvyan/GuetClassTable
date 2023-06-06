@@ -49,6 +49,7 @@
     <string name="url_lijiang_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e7e056d22028645a661cc7af96/</string>
     <string name="url_change_vpn_pwd">https://cas.guet.edu.cn/retrieve-password/retrievePassword/index.html#/</string>
     <string name="url_activate_account">https://cas.guet.edu.cn/retrieve-password/accountActivation/index.html#/</string>
+    <string name="url_add_group">https://guettableweb.yvyan.top/</string>
 
     <string name="text_school_song">桂电校歌</string>
     <string name="url_school_song">https://music.163.com/#/song?id=469744200</string>
