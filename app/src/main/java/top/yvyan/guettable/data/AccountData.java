@@ -9,15 +9,13 @@ public class AccountData {
     private static final String IS_SAVE = "isSave";
     private static final String IS_LOGIN = "isLogin";
     private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
-    private static final String PASSWORD2 = "password2";
+    private static final String PASSWORD = "password2";
     SharedPreferences sharedPreferences;
 
     private boolean isSave;
     private boolean isLogin;
     private String username;
-    private String bkjwPwd;
-    private String VPNPwd;
+    private String Pwd;
 
     private AccountData(Context context) {
         sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
@@ -43,12 +41,9 @@ public class AccountData {
         return username;
     }
 
-    public void setUser(String username, String bkjwPwd, String VPNPwd, boolean isSave) {
-        if (bkjwPwd != null) {
-            this.bkjwPwd = bkjwPwd;
-        }
+    public void setUser(String username, String Pwd, boolean isSave) {
         this.username = username;
-        this.VPNPwd = VPNPwd;
+        this.Pwd = Pwd;
         this.isSave = isSave;
         this.isLogin = true;
         saveUser();
@@ -63,8 +58,7 @@ public class AccountData {
         isSave = sharedPreferences.getBoolean(IS_SAVE, false);
         isLogin = sharedPreferences.getBoolean(IS_LOGIN, false);
         username = sharedPreferences.getString(USERNAME, "");
-        bkjwPwd = sharedPreferences.getString(PASSWORD, "");
-        VPNPwd = sharedPreferences.getString(PASSWORD2, "");
+        Pwd = sharedPreferences.getString(PASSWORD, "");
     }
 
     private void saveUser() {
@@ -72,16 +66,11 @@ public class AccountData {
         editor.putBoolean(IS_SAVE, isSave);
         editor.putBoolean(IS_LOGIN, isLogin);
         editor.putString(USERNAME, username);
-        editor.putString(PASSWORD, bkjwPwd);
-        editor.putString(PASSWORD2, VPNPwd);
+        editor.putString(PASSWORD, Pwd);
         editor.apply();
     }
 
-    public String getBkjwPwd() {
-        return bkjwPwd;
-    }
-
-    public String getVPNPwd() {
-        return VPNPwd;
+    public String getPwd() {
+        return Pwd;
     }
 }

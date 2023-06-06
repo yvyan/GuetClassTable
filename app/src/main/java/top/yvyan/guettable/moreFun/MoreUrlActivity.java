@@ -88,12 +88,4 @@ public class MoreUrlActivity extends AppCompatActivity {
                 getResources().getString(R.string.url_staff_vpn),
                 null);
     }
-
-    public void news1(View view) {
-        openBrowser(getResources().getString(R.string.url_news_1));
-    }
-
-    public void news2(View view) {
-        openBrowser(getResources().getString(R.string.url_new_2));
-    }
 }

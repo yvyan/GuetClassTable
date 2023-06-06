@@ -1,38 +1,56 @@
 package top.yvyan.guettable.data;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.lang.reflect.*;
+
+import androidx.appcompat.app.AlertDialog;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.service.fetch.StaticService;
+import top.yvyan.guettable.util.ToastUtil;
 
 public class TokenData {
     @SuppressLint("StaticFieldLeak")
     private static TokenData tokenData;
     private final SharedPreferences.Editor editor;
-    private final Context context;
+    private Context context;
+
+    private Object Caller;
 
     private static final String SHP_NAME = "tokenData";
 
-    private static final String CAS_Cookie = "CASCookie";
+    private static final String CAS_TGTToken = "TGTToken";
+
     private static final String VPN_TOKEN = "VPNToken";
     private static final String BKJW_COOKIE = "bkjwCookie";
     private static final String IS_DEVELOP = "isDevelop";
-
+    private static final String MULTIFACTOR_USERS = "MFACookie";
     private final AccountData accountData;
 
-    public static boolean isVPN = true;
+    private static boolean isVPN = true;
 
     //开发者调试
     private boolean isDevelop;
     //强制获取vpn
     private boolean forceVPN = false;
 
-    private String CASCookie; // 新版CAS认证Cookie; CASTGT/JSESSION
+    private String TGTToken; // CAS-TGT
     private String VPNToken;   //VPN认证Token
     private String bkjwCookie; //教务系统认证Cookie
+
+    private String MFACookie;
 
     public String getCookie() {
         if (isVPN) {
@@ -42,8 +60,12 @@ public class TokenData {
         }
     }
 
-    public boolean isVPN() {
-        return !isVPN;
+    public static boolean isVPN() {
+        return isVPN;
+    }
+
+    public static void setIsVPN(boolean isVPN) {
+        TokenData.isVPN = isVPN;
     }
 
     /**
@@ -53,7 +75,6 @@ public class TokenData {
      */
     public String getVpnToken() {
         forceVPN = true;
-        refresh();
         //isVPN = Net.testNet(context) != 0;
         return VPNToken;
     }
@@ -68,13 +89,25 @@ public class TokenData {
         VPNToken = sharedPreferences.getString(VPN_TOKEN, null);
         bkjwCookie = sharedPreferences.getString(BKJW_COOKIE, null);
         isDevelop = sharedPreferences.getBoolean(IS_DEVELOP, false);
-        CASCookie = sharedPreferences.getString(CAS_Cookie, "");
+        TGTToken = sharedPreferences.getString(CAS_TGTToken, null);
+        MFACookie = sharedPreferences.getString(MULTIFACTOR_USERS, null);
     }
 
     public static TokenData newInstance(Context context) {
         if (tokenData == null) {
             tokenData = new TokenData(context);
         }
+        tokenData.context = context; // Update Context
+        tokenData.Caller = null;
+        return tokenData;
+    }
+
+    public static TokenData newInstance(Context context, Object Caller) {
+        if (tokenData == null) {
+            tokenData = new TokenData(context);
+        }
+        tokenData.context = context; // Update Context
+        tokenData.Caller = Caller;
         return tokenData;
     }
 
@@ -110,6 +143,20 @@ public class TokenData {
      * @return 登录结果
      */
     private int loginBySmart() {
+        //尝试获取教务系统ST
+        int n;
+        String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), MFACookie);
+        if (!ST_BKJW.contains("ST-")) { // TGT失效
+            n = refreshTGT();
+            if (n != 0) {
+                return n;
+            }
+            ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), MFACookie);
+            if (!ST_BKJW.contains("ST-")) {
+                return -2;
+            }
+        }
+
         if (isVPN) { //外网
             //获取VPN的token
             String VPNTokenStr = Net.getVPNToken(context);
@@ -118,42 +165,26 @@ public class TokenData {
             } else {
                 return -2;
             }
-            int n = loginVpnByCAS(VPNTokenStr);
-            //登录教务
-            if (n == 0) {
-                String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);
-                if (ST_BKJW.equals("ERROR0")) {
-                    return -2;
-                } else if (ST_BKJW.equals("ERROR1")) { //TGT失效
-                    n = refreshTGT(VPNTokenStr);
-                    if (n == 0) {
-                        ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), VPNTokenStr);
-                        if (!ST_BKJW.contains("ST-")) {
-                            return -2;
-                        }
-                    } else {
-                        return n;
-                    }
-                }
-                n = StaticService.loginBkjwVPNST(ST_BKJW, VPNToken);
-                if (n != 0) {
-                    n = StaticService.loginBkjwVPNST(ST_BKJW, VPNToken);
-                }
+            //获取VPN-ST
+            String ST_VPN = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_vpn), MFACookie);
+            if (!ST_VPN.contains("ST-")) {
+                return -2;
+            }
+            n = StaticService.loginVPNST(context, ST_VPN, VPNTokenStr);
+            if (n != 0) {
+                n = StaticService.loginVPNST(context, ST_VPN, VPNTokenStr);
+            }
+            if (n != 0) {
+                return n;
+            }
+            n = StaticService.loginBkjwVPNST(context, ST_BKJW, VPNToken);
+            if (n != 0) {
+                n = StaticService.loginBkjwVPNST(context, ST_BKJW, VPNToken);
             }
             return n;
-        } else { // 内网
+
+        } else { //内网
             StringBuilder cookie_builder = new StringBuilder();
-            String ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), null);
-            if (!ST_BKJW.contains("ST-")) { // TGT失效
-                int n = refreshTGT(null);
-                if (n != 0) {
-                    return n;
-                }
-                ST_BKJW = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_bkjw), null);
-                if (!ST_BKJW.contains("ST-")) { // 网络错误，切换为外网模式
-                    return -2;
-                }
-            }
             int state = StaticService.loginBkjw(context, ST_BKJW, cookie_builder);
             if (state == 0) {
                 setBkjwCookie(cookie_builder.toString());
@@ -165,61 +196,177 @@ public class TokenData {
     }
 
     /**
-     * 使用CAS登录VPN
-     *
-     * @param VPNTokenStr vpn的Token
-     * @return 登录结果
-     */
-    private int loginVpnByCAS(String VPNTokenStr) {
-        int n;
-        String ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), VPNTokenStr);
-        if (ST_VPN.equals("ERROR0")) {
-            return -2;
-        } else if (ST_VPN.equals("ERROR1")) { //TGT失效
-            n = refreshTGT(VPNTokenStr); //刷新TGT
-            if (n == 0) {
-                //重新获取登录vpn的st令牌
-                ST_VPN = StaticService.SSOGetST(context, CASCookie, context.getResources().getString(R.string.service_vpn), VPNTokenStr);
-                if (!ST_VPN.contains("ST-")) {
-                    return -2;
-                }
-                if (StaticService.loginVPNST(ST_VPN, VPNTokenStr) != 0) {
-                    return StaticService.loginVPNST(ST_VPN, VPNTokenStr);
-                }
-                return 0;
-            } else {
-                return n;
-            }
-        } else {
-            if (StaticService.loginVPNST(ST_VPN, VPNTokenStr) != 0) {
-                return StaticService.loginVPNST(ST_VPN, VPNTokenStr);
-            }
-            return 0;
-        }
-    }
-
-    /**
      * 刷新TGT令牌
      *
-     * @param VPNToken VPNToken
      * @return 操作结果
      */
-    public int refreshTGT(String VPNToken) {
-        String CASCookieStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getVPNPwd(), VPNToken);
-        if (CASCookieStr.equals("ERROR2") || CASCookieStr.equals("ERROR0")) {
+    public int refreshTGT() {
+        String TGTTokenStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getPwd(), TGTToken, MFACookie);
+        if (TGTTokenStr.equals("ERROR2") || TGTTokenStr.equals("ERROR0")) {
             return -2;
         }
-        if (CASCookieStr.contains("TGT-")) {
-            setCASCookie(CASCookieStr);
+        if (TGTTokenStr.contains("TGT-")) {
+            if (TGTTokenStr.contains("ERROR5")) {
+                String CASCookie = TGTTokenStr.substring(TGTTokenStr.indexOf(";") + 1);
+                setTGTToken(CASCookie);
+                Activity activity = this.getActivity(context);
+                if (activity == null) return -3;
+                String phoneNumber = StaticService.reAuth_sendSMSCode(context, accountData.getUsername(), CASCookie);
+                if (!phoneNumber.contains("ERROR")) {
+                    reAuth_showSMSCodeDialog(activity, phoneNumber, CASCookie);
+                } else {
+                    if (phoneNumber.contains("ERROR3")) {
+                        activity.runOnUiThread(() -> {
+                            ToastUtil.showToast(context, context.getResources().getString(R.string.login_fail_SMSCodeSend) + phoneNumber.substring(7));
+                        });
+                    } else {
+                        activity.runOnUiThread(() -> {
+                            ToastUtil.showToast(context, context.getResources().getString(R.string.login_fail_SMSCodeSend) + "未知错误");
+                        });
+                    }
+                }
+                return -3;
+            } else {
+                setTGTToken(TGTTokenStr);
+            }
             return 0;
         } else {
             return -1;
         }
     }
 
-    public void setCASCookie(String CASCookie) {
-        this.CASCookie = CASCookie;
-        editor.putString(CAS_Cookie, CASCookie);
+    public Activity getActivity(Context context) {
+        if (context == null) {
+            return null;
+        } else if (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity) context;
+            } else {
+                return getActivity(((ContextWrapper) context).getBaseContext());
+            }
+        }
+
+        return null;
+    }
+
+    private void reAuth_showSMSCodeDialog(Activity activity, String phoneNumber, String CasCookie) {
+        activity.runOnUiThread(() -> {
+            try {
+                AlertDialog dialog;
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                dialog = builder.create();
+                dialog.show();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Window window = dialog.getWindow();
+                window.setContentView(R.layout.login_smscode);
+                TextView phoneNumberView = window
+                        .findViewById(R.id.et_phone);
+                phoneNumberView.setText(phoneNumber);
+                Button buttonYes = window.findViewById(R.id.btn_text_yes);
+                Button buttonCancel = window.findViewById(R.id.btn_text_cancel);
+                buttonCancel.setOnClickListener(view -> {
+                   dialog.cancel();
+                });
+                buttonYes.setOnClickListener(view -> {
+                    TextView SMSCode = window
+                            .findViewById(R.id.et_smscode);
+                    String SMSCodeOTP = SMSCode.getText().toString();
+                    buttonYes.setText("正在登录");
+                    buttonYes.setEnabled(false);
+                    new Thread(() -> {
+                        int State = reAuth_SMSCode(SMSCodeOTP, CasCookie);
+                        activity.runOnUiThread(() -> {
+                            if (State == 0) {
+                                dialog.dismiss();
+                            } else {
+                                buttonYes.setText("登录");
+                                buttonYes.setEnabled(true);
+                            }
+                            ToastUtil.showToast(activity, State == 0 ? "验证成功" : "验证码有误");
+                        });
+                    }).start();
+                });
+            } catch (Exception ignore) {
+
+            }
+        });
+    }
+
+    private int reAuth_SMSCode(String SMSCode, String CASCookie) {
+        try {
+            String MultiFactorAuth = StaticService.reAuth_SMSCode(context, SMSCode, CASCookie);
+            if (MultiFactorAuth.contains("ERROR")) {
+                return -1;
+            } else {
+                setMFACookie(MultiFactorAuth);
+                if (Caller != null) {
+                    try {
+                        // 反射尝试调用Update方法 (如果有)
+                        Class ContextClass = Caller.getClass();
+                        Method Update = ContextClass.getMethod("update");
+                        Update.invoke(Caller);
+                    } catch (Exception ignore) {
+
+                    }
+                }
+                return 0;
+            }
+        } catch (Exception ignore) {
+            return -1;
+        }
+    }
+
+    /**
+     * bypass 2FA
+     */
+    private int reAuth_Password(String password, String CASCookie) {
+        try {
+            String MultiFactorAuth = StaticService.reAuth_Password(context, password, CASCookie);
+            if (MultiFactorAuth.contains("ERROR")) {
+                return -1;
+            } else {
+                setMFACookie(MultiFactorAuth);
+            }
+            return 0;
+        } catch (Exception ignore) {
+            return 0;
+        }
+    }
+
+    public int setVPNCASCookie() {
+        return (MFACookie != null ? StaticService.CookieSet(context, "cas.guet.edu.cn", "/authserver/login", MFACookie, VPNToken) : 0) | StaticService.CookieSet(context, "cas.guet.edu.cn", "/authserver/login", TGTToken, VPNToken);
+    }
+
+    public String getCASCookie() {
+        return (MFACookie != null ? MFACookie : "") + (TGTToken != null ? ((MFACookie != null ? "; " : "") + TGTToken) : "");
+    }
+
+    public String getTGTToken() {
+        return TGTToken;
+    }
+
+    public String getMFACookie() {
+        return MFACookie;
+    }
+
+    public void setTGTToken(String CASCookie) {
+        String tTGTToken = CASCookie.substring(CASCookie.indexOf("CASTGC="));
+        int TGTTokenEndIndex = tTGTToken.indexOf(";");
+        if (TGTTokenEndIndex >= 0) {
+            TGTToken = tTGTToken.substring(0, TGTTokenEndIndex);
+        } else {
+            TGTToken = tTGTToken;
+        }
+        editor.putString(CAS_TGTToken, TGTToken);
+        editor.apply();
+    }
+
+    public void setMFACookie(String MFACookie) {
+        this.MFACookie = MFACookie;
+        editor.putString(MULTIFACTOR_USERS, MFACookie);
         editor.apply();
     }
 

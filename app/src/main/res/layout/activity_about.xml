@@ -50,9 +50,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/about_picture"
                     android:layout_centerInParent="true"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.2"
                     android:text="@string/app_name"
-                    android:textColor="@color/tab_unchecked"
-                    android:textSize="20sp" />
+                    android:textColor="@color/app_black"
+                    android:textSize="24sp" />
 
             </RelativeLayout>
 
@@ -76,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="版本"
+                    android:text="@string/version_hint"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
@@ -104,7 +106,8 @@
                 android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                tools:ignore="UsingOnClickInXml">
 
                 <View
                     android:layout_width="match_parent"
@@ -114,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="加入我们"
+                    android:text="@string/joinUs_hint"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
@@ -136,7 +139,8 @@
                 android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                tools:ignore="UsingOnClickInXml">
 
                 <View
                     android:layout_width="match_parent"
@@ -146,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="官方QQ交流群"
+                    android:text="@string/qq_hint"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
@@ -183,7 +187,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="作者"
+                    android:text="@string/author_hint"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
@@ -220,7 +224,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="特别鸣谢"
+                    android:text="@string/thinks_hint"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
@@ -248,7 +252,8 @@
                 android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                tools:ignore="UsingOnClickInXml">
 
                 <View
                     android:layout_width="match_parent"
@@ -280,7 +285,8 @@
                 android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                tools:ignore="UsingOnClickInXml">
 
                 <View
                     android:layout_width="match_parent"
@@ -290,7 +296,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="开发者自语"
+                    android:text="@string/author_say_hint"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
@@ -312,7 +318,8 @@
                 android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                tools:ignore="UsingOnClickInXml">
 
                 <View
                     android:layout_width="match_parent"
@@ -322,7 +329,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="项目开源"
+                    android:text="@string/openSource_hint"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
@@ -344,7 +351,8 @@
                 android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                tools:ignore="UsingOnClickInXml">
 
                 <View
                     android:layout_width="match_parent"
@@ -354,7 +362,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="开源引用"
+                    android:text="@string/codeUse_hint"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
@@ -376,7 +384,8 @@
                 android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                tools:ignore="UsingOnClickInXml">
 
                 <View
                     android:layout_width="match_parent"
@@ -386,7 +395,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="隐私政策"
+                    android:text="@string/privacy_hint"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
@@ -408,7 +417,8 @@
                 android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                tools:ignore="UsingOnClickInXml">
 
                 <View
                     android:layout_width="match_parent"
@@ -418,7 +428,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="声明"
+                    android:text="@string/statement_hint"
                     android:textColor="@color/app_black"
                     android:textSize="16sp" />
 
@@ -432,6 +442,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.1dp"
                 android:background="@color/xui_config_color_gray_9" />
+
+            <LinearLayout
+                android:id="@+id/clear_mfa_cookie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="clearMFACookie"
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                tools:ignore="UsingOnClickInXml">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/debug_clear_MFACookie"
+                    android:textColor="@color/app_black"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/clear_mfa_cookie_spliter"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/xui_config_color_gray_9" />
+
 
             <View
                 android:layout_width="match_parent"

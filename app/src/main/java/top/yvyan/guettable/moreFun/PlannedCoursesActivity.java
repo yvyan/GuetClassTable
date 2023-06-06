@@ -11,7 +11,7 @@ import java.util.List;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.PlannedCourseAdapter;
 import top.yvyan.guettable.bean.PlannedCourseBean;
-import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
@@ -21,7 +21,6 @@ import static com.xuexiang.xui.XUI.getContext;
 
 public class PlannedCoursesActivity extends BaseFuncActivity {
 
-    private MoreDate moreDate;
     private SingleSettingData singleSettingData;
 
     @Override
@@ -31,7 +30,6 @@ public class PlannedCoursesActivity extends BaseFuncActivity {
         openUpdate();
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_plan_courses));
 
-        moreDate = MoreDate.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
     }
 
@@ -39,7 +37,7 @@ public class PlannedCoursesActivity extends BaseFuncActivity {
     protected void showContent() {
         baseSetContentView(R.layout.activity_planned_courses);
         RecyclerView recyclerView = findViewById(R.id.planned_course_info_recycler_view);
-        List<PlannedCourseBean> plannedCourseBeans = moreDate.getPlannedCourseBeans();
+        List<PlannedCourseBean> plannedCourseBeans = MoreData.getPlannedCourseBeans();
         if (singleSettingData.isHideRepeatScore()) {
             plannedCourseBeans = CourseUtil.ridRepeatScore(plannedCourseBeans);
         }
@@ -81,8 +79,8 @@ public class PlannedCoursesActivity extends BaseFuncActivity {
     public int updateData(String cookie) {
         List<PlannedCourseBean> plannedCourseBeans = StaticService.getPlannedCourseBeans(this, cookie);
         if (plannedCourseBeans != null) {
-            if (!AppUtil.equalList(plannedCourseBeans, moreDate.getPlannedCourseBeans())) {
-                moreDate.setPlannedCourseBeans(plannedCourseBeans);
+            if (!AppUtil.equalList(plannedCourseBeans, MoreData.getPlannedCourseBeans())) {
+                MoreData.setPlannedCourseBeans(plannedCourseBeans);
                 update = true;
             }
             return 5;

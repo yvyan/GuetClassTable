@@ -29,7 +29,6 @@ public class AutoUpdate {
     private final DayClassFragment fragment;
 
     private final AccountData accountData;
-    private final ScheduleData scheduleData;
     private final GeneralData generalData;
     private final TokenData tokenData;
     private final SettingData settingData;
@@ -40,9 +39,8 @@ public class AutoUpdate {
         this.fragment = fragment;
         this.activity = fragment.getActivity();
         accountData = AccountData.newInstance(activity);
-        scheduleData = ScheduleData.newInstance(activity);
         generalData = GeneralData.newInstance(activity);
-        tokenData = TokenData.newInstance(activity);
+        tokenData = TokenData.newInstance(activity,this);
         settingData = SettingData.newInstance(activity);
         init();
     }
@@ -74,8 +72,8 @@ public class AutoUpdate {
      * 启动同步
      */
     public void update() {
-        // 判断状态是否符合；合适的状态：就绪 网络错误 同步成功(点击同步)
-        if (state == 0 || state == -2 || state == 5) {
+        // 判断状态是否符合；合适的状态：就绪 登录失效 网络错误  同步成功(点击同步)
+        if (state == 0 || state == -2 || state == -3 || state == 5) {
             update_thread();
         }
     }
@@ -103,6 +101,9 @@ public class AutoUpdate {
                 break;
             case -2:
                 text = "网络错误";
+                break;
+            case -3:
+                text = "登录失效(点击重试)";
                 break;
             case 91:
                 text = "尝试同步理论课";
@@ -153,7 +154,7 @@ public class AutoUpdate {
                     );
                     if (getClass != null) {
                         courseBeans = getClass;
-                        scheduleData.setCourseBeans(courseBeans);
+                        ScheduleData.setCourseBeans(courseBeans);
                     } else {
                         updateView(92);
                         state = tokenData.refresh();
@@ -170,7 +171,7 @@ public class AutoUpdate {
                         );
                         if (getClass != null) {
                             courseBeans = getClass;
-                            scheduleData.setCourseBeans(courseBeans);
+                            ScheduleData.setCourseBeans(courseBeans);
                         } else {
                             updateView(3);
                             return;
@@ -186,7 +187,7 @@ public class AutoUpdate {
                     if (examBeans != null) {
                         CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
                         Collections.sort(examBeans, beanAttributeUtil);
-                        scheduleData.setExamBeans(examBeans);
+                        ScheduleData.setExamBeans(examBeans);
                     } else {
                         updateView(3);
                         return;
@@ -200,10 +201,10 @@ public class AutoUpdate {
                     );
                     if (getLab != null) {
                         updateView(5);
-                        scheduleData.setLibBeans(getLab);
-                        scheduleData.setUpdate(true);
+                        ScheduleData.setLibBeans(getLab);
+                        ScheduleData.setUpdate(true);
                         generalData.setLastUpdateTime(System.currentTimeMillis());
-                        int maxWeek = scheduleData.getMaxWeek();
+                        int maxWeek = ScheduleData.getMaxWeek();
                         if (maxWeek > generalData.getMaxWeek()) {
                             generalData.setMaxWeek(maxWeek);
                         }

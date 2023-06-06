@@ -9,7 +9,7 @@ import java.util.List;
 
 import top.yvyan.guettable.activity.SettingActivity;
 import top.yvyan.guettable.bean.ExamBean;
-import top.yvyan.guettable.data.AccountData;
+import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.util.AppUtil;
 
@@ -51,46 +51,35 @@ public class FirstLoad {
      */
     private void updateDate(int i) {
         switch (i) {
-            case 36:
-                update_36();
-                break;
             case 40:
                 //修复考试安排信息错误导致的闪退问题
                 update_40();
                 break;
+            case 52:
+                update_52();
             default:
                 break;
         }
     }
 
     /**
+     * 52->53需要进行的操作
+     */
+    private void update_52() {
+        GeneralData.newInstance(context).setLastUpdateTime(-1);
+    }
+
+    /**
      * 40->41需要进行的操作
      */
     private void update_40() {
-        ScheduleData scheduleData = ScheduleData.newInstance(context);
-        List<ExamBean> examBeans = scheduleData.getExamBeans();
+        List<ExamBean> examBeans = ScheduleData.getExamBeans();
         for (ExamBean examBean : examBeans) {
             if (examBean.getClassNum() < 1) {
                 examBean.setClassNum(1);
             }
         }
-        scheduleData.setExamBeans(examBeans);
-    }
-
-    /**
-     * 36->37需要进行的操作
-     */
-    private void update_36() {
-        //修复密码丢失导致的登录错误
-        AccountData accountData = AccountData.newInstance(context);
-        if (accountData.getIsLogin()) {
-            if (accountData.getVPNPwd() == null || accountData.getVPNPwd().isEmpty()) {
-                accountData.logoff();
-            }
-            if (accountData.getBkjwPwd() == null || accountData.getBkjwPwd().isEmpty()) {
-                accountData.logoff();
-            }
-        }
+        ScheduleData.setExamBeans(examBeans);
     }
 
     private void openUpdate() {

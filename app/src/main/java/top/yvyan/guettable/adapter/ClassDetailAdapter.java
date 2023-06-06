@@ -110,7 +110,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
             if (courseBean.getId() != 0) {
                 holder.imageView.setVisibility(View.VISIBLE);
                 holder.imageView.setOnClickListener(view -> {
-                    ScheduleData.newInstance(activity).deleteUserCourse(courseBean.getId());
+                    ScheduleData.deleteUserCourse(courseBean.getId());
                     schedules.remove(position);
                     //删除动画
                     notifyItemRemoved(position);

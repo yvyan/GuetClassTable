@@ -5,16 +5,10 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.CET;
 import top.yvyan.guettable.Gson.ClassTable;
@@ -43,32 +37,117 @@ import top.yvyan.guettable.data.TokenData;
 public class StaticService {
 
     /**
-     * 获取SSO登录CasCookie
+     * 发送手机验证码
      *
-     * @param context  context
-     * @param account  学号
-     * @param password 密码
-     * @param VPNToken VPNToken
-     * @return CAS Cookie
+     * @param context   context
+     * @param CASCookie CAS Cookie
+     * @param account   学号
+     * @return Phone Number
      * ERROR0 : 网络错误
      * ERROR1 : 密码错误
      * ERROR2 : 需要使用外网网址进行访问
+     * ERROR3 : 验证码发送CD
      */
-    public static String SSOLogin(Context context, String account, String password, String VPNToken) {
-        HttpConnectionAndCode response = Net.getCASToken(context, account, password, VPNToken);
+    public static String reAuth_sendSMSCode(Context context, String account, String CASCookie) {
+        HttpConnectionAndCode response = Net.reAuth_sendSMSCode(context, account, CASCookie);
+        if (response.code != 0) {
+            if (response.code == -5) {
+                return "ERROR2";
+            }
+        } else {
+            if (response.comment.contains("success")) {
+                int PhoneIndex = response.comment.indexOf("\"mobile\":\"") + 10;
+                return response.comment.substring(PhoneIndex, PhoneIndex + 11);
+            }
+            if (response.comment.contains("code_time_fail")) {
+                int MessageIndex = response.comment.indexOf("\"returnMessage\":\"") + 17;
+                String ErrorMessage = response.comment.substring(MessageIndex);
+                return "ERROR3;" + ErrorMessage.substring(0, ErrorMessage.indexOf("\""));
+            }
+        }
+        return "ERROR0";
+    }
+
+    public static String reAuth_Password(Context context, String Password, String CASCookie) {
+        HttpConnectionAndCode response = Net.reAuth_Password(context, Password, CASCookie);
         if (response.code != 0) {
             if (response.code == -5) {
                 return "ERROR2";
             }
             return "ERROR0";
         } else {
-            String Cookie;
-            if(VPNToken == null) {
-                Cookie = response.cookie;
-            } else {
-                Cookie = response.comment;
+            if (response.comment.contains("reAuth_success")) {
+                return response.cookie;
             }
+            return "ERROR1";
+        }
+    }
+
+    /**
+     * 验证手机验证码
+     *
+     * @param context   context
+     * @param CASCookie CAS Cookie
+     * @param SMSCode       OTP手机验证码
+     * @return 多因素身份验证令牌Cookie
+     * ERROR0 : 网络错误
+     * ERROR1 : 验证码错误
+     * ERROR2 : 需要使用外网网址进行访问
+     */
+    public static String reAuth_SMSCode(Context context, String SMSCode, String CASCookie) {
+        HttpConnectionAndCode response = Net.reAuth_SMSCode(context, SMSCode, CASCookie);
+        if (response.code != 0) {
+            if (response.code == -5) {
+                return "ERROR2";
+            }
+            return "ERROR0";
+        } else {
+            if (response.comment.contains("reAuth_success")) {
+                return response.cookie;
+            }
+            return "ERROR1";
+        }
+    }
+
+    /**
+     * 获取SSO登录CasCookie
+     *
+     * @param context   context
+     * @param account   学号
+     * @param password  密码
+     * @param MFACookie MFA Cookie
+     * @param TGTToken  TGTToken
+     * @return CAS Cookie
+     * ERROR0 : 网络错误
+     * ERROR1 : 密码错误
+     * ERROR2 : 需要使用外网网址进行访问
+     * ERROR5 : 2FA Needed
+     */
+    public static String SSOLogin(Context context, String account, String password, String TGTToken, String MFACookie) {
+        HttpConnectionAndCode response = Net.getCASToken(context, account, password, TGTToken, MFACookie);
+        if (response.code != 0) {
+            if (response.code == 1) {
+                String Location = response.c.getHeaderField("location");
+                if (Location.contains("reAuthLoginView.do")) {
+                    return "ERROR5;" + TGTToken + "; " + response.cookie;
+                }
+                if (MFACookie != null) {
+                    return MFACookie + "; " + TGTToken;
+                } else {
+                    return TGTToken;
+                }
+            }
+            if (response.code == -8) {
+                return "ERROR1";
+            }
+            return "ERROR0";
+        } else {
+            String Cookie = response.cookie;
             if (Cookie.contains("TGT-")) {
+                String Location = response.c.getHeaderField("location");
+                if (Location.contains("reAuthLoginView.do")) {
+                    return "ERROR5;" + Cookie;
+                }
                 return Cookie;
             } else {
                 return "ERROR1";
@@ -82,24 +161,17 @@ public class StaticService {
      * @param context   context
      * @param CASCookie CAS Cookie
      * @param service   ST令牌的服务端
-     * @param VPNToken  VPNToken
      * @return ST令牌
      * ERROR0 : 网络错误
      * ERROR1 : TGT失效
      * ERROR2 : 需要使用外网网址进行访问 或 TGT失效(上层调用时，若内网返回此错误，
      * 则先尝试外网，若是TGT失效，则重新获取；若正常获取，则需要将全局网络设置为外网)
      */
-    public static String SSOGetST(Context context, String CASCookie, String service, String VPNToken) {
-        HttpConnectionAndCode response = Net.getSTbyCas(context, CASCookie, service, VPNToken);
+    public static String SSOGetST(Context context, String CASCookie, String service, String MFACookie) {
+        HttpConnectionAndCode response = Net.getSTbyCas(context, CASCookie, service, MFACookie);
         if (response.code != -7) {
             if (response.code == -5) {
-                if (VPNToken != null) {
-                    return "ERROR1";
-                }
                 return "ERROR2";
-            }
-            if(response.cookie.contains("refresh")) {
-                return "ERROR1";
             }
             return "ERROR0";
         } else {
@@ -114,39 +186,41 @@ public class StaticService {
     /**
      * 通过ST令牌登录VPN
      *
-     * @param ST    ST令牌
-     * @param token 用于接收登录后的cookie
+     * @param context  context
+     * @param ST       ST令牌
+     * @param VPNToken 用于接收登录后的cookie
      * @return 登录结果
      * 0 -- 登录成功
      * -1 -- 登录失败
      * -2 -- 发生异常
      */
-    public static int loginVPNST(String ST, String token) {
-
-        String url = "https://v.guet.edu.cn/https/77726476706e69737468656265737421e6b94689222426557a1dc7af96/login?cas_login=true&ticket=";
-        url = url + ST;
-        OkHttpClient okHttpClient = new OkHttpClient();
-        if (token == null) {
-            token = "";
-        }
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Cookie", token)
-                .build();
-        final Call call = okHttpClient.newCall(request);
-
-        try {
-            Response response = call.execute();
-            response.close();
-            if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("html lang=\"zh-cmn\"")) {
-                return -1;
-            } else {
+    public static int loginVPNST(Context context, String ST, String VPNToken) {
+        HttpConnectionAndCode response = Net.loginVPNST(context, ST, VPNToken);
+        if (response.code == 0) {
+            if (response.c.getURL().toString().contains("wengine-vpn-token-login")) {
                 return 0;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return -2;
         }
+        return -1;
+    }
+
+    /**
+     * 向VPN添加Cookie
+     *
+     * @param host     域
+     * @param path     路径
+     * @param cookie   cookie
+     * @param VPNToken VPN Token
+     * @return 0 成功
+     */
+    public static int CookieSet(Context context, String host, String path, String cookie, String VPNToken) {
+        HttpConnectionAndCode response = Net.CookieSet(context, host, path, cookie, VPNToken);
+        if (response.code == 0) {
+            if (response.comment.contains("success")) {
+                return 0;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -160,34 +234,12 @@ public class StaticService {
      * -2 -- 教务登录失败
      * -3 -- 发生异常
      */
-    public static int loginBkjwVPNST(String ST, String VPNToken) {
-
-        String url = "https://v.guet.edu.cn/http/77726476706e69737468656265737421f2fc4b8b69377d556a468ca88d1b203b/?ticket=";
-        url = url + ST;
-        if (VPNToken == null) {
-            VPNToken = "";
+    public static int loginBkjwVPNST(Context context, String ST, String VPNToken) {
+        HttpConnectionAndCode response = Net.loginBkjwVPNST(context, ST, VPNToken);
+        if (response.code == 0) {
+            return 0;
         }
-        OkHttpClient okHttpClient = new OkHttpClient();
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Cookie", VPNToken)
-                .build();
-        final Call call = okHttpClient.newCall(request);
-
-        try {
-            Response response = call.execute();
-            response.close();
-            if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("html lang=\"zh-cmn\"")) {
-                return -1;
-            } else if (response.body() == null || Objects.requireNonNull(response.body()).toString().contains("统一身份认证平台")) {
-                return -2;
-            } else {
-                return 0;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return -3;
-        }
+        return -1;
     }
 
     /**
@@ -226,7 +278,7 @@ public class StaticService {
      */
     public static List<ResitBean> getResit(Context context, String cookie) {
         List<ResitBean> resitBeans = new ArrayList<>();
-        HttpConnectionAndCode resitInfo = Net.getResit(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode resitInfo = Net.getResit(context, cookie, TokenData.isVPN());
         if (resitInfo.code == 0) {
             BaseResponse<List<Resit>> baseResponse = new Gson().fromJson(resitInfo.comment, new TypeToken<BaseResponse<List<Resit>>>() {
             }.getType());
@@ -247,7 +299,7 @@ public class StaticService {
      * @return 基本学生信息
      */
     public static StudentInfo getStudentInfo(Context context, String cookie) {
-        HttpConnectionAndCode studentInfo = Net.studentInfo(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode studentInfo = Net.studentInfo(context, cookie, TokenData.isVPN());
         if (studentInfo.code == 0) {
             return new Gson().fromJson(studentInfo.comment, StudentInfo.class);
         } else {
@@ -264,7 +316,7 @@ public class StaticService {
      * @return 理论课程列表
      */
     public static List<CourseBean> getClass(Context context, String cookie, String term) {
-        HttpConnectionAndCode classTable = Net.getClassTable(context, cookie, term, TokenData.isVPN);
+        HttpConnectionAndCode classTable = Net.getClassTable(context, cookie, term, TokenData.isVPN());
         if (classTable.code == 0) {
             List<CourseBean> courseBeans = new ArrayList<>();
             BaseResponse<List<ClassTable>> baseResponse = new Gson().fromJson(classTable.comment, new TypeToken<BaseResponse<List<ClassTable>>>() {
@@ -287,7 +339,7 @@ public class StaticService {
      * @return 课内实验列表
      */
     public static List<CourseBean> getLab(Context context, String cookie, String term) {
-        HttpConnectionAndCode labTable = Net.getLabTable(context, cookie, term, TokenData.isVPN);
+        HttpConnectionAndCode labTable = Net.getLabTable(context, cookie, term, TokenData.isVPN());
         if (labTable.code == 0) {
             List<CourseBean> courseBeans = new ArrayList<>();
             BaseResponse<List<LabTable>> baseResponse = new Gson().fromJson(labTable.comment, new TypeToken<BaseResponse<List<LabTable>>>() {
@@ -315,7 +367,7 @@ public class StaticService {
      */
     public static List<ExamBean> getExam(Context context, String cookie, String term) {
         List<ExamBean> examBeans = new ArrayList<>();
-        HttpConnectionAndCode examInfo = Net.getExam(context, cookie, term, TokenData.isVPN);
+        HttpConnectionAndCode examInfo = Net.getExam(context, cookie, term, TokenData.isVPN());
         if (examInfo.code == 0) {
             BaseResponse<List<ExamInfo>> baseResponse = new Gson().fromJson(examInfo.comment, new TypeToken<BaseResponse<List<ExamInfo>>>() {
             }.getType());
@@ -337,7 +389,7 @@ public class StaticService {
      */
     public static List<CETBean> getCET(Context context, String cookie) {
         List<CETBean> cetBeans = new ArrayList<>();
-        HttpConnectionAndCode cetInfo = Net.getCET(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode cetInfo = Net.getCET(context, cookie, TokenData.isVPN());
         if (cetInfo.code == 0) {
             BaseResponse<List<CET>> baseResponse = new Gson().fromJson(cetInfo.comment, new TypeToken<BaseResponse<List<CET>>>() {
             }.getType());
@@ -359,7 +411,7 @@ public class StaticService {
      */
     public static List<ExamScoreBean> getExamScore(Context context, String cookie) {
         List<ExamScoreBean> examScoreBeans = new ArrayList<>();
-        HttpConnectionAndCode examScoreInfo = Net.getExamScore(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode examScoreInfo = Net.getExamScore(context, cookie, TokenData.isVPN());
         if (examScoreInfo.code == 0) {
             BaseResponse<List<ExamScore>> baseResponse = new Gson().fromJson(examScoreInfo.comment, new TypeToken<BaseResponse<List<ExamScore>>>() {
             }.getType());
@@ -381,7 +433,7 @@ public class StaticService {
      */
     public static List<ExperimentScoreBean> getExperimentScore(Context context, String cookie) {
         List<ExperimentScoreBean> experimentScoreBeans = new ArrayList<>();
-        HttpConnectionAndCode experimentScoreInfo = Net.getExperimentScore(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode experimentScoreInfo = Net.getExperimentScore(context, cookie, TokenData.isVPN());
         if (experimentScoreInfo.code == 0) {
             BaseResponse<List<ExperimentScore>> baseResponse = new Gson().fromJson(experimentScoreInfo.comment, new TypeToken<BaseResponse<List<ExperimentScore>>>() {
             }.getType());
@@ -402,9 +454,9 @@ public class StaticService {
      * @return 有效学分列表
      */
     public static List<EffectiveCredit> getEffectiveCredits(Context context, String cookie) {
-        HttpConnectionAndCode updateResult = Net.updateEffectiveCredits(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode updateResult = Net.updateEffectiveCredits(context, cookie, TokenData.isVPN());
         if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
-            HttpConnectionAndCode getResult = Net.getEffectiveCredits(context, cookie, TokenData.isVPN);
+            HttpConnectionAndCode getResult = Net.getEffectiveCredits(context, cookie, TokenData.isVPN());
             if (getResult.code == 0) {
                 BaseResponse<List<EffectiveCredit>> baseResponse = new Gson().fromJson(getResult.comment, new TypeToken<BaseResponse<List<EffectiveCredit>>>() {
                 }.getType());
@@ -425,9 +477,9 @@ public class StaticService {
      * @return 计划课程列表
      */
     public static List<PlannedCourse> getPlannedCourses(Context context, String cookie) {
-        HttpConnectionAndCode updateResult = Net.updateEffectiveCredits(context, cookie, TokenData.isVPN);
+        HttpConnectionAndCode updateResult = Net.updateEffectiveCredits(context, cookie, TokenData.isVPN());
         if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
-            HttpConnectionAndCode getResult = Net.getPlannedCourses(context, cookie, TokenData.isVPN);
+            HttpConnectionAndCode getResult = Net.getPlannedCourses(context, cookie, TokenData.isVPN());
             if (getResult.code == 0) {
                 BaseResponse<List<PlannedCourse>> baseResponse = new Gson().fromJson(getResult.comment, new TypeToken<BaseResponse<List<PlannedCourse>>>() {
                 }.getType());
@@ -572,7 +624,7 @@ public class StaticService {
                 y++;
             }
             //教务总学分绩替换
-            HttpConnectionAndCode httpConnectionAndCode = Net.getGrades(context, cookie, TokenData.isVPN);
+            HttpConnectionAndCode httpConnectionAndCode = Net.getGrades(context, cookie, TokenData.isVPN());
             if (httpConnectionAndCode.code == 0) {
                 try {
                     BaseResponse<List<Grades>> baseResponse = new Gson().fromJson(httpConnectionAndCode.comment, new TypeToken<BaseResponse<List<Grades>>>() {
@@ -599,7 +651,7 @@ public class StaticService {
      */
     public static List<SelectedCourseBean> getSelectedCourse(Context context, String cookie, String term) {
         try {
-            HttpConnectionAndCode httpConnectionAndCode = Net.getSelectedCourse(context, cookie, term, TokenData.isVPN);
+            HttpConnectionAndCode httpConnectionAndCode = Net.getSelectedCourse(context, cookie, term, TokenData.isVPN());
             String comment = httpConnectionAndCode.comment;
             List<SelectedCourseBean> list;
             BaseResponse<List<SelectedCourse>> result = new Gson().fromJson(comment, new TypeToken<BaseResponse<List<SelectedCourse>>>() {
@@ -624,7 +676,7 @@ public class StaticService {
      */
     public static List<TermBean> getTerms(Context context, String cookie) {
         try {
-            HttpConnectionAndCode httpConnectionAndCode = Net.getAllTerms(context, cookie, TokenData.isVPN);
+            HttpConnectionAndCode httpConnectionAndCode = Net.getAllTerms(context, cookie, TokenData.isVPN());
             String comment = httpConnectionAndCode.comment;
             BaseResponse<List<TermBean>> baseResponse = new Gson().fromJson(comment, new TypeToken<BaseResponse<List<TermBean>>>() {
             }.getType());

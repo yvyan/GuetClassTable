@@ -121,19 +121,31 @@ public class Post {
             return new HttpConnectionAndCode(-4);
         }
         try {
-            resp_code = cnt.getResponseCode();
-            if (redirect != null && !redirect && resp_code == 302) {
-                return new HttpConnectionAndCode(cnt, -7, "");
+             resp_code = cnt.getResponseCode();
+            if (redirect != null && !redirect && (resp_code >=300 && resp_code <400)) {
+                // 我们这里不考虑清除cookie的情况 (无视所有cookie参数)
+                StringBuilder cookie_builder = new StringBuilder();
+                List<String> cookies = cnt.getHeaderFields().get("Set-Cookie");
+                if (cookies != null) {
+                    for (String cookie_resp : cookies) {
+                        cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1) + " ");
+                    }
+                }
+                return new HttpConnectionAndCode(cnt, -7, "", cookie_builder.substring(0, cookie_builder.length() - 2), resp_code);
             }
             List<String> encodings = cnt.getHeaderFields().get("content-encoding");
-            if (encodings != null) {
-                if (encodings.get(0).equals("gzip")) {
+            if(resp_code < 400) {
+                if (encodings != null && encodings.get(0).equals("gzip")) {
                     in = new InputStreamReader(new GZIPInputStream(cnt.getInputStream()));
                 } else {
                     in = new InputStreamReader(cnt.getInputStream());
                 }
             } else {
-                in = new InputStreamReader(cnt.getInputStream());
+                if (encodings != null && encodings.get(0).equals("gzip")) {
+                    in = new InputStreamReader(new GZIPInputStream(cnt.getErrorStream()));
+                } else {
+                    in = new InputStreamReader(cnt.getErrorStream());
+                }
             }
             StringBuilder response_builder = new StringBuilder();
             char read_char;

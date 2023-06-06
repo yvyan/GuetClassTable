@@ -6,15 +6,13 @@ import java.text.DecimalFormat;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 
 public class GradesActivity extends BaseFuncActivity {
 
     private GeneralData generalData;
-    private MoreDate moreDate;
-
 
     @Override
     protected void childInit() {
@@ -23,7 +21,6 @@ public class GradesActivity extends BaseFuncActivity {
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_credits));
 
         generalData = GeneralData.newInstance(this);
-        moreDate = MoreDate.newInstance(this);
     }
 
     @Override
@@ -37,7 +34,7 @@ public class GradesActivity extends BaseFuncActivity {
         TextView gradesYear5 = findViewById(R.id.grades_year_5);
         TextView gradesYear6 = findViewById(R.id.grades_year_6);
 
-        float[] grades = moreDate.getGrades();
+        float[] grades = MoreData.getGrades();
         DecimalFormat format = new DecimalFormat("0.00");
         gradesMain.setText(format.format(grades[0]));
         gradesYear1.setText(format.format(grades[1]));
@@ -52,7 +49,7 @@ public class GradesActivity extends BaseFuncActivity {
     public int updateData(String cookie) {
         float[] grades = StaticService.calculateGrades(this, cookie, Integer.parseInt(generalData.getGrade()));
         if (grades != null) {
-            moreDate.setGrades(grades);
+            MoreData.setGrades(grades);
             return 5;
         } else {
             return 1;

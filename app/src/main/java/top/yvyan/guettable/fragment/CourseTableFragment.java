@@ -23,7 +23,6 @@ import com.zhuangfei.timetable.view.WeekView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.activity.AddCourseActivity;
@@ -38,8 +37,8 @@ import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.MyOperator;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
-import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.CourseUtil;
+import top.yvyan.guettable.util.DensityUtil;
 import top.yvyan.guettable.util.ToastUtil;
 import top.yvyan.guettable.widget.WidgetUtil;
 
@@ -53,9 +52,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     private View view;
 
     private GeneralData generalData;
-    private ScheduleData scheduleData;
     private SingleSettingData singleSettingData;
-    private DetailClassData detailClassData;
     private SettingData settingData;
     //记录切换的周次，不一定是当前周
     int target;
@@ -73,7 +70,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
         View addStatus = view.findViewById(R.id.add_status);
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
-        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
+        lp.height = lp.height + AppUtil.getStatusBarHeight(requireContext());
         addStatus.setLayoutParams(lp);
 
         initData();
@@ -84,16 +81,14 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         mWeekView = view.findViewById(R.id.id_weekview);
         mWeekView.setVisibility(View.VISIBLE);
         mTimetableView = view.findViewById(R.id.id_timetableView);
-        setBackground(BackgroundUtil.isSetBackground(getContext()));
+        setBackground(BackgroundUtil.isSetBackground(requireContext()));
         initTimetableView();
         return view;
     }
 
     private void initData() {
         generalData = GeneralData.newInstance(getActivity());
-        scheduleData = ScheduleData.newInstance(getActivity());
         singleSettingData = SingleSettingData.newInstance(getActivity());
-        detailClassData = DetailClassData.newInstance();
         settingData = SettingData.newInstance(getActivity());
     }
 
@@ -138,8 +133,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     } else {
                         generalData.setWeek(target);
                         mWeekView.curWeek(target).updateView();
-                        scheduleData.setUpdate(true);
-                        WidgetUtil.notifyWidgetUpdate(this.getActivity());
+                        ScheduleData.setUpdate(true);
+                        WidgetUtil.notifyWidgetUpdate(this.requireActivity());
                         ToastUtil.showToast(getActivity(), "设置第" + target + "周为当前周");
                         mTimetableView.changeWeekForce(target);
                     }
@@ -151,7 +146,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .curWeek(generalData.getWeek())
                 .maxSlideItem(12)
                 .monthWidthDp(18)
-                .itemHeight(DensityUtil.dip2px(Objects.requireNonNull(getContext()), singleSettingData.getItemLength()))
+                .itemHeight(DensityUtil.dip2px(requireContext(), singleSettingData.getItemLength()))
                 .callback(new OnItemBuildAdapter() {
                     @Override
                     public String getItemText(Schedule schedule, boolean isThisWeek) {
@@ -208,27 +203,27 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && scheduleData != null && scheduleData.isUpdate()) {
+        if (isVisibleToUser && ScheduleData.isUpdate()) {
             updateTable();
-            scheduleData.setUpdate(false);
+            ScheduleData.setUpdate(false);
         }
     }
 
     public void updateTable() {
         List<Schedule> schedules = new ArrayList<>();
-        for (CourseBean courseBean : scheduleData.getCourseBeans()) {
+        for (CourseBean courseBean : ScheduleData.getCourseBeans()) {
             schedules.add(courseBean.getSchedule());
         }
-        for (CourseBean courseBean : scheduleData.getUserCourseBeans()) {
+        for (CourseBean courseBean : ScheduleData.getUserCourseBeans()) {
             schedules.add(courseBean.getSchedule());
         }
         if (settingData.getShowLibOnTable()) {
-            for (CourseBean courseBean : scheduleData.getLibBeans()) {
+            for (CourseBean courseBean : ScheduleData.getLibBeans()) {
                 schedules.add(courseBean.getSchedule());
             }
         }
         if (settingData.getShowExamOnTable()) {
-            for (ExamBean examBean : CourseUtil.combineExam(scheduleData.getExamBeans())) {
+            for (ExamBean examBean : CourseUtil.combineExam(ScheduleData.getExamBeans())) {
                 if (examBean != null && examBean.getWeek() != 0) {
                     schedules.add(examBean.getSchedule());
                 }
@@ -250,7 +245,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
      * @param beans beans
      */
     protected void display(List<Schedule> beans) {
-        detailClassData.setCourseBeans(beans);
+        DetailClassData.setCourseBeans(beans);
         Intent intent = new Intent(getContext(), DetailActivity.class);
         intent.putExtra("week", target);
         startActivityForResult(intent, DetailActivity.REQUEST_CODE);
@@ -269,10 +264,10 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AddCourseActivity.REQUEST_CODE && resultCode == AddCourseActivity.ADD) {
             updateTable();
-            scheduleData.setUpdate(true);
+            ScheduleData.setUpdate(true);
         } else if (requestCode == DetailActivity.REQUEST_CODE && resultCode == DetailActivity.ALTER) {
             updateTable();
-            scheduleData.setUpdate(true);
+            ScheduleData.setUpdate(true);
         }
     }
 
@@ -280,7 +275,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
      * 显示弹出菜单
      */
     public void showPopMenu() {
-        PopupMenu popup = new PopupMenu(Objects.requireNonNull(getActivity()), moreButton);
+        PopupMenu popup = new PopupMenu(requireActivity(), moreButton);
         popup.getMenuInflater().inflate(R.menu.course_table_popmenu, popup.getMenu());
         if (singleSettingData.isHideOtherWeek()) {
             popup.getMenu().findItem(R.id.course_tab_top1).setTitle("显示非本周课程");

@@ -18,7 +18,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
@@ -36,7 +36,6 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
     private XSeekBar seekBar;
 
     private GeneralData generalData;
-    private ScheduleData scheduleData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +65,6 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         back.setOnClickListener(this);
         input.setOnClickListener(this);
         generalData = GeneralData.newInstance(this);
-        scheduleData = ScheduleData.newInstance(this);
     }
 
     @SuppressLint("SetTextI18n")
@@ -88,11 +86,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         spinnerYear.setSelection(nowYear);
         //自动选择学期
         int nowTerm;
-        if (generalData.isInternational()) { //国院系统
-            nowTerm = Integer.parseInt(term.substring(4, 5));
-        } else {
-            nowTerm = Integer.parseInt(term.substring(10, 11));
-        }
+        nowTerm = Integer.parseInt(term.substring(10, 11));
         spinnerTerm.setSelection(nowTerm - 1);
         //自动选择星期
         int week = generalData.getWeek();
@@ -131,33 +125,22 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.input:
                 //保存学年
-                ScheduleData scheduleData = ScheduleData.newInstance(getApplicationContext());
                 int year = Integer.parseInt(generalData.getGrade()) + (int) spinnerYear.getSelectedItemId();
                 int num = (int) spinnerTerm.getSelectedItemId() + 1;
-                boolean changeTerm = false;
-                if (generalData.isInternational()) {
-                    if (!(year + "" + num).equals(generalData.getTerm())) {
-                        scheduleData.deleteInputCourse();
-                        changeTerm = true;
+                String term_1 = year + "-" + (year + 1) + "_" + num;
+                for (TermBean termBean : MoreData.getTermBeans()) {
+                    String termString = termBean.getTerm();
+                    if (termString != null
+                            && termString.length() >= 11
+                            && termString.substring(0, 4).equals(String.valueOf(year))
+                            && termString.substring(10, 11).equals(String.valueOf(num))) {
+                        term_1 = termString;
+                        break;
                     }
-                    generalData.setTerm(year + "" + num);
-                } else {
-                    String term_1 = year + "-" + (year + 1) + "_" + num;
-                    for (TermBean termBean : MoreDate.newInstance(this).getTermBeans()) {
-                        String termString = termBean.getTerm();
-                        if (termString != null
-                                && termString.length() >= 11
-                                && termString.substring(0, 4).equals(String.valueOf(year))
-                                && termString.substring(10, 11).equals(String.valueOf(num))) {
-                            term_1 = termString;
-                            break;
-                        }
-                    }
-                    generalData.setTerm(term_1);
-                    scheduleData.deleteInputCourse();
-                    changeTerm = true;
                 }
-                if (changeTerm && scheduleData.getUserCourseBeans().size() != 0) {
+                generalData.setTerm(term_1);
+                ScheduleData.deleteInputCourse();
+                if (ScheduleData.getUserCourseBeans().size() != 0) {
                     DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
                         @Override
                         public void onClickYes() {
@@ -166,7 +149,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
 
                         @Override
                         public void onClickBack() {
-                            scheduleData.deleteUserCourse();
+                            ScheduleData.deleteUserCourse();
                             importCourse();
                         }
                     };
@@ -183,8 +166,8 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         int week = seekBar.getSelectedNumber() / 10;
         generalData.setWeek(week);
         generalData.setLastUpdateTime(-1);
-        scheduleData.setUpdate(true);
-        ToastUtil.showToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约30秒，请耐心等待，不要滑动页面");
+        ScheduleData.setUpdate(true);
+        ToastUtil.showToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约10秒，请耐心等待，不要滑动页面");
         Intent intent = getIntent();
         setResult(OK, intent);
         finish();
