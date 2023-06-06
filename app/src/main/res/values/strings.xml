@@ -79,15 +79,6 @@
     <string name="url_empty_room">http://utsc.guet.edu.cn/EmptyClassRoom.aspx</string>
     <string name="url_empty_room_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/EmptyClassRoom.aspx?mCode=001503</string>
 
-    <string name="text_guet_class_table">桂电课程表交流群</string>
-    <string name="key_guet_class_table">b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP</string>
-    <string name="text_guet_class_table2">桂电课程表交流群②</string>
-    <string name="key_guet_class_table2">l-RTk_x9Bu0TFmOIRDLnVMIOlYxVfajs</string>
-    <string name="text_guet_find_3">桂电人失物招领3群(官方)</string>
-    <string name="key_guet_find_3">MENv-n3_z8D6h4F9nyn-oiK-Z-FBM5Pr</string>
-    <string name="text_stdio_music">校园广播电台点歌群(官方)</string>
-    <string name="key_stdio_music">0uf7sem6bkCUjKTKR8CJp4rFRfO182tq</string>
-
     <string name="text_qqGroup_add">若您有面向同学免费开放的非盈利群聊，能够切实为同学提供帮助，我们将免费为您在这里展示和宣传，欢迎加群(桂电课程表交流群)合作！</string>
 
     <string name="first_about">该项目与学校官方无关。个人开发者作品，不含广告，永久免费。\n\n 该项目会一直开源，一直保证代码库最新，保证和小伙伴使用的APP源码一致。开源是为了接受大家的监督，也是保护小伙伴教务隐私的有效手段，感谢大家的支持！</string>
