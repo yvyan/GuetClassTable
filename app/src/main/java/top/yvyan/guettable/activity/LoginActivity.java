@@ -4,17 +4,23 @@ import static com.xuexiang.xui.XUI.getContext;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.umeng.umcrash.UMCrash;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
@@ -29,9 +35,8 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
@@ -46,12 +51,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private EditText etAccount;
     private CheckBox cbRememberPwd;
     private SuperButton button;
-    private EditText etPwd2;
-    private ImageView ivPwdSwitch2;
+    private EditText etPwd;
+    private ImageView ivPwdSwitch;
     private View progressBar;
 
     private AccountData accountData;
-    private GeneralData generalData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,23 +63,22 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_login);
 
         accountData = AccountData.newInstance(getContext());
-        generalData = GeneralData.newInstance(getContext());
 
-        ivPwdSwitch2 = findViewById(R.id.iv_pwd_switch_2);
+        ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
         button = findViewById(R.id.login);
         button.setOnClickListener(this);
-        etPwd2 = findViewById(R.id.et_pwd2);
+        etPwd = findViewById(R.id.et_pwd);
         etAccount = findViewById(R.id.et_account);
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
         cbRememberPwd.setChecked(true);
-        ivPwdSwitch2.setOnClickListener(showPwdClickListener());
+        ivPwdSwitch.setOnClickListener(showPwdClickListener());
         progressBar = findViewById(R.id.progressBar2);
         TextView profileVersion = findViewById(R.id.tv_profile_version);
         profileVersion.setText(AppUtil.getAppVersionName(Objects.requireNonNull(getContext())));
         //获取账号密码
         if (accountData.getIsSave()) {
             etAccount.setText(accountData.getUsername());
-            etPwd2.setText(accountData.getVPNPwd());
+            etPwd.setText(accountData.getPwd());
         }
     }
 
@@ -90,12 +93,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             bPwdSwitch = !bPwdSwitch;
             bPwdSwitch2 = !bPwdSwitch2;
             if (bPwdSwitch) {
-                ivPwdSwitch2.setImageResource(R.drawable.ic_baseline_visibility_24);
-                etPwd2.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_24);
+                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             } else {
-                ivPwdSwitch2.setImageResource(R.drawable.ic_baseline_visibility_off_24);
-                etPwd2.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
-                etPwd2.setTypeface(Typeface.DEFAULT);
+                ivPwdSwitch.setImageResource(R.drawable.ic_baseline_visibility_off_24);
+                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                etPwd.setTypeface(Typeface.DEFAULT);
             }
         };
     }
@@ -109,14 +112,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         setUnClick();
         String account = etAccount.getText().toString();
-        String pwd2 = etPwd2.getText().toString();
-        new Thread(() -> {
-            String VPNToken = null;
-            if (Net.testNet() != 200) {
-                VPNToken = Net.getVPNToken(this);
-            }
-            testCAS(account, pwd2, VPNToken);
-        }).start();
+        String pwd = etPwd.getText().toString();
+        new Thread(() -> testCAS(account, pwd)).start();
     }
 
     @Override
@@ -130,21 +127,72 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     /**
+     * 验证智慧校园密码 SMSCode Version
+     */
+    private void testCASWithSMSCode(String SMSCode, String CASCookie, TokenData tokenData) {
+        String account = etAccount.getText().toString();
+        String pwd = etPwd.getText().toString();
+        new Thread(() -> {
+            runOnUiThread(() -> button.setText("正在认证-手机验证码"));
+            String MultiFactorAuth = StaticService.reAuth_SMSCode(this, SMSCode, CASCookie);
+            if (MultiFactorAuth.contains("ERROR")) {
+                if (MultiFactorAuth.equals("ERROR1")) {
+                    showErrorToast(-3);
+                } else if (MultiFactorAuth.equals("ERROR2")) {
+                    showErrorToast(-2);
+                } else {
+                    showErrorToast(-8);
+                }
+            } else {
+                tokenData.setMFACookie(MultiFactorAuth);
+                tokenData.setBkjwCookie(null);
+                accountData.setUser(account, pwd, cbRememberPwd.isChecked());
+                getInfo();
+            }
+        }).start();
+    }
+
+    /**
      * 验证智慧校园密码
      *
      * @param account  学号
-     * @param password 智慧校园/VPN密码
+     * @param password 密码
      */
-    private void testCAS(String account, String password, String VPNToken) {
+    private void testCAS(String account, String password) {
         new Thread(() -> {
+            TokenData tokenData = TokenData.newInstance(this);
             runOnUiThread(() -> button.setText("正在认证"));
-            String CasCookie = StaticService.SSOLogin(this, account, password, VPNToken);
+            String CasCookie = StaticService.SSOLogin(this, account, password, accountData.getPwd().equals(password) ? tokenData.getTGTToken() : null, tokenData.getMFACookie());
             if (CasCookie.contains("TGT-")) {
-                TokenData tokenData = TokenData.newInstance(this);
-                tokenData.setCASCookie(CasCookie);
-                tokenData.setBkjwCookie(null);
-                accountData.setUser(account, null, password, cbRememberPwd.isChecked());
-                getInfo();
+                if (CasCookie.contains("ERROR5")) {
+                    tokenData.setTGTToken(CasCookie.substring(CasCookie.indexOf(";") + 1));
+                    tokenData.setBkjwCookie(null);
+                    String phoneNumber = StaticService.reAuth_sendSMSCode(this, account,CasCookie.substring(CasCookie.indexOf(";")+1));
+                    if (!phoneNumber.contains("ERROR")) {
+                        runOnUiThread(() -> {
+                            button.setText("正在二步验证");
+                            showSMSCodeDialog(phoneNumber,CasCookie.substring(CasCookie.indexOf(";")+1),tokenData);
+                        });
+                    } else {
+                        if (phoneNumber.equals("ERROR1")) {
+                            showErrorToast(-4);
+                        } else if (phoneNumber.equals("ERROR2")) {
+                            showErrorToast(-2);
+                        } else if(phoneNumber.contains("ERROR3")) {
+                            runOnUiThread(() -> {
+                                setEnClick();
+                                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_SMSCodeSend)+phoneNumber.substring(7));
+                            });
+                        } else {
+                            showErrorToast(-8);
+                        }
+                    }
+                } else {
+                    tokenData.setTGTToken(CasCookie);
+                    tokenData.setBkjwCookie(null);
+                    accountData.setUser(account, password, cbRememberPwd.isChecked());
+                    getInfo();
+                }
             } else {
                 if (CasCookie.equals("ERROR1")) {
                     showErrorToast(-4);
@@ -155,6 +203,67 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 }
             }
         }).start();
+    }
+
+    /**
+     * 二步认证 - 密码
+     *
+     * @param account   学号
+     * @param password  密码
+     * @param CASCookie CAS Cookie
+     * @param tokenData tokenData
+     */
+    private void reAuth_Password(String account, String password, String CASCookie, TokenData tokenData) {
+        try {
+            runOnUiThread(() -> button.setText("正在二步验证"));
+            String MultiFactorAuth = StaticService.reAuth_Password(this, password, CASCookie);
+            if (MultiFactorAuth.contains("ERROR")) {
+                if (MultiFactorAuth.equals("ERROR1")) {
+                    showErrorToast(-4);
+                } else if (MultiFactorAuth.equals("ERROR2")) {
+                    showErrorToast(-2);
+                } else {
+                    showErrorToast(-8);
+                }
+            } else {
+                tokenData.setMFACookie(MultiFactorAuth);
+                tokenData.setBkjwCookie(null);
+                accountData.setUser(account, password, cbRememberPwd.isChecked());
+                getInfo();
+            }
+
+        } catch (Exception ignore) {
+        }
+    }
+
+    /**
+     * 显示手机验证码2FA
+     */
+    private void showSMSCodeDialog(String phoneNumber, String CasCookie, TokenData tokenData) {
+        try {
+            AlertDialog dialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            dialog = builder.create();
+            dialog.show();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Window window = dialog.getWindow();
+            window.setContentView(R.layout.login_smscode);
+            TextView phoneNumberView = window
+                    .findViewById(R.id.et_phone);
+            phoneNumberView.setText(phoneNumber);
+            Button buttonYes = window.findViewById(R.id.btn_text_yes);
+            buttonYes.setOnClickListener(view -> {
+                TextView SMSCode = window
+                        .findViewById(R.id.et_smscode);
+                String SMSCodeOTP = SMSCode.getText().toString();
+                testCASWithSMSCode(SMSCodeOTP, CasCookie, tokenData);
+                dialog.dismiss();
+            });
+        } catch (Exception ignore) {
+        }
     }
 
     /**
@@ -194,11 +303,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         StudentInfo studentInfo = null;
         try {
             studentInfo = StaticService.getStudentInfo(this, tokenData.getCookie());
-            if (!generalData.isInternational()) {
-                List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getCookie());
-                if (allTerm != null) {
-                    MoreDate.newInstance(this).setTermBeans(allTerm);
-                }
+
+            List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getCookie());
+            if (allTerm != null) {
+                MoreData.setTermBeans(allTerm);
             }
         } catch (Exception e) {
             UMCrash.generateCustomLog(e, "getInfo");
@@ -229,7 +337,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         button.setText("登录");
         button.setEnabled(true);
         etAccount.setEnabled(true);
-        etPwd2.setEnabled(true);
+        etPwd.setEnabled(true);
         progressBar.setVisibility(View.GONE);
     }
 
@@ -240,7 +348,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         button.setText("网络初始化");
         button.setEnabled(false);
         etAccount.setEnabled(false);
-        etPwd2.setEnabled(false);
+        etPwd.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
     }
 

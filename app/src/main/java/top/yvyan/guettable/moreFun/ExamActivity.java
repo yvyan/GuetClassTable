@@ -27,7 +27,6 @@ import static com.xuexiang.xui.XUI.getContext;
 public class ExamActivity extends BaseFuncActivity {
 
     private GeneralData generalData;
-    private ScheduleData scheduleData;
     private SingleSettingData singleSettingData;
 
     @Override
@@ -38,7 +37,6 @@ public class ExamActivity extends BaseFuncActivity {
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_test_schedule));
 
         generalData = GeneralData.newInstance(this);
-        scheduleData = ScheduleData.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
     }
 
@@ -46,7 +44,7 @@ public class ExamActivity extends BaseFuncActivity {
     protected void showContent() {
         baseSetContentView(R.layout.recycler_view);
         RecyclerView recyclerView = findViewById(R.id.recycler_view_info);
-        List<ExamBean> examBeans = scheduleData.getExamBeans();
+        List<ExamBean> examBeans = ScheduleData.getExamBeans();
         if (singleSettingData.isCombineExam()) {
             examBeans = CourseUtil.combineExam(examBeans);
         }
@@ -118,10 +116,10 @@ public class ExamActivity extends BaseFuncActivity {
         if (examBeans != null) {
             CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(examBeans, beanAttributeUtil);
-            if (!AppUtil.equalList(examBeans, scheduleData.getExamBeans())) {
-                scheduleData.setExamBeans(examBeans);
+            if (!AppUtil.equalList(examBeans, ScheduleData.getExamBeans())) {
+                ScheduleData.setExamBeans(examBeans);
                 update = true;
-                scheduleData.setUpdate(true);
+                ScheduleData.setUpdate(true);
             }
             return 5;
         }

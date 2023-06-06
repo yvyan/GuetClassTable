@@ -15,7 +15,7 @@ import top.yvyan.guettable.adapter.SelectedCourseAdapter;
 import top.yvyan.guettable.bean.SelectedCourseBean;
 import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.IMoreFun;
 import top.yvyan.guettable.service.fetch.StaticService;
@@ -26,7 +26,6 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
 
     private GeneralData generalData;
     private TokenData tokenData;
-    private MoreDate moreDate;
     private MaterialSpinner spinner;
     private SelectedCourseAdapter adapter;
     private List<String> terms;
@@ -40,7 +39,6 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
         setShowMore(false);
         generalData = GeneralData.newInstance(this);
         tokenData = TokenData.newInstance(this);
-        moreDate = MoreDate.newInstance(this);
         terms = new ArrayList<>();
         curTerm = generalData.getTerm();
     }
@@ -48,7 +46,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
     @Override
     protected void showContent() {
         baseSetContentView(R.layout.activity_selected_course);
-        List<SelectedCourseBean> selectedCourseBeans = moreDate.getSelectedCourseBeans();
+        List<SelectedCourseBean> selectedCourseBeans = MoreData.getSelectedCourseBeans();
         spinner = findViewById(R.id.spinner_course_term);
         rv = findViewById(R.id.rv_selected_course);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -85,7 +83,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
         if (selectedCourseBeans != null) {
             CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(selectedCourseBeans, beanAttributeUtil);
-            moreDate.setSelectedCoursesBeans(selectedCourseBeans);
+            MoreData.setSelectedCoursesBeans(selectedCourseBeans);
             update = true;
             return 5;
         }
@@ -121,7 +119,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
 
     // 初始化学期集合
     private void initTerm() {
-        List<TermBean> termBeans = moreDate.getTermBeans();
+        List<TermBean> termBeans = MoreData.getTermBeans();
         String grade = generalData.getGrade();
         if (grade == null) {
             return;
@@ -139,7 +137,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
             new Thread(() -> {
                 List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getCookie());
                 if (allTerm != null) {
-                    moreDate.setTermBeans(allTerm);
+                    MoreData.setTermBeans(allTerm);
                     terms.clear();
                     for (int i = 0; i < allTerm.size(); i++) {
                         String substring = allTerm.get(i).getTerm().substring(0, 4);

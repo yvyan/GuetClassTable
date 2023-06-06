@@ -23,6 +23,10 @@ import top.yvyan.guettable.util.BackgroundUtil;
 public abstract class BaseFuncActivity extends AppCompatActivity implements IMoreFun {
 
     @SuppressLint("NonConstantResourceId")
+
+    protected boolean update = true;
+    protected int stateNum = -1;
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.state)
     TextView state;
     @SuppressLint("NonConstantResourceId")
@@ -34,9 +38,6 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.func_base_constraintLayout)
     ConstraintLayout header;
-    @SuppressLint("NonConstantResourceId")
-
-    protected boolean update = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
         ButterKnife.bind(this);
         more.setVisibility(View.GONE);
         more.setOnClickListener(this::showPopMenu);
+        state.setOnClickListener(this::stateOnClick);
         init();
         header.getBackground().setAlpha(255);
         BackgroundUtil.setFullAlphaStatus(this);
@@ -111,9 +113,18 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
 
     @Override
     public void updateView(String hint, int stateNum) {
+        this.stateNum = stateNum;
         state.setText(hint);
         if (stateNum == 5 && update) {
             showContent();
+        }
+    }
+
+    protected void stateOnClick(View view) {
+        if (this.stateNum != 5) {
+            if (this.stateNum == -3) {
+                this.init(); // 调用init方法重新获取验证码
+            }
         }
     }
 

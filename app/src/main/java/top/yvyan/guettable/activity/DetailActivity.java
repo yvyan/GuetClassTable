@@ -44,7 +44,7 @@ public class DetailActivity extends AppCompatActivity {
         SingleSettingData singleSettingData = SingleSettingData.newInstance(getApplicationContext());
         BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_detail);
-        schedules = DetailClassData.newInstance().getCourseBeans();
+        schedules = DetailClassData.getCourseBeans();
         //透明状态栏
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import com.umeng.cconfig.UMRemoteConfig;
 
 import top.yvyan.guettable.R;
-import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
@@ -28,7 +27,6 @@ import top.yvyan.guettable.moreFun.SelectedCourseActivity;
 import top.yvyan.guettable.service.CommFunc;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.BackgroundUtil;
-import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
@@ -36,7 +34,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     private View view;
 
     private SingleSettingData singleSettingData;
-    private GeneralData generalData;
 
     public static MoreFragment newInstance() {
         return new MoreFragment();
@@ -47,7 +44,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragement_more, container, false);
 
-        generalData = GeneralData.newInstance(getContext());
         singleSettingData = SingleSettingData.newInstance(getContext());
         //透明状态栏
         View addStatus = view.findViewById(R.id.add_status);
@@ -81,10 +77,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void initData() {
-        generalData = GeneralData.newInstance(getContext());
-    }
-
     /**
      * 设置背景
      *
@@ -106,7 +98,6 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
         setBackground(BackgroundUtil.isSetBackground(requireContext()));
-        initData();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -119,12 +110,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.more_credits:
-                if (generalData.isInternational()) {
-                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
-                } else {
-                    intent = new Intent(getContext(), GradesActivity.class);
-                    startActivity(intent);
-                }
+                intent = new Intent(getContext(), GradesActivity.class);
+                startActivity(intent);
                 break;
             case R.id.more_test_scores:
                 intent = new Intent(getContext(), ExamScoreActivity.class);
@@ -143,12 +130,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.more_selected_course:
-                if (generalData.isInternational()) {
-                    DialogUtil.showTextDialog(getContext(), "国际学院教务系统暂无此功能");
-                } else {
-                    intent = new Intent(getContext(), SelectedCourseActivity.class);
-                    startActivity(intent);
-                }
+                intent = new Intent(getContext(), SelectedCourseActivity.class);
+                startActivity(intent);
                 break;
 
 
@@ -169,7 +152,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 CommFunc.noLoginWebVPN(getActivity());
                 break;
             case R.id.more_url_campus:
-                openBrowser(requireContext().getResources().getString(R.string.url_smart_campus));
+                CommFunc.noLoginWebICampus(getActivity());
                 break;
 
             case R.id.more_url_lijiang:

@@ -20,7 +20,6 @@ import static com.xuexiang.xui.XUI.getContext;
 
 public class LibActivity extends BaseFuncActivity {
 
-    private ScheduleData scheduleData;
     private GeneralData generalData;
 
     @Override
@@ -28,7 +27,6 @@ public class LibActivity extends BaseFuncActivity {
         setTitle(getResources().getString(R.string.moreFun_lib_schedule));
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_lib_schedule));
 
-        scheduleData = ScheduleData.newInstance(this);
         generalData = GeneralData.newInstance(this);
     }
 
@@ -36,7 +34,7 @@ public class LibActivity extends BaseFuncActivity {
     protected void showContent() {
         baseSetContentView(R.layout.recycler_view);
         RecyclerView recyclerView = findViewById(R.id.recycler_view_info);
-        List<CourseBean> libBeans = scheduleData.getLibBeans();
+        List<CourseBean> libBeans = ScheduleData.getLibBeans();
         if (libBeans.size() == 0) {
             showEmptyPage();
         } else {
@@ -51,8 +49,8 @@ public class LibActivity extends BaseFuncActivity {
     public int updateData(String cookie) {
         List<CourseBean> libBeans = StaticService.getLab(this, cookie, generalData.getTerm());
         if (libBeans != null) {
-            scheduleData.setLibBeans(libBeans);
-            scheduleData.setUpdate(true);
+            ScheduleData.setLibBeans(libBeans);
+            ScheduleData.setUpdate(true);
             return 5;
         }
         return 1;

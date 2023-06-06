@@ -22,7 +22,6 @@ public class WidgetService extends RemoteViewsService {
 
     private GeneralData generalData;
     private SettingData settingData;
-    private ScheduleData scheduleData;
     private static final String TAG = "RemoteViewsService";
 
     @Override
@@ -32,7 +31,6 @@ public class WidgetService extends RemoteViewsService {
         try {
             generalData = GeneralData.newInstance(getApplicationContext());
             settingData = SettingData.newInstance(getApplicationContext());
-            scheduleData = ScheduleData.newInstance(getApplicationContext());
             todayList = new ArrayList<>(getTodayList());
         } catch (Exception e) {
             Log.d(TAG, "Exception: " + e.getMessage());
@@ -44,20 +42,20 @@ public class WidgetService extends RemoteViewsService {
     // 日课表的获取当日课程方法
     private List<Schedule> getTodayList() {
         List<Schedule> list;
-        if (!scheduleData.getCourseBeans().isEmpty()) {
-            list = ScheduleSupport.transform(scheduleData.getCourseBeans());
+        if (!ScheduleData.getCourseBeans().isEmpty()) {
+            list = ScheduleSupport.transform(ScheduleData.getCourseBeans());
         } else {
             list = new ArrayList<>();
         }
-        for (CourseBean courseBean : scheduleData.getUserCourseBeans()) {
+        for (CourseBean courseBean : ScheduleData.getUserCourseBeans()) {
             list.add(courseBean.getSchedule());
         }
         if (settingData.getShowLibOnTable()) {
-            List<Schedule> labList = ScheduleSupport.transform(scheduleData.getLibBeans());
+            List<Schedule> labList = ScheduleSupport.transform(ScheduleData.getLibBeans());
             list.addAll(labList);
         }
         if (settingData.getShowExamOnTable()) {
-            for (ExamBean examBean : CourseUtil.combineExam(scheduleData.getExamBeans())) {
+            for (ExamBean examBean : CourseUtil.combineExam(ScheduleData.getExamBeans())) {
                 if (examBean != null && examBean.getWeek() != 0) {
                     list.add(examBean.getSchedule());
                 }

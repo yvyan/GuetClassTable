@@ -14,4 +14,9 @@
     <color name="color_background_pink">#FB7299</color>
     <color name="color_background_orange">#FF6705</color>
     <color name="color_background_green">#06C160</color>
+
+    <color name="color_room">#3396D8</color>
+    <color name="color_time">#7F4073</color>
+
+    <color name="config_color_select_bg">#FFF1F1F1</color>
 </resources>

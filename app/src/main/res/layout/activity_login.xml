@@ -91,7 +91,7 @@
             tools:ignore="ContentDescription" />
 
         <EditText
-            android:id="@+id/et_pwd2"
+            android:id="@+id/et_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -106,7 +106,7 @@
             android:textSize="20sp" />
 
         <ImageView
-            android:id="@+id/iv_pwd_switch_2"
+            android:id="@+id/iv_pwd_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

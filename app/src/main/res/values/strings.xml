@@ -4,12 +4,10 @@
     <!-- 统一登录 -->
     <string name="vpn_url">https://v.guet.edu.cn/login</string>
     <string name="vpn_refer">https://v.guet.edu.cn</string>
-    <string name="vpn_get_cookie">https://v.guet.edu.cn/wengine-vpn/cookie?method=get&amp;host=cas.guet.edu.cn&amp;scheme=https&amp;path=/authserver/login</string>
     <string name="url_Authserver">https://cas.guet.edu.cn/authserver/login</string>
-    <string name="url_Authserver_VPN">https://v.guet.edu.cn/https/77726476706e69737468656265737421f3f652d220256d44300d8db9d6562d/authserver/login</string>
-
-
-
+    <string name="url_SendSMSCode">https://cas.guet.edu.cn/authserver/dynamicCode/getDynamicCodeByReauth.do</string>
+    <string name="url_ReAuth">https://cas.guet.edu.cn/authserver/reAuthCheck/reAuthSubmit.do</string>
+    <string name="url_ReAuth_Param">https://cas.guet.edu.cn/authserver/reAuthCheck/reAuthLoginView.do?isMultifactor=true&amp;service=http%3A%2F%2Ficampus.guet.edu.cn%2FGuetAccount%2FCasLogin</string>
     <string name="SSO_context_type">application/x-www-form-urlencoded;charset=UTF-8</string>
     <string name="SSO_referer">https://cas.guet.edu.cn/</string>
     <string name="service_bkjw">service=https%3A%2F%2Fbkjw.guet.edu.cn</string>
@@ -79,10 +77,6 @@
     <string name="url_course_arrange_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/CourseArrange.aspx?wrdrecordvisit=1640584485000</string>
     <string name="url_empty_room">http://utsc.guet.edu.cn/EmptyClassRoom.aspx</string>
     <string name="url_empty_room_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/EmptyClassRoom.aspx?mCode=001503</string>
-    <string name="text_news_1">校内公告</string>
-    <string name="url_news_1">http://weixin.guet.edu.cn/News?type=0</string>
-    <string name="text_news_2">校内通知</string>
-    <string name="url_new_2">http://weixin.guet.edu.cn/News?type=4</string>
 
     <string name="text_guet_class_table">桂电课程表交流群</string>
     <string name="key_guet_class_table">b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP</string>
@@ -120,6 +114,7 @@
     <string name="login_fail_ck">验证码错误，登录失败，请点击右上角问号查看帮助</string>
     <string name="login_fail_pwd">密码错误，登录失败，请点击右上角问号查看帮助</string>
     <string name="login_fail_bkjw">教务密码错误，登录失败，请点击右上角问号查看帮助</string>
+    <string name="login_fail_SMSCodeSend">验证码发送失败:</string>
     <string name="login_fail_getInfo">获取个人信息失败，请稍后重试，请点击右上角问号查看帮助</string>
     <string name="log_change_pwd">即将为您打开修改智慧校园密码的网页，请连接校园网。\n\n 登录成功后，输入原密码和新密码(需要同时包含大小写字母、数字和特殊字符)确认即可。\n\n Tip:本次只会修改智慧校园登录密码，不会修改教务系统的密码，密码修改后可能需要一段儿时间才会生效。</string>
     <string name="login_help">&#160;&#160;&#160;&#160;请输入智慧校园密码进行登录(建议使用校园网进行登录和数据同步！)。
@@ -129,10 +124,10 @@
 
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.41</string>
     <string name="cookie_delimiter">"; "</string>
-    <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²  |  沉山浮阳 | 迷 | 稚隳 </string>
+    <string name="thanks_person">Casual | 就这 | ୧⍤⃝ⓍⓅ乏了 | 我终究不是个好人 | 🍓  |  sin²  |  沉山浮阳 | 迷 | 稚隳 | azio</string>
 
     <!--已选课程-->
-    <string name="lan_get_selected_course"> https://bkjw.guet.edu.cn/student/GetSctCourse </string>
+    <string name="lan_get_selected_course"> /student/GetSctCourse </string>
 
     <!-- 更多功能 -->
 
@@ -187,6 +182,12 @@
     <string name="hint_vpn_password">请输入智慧校园密码</string>
     <string name="remember_password">记住密码</string>
     <string name="login">登录</string>
+    <string name="cancel">取消</string>
+    <string name="login_2fa_smscode">登录二次验证-手机验证码</string>
+    <string name="hint_2fa_smscode">请输入手机验证码</string>
+    <string name="hint_2fa_phone">验证码已发送至:</string>
+    <string name="hint_captcha">请输入验证码</string>
+    <string name="hint_send_phone_otp">发送短信</string>
     <string name="find_password">&#160;&#160;找回密码&#160;&#160;</string>
     <string name="activate_account">&#160;&#160;激活账号&#160;&#160;</string>
 
@@ -196,5 +197,15 @@
     <string name="patch_version">0</string><!-- 发布新版本请归零 -->
     <string name="gradesHint">学分绩查询属于公测阶段，正在逐步优化，目前计算方法为只统计对应年度及格的必修和限选课程，若您有更好的计算方法，欢迎进群反馈，我们一起让它变好！(V4)</string>
     <string name="developer">wing | ssbird | tank | uuin | bbaa</string>
-
+    <string name="qq_hint">官方QQ交流群(点击加群)</string>
+    <string name="version_hint">版本</string>
+    <string name="joinUs_hint">加入我们</string>
+    <string name="author_hint">作者</string>
+    <string name="thinks_hint">特别鸣谢</string>
+    <string name="author_say_hint">开发者自语</string>
+    <string name="openSource_hint">项目开源</string>
+    <string name="codeUse_hint">开源引用</string>
+    <string name="privacy_hint">隐私政策</string>
+    <string name="statement_hint">声明</string>
+    <string name="debug_clear_MFACookie">清除多因子登录可信设备状态</string>
 </resources>

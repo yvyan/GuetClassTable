@@ -13,7 +13,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ExperimentScoreAdapter;
 import top.yvyan.guettable.bean.ExperimentScoreBean;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
@@ -23,7 +23,6 @@ import static com.xuexiang.xui.XUI.getContext;
 
 public class ExperimentScoreActivity extends BaseFuncActivity {
 
-    private MoreDate moreDate;
     private GeneralData generalData;
     private SingleSettingData singleSettingData;
 
@@ -34,7 +33,6 @@ public class ExperimentScoreActivity extends BaseFuncActivity {
         openUpdate();
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_lib_scores));
 
-        moreDate = MoreDate.newInstance(this);
         generalData = GeneralData.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
     }
@@ -43,7 +41,7 @@ public class ExperimentScoreActivity extends BaseFuncActivity {
     protected void showContent() {
         baseSetContentView(R.layout.activity_experiment_score);
         RecyclerView recyclerView = findViewById(R.id.experiment_score_info_recycler_view);
-        List<ExperimentScoreBean> experimentScoreBeans = moreDate.getExperimentScoreBeans();
+        List<ExperimentScoreBean> experimentScoreBeans = MoreData.getExperimentScoreBeans();
         if (singleSettingData.isHideOtherTermExamScore()) {
             experimentScoreBeans = CourseUtil.BeanAttributeUtil.hideOtherTerm(experimentScoreBeans, generalData.getTerm());
         }
@@ -88,8 +86,8 @@ public class ExperimentScoreActivity extends BaseFuncActivity {
         if (experimentScoreBeans != null) {
             CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(experimentScoreBeans, beanAttributeUtil);
-            if (!AppUtil.equalList(experimentScoreBeans, moreDate.getExperimentScoreBeans())) {
-                moreDate.setExperimentScoreBeans(experimentScoreBeans);
+            if (!AppUtil.equalList(experimentScoreBeans, MoreData.getExperimentScoreBeans())) {
+                MoreData.setExperimentScoreBeans(experimentScoreBeans);
                 update = true;
             }
             return 5;

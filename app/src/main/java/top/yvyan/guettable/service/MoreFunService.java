@@ -18,34 +18,34 @@ public class MoreFunService {
         this.activity = activity;
         this.iMoreFun = iMoreFun;
         accountData = AccountData.newInstance(activity);
-        tokenData = TokenData.newInstance(activity);
+        tokenData = TokenData.newInstance(activity,this);
     }
 
     public void update() {
         new Thread(() -> {
             try {
                 if (accountData.getIsLogin()) {
-                    setView(91); //显示：尝试同步
+                    updateView(91); //显示：尝试同步
                     int state;
                     state = iMoreFun.updateData(tokenData.getCookie());
                     if (state == 5 || state == -2) { //同步成功或网络错误
-                        setView(state);
+                        updateView(state);
                         return;
                     }
-                    setView(92); //显示：正在登录
+                    updateView(92); //显示：正在登录
                     state = tokenData.refresh();
                     if (state == -2) {
                         state = tokenData.refresh();
                     }
                     if (state != 0) {
-                        setView(state);
+                        updateView(state);
                         return;
                     }
-                    setView(93); //显示：正在同步
+                    updateView(93); //显示：正在同步
                     state = iMoreFun.updateData(tokenData.getCookie());
-                    setView(state);
+                    updateView(state);
                 } else {
-                    setView(2);
+                    updateView(2);
                 }
             } catch (Exception e) {
                 UMCrash.generateCustomLog(e, "MoreFunService");
@@ -69,7 +69,7 @@ public class MoreFunService {
      * 92 : 正在登录
      * 93 : 正在同步
      */
-    private void setView(int state) {
+    private void updateView(int state) {
         String hint;
         switch (state) {
             case 2:
@@ -80,6 +80,9 @@ public class MoreFunService {
                 break;
             case -2:
                 hint = "网络错误";
+                break;
+            case -3:
+                hint = "登录失效(点击重试)";
                 break;
             case 91:
                 hint = "尝试同步";

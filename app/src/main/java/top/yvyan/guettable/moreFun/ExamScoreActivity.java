@@ -13,7 +13,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ExamScoreAdapter;
 import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.data.GeneralData;
-import top.yvyan.guettable.data.MoreDate;
+import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
@@ -23,7 +23,6 @@ import static com.xuexiang.xui.XUI.getContext;
 
 public class ExamScoreActivity extends BaseFuncActivity {
 
-    private MoreDate moreDate;
     private GeneralData generalData;
     private SingleSettingData singleSettingData;
 
@@ -34,7 +33,6 @@ public class ExamScoreActivity extends BaseFuncActivity {
         openUpdate();
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_test_scores));
 
-        moreDate = MoreDate.newInstance(this);
         generalData = GeneralData.newInstance(this);
         singleSettingData = SingleSettingData.newInstance(this);
     }
@@ -43,7 +41,7 @@ public class ExamScoreActivity extends BaseFuncActivity {
     protected void showContent() {
         baseSetContentView(R.layout.activity_exam_score);
         RecyclerView recyclerView = findViewById(R.id.exam_score_info_recycler_view);
-        List<ExamScoreBean> examScoreBeans = moreDate.getExamScoreBeans();
+        List<ExamScoreBean> examScoreBeans = MoreData.getExamScoreBeans();
         if (singleSettingData.isHideOtherTermExamScore()) {
             examScoreBeans = CourseUtil.BeanAttributeUtil.hideOtherTerm(examScoreBeans, generalData.getTerm());
         }
@@ -88,8 +86,8 @@ public class ExamScoreActivity extends BaseFuncActivity {
         if (examScoreBeans != null) {
             CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(examScoreBeans, beanAttributeUtil);
-            if (!AppUtil.equalList(examScoreBeans, moreDate.getExamScoreBeans())) {
-                moreDate.setExamScoreBeans(examScoreBeans);
+            if (!AppUtil.equalList(examScoreBeans, MoreData.getExamScoreBeans())) {
+                MoreData.setExamScoreBeans(examScoreBeans);
                 update = true;
             }
             return 5;

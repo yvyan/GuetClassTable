@@ -183,8 +183,7 @@ public class AddCourseActivity extends AppCompatActivity {
         if (courseName.isEmpty()) {
             ToastUtil.showToast(getApplicationContext(), "课程名称不能为空！");
         } else {
-            ScheduleData scheduleData = ScheduleData.newInstance(getApplicationContext());
-            List<CourseBean> courseBeans = scheduleData.getUserCourseBeans();
+            List<CourseBean> courseBeans = ScheduleData.getUserCourseBeans();
             CourseBean courseBean = new CourseBean();
             courseBean.userAdd(
                     (courseNumberEditText.getText().toString().isEmpty() ? null : courseNumberEditText.getText().toString()),
@@ -196,7 +195,7 @@ public class AddCourseActivity extends AppCompatActivity {
                     (courseStartSeekBar.getProgress() == 0 ? 7 : courseStartSeekBar.getProgress()),
                     (courseTeacherEditText.getText().toString().isEmpty() ? null : courseTeacherEditText.getText().toString()),
                     (courseCommEditText.getText().toString().isEmpty() ? null : courseCommEditText.getText().toString()),
-                    scheduleData.getUserCourseNo()
+                    ScheduleData.getUserCourseNo()
             );
             try {
                 courseBeans.add(courseBean);
@@ -204,7 +203,7 @@ public class AddCourseActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             
-            scheduleData.setUserCourseBeans(courseBeans);
+            ScheduleData.setUserCourseBeans(courseBeans);
             WidgetUtil.notifyWidgetUpdate(this);
             ToastUtil.showToast(getApplicationContext(), "添加成功！");
 

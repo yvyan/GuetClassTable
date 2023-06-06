@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,12 +33,17 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SingleSettingData singleSettingData = SingleSettingData.newInstance(this);
+        SettingData Settings=SettingData.newInstance(getContext());
         BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_about);
         BackgroundUtil.setFullAlphaStatus(this);
         TextView title = findViewById(R.id.title);
         title.setText(getString(R.string.person_about));
         TextView profileVersion = findViewById(R.id.about_version);
+        LinearLayout debug_ClearMFACookie= findViewById(R.id.clear_mfa_cookie);
+        debug_ClearMFACookie.setVisibility(Settings.isDevelopMode() ? LinearLayout.VISIBLE : LinearLayout.GONE);
+        View debug_ClearMFACookie_spliter= findViewById(R.id.clear_mfa_cookie_spliter);
+        debug_ClearMFACookie_spliter.setVisibility(Settings.isDevelopMode() ? View.VISIBLE : View.GONE);
         profileVersion.setText(AppUtil.getAppVersionName(getContext()));
     }
 
@@ -76,6 +82,13 @@ public class AboutActivity extends AppCompatActivity {
     public void helpTest(View view) {
         AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_help_test));
         helpTest();
+    }
+
+    public void clearMFACookie(View view) {
+        TokenData tokenData = TokenData.newInstance(getContext());
+        tokenData.setMFACookie(null);
+        tokenData.setBkjwCookie(null);
+        ToastUtil.showToast(getContext(),"清除成功");
     }
 
     /**
