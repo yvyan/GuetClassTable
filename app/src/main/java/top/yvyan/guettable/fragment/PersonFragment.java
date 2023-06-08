@@ -77,7 +77,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private void initView() {
         View addStatus = view.findViewById(R.id.add_status);
         ViewGroup.LayoutParams lp = addStatus.getLayoutParams();
-        lp.height = lp.height + AppUtil.getStatusBarHeight(Objects.requireNonNull(getContext()));
+        lp.height = lp.height + AppUtil.getStatusBarHeight(requireContext());
         addStatus.setLayoutParams(lp);
 
         person_userNameAndNo = view.findViewById(R.id.person_userNameAndNo);
@@ -95,7 +95,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         person_term = view.findViewById(R.id.person_term);
         person_week = view.findViewById(R.id.person_week);
         TextView profileVersion = view.findViewById(R.id.tv_profile_version);
-        profileVersion.setText(AppUtil.getAppVersionName(Objects.requireNonNull(getContext())) + "(" + getResources().getString(R.string.patch_version) + ")");
+        profileVersion.setText(AppUtil.getAppVersionName(requireContext()) + "(" + getResources().getString(R.string.patch_version) + ")");
 
         //    private View info;
         View personPersonalized = view.findViewById(R.id.person_personalized);
@@ -104,8 +104,10 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         share.setOnClickListener(this);
         View update = view.findViewById(R.id.person_update);
         update.setOnClickListener(this);
-        View downloadAll = view.findViewById(R.id.person_download_all);
-        downloadAll.setOnClickListener(this);
+        View channel = view.findViewById(R.id.person_channel);
+        channel.setOnClickListener(this);
+        View group = view.findViewById(R.id.person_group);
+        group.setOnClickListener(this);
         View about = view.findViewById(R.id.person_about);
         about.setOnClickListener(this);
         View helpMe = view.findViewById(R.id.person_help_me);
@@ -159,7 +161,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        setBackground(BackgroundUtil.isSetBackground(getContext()));
+        setBackground(BackgroundUtil.isSetBackground(requireContext()));
         initData();
     }
 
@@ -210,9 +212,13 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_update));
                 UpdateApp.check(getActivity());
                 break;
-            case R.id.person_download_all:
-                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_download_all));
-                downloadAllApk();
+            case R.id.person_channel:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_channel));
+                openBrowser(UMRemoteConfig.getInstance().getConfigValue("channelUrl"));
+                break;
+            case R.id.person_group:
+                AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_group));
+                AppUtil.addQQ(getContext());
                 break;
             case R.id.person_about:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_about));
@@ -258,26 +264,18 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * 下载所有版本的安装包(nextCloud)
+     * 打开链接
+     *
+     * @param url url
      */
-    public void downloadAllApk() {
-        AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_download_all));
-        String url = UMRemoteConfig.getInstance().getConfigValue("cloudUrl");
-        if (url == null || url.isEmpty()) {
-            DialogUtil.showTextDialog(getContext(), "功能维护中！");
-            return;
-        }
-        Uri uri = Uri.parse(url);
-        Intent webIntent = new Intent();
-        webIntent.setAction("android.intent.action.VIEW");
-        webIntent.setData(uri);
-        startActivity(webIntent);
+    public void openBrowser(String url) {
+        CommFunc.openUrl(getActivity(), null, url, true);
     }
 
     /**
      * 分享给同学
      */
     public void shareText() {
-        CommFunc.shareText(Objects.requireNonNull(getActivity()), "分享给同学", UMRemoteConfig.getInstance().getConfigValue("shareText"));
+        CommFunc.shareText(requireActivity(), "分享给同学", UMRemoteConfig.getInstance().getConfigValue("shareText"));
     }
 }

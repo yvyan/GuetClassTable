@@ -88,8 +88,8 @@
                             android:layout_width="80dp"
                             android:layout_height="60dp"
                             android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="9dp"
+                            android:layout_marginBottom="11dp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/p_huiyuan"
                             tools:ignore="ContentDescription" />
@@ -369,7 +369,7 @@
                     android:background="@color/xui_config_color_gray_9" />
 
                 <FrameLayout
-                    android:id="@+id/person_download_all"
+                    android:id="@+id/person_channel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
@@ -387,7 +387,7 @@
                             android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="2.6dp"
-                            android:src="@drawable/p_cloud"
+                            android:src="@drawable/p_talk"
                             tools:ignore="ContentDescription" />
 
                         <TextView
@@ -395,7 +395,48 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="45dp"
-                            android:text="@string/person_download_all"
+                            android:text="@string/person_channel"
+                            android:textColor="@color/app_black"
+                            android:textSize="16sp" />
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginStart="53dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+                <FrameLayout
+                    android:id="@+id/person_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_margin="8dp"
+                        tools:ignore="UselessParent">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="2.6dp"
+                            android:src="@drawable/p_group"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="45dp"
+                            android:text="@string/person_group"
                             android:textColor="@color/app_black"
                             android:textSize="16sp" />
 
