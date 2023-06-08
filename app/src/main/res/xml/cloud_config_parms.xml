@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
+        <key>qunNumber</key>
+        <value>879367241</value>
+    </entry>
+
+    <entry>
+        <key>qunKey</key>
+        <value>7OHIlYkougUsC54uc622zVR6X9AMkVTx</value>
+    </entry>
+
+    <entry>
+        <key>channelUrl</key>
+        <value>https://pd.qq.com/s/8bvjtmbus</value>
+    </entry>
+
+    <entry>
         <key>XUpdateUrl</key>
         <value>https://gitee.com/fireworkwing/resource/raw/master/GuetTable/update</value>
     </entry>

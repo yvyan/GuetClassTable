@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.umcrash.UMCrash;
 
 import java.util.HashMap;
@@ -107,7 +108,7 @@ public class AppUtil {
     }
 
     public static void addQQ(Context context) {
-        String key = "l-RTk_x9Bu0TFmOIRDLnVMIOlYxVfajs";
+        String key = UMRemoteConfig.getInstance().getConfigValue("qunKey");
         joinQQGroup(key, context);
     }
 

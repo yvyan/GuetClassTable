@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.umcrash.UMCrash;
 
 import java.util.Objects;
@@ -45,6 +46,9 @@ public class AboutActivity extends AppCompatActivity {
         View debug_ClearMFACookie_spliter= findViewById(R.id.clear_mfa_cookie_spliter);
         debug_ClearMFACookie_spliter.setVisibility(Settings.isDevelopMode() ? View.VISIBLE : View.GONE);
         profileVersion.setText(AppUtil.getAppVersionName(getContext()));
+
+        TextView qqNumber = findViewById(R.id.qq_number);
+        qqNumber.setText(UMRemoteConfig.getInstance().getConfigValue("qunNumber"));
     }
 
     public void doBack(View view) {

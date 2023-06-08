@@ -49,7 +49,7 @@
     <string name="url_lijiang_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e7e056d22028645a661cc7af96/</string>
     <string name="url_change_vpn_pwd">https://cas.guet.edu.cn/retrieve-password/retrievePassword/index.html#/</string>
     <string name="url_activate_account">https://cas.guet.edu.cn/retrieve-password/accountActivation/index.html#/</string>
-    <string name="url_add_group">https://guettableweb.yvyan.top/</string>
+    <string name="url_add_group">https://guet.yvyan.top/qun</string>
 
     <string name="text_school_song">桂电校歌</string>
     <string name="url_school_song">https://music.163.com/#/song?id=469744200</string>
@@ -67,10 +67,8 @@
     <string name="url_calendar_vpn">https://v.guet.edu.cn/http/77726476706e69737468656265737421e5e3529f69377d556a468ca88d1b203b/calendar.aspx?mCode=0010</string>
     <string name="text_lib_open">图书馆开放时间</string>
     <string name="url_lib_open">https://www.guet.edu.cn/lib/info/1064/2891.htm</string>
-    <string name="text_map_hj">花江校区地图</string>
-    <string name="url_map_hj">https://www.guet.edu.cn/xxjj/hjxqpmdt.htm</string>
-    <string name="text_map_jjl">金鸡岭校区地图</string>
-    <string name="url_map_jjl">https://www.guet.edu.cn/xxjj/jjlxqpmdt.htm</string>
+    <string name="text_map">学校地图</string>
+    <string name="url_map">https://portal.guet.edu.cn/mnews/_s2/21/a2/c12a8610/pagem.psp?iportal.uid=1</string>
     <string name="text_staff">智慧学工</string>
     <string name="url_staff">https://xsgl.guet.edu.cn/</string>
     <string name="url_staff_vpn">https://v.guet.edu.cn/https/77726476706e69737468656265737421e8e4469069377d556a468ca88d1b203b</string>
@@ -161,11 +159,11 @@
     <string name="person_personalized">个性化设置</string>
     <string name="person_share">分享给同学</string>
     <string name="person_update">检查更新</string>
-    <string name="person_download_all">所有版本下载</string>
+    <string name="person_channel">和开发者畅聊</string>
+    <string name="person_group">加入群聊</string>
     <string name="person_about">关于APP</string>
     <string name="person_version">版本:</string>
     <string name="btn_quit">退出登录</string>
-    <string name="QQGroup">879367241</string>
     <string name="person_help_test">协助测试</string>
     <string name="person_help_me">支持开发者</string>
     <string name="person_setting">设置</string>
