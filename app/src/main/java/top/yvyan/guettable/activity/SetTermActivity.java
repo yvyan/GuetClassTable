@@ -1,10 +1,14 @@
 package top.yvyan.guettable.activity;
 
+import static com.xuexiang.xui.XUI.getContext;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -48,6 +52,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
     private Spinner spinnerTerm;
     private XSeekBar seekBar;
     private ButtonView input;
+    private CheckBox cb_addTerm;
 
     private GeneralData generalData;
 
@@ -85,6 +90,27 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         stuName = findViewById(R.id.stu_name);
         spinnerYear = findViewById(R.id.spinner_year);
         spinnerTerm = findViewById(R.id.spinner_term);
+        cb_addTerm = findViewById(R.id.cb_addTerm);
+        cb_addTerm.setChecked(true);
+        //显示&隐藏“关联小学期”
+        spinnerTerm.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                View show = findViewById(R.id.show_addTerm);
+                View place = findViewById(R.id.show_addTerm_place);
+                if (i == 1) { //第二学期
+                    show.setVisibility(View.VISIBLE);
+                    place.setVisibility(View.GONE);
+                } else {
+                    show.setVisibility(View.GONE);
+                    place.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
         ButtonView back = findViewById(R.id.logoff);
         input = findViewById(R.id.input);
         week_text = findViewById(R.id.week_text);
@@ -138,6 +164,29 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         spinnerYear.setAdapter(adapter);
     }
 
+    /**
+     * 因为教务有时学期格式不标准，所以将学期替换为教务返回的数据
+     *
+     * @param year         学年
+     * @param num          学期
+     * @param termBeanList 教务返回的学期列表
+     * @return 格式化后的学期数据
+     */
+    private String formatTerm(int year, int num, List<TermBean> termBeanList) {
+        String term = year + "-" + (year + 1) + "_" + num;
+        for (TermBean termBean : termBeanList) {
+            String termString = termBean.getTerm();
+            if (termString != null
+                    && termString.length() >= 11
+                    && termString.substring(0, 4).equals(String.valueOf(year))
+                    && termString.substring(10, 11).equals(String.valueOf(num))) {
+                term = termString;
+                break;
+            }
+        }
+        return term;
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -152,16 +201,12 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 //保存学年
                 int year = Integer.parseInt(generalData.getGrade()) + (int) spinnerYear.getSelectedItemId();
                 int num = (int) spinnerTerm.getSelectedItemId() + 1;
-                String term_1 = year + "-" + (year + 1) + "_" + num;
-                for (TermBean termBean : MoreData.getTermBeans()) {
-                    String termString = termBean.getTerm();
-                    if (termString != null
-                            && termString.length() >= 11
-                            && termString.substring(0, 4).equals(String.valueOf(year))
-                            && termString.substring(10, 11).equals(String.valueOf(num))) {
-                        term_1 = termString;
-                        break;
-                    }
+                String term_1 = formatTerm(year, num, MoreData.getTermBeans());
+                if (num == 2 && cb_addTerm.isChecked()) { //关联小学期
+                    String term_2 = formatTerm(year, num + 1, MoreData.getTermBeans());
+                    generalData.setAddTerm(term_2);
+                } else {
+                    generalData.setAddTerm("");
                 }
                 generalData.setTerm(term_1);
                 ScheduleData.deleteInputCourse();
@@ -285,5 +330,12 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
         return null;
+    }
+
+    /**
+     * 关联小学期的提示
+     */
+    public void showHelp(View view) {
+        DialogUtil.showTextDialog(this, getContext().getResources().getString(R.string.addTermHelp));
     }
 }

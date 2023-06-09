@@ -10,52 +10,31 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/logo"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/title"
-            style="@style/TextStyle.Title"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_centerHorizontal="true"
-            android:layout_margin="15dp"
-            android:text="@string/app_name"
-            android:textSize="35sp"
-            android:textStyle="bold"
-            tools:ignore="RelativeOverlap" />
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="13dp"
-            android:onClick="showHelp"
-            android:src="@drawable/p_bangzhu"
-            tools:ignore="ContentDescription" />
+            android:src="@drawable/logo"
+            android:onClick="openCampus"
+            tools:ignore="ContentDescription,UsingOnClickInXml" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="60dp">
+        android:layout_marginTop="40dp">
 
         <ImageView
             android:layout_width="39dp"
-            android:layout_height="27dp"
+            android:layout_height="39dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="13dp"
-            android:src="@drawable/tab_user"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_user"
             tools:ignore="ContentDescription" />
 
         <EditText
@@ -79,15 +58,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="20dp">
 
         <ImageView
-            android:layout_width="39dp"
-            android:layout_height="27dp"
+            android:layout_width="41dp"
+            android:layout_height="41dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="13dp"
-            android:src="@drawable/password"
+            android:layout_marginStart="9dp"
+            android:layout_marginBottom="9dp"
+            android:src="@drawable/ic_pwd"
             tools:ignore="ContentDescription" />
 
         <EditText
@@ -143,7 +122,8 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="4dp"
             android:text="@string/auto_term"
-            android:textColor="@color/theme_black" />
+            android:textColor="@color/theme_black"
+            tools:ignore="RelativeOverlap" />
 
     </RelativeLayout>
 
@@ -152,19 +132,13 @@
         style="@style/SuperButton.Primary.Login"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="6dp"
-        android:textSize="25sp"
-        android:text="@string/login" />
-
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:text="@string/login"
+        android:textSize="25sp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="58dp">
+        android:layout_height="58dp"
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -177,25 +151,28 @@
             <com.xuexiang.xui.widget.button.ButtonView
                 style="@style/ButtonView.Green"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="35dp"
 
                 android:layout_gravity="center"
                 android:onClick="activateAccount"
                 android:text="@string/activate_account"
                 android:textColor="#FFFFFF"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="UsingOnClickInXml" />
 
             <com.xuexiang.xui.widget.button.ButtonView
-                android:layout_marginStart="30dp"
                 style="@style/ButtonView.Blue"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-
+                android:layout_height="35dp"
                 android:layout_gravity="center"
+
+                android:layout_marginStart="30dp"
                 android:onClick="changePwd"
                 android:text="@string/find_password"
                 android:textColor="#FFFFFF"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="UsingOnClickInXml" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -222,5 +199,20 @@
             android:layout_height="wrap_content"
             android:textSize="15sp" />
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:onClick="showHelp"
+            android:src="@drawable/p_need_help"
+            tools:ignore="ContentDescription,UsingOnClickInXml" />
+
+    </RelativeLayout>
 
 </LinearLayout>
