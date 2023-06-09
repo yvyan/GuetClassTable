@@ -171,6 +171,7 @@
     <string name="hint_account">请输入学号</string>
     <string name="hint_vpn_password">请输入智慧校园密码</string>
     <string name="remember_password">记住密码</string>
+    <string name="auto_term">自动设置日期</string>
     <string name="login">登录</string>
     <string name="cancel">取消</string>
     <string name="login_2fa_smscode">登录二次验证-手机验证码</string>

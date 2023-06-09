@@ -22,7 +22,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.umeng.umcrash.UMCrash;
+import com.tencent.mmkv.MMKV;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -50,12 +50,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private Boolean bPwdSwitch2 = false;
     private EditText etAccount;
     private CheckBox cbRememberPwd;
+    private CheckBox cbAutoTerm;
     private SuperButton button;
     private EditText etPwd;
     private ImageView ivPwdSwitch;
     private View progressBar;
 
     private AccountData accountData;
+    private MMKV mmkv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_login);
 
         accountData = AccountData.newInstance(getContext());
+        mmkv = MMKV.defaultMMKV();
 
         ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
         button = findViewById(R.id.login);
@@ -71,6 +74,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         etAccount = findViewById(R.id.et_account);
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
         cbRememberPwd.setChecked(true);
+        cbAutoTerm = findViewById(R.id.cb_auto_term);
+        mmkv = MMKV.defaultMMKV();
+        cbAutoTerm.setChecked(mmkv.decodeBool("login_auto_term", true));
         ivPwdSwitch.setOnClickListener(showPwdClickListener());
         progressBar = findViewById(R.id.progressBar2);
         TextView profileVersion = findViewById(R.id.tv_profile_version);
@@ -206,37 +212,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     /**
-     * 二步认证 - 密码
-     *
-     * @param account   学号
-     * @param password  密码
-     * @param CASCookie CAS Cookie
-     * @param tokenData tokenData
-     */
-    private void reAuth_Password(String account, String password, String CASCookie, TokenData tokenData) {
-        try {
-            runOnUiThread(() -> button.setText("正在二步验证"));
-            String MultiFactorAuth = StaticService.reAuth_Password(this, password, CASCookie);
-            if (MultiFactorAuth.contains("ERROR")) {
-                if (MultiFactorAuth.equals("ERROR1")) {
-                    showErrorToast(-4);
-                } else if (MultiFactorAuth.equals("ERROR2")) {
-                    showErrorToast(-2);
-                } else {
-                    showErrorToast(-8);
-                }
-            } else {
-                tokenData.setMFACookie(MultiFactorAuth);
-                tokenData.setBkjwCookie(null);
-                accountData.setUser(account, password, cbRememberPwd.isChecked());
-                getInfo();
-            }
-
-        } catch (Exception ignore) {
-        }
-    }
-
-    /**
      * 显示手机验证码2FA
      */
     private void showSMSCodeDialog(String phoneNumber, String CasCookie, TokenData tokenData) {
@@ -308,17 +283,25 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             if (allTerm != null) {
                 MoreData.setTermBeans(allTerm);
             }
-        } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "getInfo");
+        } catch (Exception ignored) {
         }
 
-        GeneralData generalData = GeneralData.newInstance(this);
         if (studentInfo != null) {
+            //保存个人基础信息
+            GeneralData generalData = GeneralData.newInstance(this);
             generalData.setNumber(studentInfo.getStid());
             generalData.setName(studentInfo.getName());
             generalData.setTerm(studentInfo.getTerm());
             generalData.setGrade(studentInfo.getGrade());
             Intent intent = new Intent(this, SetTermActivity.class);
+            //保存自动学期设定的状态
+            if (cbAutoTerm.isChecked()) {
+                intent.putExtra("auto", true);
+                mmkv.encode("login_auto_term", true);
+            } else {
+                intent.putExtra("auto", false);
+                mmkv.encode("login_auto_term", false);
+            }
             startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
             runOnUiThread(this::setEnClick);
         } else { //若获取个人信息失败，则登出，否则会导致后续获取不到年级等信息导致闪退

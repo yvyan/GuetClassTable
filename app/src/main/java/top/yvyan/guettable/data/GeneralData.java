@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.tencent.mmkv.MMKV;
+
 import java.util.Date;
 
 import top.yvyan.guettable.util.TimeUtil;
@@ -18,10 +20,15 @@ public class GeneralData {
     private static final String TIME = "time";
     private static final String GRADE = "grade";
     private static final String TERM = "term";
+    private static final String ADD_TERM = "addTerm";
     private static final String LAST_UPDATE_TIME = "lastUpdateTime";
     private static final String APPLY_PRIVACY = "applyPrivacy";
     private static final String WIDGET_THEME = "widget_theme";
     private static final String WIDGET_ALPHA = "widget_alpha";
+
+    private static final String AUTO_TERM_OPEN = "auto_term_open";
+    private static final String AUTO_TERM_START_TIME = "auto_term_startTime";
+
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -32,12 +39,15 @@ public class GeneralData {
     private long time;
     private String grade;
     private String term;
+    private String addTerm;
     private long lastUpdateTime;
     //隐私协议
     private boolean applyPrivacy;
 
     private String widget_theme;
     private int widget_alpha;
+
+    private static final MMKV mmkv = MMKV.defaultMMKV();
 
     @SuppressLint("CommitPrefEdits")
     private GeneralData(Context context) {
@@ -54,6 +64,7 @@ public class GeneralData {
         time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
         grade = sharedPreferences.getString(GRADE, null);
         term = sharedPreferences.getString(TERM, null);
+        addTerm = sharedPreferences.getString(ADD_TERM, "");
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
         applyPrivacy = sharedPreferences.getBoolean(APPLY_PRIVACY, false);
         widget_theme = sharedPreferences.getString(WIDGET_THEME, "black");
@@ -99,8 +110,12 @@ public class GeneralData {
     }
 
     public int getWeek() {
-        int err = TimeUtil.calcWeekOffset(new Date(time), new Date(System.currentTimeMillis()));
-        return Math.min(week + err, maxWeek);
+        if (isAutoTerm()) {
+            return getAutoWeek();
+        } else {
+            int err = TimeUtil.calcWeekOffset(new Date(time), new Date(System.currentTimeMillis()));
+            return Math.min(week + err, maxWeek);
+        }
     }
 
     public void setWeek(int week) {
@@ -128,6 +143,16 @@ public class GeneralData {
     public void setTerm(String term) {
         this.term = term;
         editor.putString(TERM, term);
+        editor.apply();
+    }
+
+    public String getAddTerm() {
+        return addTerm;
+    }
+
+    public void setAddTerm(String addTerm) {
+        this.addTerm = addTerm;
+        editor.putString(ADD_TERM, addTerm);
         editor.apply();
     }
 
@@ -172,5 +197,37 @@ public class GeneralData {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(WIDGET_ALPHA, widget_alpha);
         editor.apply();
+    }
+
+    public static void setAutoTerm(boolean open) {
+        mmkv.encode(AUTO_TERM_OPEN, open);
+    }
+
+    public static boolean isAutoTerm() {
+        return mmkv.decodeBool(AUTO_TERM_OPEN, true);
+    }
+
+    public static void setStartTime(Date date) {
+        mmkv.encode(AUTO_TERM_START_TIME, date.getTime());
+    }
+
+    public static Date getStartTime() {
+        long time = mmkv.getLong("auto_term_startTime", 0);
+        return new Date(time);
+    }
+
+    /**
+     * 自动获取星期数
+     *
+     * @return 星期数
+     */
+    private static int getAutoWeek() {
+        Date startTime = getStartTime();
+        Date now = new Date();
+        if (startTime.after(now)) {
+            return 1;
+        } else {
+            return TimeUtil.calcWeekOffset(startTime, now) + 1;
+        }
     }
 }

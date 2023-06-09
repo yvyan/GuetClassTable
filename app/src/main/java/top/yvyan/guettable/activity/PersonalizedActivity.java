@@ -17,7 +17,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.umeng.umcrash.UMCrash;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner.OnItemSelectedListener;
 import com.yalantis.ucrop.UCrop;
@@ -305,7 +304,6 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
                 } catch (IOException e1) {
                     e1.printStackTrace();
                     ToastUtil.showToast(getApplicationContext(), "读取错误，背景设置失败！");
-                    UMCrash.generateCustomLog(e1, "IOException");
                 }
             }
         }

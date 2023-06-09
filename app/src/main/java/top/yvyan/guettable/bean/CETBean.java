@@ -2,8 +2,6 @@ package top.yvyan.guettable.bean;
 
 import androidx.annotation.Nullable;
 
-import com.umeng.umcrash.UMCrash;
-
 import java.io.Serializable;
 
 import top.yvyan.guettable.util.CourseUtil;
@@ -72,8 +70,7 @@ public class CETBean implements Serializable, CourseUtil.BeanAttributeUtil.BeanA
         } catch (Exception e) {
             try {
                 return year * 10 + Integer.parseInt(term.substring(4, 5));
-            } catch (Exception e1) {
-                UMCrash.generateCustomLog(e1, "CETBean.getOrder");
+            } catch (Exception ignored) {
             }
         }
         return 0;

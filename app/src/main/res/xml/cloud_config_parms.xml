@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
+        <key>dateUrl</key>
+        <value>https://gitee.com/fireworkwing/resource/raw/master/GuetTable/date.json</value>
+    </entry>
+
+    <entry>
         <key>qunNumber</key>
         <value>879367241</value>
     </entry>
@@ -17,7 +22,7 @@
 
     <entry>
         <key>XUpdateUrl</key>
-        <value>https://gitee.com/fireworkwing/resource/raw/master/GuetTable/update</value>
+        <value>https://gitee.com/fireworkwing/resource/raw/master/GuetTable/update.json</value>
     </entry>
 
     <entry>

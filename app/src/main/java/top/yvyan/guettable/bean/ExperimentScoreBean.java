@@ -2,8 +2,6 @@ package top.yvyan.guettable.bean;
 
 import androidx.annotation.Nullable;
 
-import com.umeng.umcrash.UMCrash;
-
 import java.io.Serializable;
 
 import top.yvyan.guettable.util.CourseUtil;
@@ -79,8 +77,7 @@ public class ExperimentScoreBean implements Serializable, CourseUtil.BeanAttribu
             int year = Integer.parseInt(getTerm().substring(0, 4));
             year = year * 10 + Integer.parseInt(getTerm().substring(10, 11));
             return year * (-1);
-        } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "ExperimentScoreBean.getOrder");
+        } catch (Exception ignored) {
         }
         return 0;
     }

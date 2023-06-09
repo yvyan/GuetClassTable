@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.umeng.cconfig.UMRemoteConfig;
-import com.umeng.umcrash.UMCrash;
 
 import java.util.Objects;
 
@@ -122,8 +121,7 @@ public class AboutActivity extends AppCompatActivity {
                         } else {
                             DialogUtil.showTextDialog(this, "获取失败，请稍后重试。");
                         }
-                    } catch (Exception e) {
-                        UMCrash.generateCustomLog(e, "helpTest");
+                    } catch (Exception ignored) {
                     }
                 });
             }).start();

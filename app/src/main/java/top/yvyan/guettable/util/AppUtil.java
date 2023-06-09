@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.cconfig.UMRemoteConfig;
-import com.umeng.umcrash.UMCrash;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,8 +32,7 @@ public class AppUtil {
             PackageManager pm = context.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
             versioncode = pi.versionCode;
-        } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "getAppVersionCode");
+        } catch (Exception ignored) {
         }
         return versioncode;
     }
@@ -49,8 +47,7 @@ public class AppUtil {
                     .getPackageManager()
                     .getPackageInfo(context.getPackageName(), 0);
             appVersionName = packageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            UMCrash.generateCustomLog(e, "getAppVersionName");
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
         return appVersionName;
     }
@@ -91,8 +88,7 @@ public class AppUtil {
 
     /****************
      *
-     * 发起添加群流程。群号：桂电课程表交流群(963908505) 的 key 为： b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP
-     * 调用 joinQQGroup(b6B5JNbpsHV0scWnS1amN7NH3Ry-LlrP) 即可发起手Q客户端申请加群 桂电课程表交流群(963908505)
+     * 发起添加群流程。
      *
      * @param key 由官网生成的key
      ******************/
@@ -102,8 +98,7 @@ public class AppUtil {
         // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         try {
             context.startActivity(intent);
-        } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "joinQQGroup");
+        } catch (Exception ignored) {
         }
     }
 
