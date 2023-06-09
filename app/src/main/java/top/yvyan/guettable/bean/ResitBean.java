@@ -2,7 +2,6 @@ package top.yvyan.guettable.bean;
 
 import android.annotation.SuppressLint;
 
-import com.umeng.umcrash.UMCrash;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -41,8 +40,7 @@ public class ResitBean implements Serializable, CourseUtil.BeanAttributeUtil.Bea
         }
         try {
             this.date = format.parse(date);
-        } catch (ParseException e) {
-            UMCrash.generateCustomLog(e, "ResitBean");
+        } catch (ParseException ignored) {
         }
         this.room = room;
     }

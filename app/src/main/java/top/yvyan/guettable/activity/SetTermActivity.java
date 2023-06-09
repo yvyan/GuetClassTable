@@ -10,12 +10,25 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.umeng.umcrash.UMCrash;
+import com.google.gson.Gson;
+import com.umeng.cconfig.UMRemoteConfig;
+import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.button.ButtonView;
+import com.xuexiang.xui.widget.dialog.MiniLoadingDialog;
 import com.xuexiang.xui.widget.picker.XSeekBar;
 
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.TermBean;
+import top.yvyan.guettable.bean.autoDate.AutoDate;
+import top.yvyan.guettable.bean.autoDate.DateInfo;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreData;
@@ -34,8 +47,11 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
     private Spinner spinnerYear;
     private Spinner spinnerTerm;
     private XSeekBar seekBar;
+    private ButtonView input;
 
     private GeneralData generalData;
+
+    private MiniLoadingDialog mMiniLoadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +67,16 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
             init();
             initView();
         }
+        Intent thisIntent = getIntent();
+        //自动设置学期&星期
+        boolean auto = thisIntent.getBooleanExtra("auto", false);
+        mMiniLoadingDialog = WidgetUtils.getMiniLoadingDialog(this);
+        if (auto) {
+            //存储日期模式为自动
+            GeneralData.setAutoTerm(true);
+            //请求/解析数据
+            getDate();
+        }
     }
 
     private void init() {
@@ -60,7 +86,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         spinnerYear = findViewById(R.id.spinner_year);
         spinnerTerm = findViewById(R.id.spinner_term);
         ButtonView back = findViewById(R.id.logoff);
-        ButtonView input = findViewById(R.id.input);
+        input = findViewById(R.id.input);
         week_text = findViewById(R.id.week_text);
         back.setOnClickListener(this);
         input.setOnClickListener(this);
@@ -76,8 +102,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         int num = 2018;
         try {
             num = Integer.parseInt(grade);
-        } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "SetTerm.initView.Integer.parseInt");
+        } catch (Exception ignored) {
         }
         setYearSpinner(num);
         //自动选择年度
@@ -166,6 +191,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         int week = seekBar.getSelectedNumber() / 10;
         generalData.setWeek(week);
         generalData.setLastUpdateTime(-1);
+        GeneralData.setAutoTerm(false); //关闭自动学期
         ScheduleData.setUpdate(true);
         ToastUtil.showToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约10秒，请耐心等待，不要滑动页面");
         Intent intent = getIntent();
@@ -173,4 +199,91 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         finish();
     }
 
+    /**
+     * 在线获取学期信息
+     */
+    private void getDate() {
+        new Thread(() -> {
+            //显示loading
+            runOnUiThread(() -> {
+                input.setClickable(false);
+                mMiniLoadingDialog.updateMessage("正在设置学期...");
+                mMiniLoadingDialog.show();
+            });
+            //设置
+            try {
+                int n = setDate();
+                if (n == 0) { //成功
+                    runOnUiThread(() -> {
+                        input.setClickable(true);
+                        mMiniLoadingDialog.dismiss();
+                        ToastUtil.showToast(getApplicationContext(), "正在导入课表，受教务系统影响，最长需要约10秒，请耐心等待，不要滑动页面");
+                    });
+                    //删除已有课程，重新导入
+                    generalData.setLastUpdateTime(-1);
+                    ScheduleData.deleteInputCourse();
+                    ScheduleData.setUpdate(true);
+                    Intent intent = getIntent();
+                    setResult(OK, intent);
+                    finish();
+                    return;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            runOnUiThread(() -> {
+                input.setClickable(true);
+                mMiniLoadingDialog.dismiss();
+            });
+        }).start();
+    }
+
+    /**
+     * 独立出来的请求和解析学期的函数（需要在线程内执行）
+     *
+     * @return 0  成功
+     * -1 失败
+     * @throws IOException 失败
+     */
+    private int setDate() throws IOException {
+        //发送请求
+        String url = UMRemoteConfig.getInstance().getConfigValue("dateUrl");
+        OkHttpClient okHttpClient = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        Response response = okHttpClient.newCall(request).execute();
+        String result = Objects.requireNonNull(response.body()).string();
+        AutoDate autoDate = new Gson().fromJson(result, AutoDate.class);
+        //有更新
+        DateInfo dateInfo = getRightDate(autoDate.getDateList());
+        if (dateInfo != null) { //解析成功
+            //存储信息
+            GeneralData.setStartTime(dateInfo.getStartTime());
+            generalData.setTerm(dateInfo.getTerm());
+            generalData.setAddTerm(dateInfo.getAddTerm());
+            return 0;
+        }
+        return -1;
+    }
+
+    /**
+     * 根据时间获取正确的学期数据
+     *
+     * @param dateInfoList dateInfoList
+     * @return right dateInfo
+     */
+    private DateInfo getRightDate(List<DateInfo> dateInfoList) {
+        Date nowDate = new Date();
+        for (DateInfo dateInfo : dateInfoList) {
+            Date showTime = dateInfo.getShowTime();
+            Date endTime = dateInfo.getEndTime();
+            if (nowDate.after(showTime) && nowDate.before(endTime)) {
+                return dateInfo;
+            }
+        }
+        return null;
+    }
 }

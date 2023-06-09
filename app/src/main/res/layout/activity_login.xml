@@ -134,6 +134,17 @@
             android:text="@string/remember_password"
             android:textColor="@color/theme_black" />
 
+        <CheckBox
+            android:id="@+id/cb_auto_term"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/auto_term"
+            android:textColor="@color/theme_black" />
+
     </RelativeLayout>
 
     <com.xuexiang.xui.widget.textview.supertextview.SuperButton

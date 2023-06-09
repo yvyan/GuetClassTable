@@ -2,8 +2,6 @@ package top.yvyan.guettable.service;
 
 import android.app.Activity;
 
-import com.umeng.umcrash.UMCrash;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -153,8 +151,7 @@ public class AutoUpdate {
                             generalData.getTerm()
                     );
                     if (getClass != null) {
-                        courseBeans = getClass;
-                        ScheduleData.setCourseBeans(courseBeans);
+                        ScheduleData.setCourseBeans(getClass);
                     } else {
                         updateView(92);
                         state = tokenData.refresh();
@@ -170,11 +167,23 @@ public class AutoUpdate {
                                 generalData.getTerm()
                         );
                         if (getClass != null) {
-                            courseBeans = getClass;
-                            ScheduleData.setCourseBeans(courseBeans);
+                            ScheduleData.setCourseBeans(getClass);
                         } else {
                             updateView(3);
                             return;
+                        }
+                    }
+                    //小学期合并到第二学期
+                    String addTerm = generalData.getAddTerm();
+                    if (!addTerm.isEmpty()) {
+                        List<CourseBean> getAddClass = StaticService.getClass(
+                                activity,
+                                cookie,
+                                addTerm
+                        );
+                        if (getAddClass != null && !getAddClass.isEmpty()) {
+                            getClass.addAll(getAddClass);
+                            ScheduleData.setCourseBeans(getClass);
                         }
                     }
                     //获取考试安排
@@ -218,7 +227,6 @@ public class AutoUpdate {
                     updateView(2);
                 }
             } catch (Exception e) {
-                UMCrash.generateCustomLog(e, "AutoUpdate");
                 activity.runOnUiThread(() -> ToastUtil.showToast(activity, "同步失败，请联系开发者"));
                 updateView(0);
             }

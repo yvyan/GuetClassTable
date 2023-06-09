@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.umeng.cconfig.UMRemoteConfig;
-import com.umeng.umcrash.UMCrash;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleSupport;
 
@@ -188,7 +187,6 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 showExam.setVisibility(View.GONE);
             }
         } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "Day.showExamDay");
             showExam.setVisibility(View.GONE);
         }
     }
@@ -290,16 +288,14 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
             autoUpdate.updateView();
             try {
                 currentOrder = getCurrentOrder();
-            } catch (Exception e) {
-                UMCrash.generateCustomLog(e, "getCurrentOrder");
+            } catch (Exception ignored) {
             }
             if (currentOrder != -1) {
                 updateView(currentOrder);
             } else {
                 updateView();
             }
-        } catch (Exception e) {
-            UMCrash.generateCustomLog(e, "DayClassFragmentStart");
+        } catch (Exception ignored) {
         }
     }
 

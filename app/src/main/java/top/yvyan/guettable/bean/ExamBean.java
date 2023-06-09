@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 
-import com.umeng.umcrash.UMCrash;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.model.ScheduleEnable;
 
@@ -96,8 +95,7 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
         }
         try {
             this.date = format.parse(dateString);
-        } catch (ParseException e) {
-            UMCrash.generateCustomLog(e, "ExamInfo.toExamBean");
+        } catch (ParseException ignored) {
         }
         this.number = number;
         this.name = name;

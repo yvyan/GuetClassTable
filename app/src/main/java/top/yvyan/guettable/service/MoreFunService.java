@@ -2,8 +2,6 @@ package top.yvyan.guettable.service;
 
 import android.app.Activity;
 
-import com.umeng.umcrash.UMCrash;
-
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.TokenData;
 
@@ -47,8 +45,7 @@ public class MoreFunService {
                 } else {
                     updateView(2);
                 }
-            } catch (Exception e) {
-                UMCrash.generateCustomLog(e, "MoreFunService");
+            } catch (Exception ignored) {
             }
         }).start();
     }

@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.umeng.cconfig.UMRemoteConfig;
-import com.umeng.umcrash.UMCrash;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -75,8 +74,7 @@ public class Notification {
                             editor.putLong(LAST_SHOW_TIME, System.currentTimeMillis());
                             editor.apply();
                         }
-                    } catch (Exception e) {
-                        UMCrash.generateCustomLog(e, "getNotification");
+                    } catch (Exception ignored) {
                     }
                 }
             });
