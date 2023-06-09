@@ -23,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.tencent.mmkv.MMKV;
+import com.xuexiang.xui.utils.WidgetUtils;
+import com.xuexiang.xui.widget.dialog.MiniLoadingDialog;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +48,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     public static int REQUEST_CODE = 13;
     public static int OK = 10;
 
+    private static final String AUTO_TERM = "login_auto_term";
+
     private Boolean bPwdSwitch = false;
     private Boolean bPwdSwitch2 = false;
     private EditText etAccount;
@@ -54,7 +58,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private SuperButton button;
     private EditText etPwd;
     private ImageView ivPwdSwitch;
-    private View progressBar;
+    private MiniLoadingDialog mMiniLoadingDialog;
 
     private AccountData accountData;
     private MMKV mmkv;
@@ -67,6 +71,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         accountData = AccountData.newInstance(getContext());
         mmkv = MMKV.defaultMMKV();
 
+        mMiniLoadingDialog = WidgetUtils.getMiniLoadingDialog(this);
         ivPwdSwitch = findViewById(R.id.iv_pwd_switch);
         button = findViewById(R.id.login);
         button.setOnClickListener(this);
@@ -76,9 +81,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         cbRememberPwd.setChecked(true);
         cbAutoTerm = findViewById(R.id.cb_auto_term);
         mmkv = MMKV.defaultMMKV();
-        cbAutoTerm.setChecked(mmkv.decodeBool("login_auto_term", true));
+        cbAutoTerm.setChecked(mmkv.decodeBool(AUTO_TERM, true));
         ivPwdSwitch.setOnClickListener(showPwdClickListener());
-        progressBar = findViewById(R.id.progressBar2);
         TextView profileVersion = findViewById(R.id.tv_profile_version);
         profileVersion.setText(AppUtil.getAppVersionName(Objects.requireNonNull(getContext())));
         //获取账号密码
@@ -297,10 +301,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             //保存自动学期设定的状态
             if (cbAutoTerm.isChecked()) {
                 intent.putExtra("auto", true);
-                mmkv.encode("login_auto_term", true);
+                mmkv.encode(AUTO_TERM, true);
             } else {
                 intent.putExtra("auto", false);
-                mmkv.encode("login_auto_term", false);
+                mmkv.encode(AUTO_TERM, false);
             }
             startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
             runOnUiThread(this::setEnClick);
@@ -321,7 +325,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         button.setEnabled(true);
         etAccount.setEnabled(true);
         etPwd.setEnabled(true);
-        progressBar.setVisibility(View.GONE);
+        mMiniLoadingDialog.dismiss();
     }
 
     /**
@@ -332,7 +336,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         button.setEnabled(false);
         etAccount.setEnabled(false);
         etPwd.setEnabled(false);
-        progressBar.setVisibility(View.VISIBLE);
+        mMiniLoadingDialog.updateMessage("正在登录...");
+        mMiniLoadingDialog.show();
     }
 
     private void openUrl(String url) {
@@ -368,5 +373,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     public void activateAccount(View view) {
         openUrl(getContext().getResources().getString(R.string.url_activate_account));
+    }
+
+    public void openCampus(View view) {
+        openUrl(getContext().getResources().getString(R.string.url_smart_campus));
     }
 }

@@ -108,9 +108,10 @@
     <string name="login_fail_getInfo">获取个人信息失败，请稍后重试，请点击右上角问号查看帮助</string>
     <string name="log_change_pwd">即将为您打开修改智慧校园密码的网页，请连接校园网。\n\n 登录成功后，输入原密码和新密码(需要同时包含大小写字母、数字和特殊字符)确认即可。\n\n Tip:本次只会修改智慧校园登录密码，不会修改教务系统的密码，密码修改后可能需要一段儿时间才会生效。</string>
     <string name="login_help">&#160;&#160;&#160;&#160;请输入智慧校园密码进行登录(建议使用校园网进行登录和数据同步！)。
-        \n&#160;&#160;&#160;&#160;请确保使用网页可以正常进入教务系统，由于学校更换系统，所有账号均需要激活后才能使用，请点击“激活账户“按钮进行激活。
-        \n&#160;&#160;&#160;&#160;偶尔学校网络会不稳定或者VPN被关闭，登录失败出现弹窗可以选择“仍然继续”，使用校园网进行数据同步。
-        \n&#160;&#160;&#160;&#160;若您是新生或者尝试后仍然无法解决，请加入QQ群(在关于页面可以一键加群)，我们会帮您解决！</string>
+        \n\n&#160;&#160;&#160;&#160;如果您是新生，请先点击“激活账户”按钮进行账号激活。
+        \n\n&#160;&#160;&#160;&#160;无法登录的同学请先到智慧校园官网进行尝试，正常登录之后再登录课程表，点击上方桂电的大图标可以跳转到智慧校园官网。
+        \n\n&#160;&#160;&#160;&#160;若尝试后仍然无法解决，请加入QQ群(在关于页面可以一键加群)，我们会全力帮您解决！</string>
+    <string name="addTermHelp">关联小学期后，小学期的课程将合并到第二周，您可以方便地查看统一的课表</string>
 
     <string name="user_agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.41</string>
     <string name="cookie_delimiter">"; "</string>
@@ -171,6 +172,7 @@
     <string name="hint_account">请输入学号</string>
     <string name="hint_vpn_password">请输入智慧校园密码</string>
     <string name="remember_password">记住密码</string>
+    <string name="addTerm">关联小学期</string>
     <string name="auto_term">自动设置日期</string>
     <string name="login">登录</string>
     <string name="cancel">取消</string>

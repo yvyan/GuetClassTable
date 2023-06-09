@@ -39,11 +39,11 @@
 
             <ImageView
                 android:layout_width="39dp"
-                android:layout_height="27dp"
+                android:layout_height="39dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="13dp"
-                android:src="@drawable/tab_user"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_sms"
                 tools:ignore="ContentDescription" />
 
             <EditText
@@ -59,7 +59,8 @@
                 android:inputType="none"
                 android:maxLines="1"
                 android:textColorHint="@color/xui_config_color_50_pure_black"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tools:ignore="LabelFor,TextFields" />
 
         </RelativeLayout>
 
@@ -70,11 +71,11 @@
 
             <ImageView
                 android:layout_width="39dp"
-                android:layout_height="27dp"
+                android:layout_height="39dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="13dp"
-                android:src="@drawable/password"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_check_code"
                 tools:ignore="ContentDescription" />
 
             <EditText
