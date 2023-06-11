@@ -52,7 +52,7 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
     public void onNotificationMessageArrived(Context context, MiPushMessage message) {
         mMessage = message.getContent();
         //打印消息方便测试
-        Log.d(TAG, "通知消息是"+message.toString());
+        Log.d(TAG, "通知消息是" + message);
         if(!TextUtils.isEmpty(message.getTopic())) {
             mTopic=message.getTopic();
         } else if(!TextUtils.isEmpty(message.getAlias())) {

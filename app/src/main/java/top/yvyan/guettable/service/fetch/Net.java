@@ -137,7 +137,7 @@ public class Net {
                 if (cookies != null) {
                     cookie_builder.append("; ");
                     for (String cookie_resp : cookies) {
-                        cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1)+" ");
+                        cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1)).append(" ");
                     }
                 }
                 LoginRequest.cookie = cookie_builder.substring(0, cookie_builder.length() - 2);

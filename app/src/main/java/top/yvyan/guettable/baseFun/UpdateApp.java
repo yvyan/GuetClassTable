@@ -1,7 +1,5 @@
 package top.yvyan.guettable.baseFun;
 
-import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
-
 import android.app.Activity;
 
 import com.umeng.cconfig.UMRemoteConfig;
@@ -20,8 +18,9 @@ public class UpdateApp {
      * XUpdate初始化
      *
      * @param activity activity
+     * @param type     0 自动检查更新 1 手动检查更新
      */
-    public static void initXUpdate(Activity activity) {
+    private static void initXUpdate(Activity activity, int type) {
         //设置版本更新出错的监听
         XUpdate.get()
                 .debug(true)
@@ -31,7 +30,7 @@ public class UpdateApp {
                 .param("versionCode", UpdateUtils.getVersionCode(activity))     //设置默认公共请求参数
                 .param("appKey", activity.getPackageName())
                 .setOnUpdateFailureListener(error -> {
-                    if (error.getCode() != CHECK_NO_NEW_VERSION) {          //对不同错误进行处理
+                    if (type != 0) {
                         ToastUtil.showToast(activity, error.toString());
                     }
                 })
@@ -40,11 +39,28 @@ public class UpdateApp {
                 .init(activity.getApplication());
     }
 
-    public static void check(Activity activity) {
+    private static void check(Activity activity, int type) {
         String url = UMRemoteConfig.getInstance().getConfigValue("XUpdateUrl");
-        XUpdate.newBuild(activity)
-                .supportBackgroundUpdate(true)
-                .updateUrl(url)
-                .update();
+        try {
+            XUpdate.newBuild(activity)
+                    .supportBackgroundUpdate(true)
+                    .updateUrl(url)
+                    .update();
+        } catch (Exception ignored) {
+            if (type != 0) {
+                ToastUtil.showToast(activity, "更新功能异常，请稍后再试");
+            }
+        }
+    }
+
+    /**
+     * 检查软件更新
+     *
+     * @param activity activity
+     * @param type     0 自动检查更新 1 手动检查更新
+     */
+    public static void checkUpdate(Activity activity, int type) {
+        initXUpdate(activity, type);
+        check(activity, type);
     }
 }
