@@ -29,7 +29,7 @@ allprojects {
         maven { url 'https://repo.huaweicloud.com/repository/maven' }
         maven { url 'https://jitpack.io' }
         maven { url 'https://repo1.maven.org/maven2/' }
-        maven { url "http://maven.aliyun.com/nexus/content/repositories/releases" }
+        maven { url "https://maven.aliyun.com/nexus/content/repositories/releases" }
     }
 }
 

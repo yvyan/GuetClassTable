@@ -2,7 +2,6 @@ package top.yvyan.guettable.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.umeng.cconfig.UMRemoteConfig;
-
-import java.util.Objects;
 
 import top.yvyan.guettable.MainActivity;
 import top.yvyan.guettable.R;
@@ -210,7 +207,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.person_update:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_update));
-                UpdateApp.check(getActivity());
+                UpdateApp.checkUpdate(getActivity(), 1);
                 break;
             case R.id.person_channel:
                 AppUtil.reportFunc(getContext(), getResources().getString(R.string.person_channel));

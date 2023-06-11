@@ -1,4 +1,4 @@
-package top.yvyan.guettable.bean.autoDate;
+package top.yvyan.guettable.Gson.autoDate;
 
 import java.util.List;
 
