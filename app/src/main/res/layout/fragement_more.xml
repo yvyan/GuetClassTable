@@ -697,7 +697,7 @@
                         </FrameLayout>
 
                         <FrameLayout
-                            android:visibility="invisible"
+                            android:id="@+id/more_ad"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"

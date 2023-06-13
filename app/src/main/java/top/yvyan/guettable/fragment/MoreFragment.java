@@ -73,6 +73,13 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.more_empty_room).setOnClickListener(this);
         view.findViewById(R.id.more_qq_group).setOnClickListener(this);
 
+        View view_ad = view.findViewById(R.id.more_ad);
+        view_ad.setOnClickListener(this);
+        String adGroupKey = UMRemoteConfig.getInstance().getConfigValue("adGroupKey");
+        if (adGroupKey == null || adGroupKey.isEmpty()) {
+            view_ad.setVisibility(View.INVISIBLE);
+        }
+
         return view;
     }
 
@@ -184,7 +191,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             case R.id.more_qq_group:
                 openBrowser(requireContext().getResources().getString(R.string.url_add_group));
                 break;
-
+            case R.id.more_ad:
+                openBrowser(UMRemoteConfig.getInstance().getConfigValue("adGroupKey"));
+                break;
 
             default:
                 ToastUtil.showToast(getContext(), "敬请期待！");
