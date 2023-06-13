@@ -204,7 +204,7 @@ public class GeneralData {
     }
 
     public static boolean isAutoTerm() {
-        return mmkv.decodeBool(AUTO_TERM_OPEN, true);
+        return mmkv.decodeBool(AUTO_TERM_OPEN, false);
     }
 
     public static void setStartTime(Date date) {
