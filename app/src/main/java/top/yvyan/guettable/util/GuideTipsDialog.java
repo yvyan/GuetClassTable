@@ -1,6 +1,7 @@
 package top.yvyan.guettable.util;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,7 +26,6 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.TipInfo;
 
 public class GuideTipsDialog extends BaseDialog implements View.OnClickListener {
-    private static final String TIPS_URL = "https://gitee.com/fireworkwing/resource/raw/master/GuetTable/tips.json";
 
     private List<TipInfo> mTips;
     private int mIndex = -1;
@@ -39,20 +39,22 @@ public class GuideTipsDialog extends BaseDialog implements View.OnClickListener 
     /**
      * 显示提示
      *
-     * @param context 上下文
+     * @param activity 上下文
+     * @param url      URL
      */
-    public static void showTips(final Context context) {
-        showTipsForce(context);
+    public static void showTips(final Activity activity, String url) {
+        showTipsForce(activity, url);
     }
 
     /**
      * 强制显示提示
      *
      * @param context 上下文
+     * @param url     URL
      */
-    public static void showTipsForce(Context context) {
+    public static void showTipsForce(Context context, String url) {
         OkHttpUtils.get()
-                .url(TIPS_URL)
+                .url(url)
                 .build()
                 .execute(new StringCallback() {
                     @Override
