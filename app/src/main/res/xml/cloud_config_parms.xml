@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
+        <key>loginOpenShowUrl</key>
+        <value>https://gitee.com/fireworkwing/resource/raw/master/GuetTable/login/openShow.json
+        </value>
+    </entry>
+
+    <entry>
+        <key>loginHelpUrl</key>
+        <value>https://gitee.com/fireworkwing/resource/raw/master/GuetTable/login/help.json</value>
+    </entry>
+
+    <entry>
         <key>dateUrl</key>
         <value>https://gitee.com/fireworkwing/resource/raw/master/GuetTable/date.json</value>
     </entry>

@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.tencent.mmkv.MMKV;
+import com.umeng.cconfig.UMRemoteConfig;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.dialog.MiniLoadingDialog;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
@@ -42,6 +43,7 @@ import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
+import top.yvyan.guettable.util.GuideTipsDialog;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
@@ -90,6 +92,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             etAccount.setText(accountData.getUsername());
             etPwd.setText(accountData.getPwd());
         }
+        //特殊时期强制提示
+        GuideTipsDialog.showTips(this, UMRemoteConfig.getInstance().getConfigValue("loginOpenShowUrl"));
     }
 
     /**
@@ -368,7 +372,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     public void showHelp(View view) {
-        DialogUtil.showTextDialog(this, getContext().getResources().getString(R.string.login_help));
+        //DialogUtil.showTextDialog(this, getContext().getResources().getString(R.string.login_help));
+        GuideTipsDialog.showTips(this, UMRemoteConfig.getInstance().getConfigValue("loginHelpUrl"));
     }
 
     public void activateAccount(View view) {
