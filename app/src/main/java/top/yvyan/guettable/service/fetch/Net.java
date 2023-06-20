@@ -115,7 +115,7 @@ public class Net {
             String AESKey = listExp.get(0);
             listExp = RegularUtil.getAllSatisfyStr(loginParams.comment, "(?<=name=\"execution\" value=\")(.*?)(?=\")");
             String execution = listExp.get(0);
-            String body = "username=" + account + "&password=" + URLEncoder.encode(AESUtil.CASEncryption(password, AESKey), "UTF-8") + "&captcha=&_eventId=submit&cllt=userNameLogin&dllt=generalLogin&lt=&execution=" + URLEncoder.encode(execution, "UTF-8");
+            String body = "username=" + account + "&password=" + URLEncoder.encode(AESUtil.CASEncryption(password, AESKey), "UTF-8") + "&captcha=&rememberMe=true&_eventId=submit&cllt=userNameLogin&dllt=generalLogin&lt=&execution=" + URLEncoder.encode(execution, "UTF-8");
             HttpConnectionAndCode LoginRequest = Post.post(
                     resources.getString(R.string.url_Authserver),
                     null,
