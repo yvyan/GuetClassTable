@@ -191,7 +191,7 @@ public class Net {
                 null,
                 resources.getString(R.string.user_agent),
                 resources.getString(R.string.SSO_referer),
-                "service=http%3A%2F%2Ficampus.guet.edu.cn%2FGuetAccount%2FCasLogin&reAuthType=3&isMultifactor=true&password=&dynamicCode=" + OTP + "&uuid=&answer1=&answer2=&otpCode=",
+                "service=&reAuthType=3&isMultifactor=true&password=&dynamicCode=" + OTP + "&uuid=&answer1=&answer2=&otpCode=&skipTmpReAuth=true",
                 CASCookie,
                 null,
                 resources.getString(R.string.cookie_delimiter),
