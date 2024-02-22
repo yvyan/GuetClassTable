@@ -18,7 +18,7 @@ import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
-import top.yvyan.guettable.util.UrlReplaceUtil;
+import top.yvyan.guettable.util.VPNUrlUtil;
 
 public class CommFunc {
 
@@ -89,8 +89,8 @@ public class CommFunc {
             final boolean[] noLogin = {false};
             TokenData tokenData = TokenData.newInstance(activity);
             Intent intent = new Intent(activity, WebViewActivity.class);
-            intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getBkjwUrlByVPN(TokenData.isVPN(), "/Login/MainDesktop"));
-            intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getBkjwUrlByVPN(TokenData.isVPN(), "/"));
+            intent.putExtra(WebViewActivity.WEB_URL, VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn/Login/MainDesktop",TokenData.isVPN()));
+            intent.putExtra(WebViewActivity.WEB_SHARE_URL, VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn/",TokenData.isVPN()));
             DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
                 @Override
                 public void onClickYes() {
@@ -123,9 +123,9 @@ public class CommFunc {
                     }
                     WebViewActivity.cleanCash(Objects.requireNonNull(activity));
                 });
-                intent.putExtra(WebViewActivity.WEB_URL, UrlReplaceUtil.getBkjwUrlByVPN(TokenData.isVPN(), "/Login/MainDesktop"));
-                intent.putExtra(WebViewActivity.WEB_SHARE_URL, UrlReplaceUtil.getBkjwUrlByVPN(TokenData.isVPN(), "/"));
-                intent.putExtra(WebViewActivity.WEB_REFERER, UrlReplaceUtil.getBkjwUrlByVPN(TokenData.isVPN(), "/"));
+                intent.putExtra(WebViewActivity.WEB_URL, VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn/Login/MainDesktop",TokenData.isVPN()));
+                intent.putExtra(WebViewActivity.WEB_SHARE_URL, VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn/",TokenData.isVPN()));
+               // intent.putExtra(WebViewActivity.WEB_REFERER, VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn/",TokenData.isVPN()));
                 intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
                 AppUtil.reportFunc(activity, "登录教务-免登录");
                 activity.startActivity(intent);

@@ -123,6 +123,7 @@
             android:layout_marginBottom="4dp"
             android:text="@string/auto_term"
             android:textColor="@color/theme_black"
+            android:visibility="gone"
             tools:ignore="RelativeOverlap" />
 
     </RelativeLayout>

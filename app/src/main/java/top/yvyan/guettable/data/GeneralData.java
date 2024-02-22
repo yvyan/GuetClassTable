@@ -20,6 +20,9 @@ public class GeneralData {
     private static final String TIME = "time";
     private static final String GRADE = "grade";
     private static final String TERM = "term";
+
+    private static final String NEW_TERM = "new_term";
+
     private static final String ADD_TERM = "addTerm";
     private static final String LAST_UPDATE_TIME = "lastUpdateTime";
     private static final String APPLY_PRIVACY = "applyPrivacy";
@@ -40,6 +43,9 @@ public class GeneralData {
     private String grade;
     private String term;
     private String addTerm;
+
+    private String bkjwTestTerm;
+
     private long lastUpdateTime;
     //隐私协议
     private boolean applyPrivacy;
@@ -64,7 +70,7 @@ public class GeneralData {
         time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
         grade = sharedPreferences.getString(GRADE, null);
         term = sharedPreferences.getString(TERM, null);
-        addTerm = sharedPreferences.getString(ADD_TERM, "");
+       // addTerm = sharedPreferences.getString(ADD_TERM, "");
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
         applyPrivacy = sharedPreferences.getBoolean(APPLY_PRIVACY, false);
         widget_theme = sharedPreferences.getString(WIDGET_THEME, "black");
@@ -145,6 +151,7 @@ public class GeneralData {
         editor.putString(TERM, term);
         editor.apply();
     }
+
 
     public String getAddTerm() {
         return addTerm;

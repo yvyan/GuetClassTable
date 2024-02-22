@@ -19,7 +19,7 @@ import top.yvyan.guettable.Http.Post;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.util.AESUtil;
 import top.yvyan.guettable.util.RegularUtil;
-import top.yvyan.guettable.util.UrlReplaceUtil;
+import top.yvyan.guettable.util.VPNUrlUtil;
 
 public class Net {
 
@@ -77,16 +77,16 @@ public class Net {
     /**
      * 获取CAS 登录令牌
      *
-     * @param context  context
-     * @param account  学号
-     * @param password 密码
-     * @param TGTToken CAS-TGT
+     * @param context   context
+     * @param account   学号
+     * @param password  密码
+     * @param TGTToken  CAS-TGT
      * @param MFACookie 2FA二次验证Cookie
      * @return CAS-TGT;
      */
     public static HttpConnectionAndCode getCASToken(Context context, String account, String password, String TGTToken, String MFACookie) {
         StringBuilder cookie_builder = new StringBuilder();
-        String AuthCookie = (MFACookie != null ? MFACookie : "") + (TGTToken != null ? ((MFACookie!=null ? "; " : "")+TGTToken) : "");
+        String AuthCookie = (MFACookie != null ? MFACookie : "") + (TGTToken != null ? ((MFACookie != null ? "; " : "") + TGTToken) : "");
         try {
             Resources resources = context.getResources();
             HttpConnectionAndCode loginParams = Get.get(
@@ -104,9 +104,9 @@ public class Net {
                     10000,
                     null);
             if (loginParams.code != 0) {
-                if(loginParams.code == -7) {
+                if (loginParams.code == -7) {
                     // 已登录或多因子登录验证失效
-                    return new HttpConnectionAndCode(loginParams.c,1,loginParams.comment,loginParams.cookie,loginParams.resp_code);
+                    return new HttpConnectionAndCode(loginParams.c, 1, loginParams.comment, loginParams.cookie, loginParams.resp_code);
                 }
                 return new HttpConnectionAndCode(-5);
             }
@@ -129,7 +129,7 @@ public class Net {
                     null,
                     false,
                     resources.getString(R.string.SSO_context_type));
-            if( LoginRequest.resp_code == 401 ) {
+            if (LoginRequest.resp_code == 401) {
                 return new HttpConnectionAndCode(-8); //密码错误
             }
             if (LoginRequest.code == -7) {
@@ -388,10 +388,10 @@ public class Net {
     public static HttpConnectionAndCode studentInfo(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Post.post(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_student_url)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_student_url), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 null,
                 cookie,
                 "}",
@@ -415,10 +415,10 @@ public class Net {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_table_url)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_table_url), isVPN),
                 param,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -444,10 +444,10 @@ public class Net {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_lab_table_url)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_lab_table_url), isVPN),
                 param,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -473,10 +473,10 @@ public class Net {
         Resources resources = context.getResources();
         String[] param = {"term=" + term};
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_exam_url)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_exam_url), isVPN),
                 param,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -500,10 +500,10 @@ public class Net {
     public static HttpConnectionAndCode getResit(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_resit_url)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_resit_url), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -527,10 +527,10 @@ public class Net {
     public static HttpConnectionAndCode getCET(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_cet_url)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_cet_url), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -554,10 +554,10 @@ public class Net {
     public static HttpConnectionAndCode getExamScore(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_examscore_url)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_examscore_url), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -581,10 +581,10 @@ public class Net {
     public static HttpConnectionAndCode getExperimentScore(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_experimentscore_url)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_experimentscore_url), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -608,10 +608,10 @@ public class Net {
     public static HttpConnectionAndCode updateEffectiveCredits(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Post.post(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_update_effective_credits)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_update_effective_credits), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 null,
                 cookie,
                 "}",
@@ -634,10 +634,10 @@ public class Net {
     public static HttpConnectionAndCode getEffectiveCredits(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_effective_credits)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_effective_credits), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -661,10 +661,10 @@ public class Net {
     public static HttpConnectionAndCode getPlannedCourses(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_planned_credits)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_planned_credits), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -690,10 +690,10 @@ public class Net {
         Resources resources = context.getResources();
         String[] param = {"comm=1%401", "term=".concat(term)};
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_selected_course)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_selected_course), isVPN),
                 param,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -717,10 +717,10 @@ public class Net {
     public static HttpConnectionAndCode getGrades(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_grades_url)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_grades_url), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,
@@ -744,10 +744,10 @@ public class Net {
     public static HttpConnectionAndCode getAllTerms(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_get_terms_url)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_terms_url), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                UrlReplaceUtil.getBkjwUrlByVPN(isVPN, resources.getString(R.string.lan_referer)),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
                 cookie,
                 "]}",
                 null,

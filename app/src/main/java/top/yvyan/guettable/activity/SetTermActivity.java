@@ -98,12 +98,13 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 View show = findViewById(R.id.show_addTerm);
                 View place = findViewById(R.id.show_addTerm_place);
-                if (i == 1) { //第二学期
+                if (false) { //第二学期
                     show.setVisibility(View.VISIBLE);
                     place.setVisibility(View.GONE);
                 } else {
                     show.setVisibility(View.GONE);
                     place.setVisibility(View.VISIBLE);
+                    cb_addTerm.setChecked(false);
                 }
             }
 
