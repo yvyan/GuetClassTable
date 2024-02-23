@@ -291,9 +291,9 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
             } catch (Exception e) {
                 ContentResolver resolver = getContentResolver();
 
-                try {
-                    FileInputStream inputStream = (FileInputStream) resolver.openInputStream(uri);
-                    FileOutputStream outputStream = openFileOutput("userBackground.jpg", MODE_PRIVATE);
+                try(FileInputStream inputStream = (FileInputStream) resolver.openInputStream(uri);
+                    FileOutputStream outputStream = openFileOutput("userBackground.jpg", MODE_PRIVATE)) {
+
 
                     byte[] buffer = new byte[1024];
                     int byteRead;

@@ -33,6 +33,7 @@ import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.bean.SelectedCourseBean;
 import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.util.VPNUrlUtil;
 
 public class StaticService {
 
@@ -68,27 +69,12 @@ public class StaticService {
         return "ERROR0";
     }
 
-    public static String reAuth_Password(Context context, String Password, String CASCookie) {
-        HttpConnectionAndCode response = Net.reAuth_Password(context, Password, CASCookie);
-        if (response.code != 0) {
-            if (response.code == -5) {
-                return "ERROR2";
-            }
-            return "ERROR0";
-        } else {
-            if (response.comment.contains("reAuth_success")) {
-                return response.cookie;
-            }
-            return "ERROR1";
-        }
-    }
-
     /**
      * 验证手机验证码
      *
      * @param context   context
      * @param CASCookie CAS Cookie
-     * @param SMSCode       OTP手机验证码
+     * @param SMSCode   OTP手机验证码
      * @return 多因素身份验证令牌Cookie
      * ERROR0 : 网络错误
      * ERROR1 : 验证码错误
@@ -128,7 +114,7 @@ public class StaticService {
         if (response.code != 0) {
             if (response.code == 1) {
                 String Location = response.c.getHeaderField("location");
-                if (Location.contains("reAuthLoginView.do")) {
+                if (Location.contains("reAuthCheck")) {
                     return "ERROR5;" + TGTToken + "; " + response.cookie;
                 }
                 if (MFACookie != null) {
@@ -145,7 +131,7 @@ public class StaticService {
             String Cookie = response.cookie;
             if (Cookie.contains("TGT-")) {
                 String Location = response.c.getHeaderField("location");
-                if (Location.contains("reAuthLoginView.do")) {
+                if (Location.contains("reAuthCheck")) {
                     return "ERROR5;" + Cookie;
                 }
                 return Cookie;
@@ -156,52 +142,72 @@ public class StaticService {
     }
 
     /**
-     * 获取SSO ST令牌
+     * Convert from Golang
      *
-     * @param context   context
-     * @param CASCookie CAS Cookie
-     * @param service   ST令牌的服务端
-     * @return ST令牌
-     * ERROR0 : 网络错误
-     * ERROR1 : TGT失效
-     * ERROR2 : 需要使用外网网址进行访问 或 TGT失效(上层调用时，若内网返回此错误，
-     * 则先尝试外网，若是TGT失效，则重新获取；若正常获取，则需要将全局网络设置为外网)
+     * @param services
+     * @param CasCookie
+     * @return With Ticket URL AuthURL
+     * ERRORNeedlogin needRelogin
+     * ERRORNetwork errNetwork
      */
-    public static String SSOGetST(Context context, String CASCookie, String service, String MFACookie) {
-        HttpConnectionAndCode response = Net.getSTbyCas(context, CASCookie, service, MFACookie);
-        if (response.code != -7) {
-            if (response.code == -5) {
-                return "ERROR2";
-            }
-            return "ERROR0";
-        } else {
+    public static String loginServerBySSO(Context context,String services, String CasCookie) {
+        HttpConnectionAndCode response = Net.loginServerBySSO(context,services, CasCookie);
+        if (response.resp_code / 100 == 3) {
             String Location = response.c.getHeaderField("location");
-            if (Location.contains("ST-")) {
-                return Location.substring(Location.indexOf("ticket=ST-") + 7);
+            if (Location.contains("reAuthCheck")) {
+                return "ERRORNeedlogin";
             }
-            return "ERROR1";
+            if (Location == "") {
+                return "ERRORNetwork";
+            }
+            return Location;
         }
+        if (response.resp_code / 100 == 2) {
+            return "ERRORNeedlogin";
+        }
+        return "ERRORNetwork";
     }
 
     /**
-     * 通过ST令牌登录VPN
-     *
-     * @param context  context
-     * @param ST       ST令牌
-     * @param VPNToken 用于接收登录后的cookie
-     * @return 登录结果
-     * 0 -- 登录成功
-     * -1 -- 登录失败
-     * -2 -- 发生异常
+     * Convert from Golang
+     * @param context
+     * @param services
+     * @param CASCookie
+     * @param VPNCookie
+     * @param isVPN
+     * @return AuthedCookie
+     * ERRORNeedlogin needRelogin
+     * ERRORNetwork errNetwork
      */
-    public static int loginVPNST(Context context, String ST, String VPNToken) {
-        HttpConnectionAndCode response = Net.loginVPNST(context, ST, VPNToken);
-        if (response.code == 0) {
-            if (response.c.getURL().toString().contains("wengine-vpn-token-login")) {
-                return 0;
-            }
+    public static String authServiceByCas(Context context,String services,String CASCookie, String VPNCookie, Boolean isVPN) {
+        String authURL=loginServerBySSO(context,services,CASCookie);
+        if (authURL.startsWith("ERROR")) {
+            return authURL;
         }
-        return -1;
+        StringBuffer cookie=new StringBuffer();
+        String nextURL=VPNUrlUtil.getVPNUrl(authURL, isVPN);
+        while (true) {;
+            HttpConnectionAndCode response = Net.authService(context, nextURL, isVPN ? VPNCookie : cookie.toString());
+            if (response.resp_code / 100 == 3) {
+                String Location = response.c.getHeaderField("location");
+                if (Location.contains("authserver")) {
+                    return "ERRORNeedlogin";
+                }
+                if (Location.contains("v.guet.edu.cn/login")) {
+                    return "ERRORNeedLoginVPN";
+                }
+                if (response.cookie!="") {
+                    cookie.append(response.cookie+"; ");
+                    nextURL=Location;
+                    continue;
+                }
+            }
+            if (response.cookie!="") {
+                cookie.append(response.cookie);
+                return cookie.toString();
+            }
+            return "ERRORNetwork";
+        }
     }
 
     /**
@@ -221,52 +227,6 @@ public class StaticService {
             }
         }
         return -1;
-    }
-
-    /**
-     * 通过ST令牌登录教务系统(VPN)
-     *
-     * @param ST       ST令牌
-     * @param VPNToken VPNToken
-     * @return 登录结果
-     * 0 -- 登录成功
-     * -1 -- VPN登录失败
-     * -2 -- 教务登录失败
-     * -3 -- 发生异常
-     */
-    public static int loginBkjwVPNST(Context context, String ST, String VPNToken) {
-        HttpConnectionAndCode response = Net.loginBkjwVPNST(context, ST, VPNToken);
-        if (response.code == 0) {
-            return 0;
-        }
-        return -1;
-    }
-
-    /**
-     * 通过ST令牌登录教务系统(内网)
-     *
-     * @param context context
-     * @param ST      ST令牌
-     * @param session 用于接收登录后的cookie
-     * @return 登录结果
-     * 0 -- 登录成功
-     * -1 -- 登录失败
-     * -2 -- 网络错误
-     */
-    public static int loginBkjw(Context context, String ST, StringBuilder session) {
-        int state;
-        HttpConnectionAndCode login_res = Net.loginBkjwST(context, ST, session);
-        if (login_res.code != 0) { //登录失败
-            session.delete(0, session.length());
-            state = -2;
-        } else { //登录成功
-            if (login_res.comment.contains("统一身份认证平台")) {
-                state = -1;
-            } else {
-                state = 0;
-            }
-        }
-        return state;
     }
 
     /**

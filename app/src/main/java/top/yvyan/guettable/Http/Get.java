@@ -113,7 +113,7 @@ public class Get {
                         cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1) + " ");
                     }
                 }
-                return new HttpConnectionAndCode(cnt, -7, "", cookie_builder.substring(0, cookie_builder.length() - 2), resp_code);
+                return new HttpConnectionAndCode(cnt, -7, "",  cookie_builder.length() == 0 ? "" : cookie_builder.substring(0, cookie_builder.length() - 2), resp_code);
             }
             List<String> encodings = cnt.getHeaderFields().get("content-encoding");
             if (resp_code < 400) {
@@ -154,26 +154,14 @@ public class Get {
         //get cookie from server
         String set_cookie = null;
         if (cookie_delimiter != null) {
-            CookieManager cookieman = new CookieManager();
             StringBuilder cookie_builder = new StringBuilder();
-            //getHeaderFields() returns the header fields of response
             List<String> cookies = cnt.getHeaderFields().get("Set-Cookie");
             if (cookies != null) {
                 for (String cookie_resp : cookies) {
-                    cookieman.getCookieStore().add(null, HttpCookie.parse(cookie_resp).get(0));
+                    cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1) + " ");
                 }
             }
-            if (cookieman.getCookieStore().getCookies().size() > 0) {
-                List<HttpCookie> cookieList = cookieman.getCookieStore().getCookies();
-                List<String> cookieStringList = new LinkedList<>();
-                for (HttpCookie httpCookie : cookieList) {
-                    String str = httpCookie.getName() + "=" + httpCookie.getValue();
-                    cookieStringList.add(str);
-                }
-                String cookie_join = TextUtils.join(cookie_delimiter, cookieStringList);
-                cookie_builder.append(cookie_join);
-            }
-            set_cookie = cookie_builder.toString();
+            set_cookie = cookie_builder.length() == 0 ? "" : cookie_builder.substring(0, cookie_builder.length() - 2);
         }
 
         //do not disconnect, keep alive

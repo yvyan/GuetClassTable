@@ -299,20 +299,20 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 .url(url)
                 .get()
                 .build();
-
-        Response response = okHttpClient.newCall(request).execute();
-        String result = Objects.requireNonNull(response.body()).string();
-        AutoDate autoDate = new Gson().fromJson(result, AutoDate.class);
-        //有更新
-        DateInfo dateInfo = getRightDate(autoDate.getDateList());
-        if (dateInfo != null) { //解析成功
-            //存储信息
-            GeneralData.setStartTime(dateInfo.getStartTime());
-            generalData.setTerm(dateInfo.getTerm());
-            generalData.setAddTerm(dateInfo.getAddTerm());
-            return 0;
+        try(Response response = okHttpClient.newCall(request).execute()) {
+            String result = Objects.requireNonNull(response.body()).string();
+            AutoDate autoDate = new Gson().fromJson(result, AutoDate.class);
+            //有更新
+            DateInfo dateInfo = getRightDate(autoDate.getDateList());
+            if (dateInfo != null) { //解析成功
+                //存储信息
+                GeneralData.setStartTime(dateInfo.getStartTime());
+                generalData.setTerm(dateInfo.getTerm());
+                generalData.setAddTerm(dateInfo.getAddTerm());
+                return 0;
+            }
+            return -1;
         }
-        return -1;
     }
 
     /**

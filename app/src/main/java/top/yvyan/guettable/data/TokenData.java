@@ -78,6 +78,9 @@ public class TokenData {
         //isVPN = Net.testNet(context) != 0;
         return VPNToken;
     }
+    public String getCASCookie() {
+        return TGTToken + (MFACookie=="" ? "" : "; "+MFACookie);
+    }
 
     @SuppressLint("CommitPrefEdits")
     private TokenData(Context context) {
@@ -144,54 +147,50 @@ public class TokenData {
      */
     private int loginBySmart() {
         //尝试获取教务系统ST
-        int n;
-        String ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), MFACookie);
-        if (!ST_BKJW.contains("ST-")) { // TGT失效
-            n = refreshTGT();
-            if (n != 0) {
-                return n;
-            }
-            ST_BKJW = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_bkjw), MFACookie);
-            if (!ST_BKJW.contains("ST-")) {
-                return -2;
-            }
-        }
-
         if (isVPN) { //外网
             //获取VPN的token
-            String VPNTokenStr = Net.getVPNToken(context);
-            if (VPNTokenStr != null) { //保存token
+            String VPNTokenStr = StaticService.authServiceByCas(context,"https://v.guet.edu.cn/login?cas_login=true",getCASCookie(),"",isVPN);
+            if(VPNTokenStr.startsWith("ERROR")) {
+                if(VPNTokenStr == "ERRORNeedlogin") {
+                    int n;
+                    if ((n = refreshTGT())!=0) {
+                        return n;
+                    };
+                    VPNTokenStr = StaticService.authServiceByCas(context,"https://v.guet.edu.cn/login?cas_login=true",getCASCookie(),"",isVPN);
+                    if(VPNTokenStr.startsWith("ERROR")) {
+                        return -2;
+                    }
+                }
+            }
+            if (VPNTokenStr != null) {
                 setVPNToken(VPNTokenStr);
-            } else {
+            }
+
+            VPNTokenStr = StaticService.authServiceByCas(context,"https://bkjw.guet.edu.cn",getCASCookie(),VPNTokenStr,isVPN);
+            if(VPNTokenStr.startsWith("ERROR")) {
                 return -2;
             }
-            //获取VPN-ST
-            String ST_VPN = StaticService.SSOGetST(context, TGTToken, context.getResources().getString(R.string.service_vpn), MFACookie);
-            if (!ST_VPN.contains("ST-")) {
-                return -2;
-            }
-            n = StaticService.loginVPNST(context, ST_VPN, VPNTokenStr);
-            if (n != 0) {
-                n = StaticService.loginVPNST(context, ST_VPN, VPNTokenStr);
-            }
-            if (n != 0) {
-                return n;
-            }
-            n = StaticService.loginBkjwVPNST(context, ST_BKJW, VPNToken);
-            if (n != 0) {
-                n = StaticService.loginBkjwVPNST(context, ST_BKJW, VPNToken);
-            }
-            return n;
+            return 0;
 
         } else { //内网
-            StringBuilder cookie_builder = new StringBuilder();
-            int state = StaticService.loginBkjw(context, ST_BKJW, cookie_builder);
-            if (state == 0) {
-                setBkjwCookie(cookie_builder.toString());
-                return 0;
-            } else {
-                return state;
+            String BkjwCookieStr = StaticService.authServiceByCas(context,"https://v.guet.edu.cn/login?cas_login=true",getCASCookie(),"",isVPN);
+            if(BkjwCookieStr.startsWith("ERROR")) {
+                if(BkjwCookieStr == "ERRORNeedlogin") {
+                    int n;
+                    if ((n = refreshTGT())!=0) {
+                        return n;
+                    };
+                    BkjwCookieStr = StaticService.authServiceByCas(context,"https://v.guet.edu.cn/login?cas_login=true",getCASCookie(),"",isVPN);
+                    if(BkjwCookieStr.startsWith("ERROR")) {
+                        return -2;
+                    }
+                }
             }
+            if (BkjwCookieStr != null) {
+                setBkjwCookie(BkjwCookieStr);
+                return 0;
+            }
+            return -2;
         }
     }
 
@@ -319,29 +318,9 @@ public class TokenData {
         }
     }
 
-    /**
-     * bypass 2FA
-     */
-    private int reAuth_Password(String password, String CASCookie) {
-        try {
-            String MultiFactorAuth = StaticService.reAuth_Password(context, password, CASCookie);
-            if (MultiFactorAuth.contains("ERROR")) {
-                return -1;
-            } else {
-                setMFACookie(MultiFactorAuth);
-            }
-            return 0;
-        } catch (Exception ignore) {
-            return 0;
-        }
-    }
 
     public int setVPNCASCookie() {
         return (MFACookie != null ? StaticService.CookieSet(context, "cas.guet.edu.cn", "/authserver/login", MFACookie, VPNToken) : 0) | StaticService.CookieSet(context, "cas.guet.edu.cn", "/authserver/login", TGTToken, VPNToken);
-    }
-
-    public String getCASCookie() {
-        return (MFACookie != null ? MFACookie : "") + (TGTToken != null ? ((MFACookie != null ? "; " : "") + TGTToken) : "");
     }
 
     public String getTGTToken() {

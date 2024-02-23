@@ -174,6 +174,7 @@ public class AutoUpdate {
                         }
                     }
                     //小学期合并到第二学期
+                    /*
                     String addTerm = generalData.getAddTerm();
                     if (!addTerm.isEmpty()) {
                         List<CourseBean> getAddClass = StaticService.getClass(
@@ -185,7 +186,7 @@ public class AutoUpdate {
                             getClass.addAll(getAddClass);
                             ScheduleData.setCourseBeans(getClass);
                         }
-                    }
+                    }*/
                     //获取考试安排
                     updateView(94);
                     List<ExamBean> examBeans = StaticService.getExam(
@@ -227,6 +228,7 @@ public class AutoUpdate {
                     updateView(2);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 activity.runOnUiThread(() -> ToastUtil.showToast(activity, "同步失败，请联系开发者"));
                 updateView(0);
             }

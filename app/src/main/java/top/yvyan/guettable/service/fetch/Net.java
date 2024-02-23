@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -39,39 +41,12 @@ public class Net {
                 .url(url)
                 .build();
         final Call call = okHttpClient.newCall(request);
-        try {
-            Response response = call.execute();
+        try ( Response response = call.execute()){
             return response.code();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return -1;
-    }
-
-    /**
-     * 获取VPNToken
-     *
-     * @param context context
-     * @return VPNToken
-     */
-    public static String getVPNToken(Context context) {
-        Resources resources = context.getResources();
-        HttpConnectionAndCode get_res = Get.get(
-                resources.getString(R.string.vpn_url),
-                null,
-                resources.getString(R.string.user_agent),
-                resources.getString(R.string.vpn_refer),
-                null,
-                null,
-                resources.getString(R.string.cookie_delimiter),
-                null,
-                null,
-                true,
-                2000,
-                2000,
-                null
-        );
-        return get_res.cookie;
     }
 
     /**
@@ -202,69 +177,57 @@ public class Net {
     }
 
     /**
-     * 认证手机验证码
+     * 使用 SSO 服务器认证服务
      *
-     * @param context   context
+     * @param service  要认证的服务
      * @param CASCookie CAS Cookie
      * @return Response
      */
-    public static HttpConnectionAndCode reAuth_Password(Context context, String password, String CASCookie) {
+    public static HttpConnectionAndCode loginServerBySSO(Context context,String service, String CASCookie) {
         Resources resources = context.getResources();
         try {
-            HttpConnectionAndCode MFAParams = Get.get(
-                    resources.getString(R.string.url_ReAuth_Param),
+            return Get.get(
+                    "https://cas.guet.edu.cn/authserver/login?service=" + URLEncoder.encode(service, "utf-8"),
                     null,
                     resources.getString(R.string.user_agent),
                     resources.getString(R.string.SSO_referer),
-                    CASCookie,
-                    null,
-                    resources.getString(R.string.cookie_delimiter),
-                    null,
-                    null,
-                    null,
-                    null,
-                    10000,
-                    null);
-            if (MFAParams.code != 0) {
-                return new HttpConnectionAndCode(0);
-            }
-            ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(MFAParams.comment, "(?<=\"pwdEncryptSalt\":\")(\\w+)(?=\")");
-            String AESKey = listExp.get(0);
-
-            return Post.post(
-                    resources.getString(R.string.url_ReAuth),
-                    null,
-                    resources.getString(R.string.user_agent),
-                    resources.getString(R.string.SSO_referer),
-                    "service=http%3A%2F%2Ficampus.guet.edu.cn%2FGuetAccount%2FCasLogin&reAuthType=2&isMultifactor=true&password=" + URLEncoder.encode(AESUtil.CASEncryption(password, AESKey), "UTF-8") + "&dynamicCode=&uuid=&answer1=&answer2=&otpCode=",
                     CASCookie,
                     null,
                     resources.getString(R.string.cookie_delimiter),
                     null,
                     null,
                     false,
-                    resources.getString(R.string.SSO_context_type));
-        } catch (Exception ignored) {
+                    null,
+                    3000,
+                    null);
+        } catch (Exception e) {
+            return null;
         }
-        return new HttpConnectionAndCode(0);
     }
 
-    public static HttpConnectionAndCode loginVPNST(Context context, String ST, String VPNToken) {
+    /**
+     * 请求认证地址获取认证Cookie
+     *
+     * @param authurl 认证URL
+     * @param cookie 传递的cookie
+     * @return Response
+     */
+    public static HttpConnectionAndCode authService(Context context,String authurl, String cookie) {
         Resources resources = context.getResources();
-        return Get.get(
-                "https://v.guet.edu.cn/login?cas_login=true&ticket=" + ST,
-                null,
-                resources.getString(R.string.user_agent),
-                resources.getString(R.string.SSO_referer),
-                VPNToken,
-                null,
-                resources.getString(R.string.cookie_delimiter),
-                null,
-                null,
-                null,
-                null,
-                3000,
-                null);
+            return Get.get(
+                    authurl,
+                    null,
+                    resources.getString(R.string.user_agent),
+                    resources.getString(R.string.SSO_referer),
+                    cookie,
+                    null,
+                    resources.getString(R.string.cookie_delimiter),
+                    null,
+                    null,
+                    false,
+                    null,
+                    3000,
+                    null);
     }
 
     /**
@@ -300,24 +263,6 @@ public class Net {
         return new HttpConnectionAndCode(-1);
     }
 
-    public static HttpConnectionAndCode loginBkjwVPNST(Context context, String ST, String VPNToken) {
-        Resources resources = context.getResources();
-        return Get.get(
-                "https://v.guet.edu.cn/http/77726476706e69737468656265737421f2fc4b8b69377d556a468ca88d1b203b?ticket=" + ST,
-                null,
-                resources.getString(R.string.user_agent),
-                "https://v.guet.edu.cn",
-                VPNToken,
-                null,
-                resources.getString(R.string.cookie_delimiter),
-                null,
-                null,
-                true,
-                null,
-                3000,
-                null);
-    }
-
     /**
      * 获取SSO ST令牌 新版CAS
      *
@@ -342,39 +287,6 @@ public class Net {
                 null,
                 10000,
                 null);
-    }
-
-    /**
-     * 通过ST令牌登录教务系统(内网)
-     *
-     * @param context context
-     * @param ST      ST令牌
-     * @param session 用于接收登录后的cookie
-     * @return 登录状态
-     */
-    public static HttpConnectionAndCode loginBkjwST(Context context, String ST, StringBuilder session) {
-        Resources resources = context.getResources();
-        String[] param = {"ticket=" + ST};
-        HttpConnectionAndCode login_res = Get.get(
-                resources.getString(R.string.SSO_bkjw),
-                param,
-                resources.getString(R.string.user_agent),
-                resources.getString(R.string.SSO_referer),
-                null,
-                "]}",
-                resources.getString(R.string.cookie_delimiter),
-                null,
-                null,
-                null,
-                null,
-                5000,
-                resources.getString(R.string.SSO_context_type)
-        );
-        if (login_res.code == 0) {
-            assert session != null;
-            session.append(login_res.cookie);
-        }
-        return login_res;
     }
 
     /**

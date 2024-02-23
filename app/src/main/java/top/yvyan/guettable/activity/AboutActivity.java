@@ -114,7 +114,7 @@ public class AboutActivity extends AppCompatActivity {
                             //获取剪贴板管理器：
                             ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                             // 创建普通字符型ClipData
-                            ClipData mClipData = ClipData.newPlainText("Label", tokenData.getCookie());
+                            ClipData mClipData = ClipData.newPlainText("Label", tokenData.getCASCookie());
                             // 将ClipData内容放到系统剪贴板里。
                             cm.setPrimaryClip(mClipData);
                             DialogUtil.showTextDialog(this, "感谢协助，凭证复制成功，您现在可以发送给开发者了！");

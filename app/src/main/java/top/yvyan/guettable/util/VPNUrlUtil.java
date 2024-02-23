@@ -29,6 +29,9 @@ public class VPNUrlUtil {
         try {
             Log.d("url", src);
             URL url = new URL(src);
+            if (url.getHost().equals("v.guet.edu.cn")) {
+                return src;
+            }
             byte[] key = vpnKey.getBytes(StandardCharsets.UTF_8);
             SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
             IvParameterSpec Iv = new IvParameterSpec(vpnIV.getBytes(StandardCharsets.UTF_8));
@@ -36,7 +39,7 @@ public class VPNUrlUtil {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, Iv);
             byte[] Encrypted = cipher.doFinal(url.getHost().getBytes(StandardCharsets.UTF_8));
             String HexResult = bytesToHex(vpnKey.getBytes(StandardCharsets.UTF_8)) + bytesToHex(Encrypted);
-            String ret = "https://v.guet.edu.cn/" + url.getProtocol() + "/" + HexResult + url.getPath() + (url.getQuery() == null ? "" : "?" + url.getQuery());
+            String ret = "https://v.guet.edu.cn/" + url.getProtocol() + "/" + HexResult + ("".equals(url.getPath()) ? "/":url.getPath()) + ("".equals(url.getQuery())  ? "" : "?" + url.getQuery());
             Log.d("url2", ret);
             return ret;
         } catch (Exception e) {
