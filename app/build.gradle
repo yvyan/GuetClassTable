@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "top.yvyan.guettable"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 55 //记得补丁版本号归零(patch_version)
-        versionName "5.3.0"
+        targetSdkVersion 33
+        versionCode 56 //记得补丁版本号归零(patch_version)
+        versionName "5.3.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         android.buildFeatures.dataBinding = true

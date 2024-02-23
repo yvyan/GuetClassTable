@@ -42,7 +42,7 @@
     <string name="lan_get_effective_credits">/student/Getyxxf</string>
     <string name="lan_get_planned_credits">/student/getplancj</string>
 
-    <string name="url_smart_campus">https://pcportal.guet.edu.cn/</string>
+    <string name="url_smart_campus">https://pcportal.guet.edu.cn/sopplus/_web/customized/login.jsp</string>
     <string name="url_graduation_project">https://co2.cnki.net/Login.html?dp=gliet&amp;r=1640591310211</string>
     <string name="url_vpn">https://v.guet.edu.cn/</string>
     <string name="url_lijiang">http://www.gxljxt.cn/</string>
