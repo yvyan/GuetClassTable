@@ -27,6 +27,7 @@ import java.util.List;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.activity.AddCourseActivity;
 import top.yvyan.guettable.activity.DetailActivity;
+import top.yvyan.guettable.adapter.DateBuildAdapter;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.DetailClassData;
@@ -147,6 +148,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .maxSlideItem(12)
                 .monthWidthDp(18)
                 .itemHeight(DensityUtil.dip2px(requireContext(), singleSettingData.getItemLength()))
+                .callback(new DateBuildAdapter())
                 .callback(new OnItemBuildAdapter() {
                     @Override
                     public String getItemText(Schedule schedule, boolean isThisWeek) {

@@ -24,7 +24,7 @@ public class ClassTableNew {
         public CourseBean toCourseBean() {
             CourseBean courseBean = new CourseBean();
             String[] weekRange=weeksStr.split("~");
-            courseBean.setCourse(lessonCode, courseName, room,parseInt(weekRange[0]) , parseInt(weekRange.length==1 ? weekRange[0]:weekRange[1]), weekday, ((startUnit+1)/2), courseName, "");
+            courseBean.setCourse(lessonCode, courseName, room,parseInt(weekRange[0]) , parseInt(weekRange.length==1 ? weekRange[0]:weekRange[1]), weekday, ((startUnit+1)/2), String.join(" ",teachers), "");
             return courseBean;
         }
     }

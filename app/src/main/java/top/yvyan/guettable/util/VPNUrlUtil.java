@@ -39,7 +39,7 @@ public class VPNUrlUtil {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, Iv);
             byte[] Encrypted = cipher.doFinal(url.getHost().getBytes(StandardCharsets.UTF_8));
             String HexResult = bytesToHex(vpnKey.getBytes(StandardCharsets.UTF_8)) + bytesToHex(Encrypted);
-            String ret = "https://v.guet.edu.cn/" + url.getProtocol() + "/" + HexResult + ("".equals(url.getPath()) ? "/":url.getPath()) + ("".equals(url.getQuery())  ? "" : "?" + url.getQuery());
+            String ret = "https://v.guet.edu.cn/" + url.getProtocol() + "/" + HexResult + (("".equals(url.getPath())||url.getPath()==null) ? "/":url.getPath()) + (url.getQuery()==null  ? "" : "?" + url.getQuery());
             Log.d("url2", ret);
             return ret;
         } catch (Exception e) {

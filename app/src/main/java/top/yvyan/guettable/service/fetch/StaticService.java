@@ -282,17 +282,27 @@ public class StaticService {
      * @return 理论课程列表
      */
     public static List<CourseBean> getClassNew(Context context, String cookie, String term) {
-        List<CourseBean> courseBeans = new ArrayList<>();
-        int semesterId=getSemesterIdNew(context,cookie,term);
-        HttpConnectionAndCode classTable = Net.getClassTableNew(context,semesterId, cookie, TokenData.isVPN());
-        if(classTable.resp_code==200){
-            ClassTableNew table=new Gson().fromJson(classTable.comment, ClassTableNew.class);
-            ClassTableNew.studentTableVms maintable = table.studentTableVms.get(0);
-            List<ClassTableNew.ClassTable> lessions = maintable.activities;
-            for (ClassTableNew.ClassTable lession:lessions) {
-                courseBeans.add(lession.toCourseBean());
+        try {
+            List<CourseBean> courseBeans = new ArrayList<>();
+            int semesterId = getSemesterIdNew(context, cookie, term);
+            if (semesterId==-1) {
+                return null;
             }
-            return courseBeans;
+            HttpConnectionAndCode classTable = Net.getClassTableNew(context, semesterId, cookie, TokenData.isVPN());
+            if (classTable.resp_code == 200) {
+                ClassTableNew table = new Gson().fromJson(classTable.comment, ClassTableNew.class);
+                ClassTableNew.studentTableVms maintable = table.studentTableVms.get(0);
+                List<ClassTableNew.ClassTable> lessions = maintable.activities;
+                for (ClassTableNew.ClassTable lession : lessions) {
+                    courseBeans.add(lession.toCourseBean());
+                }
+                if (courseBeans.size()==0) {
+                    return null;
+                }
+                return courseBeans;
+            }
+        } catch (Exception e){
+
         }
         return null;
     }
@@ -310,13 +320,13 @@ public class StaticService {
                 for (Semsters s:semsterList) {
                     if(s.toString().equals(term)) {
                         semesterId=s.id;
-                        break;
+                        return semesterId;
                     }
                 }
-                return semesterId;
+                return -1;
             }
         }
-        return 0;
+        return -1;
      }
 
     /**
