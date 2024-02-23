@@ -148,7 +148,8 @@ public class AutoUpdate {
                     List<CourseBean> getClass = StaticService.getClassNew(
                             activity,
                             cookie,
-                            generalData.getTerm()
+                            generalData.getTerm(),
+                            GeneralData.isAutoTerm()
                     );
                     if (getClass != null) {
                         ScheduleData.setCourseBeans(getClass);
@@ -164,7 +165,8 @@ public class AutoUpdate {
                         getClass = StaticService.getClassNew(
                                 activity,
                                 cookie,
-                                generalData.getTerm()
+                                generalData.getTerm(),
+                                GeneralData.isAutoTerm()
                         );
                         if (getClass != null) {
                             ScheduleData.setCourseBeans(getClass);

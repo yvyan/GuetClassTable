@@ -62,6 +62,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.more_cet).setOnClickListener(this);
 
         view.findViewById(R.id.more_url_bkjw).setOnClickListener(this);
+        view.findViewById(R.id.more_url_bkjwtest).setOnClickListener(this);
         view.findViewById(R.id.more_url_vpn).setOnClickListener(this);
         view.findViewById(R.id.more_url_campus).setOnClickListener(this);
         view.findViewById(R.id.more_url_lijiang).setOnClickListener(this);

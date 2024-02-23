@@ -26,17 +26,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import top.yvyan.guettable.Gson.autoDate.AutoDate;
-import top.yvyan.guettable.Gson.autoDate.DateInfo;
+import top.yvyan.guettable.Gson.CurrentSemester;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.AccountData;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.data.ScheduleData;
+import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
 
@@ -91,7 +89,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         spinnerYear = findViewById(R.id.spinner_year);
         spinnerTerm = findViewById(R.id.spinner_term);
         cb_addTerm = findViewById(R.id.cb_addTerm);
-        cb_addTerm.setChecked(true);
+        cb_addTerm.setChecked(false);
         //显示&隐藏“关联小学期”
         spinnerTerm.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -274,7 +272,7 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                     finish();
                     return;
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             runOnUiThread(() -> {
@@ -289,49 +287,16 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
      *
      * @return 0  成功
      * -1 失败
-     * @throws IOException 失败
      */
-    private int setDate() throws IOException {
-        //发送请求
-        String url = UMRemoteConfig.getInstance().getConfigValue("dateUrl");
-        OkHttpClient okHttpClient = new OkHttpClient();
-        final Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
-        try(Response response = okHttpClient.newCall(request).execute()) {
-            String result = Objects.requireNonNull(response.body()).string();
-            AutoDate autoDate = new Gson().fromJson(result, AutoDate.class);
-            //有更新
-            DateInfo dateInfo = getRightDate(autoDate.getDateList());
-            if (dateInfo != null) { //解析成功
-                //存储信息
-                GeneralData.setStartTime(dateInfo.getStartTime());
-                generalData.setTerm(dateInfo.getTerm());
-                generalData.setAddTerm(dateInfo.getAddTerm());
-                return 0;
-            }
-            return -1;
-        }
+    private int setDate() {
+        TokenData tokenData = TokenData.newInstance(this);
+        CurrentSemester semester = StaticService.getSemester(this, tokenData.getbkjwTestCookie());
+        if (semester == null) return -1;
+        generalData.setTerm(semester.toString());
+        generalData.setStartTime(semester.getStartTime());
+        return 0;
     }
 
-    /**
-     * 根据时间获取正确的学期数据
-     *
-     * @param dateInfoList dateInfoList
-     * @return right dateInfo
-     */
-    private DateInfo getRightDate(List<DateInfo> dateInfoList) {
-        Date nowDate = new Date();
-        for (DateInfo dateInfo : dateInfoList) {
-            Date showTime = dateInfo.getShowTime();
-            Date endTime = dateInfo.getEndTime();
-            if (nowDate.after(showTime) && nowDate.before(endTime)) {
-                return dateInfo;
-            }
-        }
-        return null;
-    }
 
     /**
      * 关联小学期的提示

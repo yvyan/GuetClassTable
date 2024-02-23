@@ -303,7 +303,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             generalData.setGrade(studentInfo.getGrade());
             Intent intent = new Intent(this, SetTermActivity.class);
             //保存自动学期设定的状态
-            if (cbAutoTerm.isChecked()&&false) {
+            if (cbAutoTerm.isChecked()) {
                 intent.putExtra("auto", true);
                 mmkv.encode(AUTO_TERM, true);
             } else {

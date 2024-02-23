@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:text="@string/login_2fa_smscode"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/phone_hit"

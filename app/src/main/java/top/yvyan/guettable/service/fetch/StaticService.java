@@ -16,6 +16,7 @@ import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.CET;
 import top.yvyan.guettable.Gson.ClassTable;
 import top.yvyan.guettable.Gson.ClassTableNew;
+import top.yvyan.guettable.Gson.CurrentSemester;
 import top.yvyan.guettable.Gson.EffectiveCredit;
 import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamScore;
@@ -281,10 +282,10 @@ public class StaticService {
      * @param term    学期
      * @return 理论课程列表
      */
-    public static List<CourseBean> getClassNew(Context context, String cookie, String term) {
+    public static List<CourseBean> getClassNew(Context context, String cookie, String term,boolean isAutoTerm) {
         try {
             List<CourseBean> courseBeans = new ArrayList<>();
-            int semesterId = getSemesterIdNew(context, cookie, term);
+            int semesterId = getSemesterIdNew(context, cookie, term,isAutoTerm);
             if (semesterId==-1) {
                 return null;
             }
@@ -307,28 +308,52 @@ public class StaticService {
         return null;
     }
 
-    public static int getSemesterIdNew(Context context, String cookie, String term) {
+    public static int getSemesterIdNew(Context context, String cookie, String term,boolean isAutoTerm) {
         HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
         if(classTableIndex.resp_code==200){
-            Pattern pattern = Pattern.compile("var semesters = JSON.parse\\([.\n][^']*'([^']*)'");
-            Matcher matcher = pattern.matcher(classTableIndex.comment);
-            if(matcher.find()) {
-                String semesters="\""+matcher.group(1)+"\"";
-                semesters=new Gson().fromJson(semesters,String.class);
-                List<Semsters> semsterList = new Gson().fromJson(semesters, new TypeToken<List<Semsters>>(){}.getType());
-                int semesterId=0;
-                for (Semsters s:semsterList) {
-                    if(s.toString().equals(term)) {
-                        semesterId=s.id;
-                        return semesterId;
+            if(!isAutoTerm) {
+                Pattern pattern = Pattern.compile("var semesters = JSON.parse\\([.\n][^']*'([^']*)'");
+                Matcher matcher = pattern.matcher(classTableIndex.comment);
+                if (matcher.find()) {
+                    String semesters = "\"" + matcher.group(1) + "\"";
+                    semesters = new Gson().fromJson(semesters, String.class);
+                    List<Semsters> semsterList = new Gson().fromJson(semesters, new TypeToken<List<Semsters>>() {
+                    }.getType());
+                    int semesterId = 0;
+                    for (Semsters s : semsterList) {
+                        if (s.toString().equals(term)) {
+                            semesterId = s.id;
+                            return semesterId;
+                        }
                     }
+                    return -1;
                 }
-                return -1;
+            } else {
+                Pattern pattern = Pattern.compile("currentSemester = ([^;]+);");
+                Matcher matcher = pattern.matcher(classTableIndex.comment);
+                if (matcher.find()) {
+                    String currentSemesters = matcher.group(1).replace("'","\"");
+                    CurrentSemester semester = new Gson().fromJson(currentSemesters,CurrentSemester.class);
+                    return semester.id;
+                }
             }
         }
         return -1;
      }
 
+    public static CurrentSemester getSemester(Context context, String cookie) {
+        HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
+        if(classTableIndex.resp_code==200) {
+            Pattern pattern = Pattern.compile("currentSemester = ([^;]+);");
+            Matcher matcher = pattern.matcher(classTableIndex.comment);
+            if (matcher.find()) {
+                String currentSemesters = matcher.group(1).replace("'","\"");
+                CurrentSemester semester = new Gson().fromJson(currentSemesters,CurrentSemester.class);
+                return semester;
+            }
+        }
+        return null;
+    }
     /**
      * 获取理论课程
      *
@@ -672,6 +697,40 @@ public class StaticService {
      * @return 操作结果
      */
     public static List<SelectedCourseBean> getSelectedCourse(Context context, String cookie, String term) {
+        List<SelectedCourseBean> courseBeans = new ArrayList<>();
+        try {
+            int semesterId = getSemesterIdNew(context, cookie, term,false);
+            if (semesterId==-1) {
+                return null;
+            }
+            HttpConnectionAndCode classTable = Net.getClassTableNew(context, semesterId, cookie, TokenData.isVPN());
+            if (classTable.resp_code == 200) {
+                ClassTableNew table = new Gson().fromJson(classTable.comment, ClassTableNew.class);
+                ClassTableNew.studentTableVms maintable = table.studentTableVms.get(0);
+                List<ClassTableNew.ClassTable> lessions = maintable.activities;
+                for (ClassTableNew.ClassTable lession : lessions) {
+                    courseBeans.add(lession.toSelectedCourseBean());
+                }
+                if (courseBeans.size()==0) {
+                    return null;
+                }
+                return courseBeans;
+            }
+        } catch (Exception e){
+
+        }
+        return null;
+    }
+
+    /**
+     * 查询已选课程
+     *
+     * @param context context
+     * @param cookie  cookie
+     * @param term    当前学期
+     * @return 操作结果
+     */
+    public static List<SelectedCourseBean> getSelectedCourseOld(Context context, String cookie, String term) {
         try {
             HttpConnectionAndCode httpConnectionAndCode = Net.getSelectedCourse(context, cookie, term, TokenData.isVPN());
             String comment = httpConnectionAndCode.comment;

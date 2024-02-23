@@ -214,8 +214,8 @@ public class GeneralData {
         return mmkv.decodeBool(AUTO_TERM_OPEN, false);
     }
 
-    public static void setStartTime(Date date) {
-        mmkv.encode(AUTO_TERM_START_TIME, date.getTime());
+    public static void setStartTime(Long date) {
+        mmkv.encode(AUTO_TERM_START_TIME, date);
     }
 
     public static Date getStartTime() {
