@@ -104,13 +104,13 @@ public class AutoUpdate {
                 text = "登录失效(点击重试)";
                 break;
             case 91:
-                text = "尝试同步理论课";
+                text = "尝试同步课程表";
                 break;
             case 92:
                 text = "正在登录";
                 break;
             case 93:
-                text = "正在同步理论课";
+                text = "正在同步课程表";
                 break;
             case 94:
                 text = "正在同步考试安排";
@@ -143,9 +143,9 @@ public class AutoUpdate {
             try {
                 if (accountData.getIsLogin()) {
                     updateView(91); //显示：尝试同步理论课
-                    cookie = tokenData.getCookie();
+                    cookie = tokenData.getbkjwTestCookie();
                     List<CourseBean> courseBeans;
-                    List<CourseBean> getClass = StaticService.getClass(
+                    List<CourseBean> getClass = StaticService.getClassNew(
                             activity,
                             cookie,
                             generalData.getTerm()
@@ -160,8 +160,8 @@ public class AutoUpdate {
                             return;
                         }
                         updateView(93); //显示：正在同步理论课
-                        cookie = tokenData.getCookie();
-                        getClass = StaticService.getClass(
+                        cookie = tokenData.getbkjwTestCookie();
+                        getClass = StaticService.getClassNew(
                                 activity,
                                 cookie,
                                 generalData.getTerm()
@@ -203,6 +203,7 @@ public class AutoUpdate {
                         return;
                     }
                     //获取实验课
+                    /*
                     updateView(95);
                     List<CourseBean> getLab = StaticService.getLab(
                             activity,
@@ -223,7 +224,13 @@ public class AutoUpdate {
                             notifyWidgetUpdate(activity);
                             ToastUtil.showToast(activity, "同步成功");
                         });
-                    }
+                    }*/
+                    updateView(5);
+                    activity.runOnUiThread(() -> {
+                        fragment.onStart();
+                        notifyWidgetUpdate(activity);
+                        ToastUtil.showToast(activity, "同步成功");
+                    });
                 } else {
                     updateView(2);
                 }

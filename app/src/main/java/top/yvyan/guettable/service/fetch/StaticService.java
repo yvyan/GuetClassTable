@@ -1,6 +1,7 @@
 package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -8,10 +9,13 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.CET;
 import top.yvyan.guettable.Gson.ClassTable;
+import top.yvyan.guettable.Gson.ClassTableNew;
 import top.yvyan.guettable.Gson.EffectiveCredit;
 import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamScore;
@@ -21,6 +25,7 @@ import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
 import top.yvyan.guettable.Gson.SelectedCourse;
+import top.yvyan.guettable.Gson.Semsters;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.bean.CETBean;
@@ -33,6 +38,7 @@ import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.bean.SelectedCourseBean;
 import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.util.RegularUtil;
 import top.yvyan.guettable.util.VPNUrlUtil;
 
 public class StaticService {
@@ -193,8 +199,8 @@ public class StaticService {
                 if (Location.contains("authserver")) {
                     return "ERRORNeedlogin";
                 }
-                if (Location.contains("v.guet.edu.cn/login")) {
-                    return "ERRORNeedLoginVPN";
+                if (Location.contains("v.guet.edu.cn/login") || isVPN && Location.equals("/login")) {
+                    return "ERRORNeedLogin";
                 }
                 if (response.cookie!="") {
                     cookie.append(response.cookie+"; ");
@@ -206,7 +212,7 @@ public class StaticService {
                 cookie.append(response.cookie);
                 return cookie.toString();
             }
-            return "ERRORNetwork";
+            return "";
         }
     }
 
@@ -266,6 +272,52 @@ public class StaticService {
             return null;
         }
     }
+
+    /**
+     * 获取理论课程
+     *
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @param term    学期
+     * @return 理论课程列表
+     */
+    public static List<CourseBean> getClassNew(Context context, String cookie, String term) {
+        List<CourseBean> courseBeans = new ArrayList<>();
+        int semesterId=getSemesterIdNew(context,cookie,term);
+        HttpConnectionAndCode classTable = Net.getClassTableNew(context,semesterId, cookie, TokenData.isVPN());
+        if(classTable.resp_code==200){
+            ClassTableNew table=new Gson().fromJson(classTable.comment, ClassTableNew.class);
+            ClassTableNew.studentTableVms maintable = table.studentTableVms.get(0);
+            List<ClassTableNew.ClassTable> lessions = maintable.activities;
+            for (ClassTableNew.ClassTable lession:lessions) {
+                courseBeans.add(lession.toCourseBean());
+            }
+            return courseBeans;
+        }
+        return null;
+    }
+
+    public static int getSemesterIdNew(Context context, String cookie, String term) {
+        HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
+        if(classTableIndex.resp_code==200){
+            Pattern pattern = Pattern.compile("var semesters = JSON.parse\\([.\n][^']*'([^']*)'");
+            Matcher matcher = pattern.matcher(classTableIndex.comment);
+            if(matcher.find()) {
+                String semesters="\""+matcher.group(1)+"\"";
+                semesters=new Gson().fromJson(semesters,String.class);
+                List<Semsters> semsterList = new Gson().fromJson(semesters, new TypeToken<List<Semsters>>(){}.getType());
+                int semesterId=0;
+                for (Semsters s:semsterList) {
+                    if(s.toString().equals(term)) {
+                        semesterId=s.id;
+                        break;
+                    }
+                }
+                return semesterId;
+            }
+        }
+        return 0;
+     }
 
     /**
      * 获取理论课程

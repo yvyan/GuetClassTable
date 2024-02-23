@@ -35,6 +35,8 @@ public class TokenData {
 
     private static final String VPN_TOKEN = "VPNToken";
     private static final String BKJW_COOKIE = "bkjwCookie";
+
+    private static final String BKJW_TEST_COOKIE = "bkjwTestCookie";
     private static final String IS_DEVELOP = "isDevelop";
     private static final String MULTIFACTOR_USERS = "MFACookie";
     private final AccountData accountData;
@@ -48,6 +50,7 @@ public class TokenData {
 
     private String TGTToken; // CAS-TGT
     private String VPNToken;   //VPN认证Token
+    private String bkjwTestCookie; //新教务系统认证Cookie
     private String bkjwCookie; //教务系统认证Cookie
 
     private String MFACookie;
@@ -57,6 +60,14 @@ public class TokenData {
             return VPNToken;
         } else {
             return bkjwCookie;
+        }
+    }
+
+    public String getbkjwTestCookie() {
+        if (isVPN) {
+            return VPNToken;
+        } else {
+            return bkjwTestCookie;
         }
     }
 
@@ -78,8 +89,9 @@ public class TokenData {
         //isVPN = Net.testNet(context) != 0;
         return VPNToken;
     }
+
     public String getCASCookie() {
-        return TGTToken + (MFACookie=="" ? "" : "; "+MFACookie);
+        return TGTToken + (MFACookie == "" ? "" : "; " + MFACookie);
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -91,9 +103,11 @@ public class TokenData {
 
         VPNToken = sharedPreferences.getString(VPN_TOKEN, null);
         bkjwCookie = sharedPreferences.getString(BKJW_COOKIE, null);
+        bkjwTestCookie = sharedPreferences.getString(BKJW_TEST_COOKIE, null);
         isDevelop = sharedPreferences.getBoolean(IS_DEVELOP, false);
         TGTToken = sharedPreferences.getString(CAS_TGTToken, null);
         MFACookie = sharedPreferences.getString(MULTIFACTOR_USERS, null);
+
     }
 
     public static TokenData newInstance(Context context) {
@@ -149,15 +163,16 @@ public class TokenData {
         //尝试获取教务系统ST
         if (isVPN) { //外网
             //获取VPN的token
-            String VPNTokenStr = StaticService.authServiceByCas(context,"https://v.guet.edu.cn/login?cas_login=true",getCASCookie(),"",isVPN);
-            if(VPNTokenStr.startsWith("ERROR")) {
-                if(VPNTokenStr == "ERRORNeedlogin") {
+            String VPNTokenStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
+            if (VPNTokenStr.startsWith("ERROR")) {
+                if (VPNTokenStr == "ERRORNeedlogin") {
                     int n;
-                    if ((n = refreshTGT())!=0) {
+                    if ((n = refreshTGT()) != 0) {
                         return n;
-                    };
-                    VPNTokenStr = StaticService.authServiceByCas(context,"https://v.guet.edu.cn/login?cas_login=true",getCASCookie(),"",isVPN);
-                    if(VPNTokenStr.startsWith("ERROR")) {
+                    }
+                    ;
+                    VPNTokenStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
+                    if (VPNTokenStr.startsWith("ERROR")) {
                         return -2;
                     }
                 }
@@ -166,28 +181,42 @@ public class TokenData {
                 setVPNToken(VPNTokenStr);
             }
 
-            VPNTokenStr = StaticService.authServiceByCas(context,"https://bkjw.guet.edu.cn",getCASCookie(),VPNTokenStr,isVPN);
-            if(VPNTokenStr.startsWith("ERROR")) {
+            String bkjwCookie = StaticService.authServiceByCas(context, "https://bkjw.guet.edu.cn", getCASCookie(), VPNTokenStr, isVPN);
+            if (bkjwCookie.startsWith("ERROR")) {
                 return -2;
             }
+
+            String bkjwTestCookie = StaticService.authServiceByCas(context, "https://bkjwtest.guet.edu.cn/student/sso/login", getCASCookie(), VPNTokenStr, isVPN);
+            if (bkjwTestCookie.startsWith("ERROR")) {
+                return -2;
+            }
+
             return 0;
 
         } else { //内网
-            String BkjwCookieStr = StaticService.authServiceByCas(context,"https://v.guet.edu.cn/login?cas_login=true",getCASCookie(),"",isVPN);
-            if(BkjwCookieStr.startsWith("ERROR")) {
-                if(BkjwCookieStr == "ERRORNeedlogin") {
+            String BkjwCookieStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
+            if (BkjwCookieStr.startsWith("ERROR")) {
+                if (BkjwCookieStr == "ERRORNeedlogin") {
                     int n;
-                    if ((n = refreshTGT())!=0) {
+                    if ((n = refreshTGT()) != 0) {
                         return n;
-                    };
-                    BkjwCookieStr = StaticService.authServiceByCas(context,"https://v.guet.edu.cn/login?cas_login=true",getCASCookie(),"",isVPN);
-                    if(BkjwCookieStr.startsWith("ERROR")) {
+                    }
+                    ;
+                    BkjwCookieStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
+                    if (BkjwCookieStr.startsWith("ERROR")) {
                         return -2;
                     }
                 }
             }
             if (BkjwCookieStr != null) {
                 setBkjwCookie(BkjwCookieStr);
+            }
+            String BkjwTestStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
+            if (BkjwTestStr.startsWith("ERROR")) {
+                return -2;
+            }
+            if (BkjwTestStr != null) {
+                setBkjwTestCookie(BkjwTestStr);
                 return 0;
             }
             return -2;
@@ -267,7 +296,7 @@ public class TokenData {
                 Button buttonYes = window.findViewById(R.id.btn_text_yes);
                 Button buttonCancel = window.findViewById(R.id.btn_text_cancel);
                 buttonCancel.setOnClickListener(view -> {
-                   dialog.cancel();
+                    dialog.cancel();
                 });
                 buttonYes.setOnClickListener(view -> {
                     TextView SMSCode = window
@@ -358,6 +387,12 @@ public class TokenData {
     public void setBkjwCookie(String bkjwCookie) {
         this.bkjwCookie = bkjwCookie;
         editor.putString(BKJW_COOKIE, bkjwCookie);
+        editor.apply();
+    }
+
+    public void setBkjwTestCookie(String bkjwCookie) {
+        this.bkjwCookie = bkjwCookie;
+        editor.putString(BKJW_TEST_COOKIE, bkjwCookie);
         editor.apply();
     }
 

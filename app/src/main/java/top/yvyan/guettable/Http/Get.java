@@ -32,7 +32,7 @@ public class Get {
      * - -7 302
      */
     public static HttpConnectionAndCode get(@NonNull final String u,
-                                            @Nullable final String[] parms,
+                                            @Nullable final String[] params,
                                             @NonNull final String user_agent,
                                             @NonNull final String referer,
                                             @Nullable final String cookie,
@@ -52,8 +52,8 @@ public class Get {
         try {
             StringBuilder u_bulider = new StringBuilder();
             u_bulider.append(u);
-            if (parms != null && parms.length > 0) {
-                u_bulider.append("?").append(TextUtils.join("&", parms));
+            if (params != null && params.length > 0) {
+                u_bulider.append("?").append(TextUtils.join("&", params));
             }
             url = new URL(u_bulider.toString());
             cnt = (HttpURLConnection) url.openConnection();

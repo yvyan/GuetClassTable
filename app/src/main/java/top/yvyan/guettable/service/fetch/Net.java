@@ -315,6 +315,45 @@ public class Net {
         );
     }
 
+    public static HttpConnectionAndCode getClassTableNew(Context context,int semesterId, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                VPNUrlUtil.getVPNUrl(String.format("https://bkjwtest.guet.edu.cn/student/for-std/course-table/semester/%d/print-data?semesterId=%d&hasExperiment=true",semesterId,semesterId), isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/course-table", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                10000,
+                null
+        );
+    }
+
+
+    public static HttpConnectionAndCode getClassTableIndex(Context context, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/course-table", isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/course-table", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                10000,
+                null
+        );
+    }
+
     /**
      * 获取课程安排
      *
