@@ -134,6 +134,59 @@ public class CommFunc {
     }
 
     /**
+     * 自动登录教务
+     *
+     * @param activity activity
+     */
+    public static void noLoginWebBKJWTest(Activity activity) {
+        new Thread(() -> {
+            final boolean[] noLogin = {false};
+            TokenData tokenData = TokenData.newInstance(activity);
+            Intent intent = new Intent(activity, WebViewActivity.class);
+            intent.putExtra(WebViewActivity.WEB_URL, VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home",TokenData.isVPN()));
+            intent.putExtra(WebViewActivity.WEB_SHARE_URL, VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home",TokenData.isVPN()));
+            DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
+                @Override
+                public void onClickYes() {
+                    AppUtil.reportFunc(activity, "登录教务-跳过");
+                    activity.startActivity(intent);
+                    noLogin[0] = true;
+                }
+
+                @Override
+                public void onClickBack() {
+                }
+            };
+            final AlertDialog[] dialog = new AlertDialog[1];
+            activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动登录中...(最长需要15s)", "跳过", iDialogService, true));
+
+            int LoginState = tokenData.refresh();
+            if (LoginState == -3) {
+                activity.runOnUiThread(() -> {
+                    if (dialog[0] != null && dialog[0].isShowing()) {
+                        dialog[0].dismiss();
+                    }
+                    ToastUtil.showToast(activity, "登录状态丢失，请输入验证码后稍后重试");
+                });
+                return;
+            }
+            if (!noLogin[0]) {
+                activity.runOnUiThread(() -> {
+                    if (dialog[0] != null && dialog[0].isShowing()) {
+                        dialog[0].dismiss();
+                    }
+                    WebViewActivity.cleanCash(Objects.requireNonNull(activity));
+                });
+                intent.putExtra(WebViewActivity.WEB_URL, VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home",TokenData.isVPN()));
+                intent.putExtra(WebViewActivity.WEB_SHARE_URL, VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home",TokenData.isVPN()));
+                intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getbkjwTestCookie());
+                AppUtil.reportFunc(activity, "登录教务-免登录");
+                activity.startActivity(intent);
+            }
+        }).start();
+    }
+
+    /**
      * 自动登录智慧校园
      *
      * @param activity activity

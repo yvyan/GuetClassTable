@@ -134,7 +134,7 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/day_url_bkjw"
+                        android:id="@+id/day_url_bkjwtest"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -153,7 +153,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom|center"
-                            android:text="@string/moreFun_url_bkjw"
+                            android:text="@string/moreFun_url_bkjw_test"
                             android:textSize="13sp" />
 
                     </FrameLayout>

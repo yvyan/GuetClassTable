@@ -110,7 +110,7 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         showExamDay = view.findViewById(R.id.day_show_exam_day);
         View testSchedule = view.findViewById(R.id.day_test_schedule);
         testSchedule.setOnClickListener(this);
-        View urlBkjw = view.findViewById(R.id.day_url_bkjw);
+        View urlBkjw = view.findViewById(R.id.day_url_bkjwtest);
         urlBkjw.setOnClickListener(this);
         View testScores = view.findViewById(R.id.day_test_scores);
         testScores.setOnClickListener(this);
@@ -230,8 +230,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getContext(), ExamActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.day_url_bkjw:
-                CommFunc.noLoginWebBKJW(getActivity());
+            case R.id.day_url_bkjwtest:
+                CommFunc.noLoginWebBKJWTest(getActivity());
                 break;
             case R.id.day_test_scores:
                 intent = new Intent(getContext(), ExamScoreActivity.class);

@@ -150,7 +150,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
 
-
+            case R.id.more_url_bkjwtest:
+                CommFunc.noLoginWebBKJWTest(getActivity());
+                break;
             case R.id.more_url_bkjw:
                 CommFunc.noLoginWebBKJW(getActivity());
                 break;
