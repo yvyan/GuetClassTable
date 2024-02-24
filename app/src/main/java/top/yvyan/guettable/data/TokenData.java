@@ -55,7 +55,7 @@ public class TokenData {
 
     private String MFACookie;
 
-    public String getCookie() {
+    public String getBkjwCookie() {
         if (isVPN) {
             return VPNToken;
         } else {
@@ -194,7 +194,7 @@ public class TokenData {
             return 0;
 
         } else { //内网
-            String BkjwCookieStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
+            String BkjwCookieStr = StaticService.authServiceByCas(context, "https://bkjw.guet.edu.cn", getCASCookie(), "", isVPN);
             if (BkjwCookieStr.startsWith("ERROR")) {
                 if (BkjwCookieStr == "ERRORNeedlogin") {
                     int n;
@@ -202,7 +202,7 @@ public class TokenData {
                         return n;
                     }
                     ;
-                    BkjwCookieStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
+                    BkjwCookieStr = StaticService.authServiceByCas(context, "https://bkjw.guet.edu.cn", getCASCookie(), "", isVPN);
                     if (BkjwCookieStr.startsWith("ERROR")) {
                         return -2;
                     }
@@ -211,7 +211,7 @@ public class TokenData {
             if (BkjwCookieStr != null) {
                 setBkjwCookie(BkjwCookieStr);
             }
-            String BkjwTestStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
+            String BkjwTestStr = StaticService.authServiceByCas(context, "https://bkjwtest.guet.edu.cn/student/sso/login", getCASCookie(), "", isVPN);
             if (BkjwTestStr.startsWith("ERROR")) {
                 return -2;
             }
@@ -391,8 +391,8 @@ public class TokenData {
     }
 
     public void setBkjwTestCookie(String bkjwCookie) {
-        this.bkjwCookie = bkjwCookie;
-        editor.putString(BKJW_TEST_COOKIE, bkjwCookie);
+        this.bkjwTestCookie = bkjwCookie;
+        editor.putString(BKJW_TEST_COOKIE, bkjwTestCookie);
         editor.apply();
     }
 

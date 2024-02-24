@@ -212,8 +212,10 @@ public class StaticService {
             if (response.cookie!="") {
                 cookie.append(response.cookie);
                 return cookie.toString();
+            } else {
+                return cookie.toString().substring(0,cookie.length() - 2);
             }
-            return "";
+
         }
     }
 

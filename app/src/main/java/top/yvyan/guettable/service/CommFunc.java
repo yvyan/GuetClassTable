@@ -126,7 +126,7 @@ public class CommFunc {
                 intent.putExtra(WebViewActivity.WEB_URL, VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn/Login/MainDesktop",TokenData.isVPN()));
                 intent.putExtra(WebViewActivity.WEB_SHARE_URL, VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn/",TokenData.isVPN()));
                // intent.putExtra(WebViewActivity.WEB_REFERER, VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn/",TokenData.isVPN()));
-                intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
+                intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getBkjwCookie());
                 AppUtil.reportFunc(activity, "登录教务-免登录");
                 activity.startActivity(intent);
             }
@@ -240,7 +240,7 @@ public class CommFunc {
                 //设置cookie
                 if (TokenData.isVPN()) {
                     intent.putExtra(WebViewActivity.WEB_COOKIE_URL, activity.getResources().getString(R.string.url_vpn));
-                    intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCookie());
+                    intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getBkjwCookie());
                 } else {
                     intent.putExtra(WebViewActivity.WEB_COOKIE_URL, activity.getResources().getString(R.string.url_Authserver));
                     intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getCASCookie());

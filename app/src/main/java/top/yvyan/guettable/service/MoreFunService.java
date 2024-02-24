@@ -25,7 +25,7 @@ public class MoreFunService {
                 if (accountData.getIsLogin()) {
                     updateView(91); //显示：尝试同步
                     int state;
-                    state = iMoreFun.updateData(tokenData.getCookie());
+                    state = iMoreFun.updateData(tokenData.getBkjwCookie());
                     if (state == 5 || state == -2) { //同步成功或网络错误
                         updateView(state);
                         return;
@@ -40,7 +40,7 @@ public class MoreFunService {
                         return;
                     }
                     updateView(93); //显示：正在同步
-                    state = iMoreFun.updateData(tokenData.getCookie());
+                    state = iMoreFun.updateData(tokenData.getBkjwCookie());
                     updateView(state);
                 } else {
                     updateView(2);

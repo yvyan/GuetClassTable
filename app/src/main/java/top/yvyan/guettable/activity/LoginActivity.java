@@ -285,9 +285,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         runOnUiThread(() -> button.setText("获取个人信息"));
         StudentInfo studentInfo = null;
         try {
-            studentInfo = StaticService.getStudentInfo(this, tokenData.getCookie());
+            studentInfo = StaticService.getStudentInfo(this, tokenData.getBkjwCookie());
 
-            List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getCookie());
+            List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getBkjwCookie());
             if (allTerm != null) {
                 MoreData.setTermBeans(allTerm);
             }

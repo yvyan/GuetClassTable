@@ -101,7 +101,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
             return;
         }
         new Thread(() -> {
-            List<SelectedCourseBean> selectedCourse = StaticService.getSelectedCourse(this, tokenData.getCookie(), curTerm);
+            List<SelectedCourseBean> selectedCourse = StaticService.getSelectedCourse(this, tokenData.getBkjwCookie(), curTerm);
             if (selectedCourse != null) {
                 runOnUiThread(() -> {
                     CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
@@ -135,7 +135,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
             }
         } else {
             new Thread(() -> {
-                List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getCookie());
+                List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getBkjwCookie());
                 if (allTerm != null) {
                     MoreData.setTermBeans(allTerm);
                     terms.clear();

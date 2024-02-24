@@ -144,7 +144,6 @@ public class AutoUpdate {
                 if (accountData.getIsLogin()) {
                     updateView(91); //显示：尝试同步理论课
                     cookie = tokenData.getbkjwTestCookie();
-                    List<CourseBean> courseBeans;
                     List<CourseBean> getClass = StaticService.getClassNew(
                             activity,
                             cookie,
@@ -161,10 +160,10 @@ public class AutoUpdate {
                             return;
                         }
                         updateView(93); //显示：正在同步理论课
-                        cookie = tokenData.getbkjwTestCookie();
+
                         getClass = StaticService.getClassNew(
                                 activity,
-                                cookie,
+                                tokenData.getbkjwTestCookie(),
                                 generalData.getTerm(),
                                 GeneralData.isAutoTerm()
                         );
@@ -193,7 +192,7 @@ public class AutoUpdate {
                     updateView(94);
                     List<ExamBean> examBeans = StaticService.getExam(
                             activity,
-                            cookie,
+                            tokenData.getBkjwCookie(),
                             generalData.getTerm()
                     );
                     if (examBeans != null) {
