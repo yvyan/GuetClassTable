@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.CET;
+import top.yvyan.guettable.Gson.ClassList;
 import top.yvyan.guettable.Gson.ClassTable;
 import top.yvyan.guettable.Gson.ClassTableNew;
 import top.yvyan.guettable.Gson.CurrentSemester;
@@ -296,7 +297,10 @@ public class StaticService {
                 List<ClassTableNew.ClassTable> lessions = maintable.activities;
                 for (ClassTableNew.ClassTable lession : lessions) {
                     try {
-                        courseBeans.add(lession.toCourseBean());
+                        List<CourseBean> coursebeans = lession.toCourseBean();
+                        for (CourseBean coursebean : coursebeans) {
+                            courseBeans.add(coursebean);
+                        }
                     } catch (Exception e) {
 
                     }
@@ -709,12 +713,11 @@ public class StaticService {
             if (semesterId==-1) {
                 return null;
             }
-            HttpConnectionAndCode classTable = Net.getClassTableNew(context, semesterId, cookie, TokenData.isVPN());
+            HttpConnectionAndCode classTable = Net.getClassList(context, semesterId, cookie, TokenData.isVPN());
             if (classTable.resp_code == 200) {
-                ClassTableNew table = new Gson().fromJson(classTable.comment, ClassTableNew.class);
-                ClassTableNew.studentTableVms maintable = table.studentTableVms.get(0);
-                List<ClassTableNew.ClassTable> lessions = maintable.activities;
-                for (ClassTableNew.ClassTable lession : lessions) {
+                ClassList table = new Gson().fromJson(classTable.comment, ClassList.class);
+                List<ClassList.ClassInfo> maintable = table.lessons;
+                for (ClassList.ClassInfo lession : maintable) {
                     courseBeans.add(lession.toSelectedCourseBean());
                 }
                 if (courseBeans.size()==0) {

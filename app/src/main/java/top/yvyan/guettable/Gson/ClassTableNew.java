@@ -2,6 +2,8 @@ package top.yvyan.guettable.Gson;
 
 import static java.lang.Integer.parseInt;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import top.yvyan.guettable.bean.CourseBean;
@@ -34,21 +36,29 @@ public class ClassTableNew {
         private String room;
         private List<String> teachers;
         private String weeksStr;
+        private int[] weekIndexes;
         private Integer startUnit;
         private Double credits;
         private Integer weekday;
-        private String lessonKindText;
         private String lessonRemark;
-        public CourseBean toCourseBean() {
+        public List<CourseBean> toCourseBean() {
+            List<CourseBean> courseBeans = new ArrayList<>();
+            Arrays.sort(weekIndexes);
+            int lastWeekIndex=weekIndexes[0];
+            int startWeek=lastWeekIndex;
+            for (int week : weekIndexes) {
+                if (week-lastWeekIndex>1) {
+                    CourseBean courseBean = new CourseBean();
+                    courseBean.setCourse(lessonCode, courseName, room,startWeek , lastWeekIndex, weekday, ((startUnit+1)/2), String.join(" ",teachers), lessonRemark);
+                    courseBeans.add(courseBean);
+                    startWeek=week;
+                }
+                lastWeekIndex=week;
+            }
             CourseBean courseBean = new CourseBean();
-            String[] weekRange=weeksStr.split("~");
-            courseBean.setCourse(lessonCode, courseName, room,parseInt(weekRange[0]) , parseInt(weekRange.length==1 ? weekRange[0]:weekRange[1]), weekday, ((startUnit+1)/2), String.join(" ",teachers), lessonRemark);
-            return courseBean;
-        }
-
-        public SelectedCourseBean toSelectedCourseBean() {
-            SelectedCourseBean courseBean = new SelectedCourseBean(credits,courseName,lessonKindText,courseType.name);
-            return courseBean;
+            courseBean.setCourse(lessonCode, courseName, room,startWeek , lastWeekIndex, weekday, ((startUnit+1)/2), String.join(" ",teachers), lessonRemark);
+            courseBeans.add(courseBean);
+            return courseBeans;
         }
 
     }

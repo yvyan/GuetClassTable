@@ -15,12 +15,13 @@ public class SelectedCourseBean implements Serializable, CourseUtil.BeanAttribut
     private String courseQuality;
 
 
-    public SelectedCourseBean(Double courseCredit,String courseName,String selectType,String courseQuality) {
-        this.courseCredit =courseCredit;
+    public SelectedCourseBean(Double courseCredit, String courseName, String selectType, String courseQuality) {
+        this.courseCredit = courseCredit;
         this.courseName = courseName;
         this.selectType = selectType;
         this.courseQuality = courseQuality;
     }
+
     public SelectedCourseBean(SelectedCourse selectedCourse) {
         this.courseCredit = selectedCourse.getXf();
         this.courseName = selectedCourse.getCname();

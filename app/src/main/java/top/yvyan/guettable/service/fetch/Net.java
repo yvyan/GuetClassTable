@@ -315,6 +315,25 @@ public class Net {
         );
     }
 
+    public static HttpConnectionAndCode getClassList(Context context,int semesterId, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                VPNUrlUtil.getVPNUrl(String.format("https://bkjwtest.guet.edu.cn/student/for-std/course-table/get-data?bizTypeId=2&semesterId=%d&dataId=",semesterId), isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/course-table", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                10000,
+                null
+        );
+    }
+
     public static HttpConnectionAndCode getClassTableNew(Context context,int semesterId, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
