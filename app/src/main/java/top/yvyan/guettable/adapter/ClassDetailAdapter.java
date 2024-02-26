@@ -81,11 +81,26 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
             } else {
                 holder.textView4.setText("教室：" + courseBean.getRoom());
             }
-            int n = courseBean.getTime();
-            if (n == 7) {
-                n = 0;
+            StringBuilder section=new StringBuilder();
+            if (courseBean.courseRangeVersion == 1) {
+                int n = courseBean.getTime();
+                if (n == 7) {
+                    n = 0;
+                }
+                section.append(n+", ");
+            } else {
+                int start = courseBean.start;
+                int end=courseBean.end;
+                for (int i=start;i<=end;i++) {
+                    if (i==5) {
+                        section.append("中午, ");
+                    }
+                    if (i%2==0) {
+                        section.append((i+(i<5 ? 1 : 0))/2+", ");
+                    }
+                }
             }
-            holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + n + "大节");
+            holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section.toString().substring(0,section.length()-2) + "大节");
 
             if (courseBean.getRemarks().isEmpty()) {
                 holder.textView6.setVisibility(View.GONE);

@@ -153,12 +153,27 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
                     spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3,spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder.textView4.setText(spannableString);
                 }
-                int n = courseBean.getTime();
-                if (n == 7) {
-                    n = 0;
+                StringBuilder section=new StringBuilder();
+                if (courseBean.courseRangeVersion == 1) {
+                    int n = courseBean.getTime();
+                    if (n == 7) {
+                        n = 0;
+                    }
+                    section.append(n+", ");
+                } else {
+                    int start = courseBean.start;
+                    int end=courseBean.end;
+                    for (int i=start;i<=end;i++) {
+                        if (i==5) {
+                            section.append("中午, ");
+                        }
+                        if (i%2==0) {
+                            section.append((i+(i<5 ? 1 : 0))/2+", ");
+                        }
+                    }
                 }
                 String startText = "时间：" + TimeUtil.whichDay(courseBean.getDay());
-                SpannableString spannableString = new SpannableString(startText + " 第" + n + "大节");
+                SpannableString spannableString = new SpannableString(startText + " 第" + section.toString().substring(0,section.length()-2) + "大节");
                 spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)), startText.length(),spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannableString.setSpan(new StyleSpan(Typeface.BOLD), startText.length(),spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.textView5.setText(spannableString);

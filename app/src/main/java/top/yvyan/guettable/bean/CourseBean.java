@@ -6,6 +6,7 @@ import com.zhuangfei.timetable.model.ScheduleEnable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("ConstantConditions")
 public class CourseBean implements ScheduleEnable, Serializable {
@@ -16,6 +17,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
     public static String NUMBER = "number";
     public static String WEEK_START = "weekStart";
     public static String WEEK_END = "weekEnd";
+    public static String COURSE_RANGE_VERSION = "rangeVersion";
     public static String TYPE = "type";
     public static String ID = "id";
 
@@ -41,6 +43,11 @@ public class CourseBean implements ScheduleEnable, Serializable {
     private int day;
     //第几节课
     private int time;
+    // 开始课时
+    public int start;
+    // 结束课时
+    public int end;
+    public int courseRangeVersion;
     //老师
     private String teacher;
     //备注
@@ -57,8 +64,16 @@ public class CourseBean implements ScheduleEnable, Serializable {
         setId(id);
     }
 
+    public void setCourse(String number, String name, String room, int weekStart, int weekEnd, int day, int start, int end, String teacher, String remarks) {
+        this.setCourse(number, name, room, weekStart, weekEnd, day, -1, teacher, remarks);
+        this.courseRangeVersion = 2;
+        this.start = start;
+        this.end = end;
+    }
+
     //设置为理论课
     public void setCourse(String number, String name, String room, int weekStart, int weekEnd, int day, int time, String teacher, String remarks) {
+        this.courseRangeVersion = 1;
         this.isLab = false;
         this.name = name;
         this.room = room;
@@ -83,7 +98,9 @@ public class CourseBean implements ScheduleEnable, Serializable {
         if (time < 0) {
             time = 0;
         }
-        this.time = time;
+        if (time >= 0) {
+            this.time = time;
+        }
         this.teacher = teacher;
         this.number = number;
         this.remarks = remarks;
@@ -91,6 +108,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
 
     //设置为实验课
     public void setLab(String name, String libName, int batch, String room, int weekStart, int day, int time, String teacher, String remarks, long labId) {
+        this.courseRangeVersion = 1;
         this.isLab = true;
         this.name = "(实验)" + name;
         this.labName = libName + "(" + batch + "批次)";
@@ -118,20 +136,27 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     public void setFromSchedule(Schedule schedule) {
-        isLab = (boolean) schedule.getExtras().get(IS_LAB);
-        weekStart = (int) schedule.getExtras().get(WEEK_START);
-        weekEnd = (int) schedule.getExtras().get(WEEK_END);
-        remarks = (String) schedule.getExtras().get(REMARKS);
+        Map<String, Object> extras = schedule.getExtras();
+        isLab = (boolean) extras.get(IS_LAB);
+        weekStart = (int) extras.get(WEEK_START);
+        weekEnd = (int) extras.get(WEEK_END);
+        remarks = (String) extras.get(REMARKS);
+        courseRangeVersion = (int) extras.get(COURSE_RANGE_VERSION);
         if (isLab) {
-            labName = (String) schedule.getExtras().get(LIB_NAME);
+            labName = (String) extras.get(LIB_NAME);
         }
-        id = (long) schedule.getExtras().get(ID);
+        id = (long) extras.get(ID);
 
-        number = (String) schedule.getExtras().get(NUMBER);
+        number = (String) extras.get(NUMBER);
         day = schedule.getDay();
         name = schedule.getName();
         room = schedule.getRoom();
-        time = (schedule.getStart() + 1) / 2;
+        if (courseRangeVersion == 1) {
+            time = (schedule.getStart() + 1) / 2;
+        } else {
+            start = schedule.getStart();
+            end = start + (schedule.getStep() - 1);
+        }
         teacher = schedule.getTeacher();
         weekList = schedule.getWeekList();
     }
@@ -142,12 +167,17 @@ public class CourseBean implements ScheduleEnable, Serializable {
         schedule.setDay(getDay());
         schedule.setName(getName());
         schedule.setRoom(getRoom());
-        schedule.setStart(getTime() * 2 - 1);
-        schedule.setStep(2);
+        if (courseRangeVersion == 1) {
+            schedule.setStart(getTime() * 2 - 1);
+            schedule.setStep(2);
+        } else {
+            schedule.setStart(start);
+            schedule.setStep(end - start + 1);
+        }
         schedule.setTeacher(getTeacher());
         schedule.setWeekList(getWeekList());
         schedule.setColorRandom(2);
-
+        schedule.putExtras(COURSE_RANGE_VERSION, courseRangeVersion);
         schedule.putExtras(IS_LAB, isLab);
         schedule.putExtras(LIB_NAME, labName);
         schedule.putExtras(REMARKS, remarks);

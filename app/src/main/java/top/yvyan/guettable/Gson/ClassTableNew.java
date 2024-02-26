@@ -11,26 +11,33 @@ import top.yvyan.guettable.bean.SelectedCourseBean;
 
 public class ClassTableNew {
     public List<studentTableVms> studentTableVms;
+
     public static class studentTableVms {
         public List<ClassTable> activities;
 
 
     }
+
     public static class LessonSearchVms {
         public class Course {
             private String nameZh;
             private Double credits;
         }
+
         public static class CourseType {
             public String nameZh;
         }
+
         public String lessonKindText;
     }
+
     public static class ClassTable {
         private CourseType courseType;
+
         public static class CourseType {
             public String name;
         }
+
         private String lessonCode;
         private String courseName;
         private String room;
@@ -38,25 +45,27 @@ public class ClassTableNew {
         private String weeksStr;
         private int[] weekIndexes;
         private Integer startUnit;
+        private Integer endUnit;
         private Double credits;
         private Integer weekday;
         private String lessonRemark;
+
         public List<CourseBean> toCourseBean() {
             List<CourseBean> courseBeans = new ArrayList<>();
             Arrays.sort(weekIndexes);
-            int lastWeekIndex=weekIndexes[0];
-            int startWeek=lastWeekIndex;
+            int lastWeekIndex = weekIndexes[0];
+            int startWeek = lastWeekIndex;
             for (int week : weekIndexes) {
-                if (week-lastWeekIndex>1) {
+                if (week - lastWeekIndex > 1) {
                     CourseBean courseBean = new CourseBean();
-                    courseBean.setCourse(lessonCode, courseName, room,startWeek , lastWeekIndex, weekday, ((startUnit+1)/2), String.join(" ",teachers), lessonRemark);
+                    courseBean.setCourse(lessonCode, courseName, room, startWeek, lastWeekIndex, weekday, startUnit, endUnit, String.join(" ", teachers), lessonRemark);
                     courseBeans.add(courseBean);
-                    startWeek=week;
+                    startWeek = week;
                 }
-                lastWeekIndex=week;
+                lastWeekIndex = week;
             }
             CourseBean courseBean = new CourseBean();
-            courseBean.setCourse(lessonCode, courseName, room,startWeek , lastWeekIndex, weekday, ((startUnit+1)/2), String.join(" ",teachers), lessonRemark);
+            courseBean.setCourse(lessonCode, courseName, room, startWeek, lastWeekIndex, weekday, startUnit, endUnit, String.join(" ", teachers), lessonRemark);
             courseBeans.add(courseBean);
             return courseBeans;
         }

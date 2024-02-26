@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.ISchedule;
 import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
+import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.view.WeekView;
 
@@ -148,7 +149,30 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .maxSlideItem(12)
                 .monthWidthDp(18)
                 .itemHeight(DensityUtil.dip2px(requireContext(), singleSettingData.getItemLength()))
-                .callback(new DateBuildAdapter())
+                .callback(new DateBuildAdapter()).callback(
+                        new OnSlideBuildAdapter() {
+                            @Override
+                            public View getView(int pos, LayoutInflater inflater, int itemHeight, int marTop) {
+                                View view=inflater.inflate(R.layout.item_slide_time,null,false);
+                                TextView numberTextView=view.findViewById(R.id.item_slide_number);
+                                TextView timeTextView=view.findViewById(R.id.item_slide_time);
+                                LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                        itemHeight);
+                                lp.setMargins(0,marTop,0,0);
+                                view.setLayoutParams(lp);
+                                if (pos==4) {
+                                    numberTextView.setText("中午");
+                                } else if (pos<4) {
+                                    numberTextView.setText((pos+1)+"");
+                                } else {
+                                    numberTextView.setText((pos)+"");
+                                }
+
+                                numberTextView.setTextSize(textSize);
+                                numberTextView.setTextColor(textColor);
+                                return view;
+                            }
+                        })
                 .callback(new OnItemBuildAdapter() {
                     @Override
                     public String getItemText(Schedule schedule, boolean isThisWeek) {
