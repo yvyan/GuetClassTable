@@ -79,7 +79,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
     @Override
     public int updateData(String cookie) {
         List<SelectedCourseBean> selectedCourseBeans;
-        selectedCourseBeans = StaticService.getSelectedCourse(this, cookie, generalData.getTerm());
+        selectedCourseBeans = StaticService.getSelectedCourse(this, tokenData.getbkjwTestCookie(), generalData.getTerm());
         if (selectedCourseBeans != null) {
             CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(selectedCourseBeans, beanAttributeUtil);
@@ -101,7 +101,7 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
             return;
         }
         new Thread(() -> {
-            List<SelectedCourseBean> selectedCourse = StaticService.getSelectedCourse(this, tokenData.getBkjwCookie(), curTerm);
+            List<SelectedCourseBean> selectedCourse = StaticService.getSelectedCourse(this, tokenData.getbkjwTestCookie(), curTerm);
             if (selectedCourse != null) {
                 runOnUiThread(() -> {
                     CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();

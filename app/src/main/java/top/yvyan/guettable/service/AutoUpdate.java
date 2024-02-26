@@ -13,6 +13,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.SettingData;
 import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.fragment.CourseTableFragment;
 import top.yvyan.guettable.fragment.DayClassFragment;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.CourseUtil;
@@ -26,6 +27,8 @@ public class AutoUpdate {
     private final Activity activity;
     private final DayClassFragment fragment;
 
+    private CourseTableFragment tableFragment;
+
     private final AccountData accountData;
     private final GeneralData generalData;
     private final TokenData tokenData;
@@ -38,9 +41,13 @@ public class AutoUpdate {
         this.activity = fragment.getActivity();
         accountData = AccountData.newInstance(activity);
         generalData = GeneralData.newInstance(activity);
-        tokenData = TokenData.newInstance(activity,this);
+        tokenData = TokenData.newInstance(activity, this);
         settingData = SettingData.newInstance(activity);
         init();
+    }
+
+    public void setCourseTableFragment(CourseTableFragment courseTableFragment) {
+        this.tableFragment = courseTableFragment;
     }
 
     private void init() {
@@ -71,7 +78,7 @@ public class AutoUpdate {
      */
     public void update() {
         // 判断状态是否符合；合适的状态：就绪 登录失效 网络错误  同步成功(点击同步)
-        if (state == 0 || state == -2 || state == -3 || state == 5) {
+        if (state == 0 || state == -2 || state == -3 || state == 5 || state == -99) {
             update_thread();
         }
     }
@@ -84,8 +91,19 @@ public class AutoUpdate {
         }
     }
 
+    private void updateView(String text) {
+        this.state = -99;
+        activity.runOnUiThread(() -> {
+            try {
+                fragment.updateText(text);
+            } catch (Exception ignored) {
+            }
+        });
+    }
+
     private void updateView(int state) {
         this.state = state;
+        if (state == 99) return;
         String text;
         switch (state) {
             case 0:
@@ -170,7 +188,7 @@ public class AutoUpdate {
                         if (getClass != null) {
                             ScheduleData.setCourseBeans(getClass);
                         } else {
-                            updateView(3);
+                            updateView("课程表同步失败");
                             return;
                         }
                     }
@@ -200,38 +218,23 @@ public class AutoUpdate {
                         Collections.sort(examBeans, beanAttributeUtil);
                         ScheduleData.setExamBeans(examBeans);
                     } else {
-                        updateView(3);
+                        updateView("考试安排同步失败");
                         return;
                     }
-                    //获取实验课
-                    /*
-                    updateView(95);
-                    List<CourseBean> getLab = StaticService.getLab(
-                            activity,
-                            cookie,
-                            generalData.getTerm()
-                    );
-                    if (getLab != null) {
-                        updateView(5);
-                        ScheduleData.setLibBeans(getLab);
-                        ScheduleData.setUpdate(true);
-                        generalData.setLastUpdateTime(System.currentTimeMillis());
-                        int maxWeek = ScheduleData.getMaxWeek();
-                        if (maxWeek > generalData.getMaxWeek()) {
-                            generalData.setMaxWeek(maxWeek);
-                        }
-                        activity.runOnUiThread(() -> {
-                            fragment.onStart();
-                            notifyWidgetUpdate(activity);
-                            ToastUtil.showToast(activity, "同步成功");
-                        });
-                    }*/
                     updateView(5);
                     activity.runOnUiThread(() -> {
                         fragment.onStart();
                         notifyWidgetUpdate(activity);
                         ToastUtil.showToast(activity, "同步成功");
                     });
+                    if (tableFragment != null) {
+                        tableFragment.getActivity().runOnUiThread(()->{
+                            try {
+                                tableFragment.updateTable();
+                            } catch (Exception e) {
+                            }
+                        });
+                    }
                 } else {
                     updateView(2);
                 }

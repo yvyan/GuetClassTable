@@ -1,7 +1,6 @@
 package top.yvyan.guettable.service.fetch;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,7 +38,6 @@ import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.bean.SelectedCourseBean;
 import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.TokenData;
-import top.yvyan.guettable.util.RegularUtil;
 import top.yvyan.guettable.util.VPNUrlUtil;
 
 public class StaticService {
@@ -297,7 +295,12 @@ public class StaticService {
                 ClassTableNew.studentTableVms maintable = table.studentTableVms.get(0);
                 List<ClassTableNew.ClassTable> lessions = maintable.activities;
                 for (ClassTableNew.ClassTable lession : lessions) {
-                    courseBeans.add(lession.toCourseBean());
+                    try {
+                        courseBeans.add(lession.toCourseBean());
+                    } catch (Exception e) {
+
+                    }
+
                 }
                 if (courseBeans.size()==0) {
                     return null;
@@ -305,7 +308,7 @@ public class StaticService {
                 return courseBeans;
             }
         } catch (Exception e){
-
+            e.printStackTrace();
         }
         return null;
     }
@@ -314,7 +317,7 @@ public class StaticService {
         HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
         if(classTableIndex.resp_code==200){
             if(!isAutoTerm) {
-                Pattern pattern = Pattern.compile("var semesters = JSON.parse\\([.\n][^']*'([^']*)'");
+                Pattern pattern = Pattern.compile("var.?semesters.?=.?JSON\\.parse\\([.\n]?[^']*?'([^']*)'");
                 Matcher matcher = pattern.matcher(classTableIndex.comment);
                 if (matcher.find()) {
                     String semesters = "\"" + matcher.group(1) + "\"";
@@ -331,22 +334,23 @@ public class StaticService {
                     return -1;
                 }
             } else {
-                Pattern pattern = Pattern.compile("currentSemester = ([^;]+);");
-                Matcher matcher = pattern.matcher(classTableIndex.comment);
-                if (matcher.find()) {
-                    String currentSemesters = matcher.group(1).replace("'","\"");
-                    CurrentSemester semester = new Gson().fromJson(currentSemesters,CurrentSemester.class);
-                    return semester.id;
-                }
+               CurrentSemester semester = getSemesterJson(classTableIndex);
+               if (semester!=null) {
+                   return semester.id;
+               }
             }
         }
         return -1;
      }
-
-    public static CurrentSemester getSemester(Context context, String cookie) {
+    public static CurrentSemester getSemester(Context context, String cookie){
         HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
+        CurrentSemester semester = getSemesterJson(classTableIndex);
+        return semester;
+    }
+
+    private static CurrentSemester getSemesterJson(HttpConnectionAndCode classTableIndex) {
         if(classTableIndex.resp_code==200) {
-            Pattern pattern = Pattern.compile("currentSemester = ([^;]+);");
+            Pattern pattern = Pattern.compile("currentSemester.?=.?([^;]+);");
             Matcher matcher = pattern.matcher(classTableIndex.comment);
             if (matcher.find()) {
                 String currentSemesters = matcher.group(1).replace("'","\"");

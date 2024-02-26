@@ -334,6 +334,42 @@ public class Net {
         );
     }
 
+    public static HttpConnectionAndCode getCurrentTechWeek(Context context, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home/get-current-teach-week", isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                10000,
+                null
+        );
+    }
+    public static HttpConnectionAndCode getSemesterById(Context context,int id, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/ws/semester/get/"+id, isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                10000,
+                null
+        );
+    }
 
     public static HttpConnectionAndCode getClassTableIndex(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
@@ -341,7 +377,7 @@ public class Net {
                 VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/course-table", isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/course-table", isVPN),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home", isVPN),
                 cookie,
                 null,
                 null,

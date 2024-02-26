@@ -106,11 +106,15 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         List<Fragment> list = new ArrayList<>();
-        list.add(DayClassFragment.newInstance());
-        list.add(CourseTableFragment.newInstance());
+        DayClassFragment d = DayClassFragment.newInstance();
+        CourseTableFragment c = CourseTableFragment.newInstance();
+        d.setCourseTableFragment(c);
+        list.add(d);
+        list.add(c);
         list.add(MoreFragment.newInstance());
         list.add(PersonFragment.newInstance());
         viewPagerAdapter.setList(list);
+
         // 小米推送服务
         if (shouldInit()) {
             MiPushClient.registerPush(this, APP_ID, APP_KEY);

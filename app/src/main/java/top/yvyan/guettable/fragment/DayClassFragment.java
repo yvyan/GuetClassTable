@@ -68,6 +68,8 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
     private GeneralData generalData;
     private SettingData settingData;
 
+    private CourseTableFragment courseTableFragment;
+
     public static DayClassFragment newInstance() {
         return new DayClassFragment();
     }
@@ -87,6 +89,13 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         if (isVisibleToUser && ScheduleData.isUpdate()) {
             onStart();
             ScheduleData.setUpdate(false);
+        }
+    }
+
+    public void setCourseTableFragment(CourseTableFragment courseTableFragment) {
+        this.courseTableFragment = courseTableFragment;
+        if(autoUpdate!=null) {
+            autoUpdate.setCourseTableFragment(courseTableFragment);
         }
     }
 
@@ -118,6 +127,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
         credits.setOnClickListener(this);
 
         autoUpdate = new AutoUpdate(this);
+        if(courseTableFragment!=null) {
+            autoUpdate.setCourseTableFragment(courseTableFragment);
+        }
         if (accountData.getIsLogin()) {
             autoUpdate.start();
         }

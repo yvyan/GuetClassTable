@@ -7,8 +7,8 @@ android {
         applicationId "top.yvyan.guettable"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 57 //记得补丁版本号归零(patch_version)
-        versionName "5.3.2"
+        versionCode 59 //记得补丁版本号归零(patch_version)
+        versionName "5.3.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         android.buildFeatures.dataBinding = true
