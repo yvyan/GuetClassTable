@@ -153,19 +153,19 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                         new OnSlideBuildAdapter() {
                             @Override
                             public View getView(int pos, LayoutInflater inflater, int itemHeight, int marTop) {
-                                View view=inflater.inflate(R.layout.item_slide_time,null,false);
-                                TextView numberTextView=view.findViewById(R.id.item_slide_number);
-                                TextView timeTextView=view.findViewById(R.id.item_slide_time);
-                                LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                View view = inflater.inflate(R.layout.item_slide_time, null, false);
+                                TextView numberTextView = view.findViewById(R.id.item_slide_number);
+                                TextView timeTextView = view.findViewById(R.id.item_slide_time);
+                                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                         itemHeight);
-                                lp.setMargins(0,marTop,0,0);
+                                lp.setMargins(0, marTop, 0, 0);
                                 view.setLayoutParams(lp);
-                                if (pos==4) {
+                                if (pos == 4) {
                                     numberTextView.setText("中午");
-                                } else if (pos<4) {
-                                    numberTextView.setText((pos+1)+"");
+                                } else if (pos < 4) {
+                                    numberTextView.setText((pos + 1) + "");
                                 } else {
-                                    numberTextView.setText((pos)+"");
+                                    numberTextView.setText((pos) + "");
                                 }
 
                                 numberTextView.setTextSize(textSize);

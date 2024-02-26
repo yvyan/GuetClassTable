@@ -56,19 +56,19 @@ public class DetailActivity extends AppCompatActivity {
         Intent thisIntent = getIntent();
         week = (Integer) thisIntent.getExtras().get("week");
         TextView detailTitle = findViewById(R.id.title);
-        StringBuilder section=new StringBuilder();
+        StringBuilder section = new StringBuilder();
         int day = schedules.get(0).getDay();
         int start = schedules.get(0).getStart();
-        int end = schedules.get(0).getStep()+start-1;
-        for (int i=start;i<=end;i++) {
-            if (i==5) {
+        int end = schedules.get(0).getStep() + start - 1;
+        for (int i = start; i <= end; i++) {
+            if (i == 5) {
                 section.append("中午, ");
             }
-            if (i%2==0) {
-                section.append((i+(i<5 ? 1 : 0))/2+", ");
+            if (i % 2 == 0) {
+                section.append((i + (i < 5 ? 1 : 0)) / 2 + ", ");
             }
         }
-        detailTitle.setText("第" + week + "周" + TimeUtil.whichDay(day) + " 第" + section.toString().substring(0,section.length()-2) + "大节");
+        detailTitle.setText("第" + week + "周" + TimeUtil.whichDay(day) + " 第" + section.toString().substring(0, section.length() - 2) + "大节");
         //添加课程控件初始化
         ImageView add = findViewById(R.id.more);
         add.setImageDrawable(getResources().getDrawable(R.drawable.d_add));

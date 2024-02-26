@@ -113,13 +113,13 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
                 holder.textView3.setText("教师：" + examBean.getTeacher());
 
                 SpannableString spannableString = new SpannableString("教室：" + examBean.getRoom());
-                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_room)), 3,spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3,spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_room)), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.textView4.setText(spannableString);
 
                 spannableString = new SpannableString("时间：" + examBean.getTime());
-                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)), 3,spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3,spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.textView5.setText(spannableString);
                 String date = "日期：" + (examBean.getDate() == null ? examBean.getDateString() : TimeUtil.timeFormat(examBean.getDate())) + "(第" + examBean.getWeek() + "周 " + TimeUtil.whichDay(examBean.getDay()) + ")";
                 if (examBean.getComm().isEmpty()) {
@@ -135,7 +135,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
                 courseBean.setFromSchedule(schedule);
                 if (schedule.getStart() == starting && position <= todayList.size()) {
                     SpannableString spannableString = new SpannableString(courseBean.getName() + " 上课中");
-                    spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.app_green)), spannableString.length() - 3,spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.app_green)), spannableString.length() - 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder.textView1.setText(spannableString);
                 } else {
                     holder.textView1.setText(courseBean.getName());
@@ -149,33 +149,33 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
                     holder.textView4.setVisibility(View.GONE);
                 } else {
                     SpannableString spannableString = new SpannableString("教室：" + courseBean.getRoom());
-                    spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_room)), 3,spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3,spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_room)), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder.textView4.setText(spannableString);
                 }
-                StringBuilder section=new StringBuilder();
+                StringBuilder section = new StringBuilder();
                 if (courseBean.courseRangeVersion == 1) {
                     int n = courseBean.getTime();
                     if (n == 7) {
                         n = 0;
                     }
-                    section.append(n+", ");
+                    section.append(n + ", ");
                 } else {
                     int start = courseBean.start;
-                    int end=courseBean.end;
-                    for (int i=start;i<=end;i++) {
-                        if (i==5) {
+                    int end = courseBean.end;
+                    for (int i = start; i <= end; i++) {
+                        if (i == 5) {
                             section.append("中午, ");
                         }
-                        if (i%2==0) {
-                            section.append((i+(i<5 ? 1 : 0))/2+", ");
+                        if (i % 2 == 0) {
+                            section.append((i + (i < 5 ? 1 : 0)) / 2 + ", ");
                         }
                     }
                 }
                 String startText = "时间：" + TimeUtil.whichDay(courseBean.getDay());
-                SpannableString spannableString = new SpannableString(startText + " 第" + section.toString().substring(0,section.length()-2) + "大节");
-                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)), startText.length(),spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannableString.setSpan(new StyleSpan(Typeface.BOLD), startText.length(),spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                SpannableString spannableString = new SpannableString(startText + " 第" + section.toString().substring(0, section.length() - 2) + "大节");
+                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)), startText.length(), spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new StyleSpan(Typeface.BOLD), startText.length(), spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.textView5.setText(spannableString);
 
                 if (courseBean.getRemarks().isEmpty()) {
