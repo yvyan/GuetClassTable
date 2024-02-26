@@ -139,12 +139,15 @@ public class CommFunc {
      * @param activity activity
      */
     public static void noLoginWebBKJWTest(Activity activity) {
+        noLoginWebBKJWTest(activity,"https://bkjwtest.guet.edu.cn/student/home");
+    }
+    public static void noLoginWebBKJWTest(Activity activity,String url) {
         new Thread(() -> {
             final boolean[] noLogin = {false};
             TokenData tokenData = TokenData.newInstance(activity);
             Intent intent = new Intent(activity, WebViewActivity.class);
-            intent.putExtra(WebViewActivity.WEB_URL, VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home",TokenData.isVPN()));
-            intent.putExtra(WebViewActivity.WEB_SHARE_URL, VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home",TokenData.isVPN()));
+            intent.putExtra(WebViewActivity.WEB_URL, VPNUrlUtil.getVPNUrl(url,TokenData.isVPN()));
+            intent.putExtra(WebViewActivity.WEB_SHARE_URL, VPNUrlUtil.getVPNUrl(url,TokenData.isVPN()));
             DialogUtil.IDialogService iDialogService = new DialogUtil.IDialogService() {
                 @Override
                 public void onClickYes() {
@@ -177,8 +180,8 @@ public class CommFunc {
                     }
                     WebViewActivity.cleanCash(Objects.requireNonNull(activity));
                 });
-                intent.putExtra(WebViewActivity.WEB_URL, VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home",TokenData.isVPN()));
-                intent.putExtra(WebViewActivity.WEB_SHARE_URL, VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home",TokenData.isVPN()));
+                intent.putExtra(WebViewActivity.WEB_URL, VPNUrlUtil.getVPNUrl(url,TokenData.isVPN()));
+                intent.putExtra(WebViewActivity.WEB_SHARE_URL, VPNUrlUtil.getVPNUrl(url,TokenData.isVPN()));
                 intent.putExtra(WebViewActivity.WEB_COOKIE, tokenData.getbkjwTestCookie());
                 AppUtil.reportFunc(activity, "登录教务-免登录");
                 activity.startActivity(intent);
