@@ -59,8 +59,8 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     //用户添加课程
-    public void userAdd(String number, String name, String room, int weekStart, int weekEnd, int day, int time, String teacher, String remarks, long id) {
-        setCourse(number, name, room, weekStart, weekEnd, day, time, teacher, remarks);
+    public void userAdd(String number, String name, String room, int weekStart, int weekEnd, int day, int start, int end, String teacher, String remarks, long id) {
+        setCourse(number, name, room, weekStart, weekEnd, day,start, end, teacher, remarks);
         setId(id);
     }
 

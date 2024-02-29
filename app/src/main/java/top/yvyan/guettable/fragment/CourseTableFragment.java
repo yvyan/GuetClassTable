@@ -201,7 +201,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                 .callback(new ISchedule.OnSpaceItemClickListener() {
                     @Override
                     public void onSpaceItemClick(int day, int start) {
-                        addCourse(target, day + 1, (start + 1) / 2);
+                        addCourse(target, day + 1, (start == 5 ? 3 : (start > 5 ? start+2 : start+1)/2));
                     }
 
                     @Override

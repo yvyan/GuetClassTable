@@ -73,12 +73,11 @@ public class DetailActivity extends AppCompatActivity {
         ImageView add = findViewById(R.id.more);
         add.setImageDrawable(getResources().getDrawable(R.drawable.d_add));
         add.setVisibility(View.VISIBLE);
-        int finalN = (schedules.get(0).getStart() / 2 + 1);
         add.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), AddCourseActivity.class);
             intent.putExtra("week", week);
             intent.putExtra("day", day);
-            intent.putExtra("start", finalN);
+            intent.putExtra("start", (start == 5 ? 3 : (start > 5 ? start+2 : start+1)/2));
             startActivityForResult(intent, AddCourseActivity.REQUEST_CODE);
         });
         //自定义背景图

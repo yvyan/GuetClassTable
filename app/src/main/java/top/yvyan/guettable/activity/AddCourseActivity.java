@@ -125,13 +125,21 @@ public class AddCourseActivity extends AppCompatActivity {
         courseStartSeekBar = findViewById(R.id.seekBar_course_start);
         courseStartTextView = findViewById(R.id.textView_course_start);
         if (start == 7) {
-            start = 0;
+            start = 1;
         }
         courseStartSeekBar.setProgress(start);
         courseStartSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                courseStartTextView.setText(seekBar.getProgress() + "大节");
+            public void onProgressChanged(SeekBar seekBar, int i, boolean human) {
+                if(human && i==0) {
+                    seekBar.setProgress(i+1);
+                    return;
+                }
+                if (i==3) {
+                    courseStartTextView.setText("中午");
+                } else {
+                    courseStartTextView.setText((i > 3 ? i - 1 : i) + "大节");
+                }
             }
 
             @Override
@@ -142,7 +150,11 @@ public class AddCourseActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        courseStartTextView.setText(start + "大节");
+        if (start==3) {
+            courseStartTextView.setText("中午");
+        } else {
+            courseStartTextView.setText((start > 3 ? start - 1 : start) + "大节");
+        }
     }
 
     /**
@@ -150,7 +162,7 @@ public class AddCourseActivity extends AppCompatActivity {
      */
     private final SeekBar.OnSeekBarChangeListener weekSeekBarListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
-        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        public void onProgressChanged(SeekBar seekBar, int i, boolean human) {
             if (R.id.seekBar_week_start == seekBar.getId()) { //开始周
                 if (seekBar.getProgress() > weekEndSeekBar.getProgress()) {
                     weekEndSeekBar.setProgress(seekBar.getProgress());
@@ -183,6 +195,15 @@ public class AddCourseActivity extends AppCompatActivity {
         if (courseName.isEmpty()) {
             ToastUtil.showToast(getApplicationContext(), "课程名称不能为空！");
         } else {
+            int start,end;
+            int time = courseStartSeekBar.getProgress();
+            if (time == 3) {
+                start=5;
+                end=5;
+            } else {
+                start=(time>3?time-1:time)*2;
+                end=start+1;
+            }
             List<CourseBean> courseBeans = ScheduleData.getUserCourseBeans();
             CourseBean courseBean = new CourseBean();
             courseBean.userAdd(
@@ -192,7 +213,8 @@ public class AddCourseActivity extends AppCompatActivity {
                     weekStartSeekBar.getProgress() + 1,
                     weekEndSeekBar.getProgress() + 1,
                     daySeekBar.getProgress() + 1,
-                    (courseStartSeekBar.getProgress() == 0 ? 7 : courseStartSeekBar.getProgress()),
+                    start,
+                    end,
                     (courseTeacherEditText.getText().toString().isEmpty() ? null : courseTeacherEditText.getText().toString()),
                     (courseCommEditText.getText().toString().isEmpty() ? null : courseCommEditText.getText().toString()),
                     ScheduleData.getUserCourseNo()
