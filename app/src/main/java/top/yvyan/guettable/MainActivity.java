@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Process;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -48,9 +49,6 @@ import top.yvyan.guettable.fragment.PersonFragment;
 import top.yvyan.guettable.util.BackgroundUtil;
 
 public class MainActivity extends AppCompatActivity {
-    //小米推送KEY
-    public static final String APP_ID = "2882303761518881128";
-    public static final String APP_KEY = "5601888146128";
     //友盟KEY
     private static final String UMengKey = "600e610a6a2a470e8f8942f9";
 
@@ -281,4 +279,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-

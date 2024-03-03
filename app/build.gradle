@@ -43,7 +43,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.jakewharton:butterknife:10.2.3'
-    implementation files('libs/MiPush_SDK_Client_3_8_5.jar')
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 
