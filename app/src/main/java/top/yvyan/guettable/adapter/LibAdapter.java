@@ -61,11 +61,26 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
             holder.textView3.setVisibility(View.GONE);
             holder.textView4.setVisibility(View.GONE);
         }
-        int n = courseBean.getTime();
-        if (n == 7) {
-            n = 0;
+        StringBuilder section = new StringBuilder();
+        if (courseBean.courseRangeVersion == 1) {
+            int n = courseBean.getTime();
+            if (n == 7) {
+                n = 0;
+            }
+            section.append(n + ", ");
+        } else {
+            int start = courseBean.start;
+            int end = courseBean.end;
+            for (int i = start; i <= end; i++) {
+                if (i == 5) {
+                    section.append("中午, ");
+                }
+                if (i % 2 == 0) {
+                    section.append((i + (i < 5 ? 1 : 0)) / 2 + ", ");
+                }
+            }
         }
-        holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + n + "大节");
+        holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section + "大节");
         holder.textView2.setText("名称：" + courseBean.getLabName());
         if ("".equals(courseBean.getRemarks())) {
             holder.textView6.setVisibility(View.GONE);

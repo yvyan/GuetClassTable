@@ -23,6 +23,8 @@ import top.yvyan.guettable.Gson.ExamScore;
 import top.yvyan.guettable.Gson.ExperimentScore;
 import top.yvyan.guettable.Gson.Grades;
 import top.yvyan.guettable.Gson.LabTable;
+import top.yvyan.guettable.Gson.LabTableJWT;
+import top.yvyan.guettable.Gson.LabTableNew;
 import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
 import top.yvyan.guettable.Gson.SelectedCourse;
@@ -62,13 +64,13 @@ public class StaticService {
                 return "ERROR2";
             }
         } else {
-            if (response.comment.contains("success")) {
-                int PhoneIndex = response.comment.indexOf("\"mobile\":\"") + 10;
-                return response.comment.substring(PhoneIndex, PhoneIndex + 11);
+            if (response.content.contains("success")) {
+                int PhoneIndex = response.content.indexOf("\"mobile\":\"") + 10;
+                return response.content.substring(PhoneIndex, PhoneIndex + 11);
             }
-            if (response.comment.contains("code_time_fail")) {
-                int MessageIndex = response.comment.indexOf("\"returnMessage\":\"") + 17;
-                String ErrorMessage = response.comment.substring(MessageIndex);
+            if (response.content.contains("code_time_fail")) {
+                int MessageIndex = response.content.indexOf("\"returnMessage\":\"") + 17;
+                String ErrorMessage = response.content.substring(MessageIndex);
                 return "ERROR3;" + ErrorMessage.substring(0, ErrorMessage.indexOf("\""));
             }
         }
@@ -94,7 +96,7 @@ public class StaticService {
             }
             return "ERROR0";
         } else {
-            if (response.comment.contains("reAuth_success")) {
+            if (response.content.contains("reAuth_success")) {
                 return response.cookie;
             }
             return "ERROR1";
@@ -230,7 +232,7 @@ public class StaticService {
     public static int CookieSet(Context context, String host, String path, String cookie, String VPNToken) {
         HttpConnectionAndCode response = Net.CookieSet(context, host, path, cookie, VPNToken);
         if (response.code == 0) {
-            if (response.comment.contains("success")) {
+            if (response.content.contains("success")) {
                 return 0;
             }
         }
@@ -248,7 +250,7 @@ public class StaticService {
         List<ResitBean> resitBeans = new ArrayList<>();
         HttpConnectionAndCode resitInfo = Net.getResit(context, cookie, TokenData.isVPN());
         if (resitInfo.code == 0) {
-            BaseResponse<List<Resit>> baseResponse = new Gson().fromJson(resitInfo.comment, new TypeToken<BaseResponse<List<Resit>>>() {
+            BaseResponse<List<Resit>> baseResponse = new Gson().fromJson(resitInfo.content, new TypeToken<BaseResponse<List<Resit>>>() {
             }.getType());
             for (Resit resit : baseResponse.getData()) {
                 resitBeans.add(resit.toResitBean());
@@ -269,7 +271,7 @@ public class StaticService {
     public static StudentInfo getStudentInfo(Context context, String cookie) {
         HttpConnectionAndCode studentInfo = Net.studentInfo(context, cookie, TokenData.isVPN());
         if (studentInfo.code == 0) {
-            return new Gson().fromJson(studentInfo.comment, StudentInfo.class);
+            return new Gson().fromJson(studentInfo.content, StudentInfo.class);
         } else {
             return null;
         }
@@ -292,7 +294,7 @@ public class StaticService {
             }
             HttpConnectionAndCode classTable = Net.getClassTableNew(context, semesterId, cookie, TokenData.isVPN());
             if (classTable.resp_code == 200) {
-                ClassTableNew table = new Gson().fromJson(classTable.comment, ClassTableNew.class);
+                ClassTableNew table = new Gson().fromJson(classTable.content, ClassTableNew.class);
                 ClassTableNew.studentTableVms maintable = table.studentTableVms.get(0);
                 List<ClassTableNew.ClassTable> lessions = maintable.activities;
                 for (ClassTableNew.ClassTable lession : lessions) {
@@ -322,7 +324,7 @@ public class StaticService {
         if(classTableIndex.resp_code==200){
             if(!isAutoTerm) {
                 Pattern pattern = Pattern.compile("var.?semesters.?=.?JSON\\.parse\\([.\n]?[^']*?'([^']*)'");
-                Matcher matcher = pattern.matcher(classTableIndex.comment);
+                Matcher matcher = pattern.matcher(classTableIndex.content);
                 if (matcher.find()) {
                     String semesters = "\"" + matcher.group(1) + "\"";
                     semesters = new Gson().fromJson(semesters, String.class);
@@ -355,7 +357,7 @@ public class StaticService {
     private static CurrentSemester getSemesterJson(HttpConnectionAndCode classTableIndex) {
         if(classTableIndex.resp_code==200) {
             Pattern pattern = Pattern.compile("currentSemester.?=.?([^;]+);");
-            Matcher matcher = pattern.matcher(classTableIndex.comment);
+            Matcher matcher = pattern.matcher(classTableIndex.content);
             if (matcher.find()) {
                 String currentSemesters = matcher.group(1).replace("'","\"");
                 CurrentSemester semester = new Gson().fromJson(currentSemesters,CurrentSemester.class);
@@ -376,12 +378,55 @@ public class StaticService {
         HttpConnectionAndCode classTable = Net.getClassTable(context, cookie, term, TokenData.isVPN());
         if (classTable.code == 0) {
             List<CourseBean> courseBeans = new ArrayList<>();
-            BaseResponse<List<ClassTable>> baseResponse = new Gson().fromJson(classTable.comment, new TypeToken<BaseResponse<List<ClassTable>>>() {
+            BaseResponse<List<ClassTable>> baseResponse = new Gson().fromJson(classTable.content, new TypeToken<BaseResponse<List<ClassTable>>>() {
             }.getType());
             for (ClassTable classTable1 : baseResponse.getData()) {
                 courseBeans.add(classTable1.toCourseBean());
             }
             return courseBeans;
+        } else {
+            return null;
+        }
+    }
+
+    // 十分逆天的 JWT in JWT in JWT
+    public static String getLabBridgeJWT(Context context, String cookie) {
+        HttpConnectionAndCode labTableRes = Net.getLabBridgeJWT(context,cookie, TokenData.isVPN());
+        if (labTableRes.resp_code / 100 == 3) {
+            String Location = labTableRes.c.getHeaderField("location");
+            Pattern pattern = Pattern.compile("token=(.*?)(?:&|$)");
+            Matcher matcher = pattern.matcher(Location);
+            if (matcher.find()) {
+                return matcher.group(1);
+            }
+        }
+        return null;
+    }
+
+    public static String getLabJWT(Context context, String cookie) {
+        String EDUJWTToken=getLabBridgeJWT(context,cookie);
+        if(EDUJWTToken==null) {
+            return null;
+        }
+        HttpConnectionAndCode labTableRes = Net.getLabJWT(context,cookie,EDUJWTToken, TokenData.isVPN());
+        if (labTableRes.resp_code / 100 == 2) {
+            LabTableJWT labJWT = new Gson().fromJson(labTableRes.content,LabTableJWT.class);
+            return labJWT.getToken();
+        }
+        return null;
+    }
+
+
+    public static List<CourseBean> getLabTableNew(Context context, String cookie, String startDate, String endDate) {
+        String jwtToken = getLabJWT(context,cookie);
+        if (jwtToken==null) {
+            return null;
+        }
+        HttpConnectionAndCode labTableRes = Net.getLabTableNew(context, jwtToken,startDate,endDate, TokenData.isVPN());
+        if (labTableRes.resp_code == 200) {
+            LabTableNew labTable = new Gson().fromJson(labTableRes.content,LabTableNew.class);
+            List<CourseBean> labList = labTable.toCourseBeans();
+            return labList;
         } else {
             return null;
         }
@@ -399,7 +444,7 @@ public class StaticService {
         HttpConnectionAndCode labTable = Net.getLabTable(context, cookie, term, TokenData.isVPN());
         if (labTable.code == 0) {
             List<CourseBean> courseBeans = new ArrayList<>();
-            BaseResponse<List<LabTable>> baseResponse = new Gson().fromJson(labTable.comment, new TypeToken<BaseResponse<List<LabTable>>>() {
+            BaseResponse<List<LabTable>> baseResponse = new Gson().fromJson(labTable.content, new TypeToken<BaseResponse<List<LabTable>>>() {
             }.getType());
             for (LabTable labTable1 : baseResponse.getData()) {
                 CourseBean courseBean = labTable1.toCourseBean();
@@ -426,7 +471,7 @@ public class StaticService {
         List<ExamBean> examBeans = new ArrayList<>();
         HttpConnectionAndCode examInfo = Net.getExam(context, cookie, term, TokenData.isVPN());
         if (examInfo.code == 0) {
-            BaseResponse<List<ExamInfo>> baseResponse = new Gson().fromJson(examInfo.comment, new TypeToken<BaseResponse<List<ExamInfo>>>() {
+            BaseResponse<List<ExamInfo>> baseResponse = new Gson().fromJson(examInfo.content, new TypeToken<BaseResponse<List<ExamInfo>>>() {
             }.getType());
             for (ExamInfo examInfo1 : baseResponse.getData()) {
                 examBeans.add(examInfo1.toExamBean());
@@ -448,7 +493,7 @@ public class StaticService {
         List<CETBean> cetBeans = new ArrayList<>();
         HttpConnectionAndCode cetInfo = Net.getCET(context, cookie, TokenData.isVPN());
         if (cetInfo.code == 0) {
-            BaseResponse<List<CET>> baseResponse = new Gson().fromJson(cetInfo.comment, new TypeToken<BaseResponse<List<CET>>>() {
+            BaseResponse<List<CET>> baseResponse = new Gson().fromJson(cetInfo.content, new TypeToken<BaseResponse<List<CET>>>() {
             }.getType());
             for (CET cet : baseResponse.getData()) {
                 cetBeans.add(cet.toCETBean());
@@ -470,7 +515,7 @@ public class StaticService {
         List<ExamScoreBean> examScoreBeans = new ArrayList<>();
         HttpConnectionAndCode examScoreInfo = Net.getExamScore(context, cookie, TokenData.isVPN());
         if (examScoreInfo.code == 0) {
-            BaseResponse<List<ExamScore>> baseResponse = new Gson().fromJson(examScoreInfo.comment, new TypeToken<BaseResponse<List<ExamScore>>>() {
+            BaseResponse<List<ExamScore>> baseResponse = new Gson().fromJson(examScoreInfo.content, new TypeToken<BaseResponse<List<ExamScore>>>() {
             }.getType());
             for (ExamScore examScore : baseResponse.getData()) {
                 examScoreBeans.add(examScore.toExamScoreBean());
@@ -492,7 +537,7 @@ public class StaticService {
         List<ExperimentScoreBean> experimentScoreBeans = new ArrayList<>();
         HttpConnectionAndCode experimentScoreInfo = Net.getExperimentScore(context, cookie, TokenData.isVPN());
         if (experimentScoreInfo.code == 0) {
-            BaseResponse<List<ExperimentScore>> baseResponse = new Gson().fromJson(experimentScoreInfo.comment, new TypeToken<BaseResponse<List<ExperimentScore>>>() {
+            BaseResponse<List<ExperimentScore>> baseResponse = new Gson().fromJson(experimentScoreInfo.content, new TypeToken<BaseResponse<List<ExperimentScore>>>() {
             }.getType());
             for (ExperimentScore experimentScore : baseResponse.getData()) {
                 experimentScoreBeans.add(experimentScore.toExperimentScoreBean());
@@ -512,10 +557,10 @@ public class StaticService {
      */
     public static List<EffectiveCredit> getEffectiveCredits(Context context, String cookie) {
         HttpConnectionAndCode updateResult = Net.updateEffectiveCredits(context, cookie, TokenData.isVPN());
-        if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
+        if (updateResult.content != null && updateResult.content.contains("提取成功")) { //更新成功
             HttpConnectionAndCode getResult = Net.getEffectiveCredits(context, cookie, TokenData.isVPN());
             if (getResult.code == 0) {
-                BaseResponse<List<EffectiveCredit>> baseResponse = new Gson().fromJson(getResult.comment, new TypeToken<BaseResponse<List<EffectiveCredit>>>() {
+                BaseResponse<List<EffectiveCredit>> baseResponse = new Gson().fromJson(getResult.content, new TypeToken<BaseResponse<List<EffectiveCredit>>>() {
                 }.getType());
                 return new ArrayList<>(baseResponse.getData());
             } else {
@@ -535,10 +580,10 @@ public class StaticService {
      */
     public static List<PlannedCourse> getPlannedCourses(Context context, String cookie) {
         HttpConnectionAndCode updateResult = Net.updateEffectiveCredits(context, cookie, TokenData.isVPN());
-        if (updateResult.comment != null && updateResult.comment.contains("提取成功")) { //更新成功
+        if (updateResult.content != null && updateResult.content.contains("提取成功")) { //更新成功
             HttpConnectionAndCode getResult = Net.getPlannedCourses(context, cookie, TokenData.isVPN());
             if (getResult.code == 0) {
-                BaseResponse<List<PlannedCourse>> baseResponse = new Gson().fromJson(getResult.comment, new TypeToken<BaseResponse<List<PlannedCourse>>>() {
+                BaseResponse<List<PlannedCourse>> baseResponse = new Gson().fromJson(getResult.content, new TypeToken<BaseResponse<List<PlannedCourse>>>() {
                 }.getType());
                 return new ArrayList<>(baseResponse.getData());
             } else {
@@ -684,7 +729,7 @@ public class StaticService {
             HttpConnectionAndCode httpConnectionAndCode = Net.getGrades(context, cookie, TokenData.isVPN());
             if (httpConnectionAndCode.code == 0) {
                 try {
-                    BaseResponse<List<Grades>> baseResponse = new Gson().fromJson(httpConnectionAndCode.comment, new TypeToken<BaseResponse<List<Grades>>>() {
+                    BaseResponse<List<Grades>> baseResponse = new Gson().fromJson(httpConnectionAndCode.content, new TypeToken<BaseResponse<List<Grades>>>() {
                     }.getType());
                     if (baseResponse.getData().size() == 1) {
                         grades[0] = baseResponse.getData().get(0).getXfj();
@@ -715,7 +760,7 @@ public class StaticService {
             }
             HttpConnectionAndCode classTable = Net.getClassList(context, semesterId, cookie, TokenData.isVPN());
             if (classTable.resp_code == 200) {
-                ClassList table = new Gson().fromJson(classTable.comment, ClassList.class);
+                ClassList table = new Gson().fromJson(classTable.content, ClassList.class);
                 List<ClassList.ClassInfo> maintable = table.lessons;
                 for (ClassList.ClassInfo lession : maintable) {
                     courseBeans.add(lession.toSelectedCourseBean());
@@ -742,7 +787,7 @@ public class StaticService {
     public static List<SelectedCourseBean> getSelectedCourseOld(Context context, String cookie, String term) {
         try {
             HttpConnectionAndCode httpConnectionAndCode = Net.getSelectedCourse(context, cookie, term, TokenData.isVPN());
-            String comment = httpConnectionAndCode.comment;
+            String comment = httpConnectionAndCode.content;
             List<SelectedCourseBean> list;
             BaseResponse<List<SelectedCourse>> result = new Gson().fromJson(comment, new TypeToken<BaseResponse<List<SelectedCourse>>>() {
             }.getType());
@@ -767,7 +812,7 @@ public class StaticService {
     public static List<TermBean> getTerms(Context context, String cookie) {
         try {
             HttpConnectionAndCode httpConnectionAndCode = Net.getAllTerms(context, cookie, TokenData.isVPN());
-            String comment = httpConnectionAndCode.comment;
+            String comment = httpConnectionAndCode.content;
             BaseResponse<List<TermBean>> baseResponse = new Gson().fromJson(comment, new TypeToken<BaseResponse<List<TermBean>>>() {
             }.getType());
             return new ArrayList<>(baseResponse.getData());

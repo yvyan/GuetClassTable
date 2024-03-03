@@ -134,7 +134,7 @@ public class AutoUpdate {
                 text = "正在同步考试安排";
                 break;
             case 95:
-                text = "正在同步课内实验";
+                text = "正在同步实验列表";
                 break;
             case 5:
                 text = "同步成功";
@@ -207,6 +207,7 @@ public class AutoUpdate {
                         }
                     }*/
                     //获取考试安排
+                    /*
                     updateView(94);
                     List<ExamBean> examBeans = StaticService.getExam(
                             activity,
@@ -220,6 +221,21 @@ public class AutoUpdate {
                     } else {
                         updateView("考试安排同步失败");
                         return;
+                    }*/
+                    //获取实验课
+                    updateView(95);
+                    List<CourseBean> getLab = StaticService.getLabTableNew(
+                            activity,
+                            tokenData.getbkjwTestCookie(),
+                            TimeUtil.timeFormat3339(generalData.getStartTime()), TimeUtil.timeFormat3339(generalData.getEndTime())
+                    );
+                    if (getLab != null) {
+                        updateView(5);
+                        ScheduleData.setLibBeans(getLab);
+                        ScheduleData.setUpdate(true);
+                    } else {
+                        updateView("实验列表同步失败");
+                        return;
                     }
                     updateView(5);
                     activity.runOnUiThread(() -> {
@@ -227,8 +243,13 @@ public class AutoUpdate {
                         notifyWidgetUpdate(activity);
                         ToastUtil.showToast(activity, "同步成功");
                     });
+                    generalData.setLastUpdateTime(System.currentTimeMillis());
+                    int maxWeek = ScheduleData.getMaxWeek();
+                    if (maxWeek > generalData.getMaxWeek()) {
+                        generalData.setMaxWeek(maxWeek);
+                    }
                     if (tableFragment != null) {
-                        tableFragment.getActivity().runOnUiThread(()->{
+                        tableFragment.getActivity().runOnUiThread(() -> {
                             try {
                                 tableFragment.updateTable();
                             } catch (Exception e) {

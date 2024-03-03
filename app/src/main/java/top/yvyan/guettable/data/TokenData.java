@@ -115,7 +115,7 @@ public class TokenData {
             tokenData = new TokenData(context);
         }
         tokenData.context = context; // Update Context
-        tokenData.Caller = null;
+        //  tokenData.Caller = null;
         return tokenData;
     }
 

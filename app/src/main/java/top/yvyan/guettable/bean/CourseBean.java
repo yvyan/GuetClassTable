@@ -107,6 +107,14 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     //设置为实验课
+    public void setLab(String name, String room, int week, int day, int start,int end, String teacher) {
+        setCourse("暂无简易获取方式", "(实验)" + name,room,week,week,day,start,end,teacher,"");
+        this.labName = name;
+        this.isLab=true;
+        this.labId = 0;
+    }
+
+    //设置为实验课
     public void setLab(String name, String libName, int batch, String room, int weekStart, int day, int time, String teacher, String remarks, long labId) {
         this.courseRangeVersion = 1;
         this.isLab = true;

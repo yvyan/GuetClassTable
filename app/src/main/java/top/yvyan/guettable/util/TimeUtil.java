@@ -127,4 +127,18 @@ public class TimeUtil {
         }
         return fmt.format(date); // 转换成 X年X月X日
     }
+
+    /**
+     * 将日期类型转化为字符串
+     *
+     * @param date date
+     * @return 字符串(yyyy年MM月dd日)
+     */
+    public static String timeFormat3339(Date date) {
+        @SuppressLint("SimpleDateFormat") DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        if (date == null) {
+            return "";
+        }
+        return fmt.format(date); // 转换成 X年X月X日
+    }
 }

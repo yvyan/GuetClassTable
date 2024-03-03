@@ -4,11 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -81,14 +82,14 @@ public class Net {
             if (loginParams.code != 0) {
                 if (loginParams.code == -7) {
                     // 已登录或多因子登录验证失效
-                    return new HttpConnectionAndCode(loginParams.c, 1, loginParams.comment, loginParams.cookie, loginParams.resp_code);
+                    return new HttpConnectionAndCode(loginParams.c, 1, loginParams.content, loginParams.cookie, loginParams.resp_code);
                 }
                 return new HttpConnectionAndCode(-5);
             }
             cookie_builder.append(loginParams.cookie);
-            ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(loginParams.comment, "(?<=id=\"pwdEncryptSalt\" value=\")(\\w+)(?=\")");
+            ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(loginParams.content, "(?<=id=\"pwdEncryptSalt\" value=\")(\\w+)(?=\")");
             String AESKey = listExp.get(0);
-            listExp = RegularUtil.getAllSatisfyStr(loginParams.comment, "(?<=name=\"execution\" value=\")(.*?)(?=\")");
+            listExp = RegularUtil.getAllSatisfyStr(loginParams.content, "(?<=name=\"execution\" value=\")(.*?)(?=\")");
             String execution = listExp.get(0);
             String body = "username=" + account + "&password=" + URLEncoder.encode(AESUtil.CASEncryption(password, AESKey), "UTF-8") + "&captcha=&rememberMe=true&_eventId=submit&cllt=userNameLogin&dllt=generalLogin&lt=&execution=" + URLEncoder.encode(execution, "UTF-8");
             HttpConnectionAndCode LoginRequest = Post.post(
@@ -441,6 +442,36 @@ public class Net {
      * 获取课内实验安排
      *
      * @param context context
+     * @param jwtToken jwt令牌
+     * @param isVPN   是否为外网
+     * @return
+     */
+    public static HttpConnectionAndCode getLabTableNew(Context context, String jwtToken, String startDate, String endDate, boolean isVPN) {
+        Resources resources = context.getResources();
+        Map<String,String> headers=new HashMap<>();
+        headers.put("x-access-token",jwtToken);
+        return Get.get(
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/guet-lab-system/schedule/mesCourseScheduleItem/queryScheduleInfo?_t="+ System.currentTimeMillis()/1000 +"&type=6&startDate="+startDate+"&endDate="+endDate, isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                30000,
+                null,
+                headers
+        );
+    }
+
+    /**
+     * 获取课内实验安排
+     *
+     * @param context context
      * @param cookie  登录后的cookie
      * @param isVPN   是否为外网
      * @param term    学期（格式：2020-2021_1）
@@ -760,6 +791,44 @@ public class Net {
                 resources.getString(R.string.lan_get_grades_success_contain_response_text),
                 null,
                 null,
+                null,
+                null,
+                null
+        );
+    }
+
+    public static HttpConnectionAndCode getLabJWT(Context context, String cookie,String jwtEduToken, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/guet-lab-system/api/authentication/getAccessTokenByEduToken?_t="+System.currentTimeMillis()/1000+"&token="+jwtEduToken, isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                false,
+                null,
+                null,
+                null
+        );
+    }
+
+    public static HttpConnectionAndCode getLabBridgeJWT(Context context, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/extra-system/newcapec-experiment/mesMySchedule", isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                false,
                 null,
                 null,
                 null

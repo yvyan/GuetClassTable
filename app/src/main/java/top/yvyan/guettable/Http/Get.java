@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -44,6 +45,23 @@ public class Get {
                                             @Nullable final Integer connect_timeout,
                                             @Nullable final Integer read_timeout,
                                             @Nullable final String content_type) {
+        return get(u, params, user_agent, referer, cookie, tail, cookie_delimiter, success_resp_text, accept_encodings, redirect, connect_timeout, read_timeout, content_type,null);
+    }
+
+    public static HttpConnectionAndCode get(@NonNull final String u,
+                                            @Nullable final String[] params,
+                                            @NonNull final String user_agent,
+                                            @NonNull final String referer,
+                                            @Nullable final String cookie,
+                                            @Nullable final String tail,
+                                            @Nullable final String cookie_delimiter,
+                                            @Nullable final String success_resp_text,
+                                            @Nullable final String[] accept_encodings,
+                                            @Nullable final Boolean redirect,
+                                            @Nullable final Integer connect_timeout,
+                                            @Nullable final Integer read_timeout,
+                                            @Nullable final String content_type,
+                                            @Nullable final Map<String,String> headers) {
         URL url;
         HttpURLConnection cnt;
         InputStreamReader in;
@@ -80,6 +98,12 @@ public class Get {
             }
             if (content_type != null) {
                 cnt.setRequestProperty("Content-Type", content_type);
+            }
+
+            if(headers!=null) {
+                for (Map.Entry<String, String> header : headers.entrySet()) {
+                    cnt.setRequestProperty(header.getKey(), header.getValue());
+                }
             }
             if (read_timeout == null) {
                 cnt.setReadTimeout(8000);

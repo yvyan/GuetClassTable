@@ -236,11 +236,11 @@ public class GeneralData {
         if(isAutoTerm()) {
             long time = mmkv.getLong(AUTO_TERM_END_TIME, 0);
             if(time == 0) {
-                return new Date(getStartTime().getTime()+getMaxWeek()*86400*7*1000);
+                return new Date(getStartTime().getTime()+((long)getMaxWeek()*86400L*7L*1000L));
             }
             return new Date(time);
         } else {
-            return new Date(time+getMaxWeek()*86400*7*1000);
+            return new Date((long)time+(long)getMaxWeek()*86400L*7L*1000L);
         }
     }
 

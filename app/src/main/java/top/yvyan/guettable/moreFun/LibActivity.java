@@ -13,14 +13,17 @@ import top.yvyan.guettable.adapter.LibAdapter;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.ScheduleData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
+import top.yvyan.guettable.util.TimeUtil;
 
 import static com.xuexiang.xui.XUI.getContext;
 
 public class LibActivity extends BaseFuncActivity {
 
     private GeneralData generalData;
+    private TokenData tokenData;
 
     @Override
     protected void childInit() {
@@ -28,6 +31,7 @@ public class LibActivity extends BaseFuncActivity {
         AppUtil.reportFunc(getApplicationContext(), getString(R.string.moreFun_lib_schedule));
 
         generalData = GeneralData.newInstance(this);
+        tokenData = TokenData.newInstance(this);
     }
 
     @Override
@@ -47,7 +51,7 @@ public class LibActivity extends BaseFuncActivity {
 
     @Override
     public int updateData(String cookie) {
-        List<CourseBean> libBeans = StaticService.getLab(this, cookie, generalData.getTerm());
+        List<CourseBean> libBeans = StaticService.getLabTableNew(this, cookie, TimeUtil.timeFormat3339(generalData.getStartTime()),TimeUtil.timeFormat3339(generalData.getEndTime()));
         if (libBeans != null) {
             ScheduleData.setLibBeans(libBeans);
             ScheduleData.setUpdate(true);
