@@ -207,7 +207,7 @@ public class AutoUpdate {
                         }
                     }*/
                     //获取考试安排
-                    /*
+
                     updateView(94);
                     List<ExamBean> examBeans = StaticService.getExam(
                             activity,
@@ -221,7 +221,7 @@ public class AutoUpdate {
                     } else {
                         updateView("考试安排同步失败");
                         return;
-                    }*/
+                    }
                     //获取实验课
                     updateView(95);
                     List<CourseBean> getLab = StaticService.getLabTableNew(
