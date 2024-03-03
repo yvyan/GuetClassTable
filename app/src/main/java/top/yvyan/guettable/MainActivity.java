@@ -30,7 +30,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.cconfig.RemoteConfigSettings;
 import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.commonsdk.UMConfigure;
-import com.xiaomi.mipush.sdk.MiPushClient;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -112,11 +111,6 @@ public class MainActivity extends AppCompatActivity {
         list.add(MoreFragment.newInstance());
         list.add(PersonFragment.newInstance());
         viewPagerAdapter.setList(list);
-
-        // 小米推送服务
-        if (shouldInit()) {
-            MiPushClient.registerPush(this, APP_ID, APP_KEY);
-        }
         // 友盟
         UMRemoteConfig.getInstance().setConfigSettings(new RemoteConfigSettings.Builder().setAutoUpdateModeEnabled(true).build()); //在线参数
         UMRemoteConfig.getInstance().setDefaults(R.xml.cloud_config_parms);
