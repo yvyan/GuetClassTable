@@ -293,7 +293,8 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         CurrentSemester semester = StaticService.getSemester(this, tokenData.getbkjwTestCookie());
         if (semester == null) return -1;
         generalData.setTerm(semester.toString());
-        generalData.setStartTime(semester.getStartTime());
+        generalData.setStartTime(semester.startDate.getTime());
+        generalData.setEndTime(semester.endDate.getTime());
         return 0;
     }
 

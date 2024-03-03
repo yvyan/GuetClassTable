@@ -12,10 +12,18 @@ public class CurrentSemester {
     public int id;
     public Season season;
     public Date startDate;
-    private static class Date {
+    public static class Date {
         public int[] values;
         public String toString() {
             return String.format("%04d-%02d-%02d",values[0],values[1],values[2]);
+        }
+        public Long getTime() {
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                return formatter.parse(toString()).getTime();
+            } catch (Exception e) {
+                return 0L;
+            }
         }
     }
 
@@ -28,12 +36,5 @@ public class CurrentSemester {
         return schoolYear + (season.$name.equals("AUTUMN") ? "_1" : "_2");
     }
 
-    public Long getStartTime() {
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            return formatter.parse(startDate.toString()).getTime();
-        } catch (Exception e) {
-            return 0L;
-        }
-    }
+
 }
