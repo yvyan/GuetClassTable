@@ -25,9 +25,11 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.util.DialogUtil;
+import androidx.annotation.Nullable;
 
 public class LaunchActivity extends AppCompatActivity {
-
+    private int migratedVersion=-1;
+    private FirstLoad firstLoad;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +48,14 @@ public class LaunchActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         //网络切换检测
         initReceiver();
-        FirstLoad firstLoad = new FirstLoad(this);
-        firstLoad.check();
+        firstLoad = new FirstLoad(this);
+        migratedVersion = firstLoad.check();
+        if(migratedVersion==firstLoad.nowVersionCode) {
+            initMain();
+        }
+    }
+
+    public void initMain() {
         int time = 30;    //设置等待时间，单位为毫秒
         Handler handler = new Handler();
         //当计时结束时，跳转至主界面
@@ -73,6 +81,16 @@ public class LaunchActivity extends AppCompatActivity {
                 LaunchActivity.this.finish();
             }
         }, time);
+        finish();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        migratedVersion = firstLoad.check(migratedVersion+1);
+        if(migratedVersion==firstLoad.nowVersionCode) {
+            initMain();
+        }
     }
 
     BroadcastReceiver netReceiver = new BroadcastReceiver() {

@@ -25,7 +25,8 @@ public class FirstLoad {
 
     private final Activity context;
     SharedPreferences.Editor editor;
-    int versionCode;
+    public int versionCode;
+    public int nowVersionCode;
 
     @SuppressLint("CommitPrefEdits")
     public FirstLoad(Activity context) {
@@ -33,26 +34,35 @@ public class FirstLoad {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         versionCode = sharedPreferences.getInt(VERSION_CODE, 36);
+        nowVersionCode =  AppUtil.getAppVersionCode(context);
     }
 
-    public void check() {
-        int nowVersionCode = AppUtil.getAppVersionCode(context);
-        if (nowVersionCode > versionCode) {
-            for (int i = versionCode; i < nowVersionCode; i++) {
-                migrateData(i);
-            }
-            openUpdate();
-            editor.putInt(VERSION_CODE, nowVersionCode);
-            editor.apply();
+    public int check(int start) {
+        for (int i = start; i < nowVersionCode; i++) {
+            if(migrateData(i)) {
+                return i;
+            };
         }
+        openUpdate();
+        editor.putInt(VERSION_CODE, nowVersionCode);
+        editor.apply();
+        return nowVersionCode;
+    }
+
+    public int check() {
+        if (nowVersionCode > versionCode) {
+            return check(versionCode);
+        }
+        return nowVersionCode;
     }
 
     /**
      * 按版本号修改数据
      *
      * @param i 源版本号
+     * @return Wait Activity
      */
-    private void migrateData(int i) {
+    private boolean migrateData(int i) {
         switch (i) {
             case 40:
                 //修复考试安排信息错误导致的闪退问题
@@ -63,10 +73,11 @@ public class FirstLoad {
                 break;
             case 62:
                 update_62();
-                break;
+                return true;
             default:
                 break;
         }
+        return false;
     }
 
     /**
@@ -79,7 +90,8 @@ public class FirstLoad {
     private void update_62() {
         if(GeneralData.isAutoTerm()) {
             Intent intent = new Intent(this.context, SetTermActivity.class);
-            this.context.startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
+            intent.putExtra("auto",true);
+            this.context.startActivityForResult(intent,SetTermActivity.REQUEST_CODE);
         }
     }
 
