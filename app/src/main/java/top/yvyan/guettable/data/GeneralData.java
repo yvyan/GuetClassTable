@@ -31,6 +31,7 @@ public class GeneralData {
 
     private static final String AUTO_TERM_OPEN = "auto_term_open";
     private static final String AUTO_TERM_START_TIME = "auto_term_startTime";
+    private static final String AUTO_TERM_END_TIME = "auto_term_endTime";
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -119,8 +120,8 @@ public class GeneralData {
         if (isAutoTerm()) {
             return getAutoWeek();
         } else {
-            int err = TimeUtil.calcWeekOffset(new Date(time), new Date(System.currentTimeMillis()));
-            return Math.min(week + err, maxWeek);
+            int offset = TimeUtil.calcWeekOffset(new Date(time), new Date(System.currentTimeMillis()));
+            return Math.min(week + offset, maxWeek);
         }
     }
 
@@ -218,17 +219,38 @@ public class GeneralData {
         mmkv.encode(AUTO_TERM_START_TIME, date);
     }
 
-    public static Date getStartTime() {
-        long time = mmkv.getLong("auto_term_startTime", 0);
-        return new Date(time);
+    public static void setEndTime(Long date) {
+        mmkv.encode(AUTO_TERM_END_TIME, date);
     }
+
+    public Date getStartTime() {
+        if(isAutoTerm()) {
+            long time = mmkv.getLong(AUTO_TERM_START_TIME, 0);
+            return new Date(time);
+        } else {
+            return new Date(time);
+        }
+    }
+
+    public Date getEndTime() {
+        if(isAutoTerm()) {
+            long time = mmkv.getLong(AUTO_TERM_END_TIME, 0);
+            if(time == 0) {
+                return new Date(getStartTime().getTime()+getMaxWeek()*86400*7*1000);
+            }
+            return new Date(time);
+        } else {
+            return new Date(time+getMaxWeek()*86400*7*1000);
+        }
+    }
+
 
     /**
      * 自动获取星期数
      *
      * @return 星期数
      */
-    private static int getAutoWeek() {
+    private int getAutoWeek() {
         Date startTime = getStartTime();
         Date now = new Date();
         if (startTime.after(now)) {

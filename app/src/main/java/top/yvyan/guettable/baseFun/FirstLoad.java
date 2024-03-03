@@ -1,12 +1,15 @@
 package top.yvyan.guettable.baseFun;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import java.util.List;
 
+import top.yvyan.guettable.activity.SetTermActivity;
 import top.yvyan.guettable.activity.SettingActivity;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.GeneralData;
@@ -20,12 +23,12 @@ public class FirstLoad {
     private static final String SHP_NAME = "FirstLoadData";
     private static final String VERSION_CODE = "versionCode";
 
-    private final Context context;
+    private final Activity context;
     SharedPreferences.Editor editor;
     int versionCode;
 
     @SuppressLint("CommitPrefEdits")
-    public FirstLoad(Context context) {
+    public FirstLoad(Activity context) {
         this.context = context;
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -36,7 +39,7 @@ public class FirstLoad {
         int nowVersionCode = AppUtil.getAppVersionCode(context);
         if (nowVersionCode > versionCode) {
             for (int i = versionCode; i < nowVersionCode; i++) {
-                updateDate(i);
+                migrateData(i);
             }
             openUpdate();
             editor.putInt(VERSION_CODE, nowVersionCode);
@@ -49,7 +52,7 @@ public class FirstLoad {
      *
      * @param i 源版本号
      */
-    private void updateDate(int i) {
+    private void migrateData(int i) {
         switch (i) {
             case 40:
                 //修复考试安排信息错误导致的闪退问题
@@ -57,6 +60,10 @@ public class FirstLoad {
                 break;
             case 52:
                 update_52();
+                break;
+            case 62:
+                update_62();
+                break;
             default:
                 break;
         }
@@ -67,6 +74,13 @@ public class FirstLoad {
      */
     private void update_52() {
         GeneralData.newInstance(context).setLastUpdateTime(-1);
+    }
+
+    private void update_62() {
+        if(GeneralData.isAutoTerm()) {
+            Intent intent = new Intent(this.context, SetTermActivity.class);
+            this.context.startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
+        }
     }
 
     /**
