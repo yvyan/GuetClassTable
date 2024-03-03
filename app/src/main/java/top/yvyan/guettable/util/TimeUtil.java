@@ -19,58 +19,30 @@ public class TimeUtil {
     public static int calcDayOffset(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
-
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTime(date2);
-        int day1 = cal1.get(Calendar.DAY_OF_YEAR);
-        int day2 = cal2.get(Calendar.DAY_OF_YEAR);
-
-        int year1 = cal1.get(Calendar.YEAR);
-        int year2 = cal2.get(Calendar.YEAR);
-        if (year1 != year2) {  //不同年
-            int timeDistance = 0;
-            if (year1 < year2) {
-                for (int i = year1; i < year2; i++) {
-                    if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0) {  //闰年
-                        timeDistance += 366;
-                    } else {  //不是闰年
-                        timeDistance += 365;
-                    }
-                }
-            } else {
-                for (int i = year2; i < year1; i++) {
-                    if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0) {  //闰年
-                        timeDistance -= 366;
-                    } else {  //不是闰年
-                        timeDistance -= 365;
-                    }
-                }
-            }
-            return timeDistance + (day2 - day1);
-        } else { //同一年
-            return day2 - day1;
-        }
+        cal1.set(Calendar.HOUR_OF_DAY, 0);
+        cal1.set(Calendar.MINUTE, 0);
+        cal1.set(Calendar.SECOND, 0);
+        cal1.set(Calendar.MILLISECOND, 0);
+        long stamp1=cal1.getTime().getTime();
+        return (int)((date2.getTime()-stamp1)/(86400*1000));
     }
 
-
+    /**
+     * 计算相差周数，以周一作为一周的开始日
+     * @param startTime
+     * @param endTime
+     * @return weekOffset
+     */
     public static int calcWeekOffset(Date startTime, Date endTime) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(startTime);
-        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-        dayOfWeek = dayOfWeek - 1;
-        if (dayOfWeek == 0) dayOfWeek = 7;
-
-        int dayOffset = calcDayOffset(startTime, endTime);
-
-        int weekOffset = dayOffset / 7;
-        int a;
-        if (dayOffset > 0) {
-            a = (dayOffset % 7 + dayOfWeek > 7) ? 1 : 0;
-        } else {
-            a = (dayOfWeek + dayOffset % 7 < 1) ? -1 : 0;
-        }
-        weekOffset = weekOffset + a;
-        return weekOffset;
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(startTime);
+        cal1.set(Calendar.HOUR_OF_DAY, 0);
+        cal1.set(Calendar.MINUTE, 0);
+        cal1.set(Calendar.SECOND, 0);
+        cal1.set(Calendar.MILLISECOND, 0);
+        int weekday = cal1.get(Calendar.DAY_OF_WEEK) - 1;
+        long stamp1=cal1.getTime().getTime() - ((weekday + 6) % 7) * 86400000;
+        return (int)((endTime.getTime()-stamp1)/(86400*1000*7));
     }
 
     /**
