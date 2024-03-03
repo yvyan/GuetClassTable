@@ -33,8 +33,9 @@ public class FirstLoad {
         this.context = context;
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        versionCode = sharedPreferences.getInt(VERSION_CODE, 36);
         nowVersionCode =  AppUtil.getAppVersionCode(context);
+        versionCode = sharedPreferences.getInt(VERSION_CODE, nowVersionCode);
+
     }
 
     public int check(int start) {
@@ -72,8 +73,7 @@ public class FirstLoad {
                 update_52();
                 break;
             case 62:
-                update_62();
-                return true;
+                return update_62();
             default:
                 break;
         }
@@ -87,12 +87,14 @@ public class FirstLoad {
         GeneralData.newInstance(context).setLastUpdateTime(-1);
     }
 
-    private void update_62() {
+    private Boolean update_62() {
         if(GeneralData.isAutoTerm()) {
             Intent intent = new Intent(this.context, SetTermActivity.class);
             intent.putExtra("auto",true);
             this.context.startActivityForResult(intent,SetTermActivity.REQUEST_CODE);
+            return true;
         }
+        return false;
     }
 
     /**

@@ -81,7 +81,6 @@ public class LaunchActivity extends AppCompatActivity {
                 LaunchActivity.this.finish();
             }
         }, time);
-        finish();
     }
 
     @Override
