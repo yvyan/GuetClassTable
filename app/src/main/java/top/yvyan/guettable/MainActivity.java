@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Process;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +18,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -171,24 +171,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private boolean shouldInit() {
-        //通过ActivityManager我们可以获得系统里正在运行的activities
-        //包括进程(Process)等、应用程序/包、服务(Service)、任务(Task)信息。
-        ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
-        List<ActivityManager.RunningAppProcessInfo> processInfo = am.getRunningAppProcesses();
-        String mainProcessName = getPackageName();
-        //获取本App的唯一标识
-        int myPid = Process.myPid();
-        //利用一个增强for循环取出手机里的所有进程
-        for (ActivityManager.RunningAppProcessInfo info : processInfo) {
-            //通过比较进程的唯一标识和包名判断进程里是否存在该App
-            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     // 只显示一次启动页
     @Override
     public void onBackPressed() {
@@ -240,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         filter.addAction(Intent.ACTION_TIME_CHANGED);
-        registerReceiver(dateChangeReceiver, filter);
+        ContextCompat.registerReceiver(this,dateChangeReceiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     /**

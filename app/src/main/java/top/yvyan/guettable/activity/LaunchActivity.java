@@ -27,6 +27,7 @@ import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.util.DialogUtil;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 public class LaunchActivity extends AppCompatActivity {
     private int migratedVersion = -1;
@@ -99,7 +100,7 @@ public class LaunchActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+            if (action!=null && action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(
                         Context.CONNECTIVITY_SERVICE);
                 @SuppressLint("MissingPermission")
@@ -132,6 +133,6 @@ public class LaunchActivity extends AppCompatActivity {
         timeFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         timeFilter.addAction("android.net.wifi.STATE_CHANGE");
         timeFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        registerReceiver(netReceiver, timeFilter);
+        ContextCompat.registerReceiver(this,netReceiver, timeFilter,ContextCompat.RECEIVER_EXPORTED);
     }
 }

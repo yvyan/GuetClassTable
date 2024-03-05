@@ -3,8 +3,7 @@ buildscript {
     repositories {
         google()
         // 阿里云云效仓库：https://maven.aliyun.com/mvn/guide
-        maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
         // 华为开源镜像：https://mirrors.huaweicloud.com
         maven { url 'https://repo.huaweicloud.com/repository/maven' }
         // JitPack 远程仓库：https://jitpack.io
@@ -14,7 +13,7 @@ buildscript {
         maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.3.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -24,8 +23,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://repo.huaweicloud.com/repository/maven' }
         maven { url 'https://jitpack.io' }
         maven { url 'https://repo1.maven.org/maven2/' }
@@ -34,5 +32,5 @@ allprojects {
 }
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+    delete getLayout().getBuildDirectory()
 }

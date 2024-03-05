@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="top.yvyan.guettable">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -45,7 +44,6 @@
         <activity android:name=".moreFun.MoreUrlActivity" />
         <activity android:name=".moreFun.ExamActivity" />
         <activity android:name=".moreFun.CETActivity" />
-        <activity android:name=".activity.HelpTestActivity" />
         <activity android:name=".moreFun.TestActivity" />
         <activity android:name=".moreFun.LibActivity" />
         <activity android:name=".moreFun.ResitActivity" />

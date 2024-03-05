@@ -12,8 +12,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.service.IMoreFun;
@@ -26,17 +24,10 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
 
     protected boolean update = true;
     protected int stateNum = -1;
-    @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.state)
+
     TextView state;
-    @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.title)
     TextView title;
-    @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.more)
     ImageView more;
-    @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.func_base_constraintLayout)
     ConstraintLayout header;
 
     @Override
@@ -45,7 +36,10 @@ public abstract class BaseFuncActivity extends AppCompatActivity implements IMor
         SingleSettingData singleSettingData = SingleSettingData.newInstance(getApplicationContext());
         BackgroundUtil.setPageTheme(this, singleSettingData.getThemeId());
         setContentView(R.layout.activity_base_func);
-        ButterKnife.bind(this);
+        state=findViewById(R.id.state);
+        title=findViewById(R.id.title);
+        more=findViewById(R.id.more);
+        header=findViewById(R.id.func_base_constraintLayout);
         more.setVisibility(View.GONE);
         more.setOnClickListener(this::showPopMenu);
         state.setOnClickListener(this::stateOnClick);
