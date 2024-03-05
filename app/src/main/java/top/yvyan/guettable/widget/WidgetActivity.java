@@ -1,5 +1,6 @@
 package top.yvyan.guettable.widget;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -86,7 +87,7 @@ public class WidgetActivity extends AppCompatActivity {
         }
 
         @Override
-        public ITabView.TabIcon getIcon(int position) {
+        public ITabView.TabIcon getIcon(Context c, int position) {
             return null;
         }
 

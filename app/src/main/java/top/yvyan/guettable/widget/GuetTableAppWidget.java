@@ -10,8 +10,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.xuexiang.xui.widget.toast.XToast;
-
 import java.util.Objects;
 
 import top.yvyan.guettable.MainActivity;
@@ -19,6 +17,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.TimeUtil;
+import top.yvyan.guettable.util.ToastUtil;
 
 // 桌面部件
 public class GuetTableAppWidget extends AppWidgetProvider {
@@ -128,7 +127,7 @@ public class GuetTableAppWidget extends AppWidgetProvider {
             for (int appWidgetId : appWidgetIds) {
                 updateAppWidget(context, manager, appWidgetId);
             }
-            XToast.success(context, "刷新成功").show();
+            ToastUtil.showToast(context, "刷新成功");
         } else if (Objects.equals(intent.getAction(), USER_ACTION)) {   // 刷新按钮之外的刷新请求
             for (int appWidgetId : appWidgetIds) {
                 updateAppWidget(context, manager, appWidgetId);
@@ -160,16 +159,16 @@ public class GuetTableAppWidget extends AppWidgetProvider {
             intent.putExtra("appWidgetId", appWidgetId);
             intent.setPackage(context.getPackageName());
             intent.setComponent(new ComponentName(context, GuetTableAppWidget.class));
-            PendingIntent pending = PendingIntent.getBroadcast(context, 0, intent, 0);
+            PendingIntent pending = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE);
             rv.setOnClickPendingIntent(R.id.widget_btn_refresh, pending);
 
             // 各组件的点击事件
             Intent activityIntent = new Intent(context, MainActivity.class);
             activityIntent.setPackage(context.getPackageName());
             PendingIntent pendingIntent = PendingIntent.getActivity(
-                    context, 0, activityIntent, 0);
+                    context, 0, activityIntent, PendingIntent.FLAG_MUTABLE);
             PendingIntent pendingIntentTemplate = PendingIntent.getActivity(
-                    context, 0, activityIntent, 0);
+                    context, 0, activityIntent, PendingIntent.FLAG_MUTABLE);
             rv.setOnClickPendingIntent(R.id.rl_empty, pendingIntent);
             rv.setOnClickPendingIntent(R.id.rl_widget, pendingIntent);
             rv.setPendingIntentTemplate(R.id.widget_lv_class, pendingIntentTemplate);

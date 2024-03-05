@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //XUI
-    implementation 'com.github.xuexiangjys:XUI:1.1.5'
+    implementation 'com.github.xuexiangjys:XUI:1.2.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     //友盟移动统计
