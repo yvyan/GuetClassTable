@@ -158,8 +158,8 @@ public class StaticService {
      * ERRORNeedlogin needRelogin
      * ERRORNetwork errNetwork
      */
-    public static String loginServerBySSO(Context context,String services, String CasCookie) {
-        HttpConnectionAndCode response = Net.loginServerBySSO(context,services, CasCookie);
+    public static String loginServerBySSO(Context context, String services, String CasCookie) {
+        HttpConnectionAndCode response = Net.loginServerBySSO(context, services, CasCookie);
         if (response.resp_code / 100 == 3) {
             String Location = response.c.getHeaderField("location");
             if (Location.contains("reAuthCheck")) {
@@ -178,6 +178,7 @@ public class StaticService {
 
     /**
      * Convert from Golang
+     *
      * @param context
      * @param services
      * @param CASCookie
@@ -187,14 +188,15 @@ public class StaticService {
      * ERRORNeedlogin needRelogin
      * ERRORNetwork errNetwork
      */
-    public static String authServiceByCas(Context context,String services,String CASCookie, String VPNCookie, Boolean isVPN) {
-        String authURL=loginServerBySSO(context,services,CASCookie);
+    public static String authServiceByCas(Context context, String services, String CASCookie, String VPNCookie, Boolean isVPN) {
+        String authURL = loginServerBySSO(context, services, CASCookie);
         if (authURL.startsWith("ERROR")) {
             return authURL;
         }
-        StringBuffer cookie=new StringBuffer();
-        String nextURL=VPNUrlUtil.getVPNUrl(authURL, isVPN);
-        while (true) {;
+        StringBuffer cookie = new StringBuffer();
+        String nextURL = VPNUrlUtil.getVPNUrl(authURL, isVPN);
+        while (true) {
+            ;
             HttpConnectionAndCode response = Net.authService(context, nextURL, isVPN ? VPNCookie : cookie.toString());
             if (response.resp_code / 100 == 3) {
                 String Location = response.c.getHeaderField("location");
@@ -204,17 +206,17 @@ public class StaticService {
                 if (Location.contains("v.guet.edu.cn/login") || isVPN && Location.equals("/login")) {
                     return "ERRORNeedLogin";
                 }
-                if (response.cookie!="") {
-                    cookie.append(response.cookie+"; ");
-                    nextURL=Location;
+                if (response.cookie != "") {
+                    cookie.append(response.cookie + "; ");
+                    nextURL = Location;
                     continue;
                 }
             }
-            if (response.cookie!="") {
+            if (response.cookie != "") {
                 cookie.append(response.cookie);
                 return cookie.toString();
             } else {
-                return cookie.toString().substring(0,cookie.length() - 2);
+                return cookie.toString().substring(0, cookie.length() - 2);
             }
 
         }
@@ -285,11 +287,11 @@ public class StaticService {
      * @param term    学期
      * @return 理论课程列表
      */
-    public static List<CourseBean> getClassNew(Context context, String cookie, String term,boolean isAutoTerm) {
+    public static List<CourseBean> getClassNew(Context context, String cookie, String term, boolean isAutoTerm) {
         try {
             List<CourseBean> courseBeans = new ArrayList<>();
-            int semesterId = getSemesterIdNew(context, cookie, term,isAutoTerm);
-            if (semesterId==-1) {
+            int semesterId = getSemesterIdNew(context, cookie, term, isAutoTerm);
+            if (semesterId == -1) {
                 return null;
             }
             HttpConnectionAndCode classTable = Net.getClassTableNew(context, semesterId, cookie, TokenData.isVPN());
@@ -308,21 +310,21 @@ public class StaticService {
                     }
 
                 }
-                if (courseBeans.size()==0) {
+                if (courseBeans.size() == 0) {
                     return null;
                 }
                 return courseBeans;
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static int getSemesterIdNew(Context context, String cookie, String term,boolean isAutoTerm) {
+    public static int getSemesterIdNew(Context context, String cookie, String term, boolean isAutoTerm) {
         HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
-        if(classTableIndex.resp_code==200){
-            if(!isAutoTerm) {
+        if (classTableIndex.resp_code == 200) {
+            if (!isAutoTerm) {
                 Pattern pattern = Pattern.compile("var.?semesters.?=.?JSON\\.parse\\([.\n]?[^']*?'([^']*)'");
                 Matcher matcher = pattern.matcher(classTableIndex.content);
                 if (matcher.find()) {
@@ -340,32 +342,34 @@ public class StaticService {
                     return -1;
                 }
             } else {
-               CurrentSemester semester = getSemesterJson(classTableIndex);
-               if (semester!=null) {
-                   return semester.id;
-               }
+                CurrentSemester semester = getSemesterJson(classTableIndex);
+                if (semester != null) {
+                    return semester.id;
+                }
             }
         }
         return -1;
-     }
-    public static CurrentSemester getSemester(Context context, String cookie){
+    }
+
+    public static CurrentSemester getSemester(Context context, String cookie) {
         HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
         CurrentSemester semester = getSemesterJson(classTableIndex);
         return semester;
     }
 
     private static CurrentSemester getSemesterJson(HttpConnectionAndCode classTableIndex) {
-        if(classTableIndex.resp_code==200) {
+        if (classTableIndex.resp_code == 200) {
             Pattern pattern = Pattern.compile("currentSemester.?=.?([^;]+);");
             Matcher matcher = pattern.matcher(classTableIndex.content);
             if (matcher.find()) {
-                String currentSemesters = matcher.group(1).replace("'","\"");
-                CurrentSemester semester = new Gson().fromJson(currentSemesters,CurrentSemester.class);
+                String currentSemesters = matcher.group(1).replace("'", "\"");
+                CurrentSemester semester = new Gson().fromJson(currentSemesters, CurrentSemester.class);
                 return semester;
             }
         }
         return null;
     }
+
     /**
      * 获取理论课程
      *
@@ -391,7 +395,7 @@ public class StaticService {
 
     // 十分逆天的 JWT in JWT in JWT
     public static String getLabBridgeJWT(Context context, String cookie) {
-        HttpConnectionAndCode labTableRes = Net.getLabBridgeJWT(context,cookie, TokenData.isVPN());
+        HttpConnectionAndCode labTableRes = Net.getLabBridgeJWT(context, cookie, TokenData.isVPN());
         if (labTableRes.resp_code / 100 == 3) {
             String Location = labTableRes.c.getHeaderField("location");
             Pattern pattern = Pattern.compile("token=(.*?)(?:&|$)");
@@ -404,13 +408,13 @@ public class StaticService {
     }
 
     public static String getLabJWT(Context context, String cookie) {
-        String EDUJWTToken=getLabBridgeJWT(context,cookie);
-        if(EDUJWTToken==null) {
+        String EDUJWTToken = getLabBridgeJWT(context, cookie);
+        if (EDUJWTToken == null) {
             return null;
         }
-        HttpConnectionAndCode labTableRes = Net.getLabJWT(context,cookie,EDUJWTToken, TokenData.isVPN());
+        HttpConnectionAndCode labTableRes = Net.getLabJWT(context, cookie, EDUJWTToken, TokenData.isVPN());
         if (labTableRes.resp_code / 100 == 2) {
-            LabTableJWT labJWT = new Gson().fromJson(labTableRes.content,LabTableJWT.class);
+            LabTableJWT labJWT = new Gson().fromJson(labTableRes.content, LabTableJWT.class);
             return labJWT.getToken();
         }
         return null;
@@ -418,13 +422,13 @@ public class StaticService {
 
 
     public static List<CourseBean> getLabTableNew(Context context, String cookie, String startDate, String endDate) {
-        String jwtToken = getLabJWT(context,cookie);
-        if (jwtToken==null) {
+        String jwtToken = getLabJWT(context, cookie);
+        if (jwtToken == null) {
             return null;
         }
-        HttpConnectionAndCode labTableRes = Net.getLabTableNew(context, jwtToken,startDate,endDate, TokenData.isVPN());
+        HttpConnectionAndCode labTableRes = Net.getLabTableNew(context, jwtToken, cookie, startDate, endDate, TokenData.isVPN());
         if (labTableRes.resp_code == 200) {
-            LabTableNew labTable = new Gson().fromJson(labTableRes.content,LabTableNew.class);
+            LabTableNew labTable = new Gson().fromJson(labTableRes.content, LabTableNew.class);
             List<CourseBean> labList = labTable.toCourseBeans();
             return labList;
         } else {
@@ -754,8 +758,8 @@ public class StaticService {
     public static List<SelectedCourseBean> getSelectedCourse(Context context, String cookie, String term) {
         List<SelectedCourseBean> courseBeans = new ArrayList<>();
         try {
-            int semesterId = getSemesterIdNew(context, cookie, term,false);
-            if (semesterId==-1) {
+            int semesterId = getSemesterIdNew(context, cookie, term, false);
+            if (semesterId == -1) {
                 return null;
             }
             HttpConnectionAndCode classTable = Net.getClassList(context, semesterId, cookie, TokenData.isVPN());
@@ -765,12 +769,12 @@ public class StaticService {
                 for (ClassList.ClassInfo lession : maintable) {
                     courseBeans.add(lession.toSelectedCourseBean());
                 }
-                if (courseBeans.size()==0) {
+                if (courseBeans.size() == 0) {
                     return null;
                 }
                 return courseBeans;
             }
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
         return null;

@@ -80,7 +80,7 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
                 }
             }
         }
-        holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section + "大节");
+        holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section.substring(0,section.length()-2) + "大节");
         holder.textView2.setText("名称：" + courseBean.getLabName());
         if ("".equals(courseBean.getRemarks())) {
             holder.textView6.setVisibility(View.GONE);

@@ -446,7 +446,7 @@ public class Net {
      * @param isVPN   是否为外网
      * @return
      */
-    public static HttpConnectionAndCode getLabTableNew(Context context, String jwtToken, String startDate, String endDate, boolean isVPN) {
+    public static HttpConnectionAndCode getLabTableNew(Context context, String jwtToken, String cookie, String startDate, String endDate, boolean isVPN) {
         Resources resources = context.getResources();
         Map<String,String> headers=new HashMap<>();
         headers.put("x-access-token",jwtToken);
@@ -455,7 +455,7 @@ public class Net {
                 null,
                 resources.getString(R.string.user_agent),
                 VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
-                null,
+                cookie,
                 null,
                 null,
                 null,

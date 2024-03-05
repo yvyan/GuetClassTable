@@ -32,9 +32,9 @@ public class FirstLoad {
     public FirstLoad(Activity context) {
         this.context = context;
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
         nowVersionCode =  AppUtil.getAppVersionCode(context);
         versionCode = sharedPreferences.getInt(VERSION_CODE, nowVersionCode);
+        editor = sharedPreferences.edit();
 
     }
 
@@ -51,7 +51,7 @@ public class FirstLoad {
     }
 
     public int check() {
-        if (nowVersionCode > versionCode) {
+        if (nowVersionCode >= versionCode) {
             return check(versionCode);
         }
         return nowVersionCode;
@@ -112,7 +112,7 @@ public class FirstLoad {
 
     private void openUpdate() {
         //打开检查更新
-        SharedPreferences.Editor mEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        SharedPreferences.Editor mEditor = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
         mEditor.putBoolean(SettingActivity.SettingFragment.APP_CHECK_UPDATE, true);
         mEditor.apply();
     }

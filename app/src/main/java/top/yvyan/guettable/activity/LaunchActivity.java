@@ -25,11 +25,13 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.util.DialogUtil;
+
 import androidx.annotation.Nullable;
 
 public class LaunchActivity extends AppCompatActivity {
-    private int migratedVersion=-1;
+    private int migratedVersion = -1;
     private FirstLoad firstLoad;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,7 @@ public class LaunchActivity extends AppCompatActivity {
         initReceiver();
         firstLoad = new FirstLoad(this);
         migratedVersion = firstLoad.check();
-        if(migratedVersion==firstLoad.nowVersionCode) {
+        if (migratedVersion == firstLoad.nowVersionCode) {
             initMain();
         }
     }
@@ -86,8 +88,8 @@ public class LaunchActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        migratedVersion = firstLoad.check(migratedVersion+1);
-        if(migratedVersion==firstLoad.nowVersionCode) {
+        migratedVersion = firstLoad.check(migratedVersion + 1);
+        if (migratedVersion == firstLoad.nowVersionCode) {
             initMain();
         }
     }
