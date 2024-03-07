@@ -107,6 +107,7 @@
                 android:padding="8dp"
                 android:text="@string/cancel"
                 android:textColor="@color/colorPrimary"
+                android:background="@color/transparent"
                 android:textSize="18sp" />
 
             <Button
@@ -117,6 +118,7 @@
                 android:layout_margin="5dp"
                 android:padding="8dp"
                 android:text="@string/login"
+                android:background="@color/transparent"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 

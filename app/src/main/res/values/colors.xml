@@ -8,6 +8,7 @@
 
     <color name="ic_launcher_background">#FFFFFF</color>
     <color name="writeTransparent">#C0ffffff</color>
+    <color name="transparent">#00ffffff</color>
 
     <color name="color_background_blue">#2ABFFD</color>
     <color name="color_background_red">#F92824</color>

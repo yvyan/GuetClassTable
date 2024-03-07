@@ -41,6 +41,7 @@
                 android:layout_margin="5dp"
                 android:padding="8dp"
                 android:text="好的"
+                android:background="@color/transparent"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 

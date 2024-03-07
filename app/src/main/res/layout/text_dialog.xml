@@ -46,6 +46,7 @@
                 android:layout_margin="5dp"
                 android:padding="8dp"
                 android:textColor="@color/colorPrimary"
+                android:background="@color/transparent"
                 android:textSize="18sp" />
 
         </RelativeLayout>

@@ -92,6 +92,7 @@
             android:focusable="true"
             android:padding="8dp"
             android:textSize="18sp"
+            android:background="@color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/view2"
             app:layout_constraintStart_toStartOf="parent" />
@@ -105,6 +106,7 @@
             android:focusable="true"
             android:padding="8dp"
             android:textColor="@color/colorPrimary"
+            android:background="@color/transparent"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
