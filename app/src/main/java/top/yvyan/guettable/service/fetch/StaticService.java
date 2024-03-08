@@ -196,7 +196,6 @@ public class StaticService {
         StringBuffer cookie = new StringBuffer();
         String nextURL = VPNUrlUtil.getVPNUrl(authURL, isVPN);
         while (true) {
-            ;
             HttpConnectionAndCode response = Net.authService(context, nextURL, isVPN ? VPNCookie : cookie.toString());
             if (response.resp_code / 100 == 3) {
                 String Location = response.c.getHeaderField("location");

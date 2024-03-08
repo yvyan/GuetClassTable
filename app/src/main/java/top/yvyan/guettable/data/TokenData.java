@@ -201,7 +201,6 @@ public class TokenData {
                     if ((n = refreshTGT()) != 0) {
                         return n;
                     }
-                    ;
                     BkjwCookieStr = StaticService.authServiceByCas(context, "https://bkjw.guet.edu.cn", getCASCookie(), "", isVPN);
                     if (BkjwCookieStr.startsWith("ERROR")) {
                         return -2;
