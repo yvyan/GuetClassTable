@@ -3,8 +3,10 @@ package top.yvyan.guettable.activity;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -20,6 +22,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
 import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner.OnItemSelectedListener;
 import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropActivity;
+import com.yalantis.ucrop.model.AspectRatio;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
@@ -33,6 +37,7 @@ import java.util.List;
 import java.util.Objects;
 
 import top.yvyan.guettable.R;
+import top.yvyan.guettable.adapter.DateBuildAdapter;
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.SingleSettingData;
@@ -239,8 +244,9 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
 
         mTimetableView = findViewById(R.id.id_timetableView);
         mTimetableView.curWeek(1)
+                .callback(new DateBuildAdapter())
                 .data(schedules)
-                .maxSlideItem(12)
+                .maxSlideItem(13)
                 .monthWidthDp(18)
                 .itemHeight(DensityUtil.dip2px(getApplicationContext(), singleSettingData.getItemLength()))
                 .callback(new OnItemBuildAdapter() {
@@ -275,6 +281,23 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
         startActivityForResult(intent, 4);
     }
 
+    private DisplayMetrics getDisplayMetrics() {
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics;
+    }
+
+    private int gcd(int a, int b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    }
+
+    private AspectRatio getDisplayRadio() {
+        DisplayMetrics display = getDisplayMetrics();
+        int factor = gcd(display.heightPixels, display.widthPixels);
+        return new AspectRatio("屏幕比例", (float) (display.widthPixels / factor), (float) (display.heightPixels / factor));
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -284,15 +307,23 @@ public class PersonalizedActivity extends AppCompatActivity implements OnItemSel
             Uri uri = data.getData();
             try {
                 File file = new File(this.getFilesDir(), fileName);
-                UCrop.of(uri, Uri.fromFile(file))
-                        .withAspectRatio(9, 16)
-                        .withMaxResultSize(1080, 1920)
+                UCrop.Options option = new UCrop.Options();
+                option.setAspectRatioOptions(2,
+                        new AspectRatio("9:16", 9f, 16f),
+                        new AspectRatio("3:4", 3f, 4f),
+                        getDisplayRadio(),
+                        new AspectRatio("1:1", 1f, 1f),
+                        new AspectRatio("1:2", 1f, 2f));
+                option.setCompressionQuality(100);
+                option.setCompressionFormat(Bitmap.CompressFormat.PNG);
+                option.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ALL, UCropActivity.SCALE);
+                UCrop.of(uri, Uri.fromFile(file)).withOptions(option)
                         .start(this);
             } catch (Exception e) {
                 ContentResolver resolver = getContentResolver();
 
-                try(FileInputStream inputStream = (FileInputStream) resolver.openInputStream(uri);
-                    FileOutputStream outputStream = openFileOutput("userBackground.jpg", MODE_PRIVATE)) {
+                try (FileInputStream inputStream = (FileInputStream) resolver.openInputStream(uri);
+                     FileOutputStream outputStream = openFileOutput("userBackground.jpg", MODE_PRIVATE)) {
 
 
                     byte[] buffer = new byte[1024];
