@@ -165,7 +165,7 @@ public class StaticService {
             if (Location.contains("reAuthCheck")) {
                 return "ERRORNeedlogin";
             }
-            if (Location == "") {
+            if (Location.equals("")) {
                 return "ERRORNetwork";
             }
             return Location;
@@ -205,13 +205,13 @@ public class StaticService {
                 if (Location.contains("v.guet.edu.cn/login") || isVPN && Location.equals("/login")) {
                     return "ERRORNeedLogin";
                 }
-                if (response.cookie != "") {
+                if (!response.cookie.equals("")) {
                     cookie.append(response.cookie + "; ");
                     nextURL = Location;
                     continue;
                 }
             }
-            if (response.cookie != "") {
+            if (!response.cookie.equals("")) {
                 cookie.append(response.cookie);
                 return cookie.toString();
             } else {
@@ -309,7 +309,7 @@ public class StaticService {
                     }
 
                 }
-                if (courseBeans.size() == 0) {
+                if (courseBeans.isEmpty()) {
                     return null;
                 }
                 return courseBeans;
@@ -331,7 +331,7 @@ public class StaticService {
                     semesters = new Gson().fromJson(semesters, String.class);
                     List<Semsters> semsterList = new Gson().fromJson(semesters, new TypeToken<List<Semsters>>() {
                     }.getType());
-                    int semesterId = 0;
+                    int semesterId;
                     for (Semsters s : semsterList) {
                         if (s.toString().equals(term)) {
                             semesterId = s.id;
@@ -352,8 +352,7 @@ public class StaticService {
 
     public static CurrentSemester getSemester(Context context, String cookie) {
         HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
-        CurrentSemester semester = getSemesterJson(classTableIndex);
-        return semester;
+        return getSemesterJson(classTableIndex);
     }
 
     private static CurrentSemester getSemesterJson(HttpConnectionAndCode classTableIndex) {
@@ -367,29 +366,6 @@ public class StaticService {
             }
         }
         return null;
-    }
-
-    /**
-     * 获取理论课程
-     *
-     * @param context context
-     * @param cookie  登录后的cookie
-     * @param term    学期
-     * @return 理论课程列表
-     */
-    public static List<CourseBean> getClass(Context context, String cookie, String term) {
-        HttpConnectionAndCode classTable = Net.getClassTable(context, cookie, term, TokenData.isVPN());
-        if (classTable.code == 0) {
-            List<CourseBean> courseBeans = new ArrayList<>();
-            BaseResponse<List<ClassTable>> baseResponse = new Gson().fromJson(classTable.content, new TypeToken<BaseResponse<List<ClassTable>>>() {
-            }.getType());
-            for (ClassTable classTable1 : baseResponse.getData()) {
-                courseBeans.add(classTable1.toCourseBean());
-            }
-            return courseBeans;
-        } else {
-            return null;
-        }
     }
 
     // 十分逆天的 JWT in JWT in JWT
@@ -428,35 +404,7 @@ public class StaticService {
         HttpConnectionAndCode labTableRes = Net.getLabTableNew(context, jwtToken, cookie, startDate, endDate, TokenData.isVPN());
         if (labTableRes.resp_code == 200) {
             LabTableNew labTable = new Gson().fromJson(labTableRes.content, LabTableNew.class);
-            List<CourseBean> labList = labTable.toCourseBeans();
-            return labList;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * 获取课内实验
-     *
-     * @param context context
-     * @param cookie  登录后的cookie
-     * @param term    学期
-     * @return 课内实验列表
-     */
-    public static List<CourseBean> getLab(Context context, String cookie, String term) {
-        HttpConnectionAndCode labTable = Net.getLabTable(context, cookie, term, TokenData.isVPN());
-        if (labTable.code == 0) {
-            List<CourseBean> courseBeans = new ArrayList<>();
-            BaseResponse<List<LabTable>> baseResponse = new Gson().fromJson(labTable.content, new TypeToken<BaseResponse<List<LabTable>>>() {
-            }.getType());
-            for (LabTable labTable1 : baseResponse.getData()) {
-                CourseBean courseBean = labTable1.toCourseBean();
-                if (courseBean.getTime() == 0) {
-                    courseBean.setTime(7);
-                }
-                courseBeans.add(courseBean);
-            }
-            return courseBeans;
+            return labTable.toCourseBeans();
         } else {
             return null;
         }
@@ -768,7 +716,7 @@ public class StaticService {
                 for (ClassList.ClassInfo lession : maintable) {
                     courseBeans.add(lession.toSelectedCourseBean());
                 }
-                if (courseBeans.size() == 0) {
+                if (courseBeans.isEmpty()) {
                     return null;
                 }
                 return courseBeans;
@@ -777,32 +725,6 @@ public class StaticService {
 
         }
         return null;
-    }
-
-    /**
-     * 查询已选课程
-     *
-     * @param context context
-     * @param cookie  cookie
-     * @param term    当前学期
-     * @return 操作结果
-     */
-    public static List<SelectedCourseBean> getSelectedCourseOld(Context context, String cookie, String term) {
-        try {
-            HttpConnectionAndCode httpConnectionAndCode = Net.getSelectedCourse(context, cookie, term, TokenData.isVPN());
-            String comment = httpConnectionAndCode.content;
-            List<SelectedCourseBean> list;
-            BaseResponse<List<SelectedCourse>> result = new Gson().fromJson(comment, new TypeToken<BaseResponse<List<SelectedCourse>>>() {
-            }.getType());
-            list = new ArrayList<>();
-            for (SelectedCourse selectedCourse : result.getData()) {
-                list.add(new SelectedCourseBean(selectedCourse));
-            }
-            return list;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**
