@@ -1,5 +1,7 @@
 package top.yvyan.guettable.service.fetch;
 
+import static java.lang.Math.max;
+
 import android.content.Context;
 import android.content.res.Resources;
 
@@ -116,7 +118,7 @@ public class Net {
                         cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1)).append(" ");
                     }
                 }
-                LoginRequest.cookie = cookie_builder.substring(0, cookie_builder.length() - 2);
+                LoginRequest.cookie = cookie_builder.substring(0,  max(0,cookie_builder.length() - 2));
                 LoginRequest.code = 0;
                 return LoginRequest;
             }

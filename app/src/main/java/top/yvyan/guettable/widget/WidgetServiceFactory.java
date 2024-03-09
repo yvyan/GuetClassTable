@@ -1,5 +1,7 @@
 package top.yvyan.guettable.widget;
 
+import static java.lang.Math.max;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -93,7 +95,7 @@ public class WidgetServiceFactory implements RemoteViewsService.RemoteViewsFacto
                     section.append((i + (i < 5 ? 1 : 0)) / 2 + ", ");
                 }
             }
-            rv.setTextViewText(R.id.widget_tv_course_number, section.substring(0, section.length() - 2));
+            rv.setTextViewText(R.id.widget_tv_course_number, section.substring(0,  max(0,section.length() - 2)));
             if (schedule.getRoom() != null && !schedule.getRoom().isEmpty()) {
                 rv.setTextViewText(R.id.widget_tv_course_room, "地点:" + schedule.getRoom());
             } else {

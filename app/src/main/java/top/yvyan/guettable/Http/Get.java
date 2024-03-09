@@ -1,5 +1,7 @@
 package top.yvyan.guettable.Http;
 
+import static java.lang.Math.max;
+
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -137,7 +139,7 @@ public class Get {
                         cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1) + " ");
                     }
                 }
-                return new HttpConnectionAndCode(cnt, -7, "",  cookie_builder.length() == 0 ? "" : cookie_builder.substring(0, cookie_builder.length() - 2), resp_code);
+                return new HttpConnectionAndCode(cnt, -7, "",  cookie_builder.length() == 0 ? "" : cookie_builder.substring(0,  max(0,cookie_builder.length() - 2)), resp_code);
             }
             List<String> encodings = cnt.getHeaderFields().get("content-encoding");
             if (resp_code < 400) {
@@ -185,7 +187,7 @@ public class Get {
                     cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1) + " ");
                 }
             }
-            set_cookie = cookie_builder.length() == 0 ? "" : cookie_builder.substring(0, cookie_builder.length() - 2);
+            set_cookie = cookie_builder.length() == 0 ? "" : cookie_builder.substring(0,  max(0,cookie_builder.length() - 2));
         }
 
         //do not disconnect, keep alive

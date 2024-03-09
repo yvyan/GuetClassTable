@@ -1,5 +1,7 @@
 package top.yvyan.guettable.service.fetch;
 
+import static java.lang.Math.max;
+
 import android.content.Context;
 
 import com.google.gson.Gson;
@@ -215,7 +217,7 @@ public class StaticService {
                 cookie.append(response.cookie);
                 return cookie.toString();
             } else {
-                return cookie.toString().substring(0, cookie.length() - 2);
+                return cookie.toString().substring(0,  max(0,cookie.length() - 2));
             }
 
         }

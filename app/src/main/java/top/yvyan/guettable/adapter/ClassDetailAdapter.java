@@ -1,5 +1,7 @@
 package top.yvyan.guettable.adapter;
 
+import static java.lang.Math.max;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -100,7 +102,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
                     }
                 }
             }
-            holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section.toString().substring(0, section.length() - 2) + "大节");
+            holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section.toString().substring(0,  max(0,section.length() - 2)) + "大节");
 
             if (courseBean.getRemarks().isEmpty()) {
                 holder.textView6.setVisibility(View.GONE);
