@@ -63,7 +63,7 @@ public class Net {
      */
     public static HttpConnectionAndCode getCASToken(Context context, String account, String password, String captcha, String TGTToken, String MFACookie, String SessionCookie) {
         StringBuilder cookie_builder = new StringBuilder();
-        String AuthCookie = (TGTToken.isEmpty() ? "" : TGTToken + "; ") + (MFACookie.isEmpty() ? "" : MFACookie + "; ") + (SessionCookie.isEmpty() ? "" : SessionCookie + "; ");
+        String AuthCookie = (TGTToken!=null && TGTToken.isEmpty() ? "" : TGTToken + "; ") + (MFACookie!=null && MFACookie.isEmpty() ? "" : MFACookie + "; ") + (SessionCookie != null && SessionCookie.isEmpty() ? "" : SessionCookie + "; ");
         AuthCookie = AuthCookie.substring(0, max(0, AuthCookie.length() - 2));
         try {
             Resources resources = context.getResources();

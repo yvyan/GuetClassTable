@@ -1,5 +1,24 @@
 apply plugin: 'com.android.application'
 
+def appStoreFile = System.getenv("STORE_FILE")
+def appStorePassword = System.getenv("STORE_PASSWORD")
+def appKeyAlias = System.getenv("KEY_ALIAS")
+def appKeyPassword = System.getenv("KEY_PASSWORD")
+def properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+if (appStoreFile == null) {
+    appStoreFile = properties.getProperty('appStoreFile');
+}
+if (appStorePassword == null) {
+    appStorePassword = properties.getProperty('appStorePassword');
+}
+if (appKeyAlias == null) {
+    appKeyAlias = properties.getProperty('appKeyAlias');
+}
+if (appKeyPassword == null) {
+    appKeyPassword = properties.getProperty('appKeyPassword');
+}
+
 android {
 
     defaultConfig {
@@ -20,10 +39,6 @@ android {
     }
 
     signingConfigs {
-        def appStoreFile = System.getenv("STORE_FILE")
-        def appStorePassword = System.getenv("STORE_PASSWORD")
-        def appKeyAlias = System.getenv("KEY_ALIAS")
-        def appKeyPassword = System.getenv("KEY_PASSWORD")
         if(appStoreFile) {
             sign {
                 storeFile file(appStoreFile)
@@ -38,12 +53,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (System.getenv("STORE_FILE")) {
+            if (appStoreFile) {
                 signingConfig signingConfigs.sign
             }
         }
         debug {
-            if (System.getenv("STORE_FILE")) {
+            if (appStoreFile) {
                 signingConfig signingConfigs.sign
             }
         }
