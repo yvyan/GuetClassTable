@@ -19,10 +19,33 @@ android {
         }
     }
 
+    signingConfigs {
+        def appStoreFile = System.getenv("STORE_FILE")
+        def appStorePassword = System.getenv("STORE_PASSWORD")
+        def appKeyAlias = System.getenv("KEY_ALIAS")
+        def appKeyPassword = System.getenv("KEY_PASSWORD")
+        if(appStoreFile) {
+            sign {
+                storeFile file(appStoreFile)
+                storePassword appStorePassword
+                keyAlias = appKeyAlias
+                keyPassword appKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (System.getenv("STORE_FILE")) {
+                signingConfig signingConfigs.sign
+            }
+        }
+        debug {
+            if (System.getenv("STORE_FILE")) {
+                signingConfig signingConfigs.sign
+            }
         }
     }
 
