@@ -7,8 +7,8 @@ android {
         minSdkVersion 21
         compileSdk 34
         targetSdkVersion 34
-        versionCode 65 //记得补丁版本号归零(patch_version)
-        versionName "5.4.3"
+        versionCode 66 //记得补丁版本号归零(patch_version)
+        versionName "5.4.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         android.buildFeatures.dataBinding = true
