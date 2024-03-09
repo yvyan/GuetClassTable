@@ -82,8 +82,6 @@ dependencies {
     implementation 'com.umeng.umsdk:apm:1.9.5'
     //友盟在线参数
     implementation  'com.umeng.umsdk:abtest:1.0.1' //使用ABTest模块必选
-    //EMAS hotfix
-    implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.18'
     //图片裁剪
     implementation 'com.github.yalantis:ucrop:2.2.8-native'
     //xUpdate

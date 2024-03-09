@@ -5,10 +5,10 @@ import android.app.Application;
 import com.tencent.mmkv.MMKV;
 import com.xuexiang.xui.XUI;
 
-public class MyApp extends Application {
-    private static MyApp myApp = null;
+public class MainApp extends Application {
+    private static MainApp myApp = null;
 
-    public static MyApp getInstance() {
+    public static MainApp getInstance() {
         return myApp;
     }
 
