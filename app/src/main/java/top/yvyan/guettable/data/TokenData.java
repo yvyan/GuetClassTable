@@ -1,24 +1,38 @@
 package top.yvyan.guettable.data;
 
+import static java.lang.Math.max;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.lang.reflect.*;
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import androidx.appcompat.app.AlertDialog;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.service.fetch.Net;
 import top.yvyan.guettable.service.fetch.StaticService;
+import top.yvyan.guettable.util.SSLUtils;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class TokenData {
@@ -91,7 +105,7 @@ public class TokenData {
     }
 
     public String getCASCookie() {
-        return TGTToken + (MFACookie == "" ? "" : "; " + MFACookie);
+        return TGTToken + (MFACookie.isEmpty() ? "" : "; " + MFACookie);
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -165,21 +179,18 @@ public class TokenData {
             //获取VPN的token
             String VPNTokenStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
             if (VPNTokenStr.startsWith("ERROR")) {
-                if (VPNTokenStr == "ERRORNeedlogin") {
+                if (VPNTokenStr.equals("ERRORNeedlogin")) {
                     int n;
                     if ((n = refreshTGT()) != 0) {
                         return n;
                     }
-                    ;
                     VPNTokenStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
                     if (VPNTokenStr.startsWith("ERROR")) {
                         return -2;
                     }
                 }
             }
-            if (VPNTokenStr != null) {
-                setVPNToken(VPNTokenStr);
-            }
+            setVPNToken(VPNTokenStr);
 
             String bkjwCookie = StaticService.authServiceByCas(context, "https://bkjw.guet.edu.cn", getCASCookie(), VPNTokenStr, isVPN);
             if (bkjwCookie.startsWith("ERROR")) {
@@ -196,7 +207,7 @@ public class TokenData {
         } else { //内网
             String BkjwCookieStr = StaticService.authServiceByCas(context, "https://bkjw.guet.edu.cn", getCASCookie(), "", isVPN);
             if (BkjwCookieStr.startsWith("ERROR")) {
-                if (BkjwCookieStr == "ERRORNeedlogin") {
+                if (BkjwCookieStr.equals("ERRORNeedlogin")) {
                     int n;
                     if ((n = refreshTGT()) != 0) {
                         return n;
@@ -207,18 +218,24 @@ public class TokenData {
                     }
                 }
             }
-            if (BkjwCookieStr != null) {
-                setBkjwCookie(BkjwCookieStr);
-            }
+            setBkjwCookie(BkjwCookieStr);
             String BkjwTestStr = StaticService.authServiceByCas(context, "https://bkjwtest.guet.edu.cn/student/sso/login", getCASCookie(), "", isVPN);
             if (BkjwTestStr.startsWith("ERROR")) {
                 return -2;
             }
-            if (BkjwTestStr != null) {
-                setBkjwTestCookie(BkjwTestStr);
-                return 0;
-            }
-            return -2;
+            setBkjwTestCookie(BkjwTestStr);
+            return 0;
+        }
+    }
+
+    public int refreshTGT() {
+        boolean checkCaptcha = StaticService.checkNeedCaptcha(context, accountData.getUsername());
+        if (checkCaptcha) {
+            Activity activity = this.getActivity(context);
+            login_showCaptchaDialog(activity);
+            return -3;
+        } else {
+            return refreshTGTWithCaptcha("", "");
         }
     }
 
@@ -227,8 +244,8 @@ public class TokenData {
      *
      * @return 操作结果
      */
-    public int refreshTGT() {
-        String TGTTokenStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getPwd(), TGTToken, MFACookie);
+    public int refreshTGTWithCaptcha(String Captcha, String SessionCookie) {
+        String TGTTokenStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getPwd(), Captcha, TGTToken, MFACookie, SessionCookie);
         if (TGTTokenStr.equals("ERROR2") || TGTTokenStr.equals("ERROR0")) {
             return -2;
         }
@@ -256,6 +273,9 @@ public class TokenData {
             } else {
                 setTGTToken(TGTTokenStr);
             }
+            if (Captcha != null && !Captcha.isEmpty()) {
+                runCallback();
+            }
             return 0;
         } else {
             return -1;
@@ -274,6 +294,80 @@ public class TokenData {
         }
 
         return null;
+    }
+
+    private void login_showCaptchaDialog(Activity activity) {
+        activity.runOnUiThread(() -> {
+            try {
+                AtomicReference<String> CasCookieWithSession = new AtomicReference<>();
+                AlertDialog dialog;
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                dialog = builder.create();
+                dialog.show();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Window window = dialog.getWindow();
+                window.setContentView(R.layout.login_captcha);
+                ImageView captchaView = window
+                        .findViewById(R.id.img_captcha);
+                captchaView.setOnClickListener(view -> {
+                    new Thread(() -> {
+                        try {
+                            URL url = new URL("https://cas.guet.edu.cn/authserver/getCaptcha.htl?" + System.currentTimeMillis());
+                            HttpsURLConnection urlConn = (HttpsURLConnection) url.openConnection();
+                            urlConn.setUseCaches(false);
+                            SSLContext sslContext = SSLUtils.getSSLContextWithoutCer();
+                            SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+                            urlConn.setSSLSocketFactory(sslSocketFactory);
+                            urlConn.setHostnameVerifier(SSLUtils.hostnameVerifier);
+                            urlConn.connect();
+                            InputStream in = urlConn.getInputStream();
+                            Bitmap captchaImg = BitmapFactory.decodeStream(in);
+                            activity.runOnUiThread(() -> {
+                                captchaView.setImageBitmap(captchaImg);
+                            });
+                            //get cookie from server
+                            String set_cookie = null;
+                            StringBuilder cookie_builder = new StringBuilder();
+                            List<String> cookies = urlConn.getHeaderFields().get("Set-Cookie");
+                            if (cookies != null) {
+                                for (String cookie_resp : cookies) {
+                                    cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1) + " ");
+                                }
+                            }
+                            set_cookie = cookie_builder.length() == 0 ? "" : cookie_builder.substring(0, max(0, cookie_builder.length() - 2));
+                            CasCookieWithSession.set(set_cookie);
+                        } catch (Exception ignore) {
+
+                        }
+                    }).start();
+                });
+                captchaView.setClickable(true);
+                captchaView.performClick();
+                Button buttonYes = window.findViewById(R.id.btn_text_yes);
+                Button buttonCancel = window.findViewById(R.id.btn_text_cancel);
+                buttonCancel.setOnClickListener(view -> {
+                    dialog.cancel();
+                });
+                buttonYes.setOnClickListener(view -> {
+                    TextView Captcha = window
+                            .findViewById(R.id.et_captcha);
+                    String captcha = Captcha.getText().toString();
+                    if (captcha.isEmpty()) {
+                        ToastUtil.showToast(activity, "验证码不能为空!");
+                        return;
+                    }
+                    dialog.dismiss();
+                    new Thread(() -> {
+                        refreshTGTWithCaptcha(captcha, CasCookieWithSession.get());
+                    }).start();
+                });
+            } catch (Exception ignore) {
+
+            }
+        });
     }
 
     private void reAuth_showSMSCodeDialog(Activity activity, String phoneNumber, String CasCookie) {
@@ -322,6 +416,21 @@ public class TokenData {
         });
     }
 
+    private void runCallback() {
+        if (Caller != null) {
+            try {
+                // 反射尝试调用Update方法 (如果有)
+                Class ContextClass = Caller.getClass();
+                Method Update = ContextClass.getMethod("update");
+                if (Update != null) {
+                    Update.invoke(Caller);
+                }
+            } catch (Exception ignore) {
+
+            }
+        }
+    }
+
     private int reAuth_SMSCode(String SMSCode, String CASCookie) {
         try {
             String MultiFactorAuth = StaticService.reAuth_SMSCode(context, SMSCode, CASCookie);
@@ -329,16 +438,7 @@ public class TokenData {
                 return -1;
             } else {
                 setMFACookie(MultiFactorAuth);
-                if (Caller != null) {
-                    try {
-                        // 反射尝试调用Update方法 (如果有)
-                        Class ContextClass = Caller.getClass();
-                        Method Update = ContextClass.getMethod("update");
-                        Update.invoke(Caller);
-                    } catch (Exception ignore) {
-
-                    }
-                }
+                runCallback();
                 return 0;
             }
         } catch (Exception ignore) {
@@ -359,14 +459,24 @@ public class TokenData {
         return MFACookie;
     }
 
-    public void setTGTToken(String CASCookie) {
-        String tTGTToken = CASCookie.substring(CASCookie.indexOf("CASTGC="));
-        int TGTTokenEndIndex = tTGTToken.indexOf(";");
-        if (TGTTokenEndIndex >= 0) {
-            TGTToken = tTGTToken.substring(0, TGTTokenEndIndex);
-        } else {
-            TGTToken = tTGTToken;
+    public String extractCookie(String source, String Cookie) {
+        String output;
+        int CookieStart = source.indexOf(Cookie + "=");
+        if (CookieStart < 0) {
+            return source;
         }
+        String substr = source.substring(CookieStart);
+        int CookieEndIndex = substr.indexOf(";");
+        if (CookieEndIndex >= 0) {
+            output = substr.substring(0, CookieEndIndex);
+        } else {
+            output = substr;
+        }
+        return output;
+    }
+
+    public void setTGTToken(String CASCookie) {
+        TGTToken = extractCookie(CASCookie, "CASTGC");
         editor.putString(CAS_TGTToken, TGTToken);
         editor.apply();
     }
@@ -404,4 +514,6 @@ public class TokenData {
         editor.putBoolean(IS_DEVELOP, isDevelop);
         editor.apply();
     }
+
+
 }

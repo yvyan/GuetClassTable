@@ -4,23 +4,17 @@ import static com.xuexiang.xui.XUI.getContext;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 
 import com.tencent.mmkv.MMKV;
 import com.umeng.cconfig.UMRemoteConfig;
@@ -141,32 +135,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     /**
-     * 验证智慧校园密码 SMSCode Version
-     */
-    private void testCASWithSMSCode(String SMSCode, String CASCookie, TokenData tokenData) {
-        String account = etAccount.getText().toString();
-        String pwd = etPwd.getText().toString();
-        new Thread(() -> {
-            runOnUiThread(() -> button.setText("正在认证-手机验证码"));
-            String MultiFactorAuth = StaticService.reAuth_SMSCode(this, SMSCode, CASCookie);
-            if (MultiFactorAuth.contains("ERROR")) {
-                if (MultiFactorAuth.equals("ERROR1")) {
-                    showErrorToast(-3);
-                } else if (MultiFactorAuth.equals("ERROR2")) {
-                    showErrorToast(-2);
-                } else {
-                    showErrorToast(-8);
-                }
-            } else {
-                tokenData.setMFACookie(MultiFactorAuth);
-                tokenData.setBkjwCookie(null);
-                accountData.setUser(account, pwd, cbRememberPwd.isChecked());
-                getInfo();
-            }
-        }).start();
-    }
-
-    /**
      * 验证智慧校园密码
      *
      * @param account  学号
@@ -174,79 +142,31 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      */
     private void testCAS(String account, String password) {
         new Thread(() -> {
-            TokenData tokenData = TokenData.newInstance(this);
-            runOnUiThread(() -> button.setText("正在认证"));
-            String CasCookie = StaticService.SSOLogin(this, account, password, accountData.getPwd().equals(password) ? tokenData.getTGTToken() : null, tokenData.getMFACookie());
-            if (CasCookie.contains("TGT-")) {
-                if (CasCookie.contains("ERROR5")) {
-                    tokenData.setTGTToken(CasCookie.substring(CasCookie.indexOf(";") + 1));
-                    tokenData.setBkjwCookie(null);
-                    String phoneNumber = StaticService.reAuth_sendSMSCode(this, account,CasCookie.substring(CasCookie.indexOf(";")+1));
-                    if (!phoneNumber.contains("ERROR")) {
-                        runOnUiThread(() -> {
-                            button.setText("正在二步验证");
-                            showSMSCodeDialog(phoneNumber,CasCookie.substring(CasCookie.indexOf(";")+1),tokenData);
-                        });
-                    } else {
-                        if (phoneNumber.equals("ERROR1")) {
-                            showErrorToast(-4);
-                        } else if (phoneNumber.equals("ERROR2")) {
-                            showErrorToast(-2);
-                        } else if(phoneNumber.contains("ERROR3")) {
-                            runOnUiThread(() -> {
-                                setEnClick();
-                                ToastUtil.showToast(this, getResources().getString(R.string.login_fail_SMSCodeSend)+phoneNumber.substring(7));
-                            });
-                        } else {
-                            showErrorToast(-8);
-                        }
-                    }
-                } else {
-                    tokenData.setTGTToken(CasCookie);
-                    tokenData.setBkjwCookie(null);
-                    accountData.setUser(account, password, cbRememberPwd.isChecked());
-                    getInfo();
-                }
-            } else {
-                if (CasCookie.equals("ERROR1")) {
+            TokenData tokenData = TokenData.newInstance(this,this);
+            runOnUiThread(() -> {
+                button.setText("正在认证");
+                setUnClick();
+            });
+            accountData.setUser(account, password, cbRememberPwd.isChecked());
+            int authState = tokenData.refreshTGT();
+            switch (authState) {
+                case 0:
+                    update();
+                    break;
+                case -1:
                     showErrorToast(-4);
-                } else if (CasCookie.equals("ERROR2")) {
-                    showErrorToast(-2);
-                } else {
-                    showErrorToast(-8);
-                }
+                    break;
+                case -3:
+                    // reAuth, do nothing
+                    break;
+                default:
+                    runOnUiThread(() -> setEnClick());
             }
         }).start();
     }
 
-    /**
-     * 显示手机验证码2FA
-     */
-    private void showSMSCodeDialog(String phoneNumber, String CasCookie, TokenData tokenData) {
-        try {
-            AlertDialog dialog;
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            dialog = builder.create();
-            dialog.show();
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            Window window = dialog.getWindow();
-            window.setContentView(R.layout.login_smscode);
-            TextView phoneNumberView = window
-                    .findViewById(R.id.et_phone);
-            phoneNumberView.setText(phoneNumber);
-            Button buttonYes = window.findViewById(R.id.btn_text_yes);
-            buttonYes.setOnClickListener(view -> {
-                TextView SMSCode = window
-                        .findViewById(R.id.et_smscode);
-                String SMSCodeOTP = SMSCode.getText().toString();
-                testCASWithSMSCode(SMSCodeOTP, CasCookie, tokenData);
-                dialog.dismiss();
-            });
-        } catch (Exception ignore) {
-        }
+   public void update() {
+        getInfo();
     }
 
     /**

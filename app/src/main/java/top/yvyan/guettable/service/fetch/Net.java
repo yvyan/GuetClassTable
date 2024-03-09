@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,7 @@ public class Net {
                 .url(url)
                 .build();
         final Call call = okHttpClient.newCall(request);
-        try ( Response response = call.execute()){
+        try (Response response = call.execute()) {
             return response.code();
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,9 +61,10 @@ public class Net {
      * @param MFACookie 2FA二次验证Cookie
      * @return CAS-TGT;
      */
-    public static HttpConnectionAndCode getCASToken(Context context, String account, String password, String TGTToken, String MFACookie) {
+    public static HttpConnectionAndCode getCASToken(Context context, String account, String password, String captcha, String TGTToken, String MFACookie, String SessionCookie) {
         StringBuilder cookie_builder = new StringBuilder();
-        String AuthCookie = (MFACookie != null ? MFACookie : "") + (TGTToken != null ? ((MFACookie != null ? "; " : "") + TGTToken) : "");
+        String AuthCookie = (TGTToken.isEmpty() ? "" : TGTToken + "; ") + (MFACookie.isEmpty() ? "" : MFACookie + "; ") + (SessionCookie.isEmpty() ? "" : SessionCookie + "; ");
+        AuthCookie = AuthCookie.substring(0, max(0, AuthCookie.length() - 2));
         try {
             Resources resources = context.getResources();
             HttpConnectionAndCode loginParams = Get.get(
@@ -93,14 +93,14 @@ public class Net {
             String AESKey = listExp.get(0);
             listExp = RegularUtil.getAllSatisfyStr(loginParams.content, "(?<=name=\"execution\" value=\")(.*?)(?=\")");
             String execution = listExp.get(0);
-            String body = "username=" + account + "&password=" + URLEncoder.encode(AESUtil.CASEncryption(password, AESKey), "UTF-8") + "&captcha=&rememberMe=true&_eventId=submit&cllt=userNameLogin&dllt=generalLogin&lt=&execution=" + URLEncoder.encode(execution, "UTF-8");
+            String body = "username=" + account + "&password=" + URLEncoder.encode(AESUtil.CASEncryption(password, AESKey), "UTF-8") + "&captcha=" + captcha + "&rememberMe=true&_eventId=submit&cllt=userNameLogin&dllt=generalLogin&lt=&execution=" + URLEncoder.encode(execution, "UTF-8");
             HttpConnectionAndCode LoginRequest = Post.post(
                     resources.getString(R.string.url_Authserver),
                     null,
                     resources.getString(R.string.user_agent),
                     resources.getString(R.string.SSO_referer),
                     body,
-                    cookie_builder + (MFACookie != null ? ("; " + MFACookie) : ""),
+                    cookie_builder + "; " + MFACookie,
                     "}",
                     resources.getString(R.string.cookie_delimiter),
                     null,
@@ -118,7 +118,7 @@ public class Net {
                         cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1)).append(" ");
                     }
                 }
-                LoginRequest.cookie = cookie_builder.substring(0,  max(0,cookie_builder.length() - 2));
+                LoginRequest.cookie = cookie_builder.substring(0, max(0, cookie_builder.length() - 2));
                 LoginRequest.code = 0;
                 return LoginRequest;
             }
@@ -182,11 +182,11 @@ public class Net {
     /**
      * 使用 SSO 服务器认证服务
      *
-     * @param service  要认证的服务
+     * @param service   要认证的服务
      * @param CASCookie CAS Cookie
      * @return Response
      */
-    public static HttpConnectionAndCode loginServerBySSO(Context context,String service, String CASCookie) {
+    public static HttpConnectionAndCode loginServerBySSO(Context context, String service, String CASCookie) {
         Resources resources = context.getResources();
         try {
             return Get.get(
@@ -208,21 +208,15 @@ public class Net {
         }
     }
 
-    /**
-     * 请求认证地址获取认证Cookie
-     *
-     * @param authurl 认证URL
-     * @param cookie 传递的cookie
-     * @return Response
-     */
-    public static HttpConnectionAndCode authService(Context context,String authurl, String cookie) {
-        Resources resources = context.getResources();
+    public static HttpConnectionAndCode checkNeedCaptcha(Context context, String account) {
+        try {
+            Resources resources = context.getResources();
             return Get.get(
-                    authurl,
+                    "https://cas.guet.edu.cn/authserver/checkNeedCaptcha.htl?username" + URLEncoder.encode(account, "UTF-8") + "&_=" + System.currentTimeMillis(),
                     null,
                     resources.getString(R.string.user_agent),
                     resources.getString(R.string.SSO_referer),
-                    cookie,
+                    "",
                     null,
                     resources.getString(R.string.cookie_delimiter),
                     null,
@@ -231,6 +225,34 @@ public class Net {
                     null,
                     3000,
                     null);
+        } catch (Exception ignore) {
+            return null;
+        }
+    }
+
+    /**
+     * 请求认证地址获取认证Cookie
+     *
+     * @param authurl 认证URL
+     * @param cookie  传递的cookie
+     * @return Response
+     */
+    public static HttpConnectionAndCode authService(Context context, String authurl, String cookie) {
+        Resources resources = context.getResources();
+        return Get.get(
+                authurl,
+                null,
+                resources.getString(R.string.user_agent),
+                resources.getString(R.string.SSO_referer),
+                cookie,
+                null,
+                resources.getString(R.string.cookie_delimiter),
+                null,
+                null,
+                false,
+                null,
+                3000,
+                null);
     }
 
     /**
@@ -267,32 +289,6 @@ public class Net {
     }
 
     /**
-     * 获取SSO ST令牌 新版CAS
-     *
-     * @param context   context
-     * @param CASCookie CAS Cookie
-     * @param service   ST令牌的服务端
-     * @return ST令牌
-     */
-    public static HttpConnectionAndCode getSTbyCas(Context context, String CASCookie, String service, String MFACookie) {
-        Resources resources = context.getResources();
-        return Get.get(
-                resources.getString(R.string.url_Authserver) + "?" + service,
-                null,
-                resources.getString(R.string.user_agent),
-                resources.getString(R.string.SSO_referer),
-                CASCookie + (MFACookie != null ? ("; " + MFACookie) : ""),
-                null,
-                resources.getString(R.string.cookie_delimiter),
-                null,
-                null,
-                false,
-                null,
-                10000,
-                null);
-    }
-
-    /**
      * 获取学生个人信息
      *
      * @param context context
@@ -318,10 +314,10 @@ public class Net {
         );
     }
 
-    public static HttpConnectionAndCode getClassList(Context context,int semesterId, String cookie, boolean isVPN) {
+    public static HttpConnectionAndCode getClassList(Context context, int semesterId, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                VPNUrlUtil.getVPNUrl(String.format("https://bkjwtest.guet.edu.cn/student/for-std/course-table/get-data?bizTypeId=2&semesterId=%d&dataId=",semesterId), isVPN),
+                VPNUrlUtil.getVPNUrl(String.format("https://bkjwtest.guet.edu.cn/student/for-std/course-table/get-data?bizTypeId=2&semesterId=%d&dataId=", semesterId), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
                 VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/course-table", isVPN),
@@ -337,10 +333,10 @@ public class Net {
         );
     }
 
-    public static HttpConnectionAndCode getClassTableNew(Context context,int semesterId, String cookie, boolean isVPN) {
+    public static HttpConnectionAndCode getClassTableNew(Context context, int semesterId, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                VPNUrlUtil.getVPNUrl(String.format("https://bkjwtest.guet.edu.cn/student/for-std/course-table/semester/%d/print-data?semesterId=%d&hasExperiment=true",semesterId,semesterId), isVPN),
+                VPNUrlUtil.getVPNUrl(String.format("https://bkjwtest.guet.edu.cn/student/for-std/course-table/semester/%d/print-data?semesterId=%d&hasExperiment=true", semesterId, semesterId), isVPN),
                 null,
                 resources.getString(R.string.user_agent),
                 VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/course-table", isVPN),
@@ -374,10 +370,11 @@ public class Net {
                 null
         );
     }
-    public static HttpConnectionAndCode getSemesterById(Context context,int id, String cookie, boolean isVPN) {
+
+    public static HttpConnectionAndCode getSemesterById(Context context, int id, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/ws/semester/get/"+id, isVPN),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/ws/semester/get/" + id, isVPN),
                 null,
                 resources.getString(R.string.user_agent),
                 VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/home", isVPN),
@@ -413,47 +410,19 @@ public class Net {
     }
 
     /**
-     * 获取课程安排
-     *
-     * @param context context
-     * @param cookie  登录后的cookie
-     * @param isVPN   是否为外网
-     * @return gson格式的课程安排
-     */
-    public static HttpConnectionAndCode getClassTable(Context context, String cookie, String term, boolean isVPN) {
-        Resources resources = context.getResources();
-        String[] param = {"term=" + term};
-        return Get.get(
-                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_table_url), isVPN),
-                param,
-                resources.getString(R.string.user_agent),
-                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
-                cookie,
-                "]}",
-                null,
-                resources.getString(R.string.lan_get_table_success_contain_response_text),
-                null,
-                null,
-                null,
-                10000,
-                null
-        );
-    }
-
-    /**
      * 获取课内实验安排
      *
-     * @param context context
+     * @param context  context
      * @param jwtToken jwt令牌
-     * @param isVPN   是否为外网
+     * @param isVPN    是否为外网
      * @return
      */
     public static HttpConnectionAndCode getLabTableNew(Context context, String jwtToken, String cookie, String startDate, String endDate, boolean isVPN) {
         Resources resources = context.getResources();
-        Map<String,String> headers=new HashMap<>();
-        headers.put("x-access-token",jwtToken);
+        Map<String, String> headers = new HashMap<>();
+        headers.put("x-access-token", jwtToken);
         return Get.get(
-                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/guet-lab-system/schedule/mesCourseScheduleItem/queryScheduleInfo?_t="+ System.currentTimeMillis()/1000 +"&type=6&startDate="+startDate+"&endDate="+endDate, isVPN),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/guet-lab-system/schedule/mesCourseScheduleItem/queryScheduleInfo?_t=" + System.currentTimeMillis() / 1000 + "&type=6&startDate=" + startDate + "&endDate=" + endDate, isVPN),
                 null,
                 resources.getString(R.string.user_agent),
                 VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
@@ -467,35 +436,6 @@ public class Net {
                 30000,
                 null,
                 headers
-        );
-    }
-
-    /**
-     * 获取课内实验安排
-     *
-     * @param context context
-     * @param cookie  登录后的cookie
-     * @param isVPN   是否为外网
-     * @param term    学期（格式：2020-2021_1）
-     * @return gson格式的课内实验安排
-     */
-    public static HttpConnectionAndCode getLabTable(Context context, String cookie, String term, boolean isVPN) {
-        Resources resources = context.getResources();
-        String[] param = {"term=" + term};
-        return Get.get(
-                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_lab_table_url), isVPN),
-                param,
-                resources.getString(R.string.user_agent),
-                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
-                cookie,
-                "]}",
-                null,
-                resources.getString(R.string.lan_get_table_success_contain_response_text),
-                null,
-                null,
-                null,
-                30000,
-                null
         );
     }
 
@@ -718,34 +658,6 @@ public class Net {
 
 
     /**
-     * 查询已选课程
-     *
-     * @param context context
-     * @param cookie  cookie
-     * @param isVPN   是否外网
-     * @return 操作结果
-     */
-    public static HttpConnectionAndCode getSelectedCourse(Context context, String cookie, String term, boolean isVPN) {
-        Resources resources = context.getResources();
-        String[] param = {"comm=1%401", "term=".concat(term)};
-        return Get.get(
-                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn" + resources.getString(R.string.lan_get_selected_course), isVPN),
-                param,
-                resources.getString(R.string.user_agent),
-                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
-                cookie,
-                "]}",
-                null,
-                resources.getString(R.string.lan_login_success_contain_response_text),
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-    }
-
-    /**
      * 获取学生个人信息
      *
      * @param context context
@@ -799,10 +711,10 @@ public class Net {
         );
     }
 
-    public static HttpConnectionAndCode getLabJWT(Context context, String cookie,String jwtEduToken, boolean isVPN) {
+    public static HttpConnectionAndCode getLabJWT(Context context, String cookie, String jwtEduToken, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/guet-lab-system/api/authentication/getAccessTokenByEduToken?_t="+System.currentTimeMillis()/1000+"&token="+jwtEduToken, isVPN),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/guet-lab-system/api/authentication/getAccessTokenByEduToken?_t=" + System.currentTimeMillis() / 1000 + "&token=" + jwtEduToken, isVPN),
                 null,
                 resources.getString(R.string.user_agent),
                 VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn", isVPN),

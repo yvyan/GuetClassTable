@@ -178,6 +178,9 @@
     <string name="login">登录</string>
     <string name="cancel">取消</string>
     <string name="login_2fa_smscode">需要手机验证码</string>
+    <string name="login_captcha">需要输入验证码</string>
+    <string name="hint_login_input_captcha">请输入图片中的验证码</string>
+    <string name="hint_login_captcha">请输入验证码</string>
     <string name="hint_2fa_smscode">请输入手机验证码</string>
     <string name="hint_2fa_phone">验证码已发送至:</string>
     <string name="hint_captcha">请输入验证码</string>

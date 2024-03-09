@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 import top.yvyan.guettable.Gson.BaseResponse;
 import top.yvyan.guettable.Gson.CET;
 import top.yvyan.guettable.Gson.ClassList;
-import top.yvyan.guettable.Gson.ClassTable;
 import top.yvyan.guettable.Gson.ClassTableNew;
 import top.yvyan.guettable.Gson.CurrentSemester;
 import top.yvyan.guettable.Gson.EffectiveCredit;
@@ -24,12 +23,11 @@ import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamScore;
 import top.yvyan.guettable.Gson.ExperimentScore;
 import top.yvyan.guettable.Gson.Grades;
-import top.yvyan.guettable.Gson.LabTable;
 import top.yvyan.guettable.Gson.LabTableJWT;
 import top.yvyan.guettable.Gson.LabTableNew;
+import top.yvyan.guettable.Gson.NeedCaptcha;
 import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
-import top.yvyan.guettable.Gson.SelectedCourse;
 import top.yvyan.guettable.Gson.Semsters;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
@@ -46,6 +44,17 @@ import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.util.VPNUrlUtil;
 
 public class StaticService {
+
+    public static boolean checkNeedCaptcha(Context context, String account) {
+        try {
+            HttpConnectionAndCode checkCaptcha = Net.checkNeedCaptcha(context, account);
+            if (checkCaptcha != null && checkCaptcha.resp_code == 200) {
+                NeedCaptcha isNeed = new Gson().fromJson(checkCaptcha.content, NeedCaptcha.class);
+                return isNeed.isNeed;
+            }
+        } catch (Exception ignore) {}
+        return false;
+    }
 
     /**
      * 发送手机验证码
@@ -119,15 +128,15 @@ public class StaticService {
      * ERROR2 : 需要使用外网网址进行访问
      * ERROR5 : 2FA Needed
      */
-    public static String SSOLogin(Context context, String account, String password, String TGTToken, String MFACookie) {
-        HttpConnectionAndCode response = Net.getCASToken(context, account, password, TGTToken, MFACookie);
+    public static String SSOLogin(Context context, String account, String password,String captcha, String TGTToken, String MFACookie, String SessionCookie) {
+        HttpConnectionAndCode response = Net.getCASToken(context, account, password, captcha, TGTToken, MFACookie, SessionCookie);
         if (response.code != 0) {
             if (response.code == 1) {
                 String Location = response.c.getHeaderField("location");
                 if (Location.contains("reAuthCheck")) {
                     return "ERROR5;" + TGTToken + "; " + response.cookie;
                 }
-                if (MFACookie != null) {
+                if (!MFACookie.isEmpty()) {
                     return MFACookie + "; " + TGTToken;
                 } else {
                     return TGTToken;
@@ -162,12 +171,12 @@ public class StaticService {
      */
     public static String loginServerBySSO(Context context, String services, String CasCookie) {
         HttpConnectionAndCode response = Net.loginServerBySSO(context, services, CasCookie);
-        if (response.resp_code / 100 == 3) {
+        if (response.resp_code / 100 == 3 && response.c!=null) {
             String Location = response.c.getHeaderField("location");
             if (Location.contains("reAuthCheck")) {
                 return "ERRORNeedlogin";
             }
-            if (Location.equals("")) {
+            if (Location.isEmpty()) {
                 return "ERRORNetwork";
             }
             return Location;
@@ -195,29 +204,31 @@ public class StaticService {
         if (authURL.startsWith("ERROR")) {
             return authURL;
         }
-        StringBuffer cookie = new StringBuffer();
+        StringBuilder cookie = new StringBuilder();
         String nextURL = VPNUrlUtil.getVPNUrl(authURL, isVPN);
         while (true) {
             HttpConnectionAndCode response = Net.authService(context, nextURL, isVPN ? VPNCookie : cookie.toString());
             if (response.resp_code / 100 == 3) {
                 String Location = response.c.getHeaderField("location");
-                if (Location.contains("authserver")) {
-                    return "ERRORNeedlogin";
+                if (Location != null) {
+                    if (Location.contains("authserver")) {
+                        return "ERRORNeedlogin";
+                    }
+                    if (Location.contains("v.guet.edu.cn/login") || isVPN && Location.equals("/login")) {
+                        return "ERRORNeedLogin";
+                    }
                 }
-                if (Location.contains("v.guet.edu.cn/login") || isVPN && Location.equals("/login")) {
-                    return "ERRORNeedLogin";
-                }
-                if (!response.cookie.equals("")) {
-                    cookie.append(response.cookie + "; ");
+                if (response.cookie != null && !response.cookie.isEmpty()) {
+                    cookie.append(response.cookie).append("; ");
                     nextURL = Location;
                     continue;
                 }
             }
-            if (!response.cookie.equals("")) {
+            if (response.cookie != null && !response.cookie.isEmpty()) {
                 cookie.append(response.cookie);
                 return cookie.toString();
             } else {
-                return cookie.toString().substring(0,  max(0,cookie.length() - 2));
+                return cookie.toString().substring(0, max(0, cookie.length() - 2));
             }
 
         }
@@ -303,9 +314,7 @@ public class StaticService {
                 for (ClassTableNew.ClassTable lession : lessions) {
                     try {
                         List<CourseBean> coursebeans = lession.toCourseBean();
-                        for (CourseBean coursebean : coursebeans) {
-                            courseBeans.add(coursebean);
-                        }
+                        courseBeans.addAll(coursebeans);
                     } catch (Exception e) {
 
                     }
@@ -363,8 +372,7 @@ public class StaticService {
             Matcher matcher = pattern.matcher(classTableIndex.content);
             if (matcher.find()) {
                 String currentSemesters = matcher.group(1).replace("'", "\"");
-                CurrentSemester semester = new Gson().fromJson(currentSemesters, CurrentSemester.class);
-                return semester;
+                return new Gson().fromJson(currentSemesters, CurrentSemester.class);
             }
         }
         return null;
