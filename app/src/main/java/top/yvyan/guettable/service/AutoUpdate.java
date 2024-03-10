@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import androidx.core.util.Supplier;
+
 import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.data.AccountData;
@@ -49,6 +51,7 @@ public class AutoUpdate {
     public void setCourseTableFragment(CourseTableFragment courseTableFragment) {
         this.tableFragment = courseTableFragment;
     }
+
 
     private void init() {
         if (accountData.getIsLogin()) {
@@ -157,29 +160,11 @@ public class AutoUpdate {
      */
     private void update_thread() {
         new Thread(() -> {
-            String cookie;
             try {
                 if (accountData.getIsLogin()) {
-                    updateView(91); //显示：尝试同步理论课
-                    cookie = tokenData.getbkjwTestCookie();
-                    List<CourseBean> getClass = StaticService.getClassNew(
-                            activity,
-                            cookie,
-                            generalData.getTerm(),
-                            GeneralData.isAutoTerm()
-                    );
-                    if (getClass != null) {
-                        ScheduleData.setCourseBeans(getClass);
-                    } else {
-                        updateView(92);
-                        state = tokenData.refresh();
-                        if (state != 0) {
-                            updateView(state);
-                            return;
-                        }
-                        updateView(93); //显示：正在同步理论课
-
-                        getClass = StaticService.getClassNew(
+                    boolean state= tokenData.tryUpdate(() -> updateView(92), () -> {
+                        updateView(93);
+                        List<CourseBean> getClass = StaticService.getClassNew(
                                 activity,
                                 tokenData.getbkjwTestCookie(),
                                 generalData.getTerm(),
@@ -187,74 +172,66 @@ public class AutoUpdate {
                         );
                         if (getClass != null) {
                             ScheduleData.setCourseBeans(getClass);
-                        } else {
                             updateView("课程表同步失败");
-                            return;
+                        } else {
+                            return false;
                         }
-                    }
-                    //小学期合并到第二学期
-                    /*
-                    String addTerm = generalData.getAddTerm();
-                    if (!addTerm.isEmpty()) {
-                        List<CourseBean> getAddClass = StaticService.getClass(
+                        return true;
+                    }, () -> {
+                        //获取实验课
+                        updateView(95);
+                        List<CourseBean> getLab = StaticService.getLabTableNew(
                                 activity,
-                                cookie,
-                                addTerm
+                                tokenData.getbkjwTestCookie(),
+                                TimeUtil.timeFormat3339(generalData.getStartTime()), TimeUtil.timeFormat3339(generalData.getEndTime())
                         );
-                        if (getAddClass != null && !getAddClass.isEmpty()) {
-                            getClass.addAll(getAddClass);
-                            ScheduleData.setCourseBeans(getClass);
+                        if (getLab != null) {
+                            updateView(5);
+                            ScheduleData.setLibBeans(getLab);
+                            ScheduleData.setUpdate(true);
+                        } else {
+                            updateView("实验列表同步失败");
+                            return false;
                         }
-                    }*/
-                    //获取考试安排
-
-                    updateView(94);
-                    List<ExamBean> examBeans = StaticService.getExam(
-                            activity,
-                            tokenData.getBkjwCookie(),
-                            generalData.getTerm()
-                    );
-                    if (examBeans != null) {
-                        CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
-                        Collections.sort(examBeans, beanAttributeUtil);
-                        ScheduleData.setExamBeans(examBeans);
-                    } else {
-                        updateView("考试安排同步失败");
-                        return;
-                    }
-                    //获取实验课
-                    updateView(95);
-                    List<CourseBean> getLab = StaticService.getLabTableNew(
-                            activity,
-                            tokenData.getbkjwTestCookie(),
-                            TimeUtil.timeFormat3339(generalData.getStartTime()), TimeUtil.timeFormat3339(generalData.getEndTime())
-                    );
-                    if (getLab != null) {
-                        updateView(5);
-                        ScheduleData.setLibBeans(getLab);
-                        ScheduleData.setUpdate(true);
-                    } else {
-                        updateView("实验列表同步失败");
-                        return;
-                    }
-                    updateView(5);
-                    activity.runOnUiThread(() -> {
-                        fragment.onStart();
-                        notifyWidgetUpdate(activity);
-                        ToastUtil.showToast(activity, "同步成功");
+                        return true;
+                    }, () -> {
+                        //获取考试安排
+                        updateView(94);
+                        List<ExamBean> examBeans = StaticService.getExam(
+                                activity,
+                                tokenData.getBkjwCookie(),
+                                generalData.getTerm()
+                        );
+                        if (examBeans != null) {
+                            CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
+                            Collections.sort(examBeans, beanAttributeUtil);
+                            ScheduleData.setExamBeans(examBeans);
+                        } else {
+                            updateView("考试安排同步失败");
+                            return false;
+                        }
+                        return true;
                     });
-                    generalData.setLastUpdateTime(System.currentTimeMillis());
-                    int maxWeek = ScheduleData.getMaxWeek();
-                    if (maxWeek > generalData.getMaxWeek()) {
-                        generalData.setMaxWeek(maxWeek);
-                    }
-                    if (tableFragment != null) {
-                        tableFragment.getActivity().runOnUiThread(() -> {
-                            try {
-                                tableFragment.updateTable();
-                            } catch (Exception e) {
-                            }
+                    if(state) {
+                        updateView(5);
+                        activity.runOnUiThread(() -> {
+                            fragment.onStart();
+                            notifyWidgetUpdate(activity);
+                            ToastUtil.showToast(activity, "同步成功");
                         });
+                        generalData.setLastUpdateTime(System.currentTimeMillis());
+                        int maxWeek = ScheduleData.getMaxWeek();
+                        if (maxWeek > generalData.getMaxWeek()) {
+                            generalData.setMaxWeek(maxWeek);
+                        }
+                        if (tableFragment != null) {
+                            tableFragment.getActivity().runOnUiThread(() -> {
+                                try {
+                                    tableFragment.updateTable();
+                                } catch (Exception e) {
+                                }
+                            });
+                        }
                     }
                 } else {
                     updateView(2);

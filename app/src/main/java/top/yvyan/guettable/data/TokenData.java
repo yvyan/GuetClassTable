@@ -23,8 +23,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-
+import androidx.core.util.Supplier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -68,6 +69,49 @@ public class TokenData {
     private String bkjwCookie; //教务系统认证Cookie
 
     private String MFACookie;
+
+    @SafeVarargs
+    /**
+     * tryUpdate 方法，顺序执行需要账户认证的同步流程并自动处理登录失效后的重新登录
+     * @param updateFunction 同步路径函数，返回是否同步成功
+     * @return
+     */
+    public final boolean tryUpdate(Supplier<Boolean>... updateFunction) {
+        return tryUpdate(null,updateFunction);
+    }
+
+    /**
+     * tryUpdate 方法，顺序执行需要账户认证的同步流程并自动处理登录失效后的重新登录
+     * @param reloginHint 重新登录的提示
+     * @param updateFunction 同步路径函数，返回是否同步成功
+     * @return
+     */
+    @SafeVarargs
+    public final boolean tryUpdate(Runnable reloginHint, @NonNull Supplier<Boolean>... updateFunction) {
+        boolean relogined = false;
+        for(int i=0; i<updateFunction.length; i++) {
+            Supplier<Boolean> updateMethod = updateFunction[i];
+            boolean success;
+            try {
+                success=updateMethod.get();
+            } catch (Exception setRelogin) {
+                success=false;
+            }
+            if(!success) {
+                if(!relogined) {
+                    relogined=true;
+                    if(reloginHint != null) {
+                        reloginHint.run();
+                    }
+                    refresh();
+                    i--;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     public String getBkjwCookie() {
         if (isVPN) {

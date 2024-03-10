@@ -23,25 +23,18 @@ public class MoreFunService {
         new Thread(() -> {
             try {
                 if (accountData.getIsLogin()) {
-                    updateView(91); //显示：尝试同步
-                    int state;
-                    state = iMoreFun.updateData(tokenData.getBkjwCookie());
-                    if (state == 5 || state == -2) { //同步成功或网络错误
-                        updateView(state);
-                        return;
-                    }
-                    updateView(92); //显示：正在登录
-                    state = tokenData.refresh();
-                    if (state == -2) {
-                        state = tokenData.refresh();
-                    }
-                    if (state != 0) {
-                        updateView(state);
-                        return;
-                    }
-                    updateView(93); //显示：正在同步
-                    state = iMoreFun.updateData(tokenData.getBkjwCookie());
-                    updateView(state);
+                    if(tokenData.tryUpdate(()->updateView(92),()->{
+                        updateView(91);
+                        int state = iMoreFun.updateData(tokenData.getBkjwCookie());
+                        if (state == 5 || state == -2) { //同步成功或网络错误
+                            updateView(state);
+                        } else {
+                            return false;
+                        }
+                        return true;
+                    })) {
+                        updateView(5);
+                    };
                 } else {
                     updateView(2);
                 }

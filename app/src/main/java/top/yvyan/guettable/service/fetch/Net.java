@@ -65,6 +65,9 @@ public class Net {
         StringBuilder cookie_builder = new StringBuilder();
         String AuthCookie = (TGTToken!=null && TGTToken.isEmpty() ? "" : TGTToken + "; ") + (MFACookie!=null && MFACookie.isEmpty() ? "" : MFACookie + "; ") + (SessionCookie != null && SessionCookie.isEmpty() ? "" : SessionCookie + "; ");
         AuthCookie = AuthCookie.substring(0, max(0, AuthCookie.length() - 2));
+        if(SessionCookie != null && !SessionCookie.isEmpty()) {
+            cookie_builder.append(SessionCookie+"; ");
+        }
         try {
             Resources resources = context.getResources();
             HttpConnectionAndCode loginParams = Get.get(
@@ -88,7 +91,9 @@ public class Net {
                 }
                 return new HttpConnectionAndCode(-5);
             }
-            cookie_builder.append(loginParams.cookie);
+            if(!loginParams.cookie.isEmpty()) {
+                cookie_builder.append(loginParams.cookie+"; ");
+            }
             ArrayList<String> listExp = RegularUtil.getAllSatisfyStr(loginParams.content, "(?<=id=\"pwdEncryptSalt\" value=\")(\\w+)(?=\")");
             String AESKey = listExp.get(0);
             listExp = RegularUtil.getAllSatisfyStr(loginParams.content, "(?<=name=\"execution\" value=\")(.*?)(?=\")");
@@ -113,7 +118,6 @@ public class Net {
             if (LoginRequest.code == -7) {
                 List<String> cookies = LoginRequest.c.getHeaderFields().get("Set-Cookie");
                 if (cookies != null) {
-                    cookie_builder.append("; ");
                     for (String cookie_resp : cookies) {
                         cookie_builder.append(cookie_resp.substring(0, cookie_resp.indexOf(";") + 1)).append(" ");
                     }
@@ -212,7 +216,7 @@ public class Net {
         try {
             Resources resources = context.getResources();
             return Get.get(
-                    "https://cas.guet.edu.cn/authserver/checkNeedCaptcha.htl?username" + URLEncoder.encode(account, "UTF-8") + "&_=" + System.currentTimeMillis(),
+                    "https://cas.guet.edu.cn/authserver/checkNeedCaptcha.htl?username=" + URLEncoder.encode(account, "UTF-8") + "&_=" + System.currentTimeMillis(),
                     null,
                     resources.getString(R.string.user_agent),
                     resources.getString(R.string.SSO_referer),

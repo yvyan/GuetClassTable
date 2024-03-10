@@ -407,15 +407,19 @@ public class StaticService {
 
 
     public static List<CourseBean> getLabTableNew(Context context, String cookie, String startDate, String endDate) {
-        String jwtToken = getLabJWT(context, cookie);
-        if (jwtToken == null) {
-            return null;
-        }
-        HttpConnectionAndCode labTableRes = Net.getLabTableNew(context, jwtToken, cookie, startDate, endDate, TokenData.isVPN());
-        if (labTableRes.resp_code == 200) {
-            LabTableNew labTable = new Gson().fromJson(labTableRes.content, LabTableNew.class);
-            return labTable.toCourseBeans();
-        } else {
+        try {
+            String jwtToken = getLabJWT(context, cookie);
+            if (jwtToken == null) {
+                return null;
+            }
+            HttpConnectionAndCode labTableRes = Net.getLabTableNew(context, jwtToken, cookie, startDate, endDate, TokenData.isVPN());
+            if (labTableRes.resp_code == 200) {
+                LabTableNew labTable = new Gson().fromJson(labTableRes.content, LabTableNew.class);
+                return labTable.toCourseBeans();
+            } else {
+                return null;
+            }
+        } catch (Exception ignore) {
             return null;
         }
     }

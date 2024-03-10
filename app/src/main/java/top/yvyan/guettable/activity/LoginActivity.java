@@ -76,7 +76,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         cbRememberPwd = findViewById(R.id.cb_remember_pwd);
         cbRememberPwd.setChecked(true);
         cbAutoTerm = findViewById(R.id.cb_auto_term);
-        mmkv = MMKV.defaultMMKV();
         cbAutoTerm.setChecked(mmkv.decodeBool(AUTO_TERM, true));
         ivPwdSwitch.setOnClickListener(showPwdClickListener());
         TextView profileVersion = findViewById(R.id.tv_profile_version);
@@ -142,7 +141,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      */
     private void testCAS(String account, String password) {
         new Thread(() -> {
-            TokenData tokenData = TokenData.newInstance(this,this);
+            TokenData tokenData = TokenData.newInstance(this, this);
             runOnUiThread(() -> {
                 button.setText("正在认证");
                 setUnClick();
@@ -160,12 +159,15 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     // reAuth, do nothing
                     break;
                 default:
-                    runOnUiThread(() -> setEnClick());
+                    runOnUiThread(() -> {
+                        accountData.logoff();
+                        setEnClick();
+                    });
             }
         }).start();
     }
 
-   public void update() {
+    public void update() {
         getInfo();
     }
 
