@@ -17,7 +17,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.tencent.mmkv.MMKV;
-import com.umeng.cconfig.UMRemoteConfig;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.dialog.MiniLoadingDialog;
 import com.xuexiang.xui.widget.textview.supertextview.SuperButton;
@@ -37,7 +36,6 @@ import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.DialogUtil;
-import top.yvyan.guettable.util.GuideTipsDialog;
 import top.yvyan.guettable.util.ToastUtil;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
