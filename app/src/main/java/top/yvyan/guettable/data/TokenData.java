@@ -149,7 +149,7 @@ public class TokenData {
     }
 
     public String getCASCookie() {
-        return TGTToken + (MFACookie.isEmpty() ? "" : "; " + MFACookie);
+        return TGTToken + (MFACookie==null || MFACookie.isEmpty() ? "" : "; " + MFACookie);
     }
 
     @SuppressLint("CommitPrefEdits")

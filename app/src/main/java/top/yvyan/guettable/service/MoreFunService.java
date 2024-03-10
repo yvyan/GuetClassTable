@@ -39,6 +39,7 @@ public class MoreFunService {
                     updateView(2);
                 }
             } catch (Exception ignored) {
+                ignored.printStackTrace();
             }
         }).start();
     }
