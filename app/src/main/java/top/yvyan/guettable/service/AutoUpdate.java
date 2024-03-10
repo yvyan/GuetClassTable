@@ -186,7 +186,6 @@ public class AutoUpdate {
                                 TimeUtil.timeFormat3339(generalData.getStartTime()), TimeUtil.timeFormat3339(generalData.getEndTime())
                         );
                         if (getLab != null) {
-                            updateView(5);
                             ScheduleData.setLibBeans(getLab);
                             ScheduleData.setUpdate(true);
                         } else {
