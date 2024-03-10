@@ -429,7 +429,7 @@ public class Net {
                 VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/guet-lab-system/schedule/mesCourseScheduleItem/queryScheduleInfo?_t=" + System.currentTimeMillis() / 1000 + "&type=6&startDate=" + startDate + "&endDate=" + endDate, isVPN),
                 null,
                 resources.getString(R.string.user_agent),
-                VPNUrlUtil.getVPNUrl("https://bkjw.guet.edu.cn", isVPN),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn", isVPN),
                 cookie,
                 null,
                 null,
@@ -440,6 +440,44 @@ public class Net {
                 30000,
                 null,
                 headers
+        );
+    }
+
+    public static HttpConnectionAndCode getExamScoreNew(Context context, String cookie,String EndpointId, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/grade/sheet/info/" + EndpointId, isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                30000,
+                null
+        );
+    }
+
+    public static HttpConnectionAndCode getExamScoreUrlNew(Context context, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/grade/sheet", isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                false,
+                null,
+                30000,
+                null
         );
     }
 

@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 
@@ -46,8 +47,8 @@ public class GradesActivity extends BaseFuncActivity {
     }
 
     @Override
-    public int updateData(String cookie) {
-        float[] grades = StaticService.calculateGrades(this, cookie, Integer.parseInt(generalData.getGrade()));
+    public int updateData(TokenData tokenData) {
+        float[] grades = StaticService.calculateGrades(this, tokenData.getBkjwCookie(), Integer.parseInt(generalData.getGrade()));
         if (grades != null) {
             MoreData.setGrades(grades);
             return 5;

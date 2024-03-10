@@ -16,6 +16,7 @@ import top.yvyan.guettable.data.SingleSettingData;
 import top.yvyan.guettable.moreFun.CETActivity;
 import top.yvyan.guettable.moreFun.ExamActivity;
 import top.yvyan.guettable.moreFun.ExamScoreActivity;
+import top.yvyan.guettable.moreFun.ExamScoreNewActivity;
 import top.yvyan.guettable.moreFun.ExperimentScoreActivity;
 import top.yvyan.guettable.moreFun.GradesActivity;
 import top.yvyan.guettable.moreFun.LibActivity;
@@ -53,6 +54,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.more_test_schedule).setOnClickListener(this);
         view.findViewById(R.id.more_credits).setOnClickListener(this);
         view.findViewById(R.id.more_test_scores).setOnClickListener(this);
+        view.findViewById(R.id.more_test_scores_new).setOnClickListener(this);
         view.findViewById(R.id.more_lib_scores).setOnClickListener(this);
         view.findViewById(R.id.more_resit_schedule).setOnClickListener(this);
         view.findViewById(R.id.more_lib_schedule).setOnClickListener(this);
@@ -124,6 +126,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getContext(), ExamScoreActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.more_test_scores_new:
+                intent = new Intent(getContext(), ExamScoreNewActivity.class);
+                startActivity(intent);
+                break;
             case R.id.more_lib_scores:
                 intent = new Intent(getContext(), ExperimentScoreActivity.class);
                 startActivity(intent);
@@ -182,9 +188,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
 
             case R.id.more_course_arrange:
-                CommFunc.noLoginWebVPN(getActivity(),
-                        requireContext().getResources().getString(R.string.url_course_arrange),
-                        requireContext().getResources().getString(R.string.url_course_arrange_vpn));
+                CommFunc.noLoginWebBKJWTest(getActivity(),"https://bkjwtest.guet.edu.cn/student/for-std/lesson-search");
                 break;
             case R.id.more_empty_room:
                 CommFunc.noLoginWebBKJWTest(getActivity(),"https://bkjwtest.guet.edu.cn/student/for-std/room-free");

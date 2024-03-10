@@ -21,6 +21,7 @@ import top.yvyan.guettable.Gson.CurrentSemester;
 import top.yvyan.guettable.Gson.EffectiveCredit;
 import top.yvyan.guettable.Gson.ExamInfo;
 import top.yvyan.guettable.Gson.ExamScore;
+import top.yvyan.guettable.Gson.ExamScoreNew;
 import top.yvyan.guettable.Gson.ExperimentScore;
 import top.yvyan.guettable.Gson.Grades;
 import top.yvyan.guettable.Gson.LabTableJWT;
@@ -467,6 +468,32 @@ public class StaticService {
         } else {
             return null;
         }
+    }
+
+    public static String getExamScoreNewUrl(Context context, String cookie) {
+        try {
+            HttpConnectionAndCode examScoreUrlInfo = Net.getExamScoreUrlNew(context, cookie, TokenData.isVPN());
+            if(examScoreUrlInfo.resp_code / 100 == 3) {
+                String Location = examScoreUrlInfo.c.getHeaderField("location");
+                String[] subPath = Location.split("/");
+                return subPath[max(0,subPath.length-1)];
+            }
+        } catch (Exception ignored) {
+
+        }
+        return "";
+    }
+
+    public static ExamScoreNew getExamScoreNew(Context context, String cookie) {
+        try {
+            String ExamScoreEndpointId = getExamScoreNewUrl(context,cookie);
+            HttpConnectionAndCode examScoreInfo = Net.getExamScoreNew(context,cookie,ExamScoreEndpointId,TokenData.isVPN());
+            if(examScoreInfo.resp_code == 200) {
+                return new Gson().fromJson(examScoreInfo.content, ExamScoreNew.class);
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
     }
 
     /**

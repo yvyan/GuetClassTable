@@ -131,6 +131,7 @@
     <string name="moreFun_test_schedule"> 考试安排 </string>
     <string name="moreFun_credits"> 学分绩 </string>
     <string name="moreFun_test_scores"> 考试成绩[旧] </string>
+    <string name="moreFun_test_scores_new"> 考试成绩[新] </string>
     <string name="moreFun_lib_scores"> 实验成绩 </string>
     <string name="moreFun_resit_schedule"> 补考安排 </string>
     <string name="moreFun_lib_schedule"> 实验安排 </string>

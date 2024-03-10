@@ -10,6 +10,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.CETAdapter;
 import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.data.MoreData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.CourseUtil;
@@ -40,9 +41,9 @@ public class CETActivity extends BaseFuncActivity {
     }
 
     @Override
-    public int updateData(String cookie) {
+    public int updateData(TokenData tokenData) {
         List<CETBean> cetBeans;
-        cetBeans = StaticService.getCET(this, cookie);
+        cetBeans = StaticService.getCET(this, tokenData.getBkjwCookie());
         if (cetBeans != null) {
             CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(cetBeans, beanAttributeUtil);

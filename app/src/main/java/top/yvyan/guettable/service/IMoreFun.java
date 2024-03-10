@@ -1,13 +1,15 @@
 package top.yvyan.guettable.service;
 
+import top.yvyan.guettable.data.TokenData;
+
 public interface IMoreFun {
     /**
      * 更新数据
-     * @param cookie cookie
+     * @param tokendata
      * @return       5 : 正常
      *               1 : cookie失效
      */
-    int updateData(String cookie);
+    int updateData(TokenData tokendata);
     /**
      * state记录当前状态
      *  2 : 未登录

@@ -9,6 +9,7 @@ import top.yvyan.guettable.R;
 import top.yvyan.guettable.adapter.ResitAdapter;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.data.MoreData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 
@@ -38,8 +39,8 @@ public class ResitActivity extends BaseFuncActivity {
     }
 
     @Override
-    public int updateData(String cookie) {
-        List<ResitBean> resitBeans = StaticService.getResit(this, cookie);
+    public int updateData(TokenData tokenData) {
+        List<ResitBean> resitBeans = StaticService.getResit(this, tokenData.getBkjwCookie());
         if (resitBeans != null) {
             if (!AppUtil.equalList(resitBeans, MoreData.getResitBeans())) {
                 MoreData.setResitBeans(resitBeans);

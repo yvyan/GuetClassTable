@@ -64,6 +64,7 @@
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".moreFun.ExperimentScoreActivity" />
         <activity android:name=".moreFun.ExamScoreActivity" />
+        <activity android:name=".moreFun.ExamScoreNewActivity" />
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.SetTermActivity" />
         <activity android:name=".activity.LoginActivity" />

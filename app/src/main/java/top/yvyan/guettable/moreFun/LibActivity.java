@@ -50,7 +50,7 @@ public class LibActivity extends BaseFuncActivity {
     }
 
     @Override
-    public int updateData(String cookie) {
+    public int updateData(TokenData tokenData) {
         List<CourseBean> libBeans = StaticService.getLabTableNew(this, tokenData.getbkjwTestCookie(), TimeUtil.timeFormat3339(generalData.getStartTime()),TimeUtil.timeFormat3339(generalData.getEndTime()));
         if (libBeans != null) {
             ScheduleData.setLibBeans(libBeans);

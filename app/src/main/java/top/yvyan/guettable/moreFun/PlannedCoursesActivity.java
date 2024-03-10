@@ -13,6 +13,7 @@ import top.yvyan.guettable.adapter.PlannedCourseAdapter;
 import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.data.SingleSettingData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.CourseUtil;
@@ -76,8 +77,8 @@ public class PlannedCoursesActivity extends BaseFuncActivity {
     }
 
     @Override
-    public int updateData(String cookie) {
-        List<PlannedCourseBean> plannedCourseBeans = StaticService.getPlannedCourseBeans(this, cookie);
+    public int updateData(TokenData tokenData) {
+        List<PlannedCourseBean> plannedCourseBeans = StaticService.getPlannedCourseBeans(this, tokenData.getBkjwCookie());
         if (plannedCourseBeans != null) {
             if (!AppUtil.equalList(plannedCourseBeans, MoreData.getPlannedCourseBeans())) {
                 MoreData.setPlannedCourseBeans(plannedCourseBeans);

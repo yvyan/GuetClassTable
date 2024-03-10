@@ -23,9 +23,9 @@ public class MoreFunService {
         new Thread(() -> {
             try {
                 if (accountData.getIsLogin()) {
-                    if(tokenData.tryUpdate(()->updateView(92),()->{
+                    if(!tokenData.tryUpdate(()->updateView(92),()->{
                         updateView(91);
-                        int state = iMoreFun.updateData(tokenData.getBkjwCookie());
+                        int state = iMoreFun.updateData(tokenData);
                         if (state == 5 || state == -2) { //同步成功或网络错误
                             updateView(state);
                         } else {
@@ -33,13 +33,12 @@ public class MoreFunService {
                         }
                         return true;
                     })) {
-                        updateView(5);
-                    };
+                        updateView(-5);
+                    }
                 } else {
                     updateView(2);
                 }
             } catch (Exception ignored) {
-                ignored.printStackTrace();
             }
         }).start();
     }
@@ -61,36 +60,17 @@ public class MoreFunService {
      * 93 : 正在同步
      */
     private void updateView(int state) {
-        String hint;
-        switch (state) {
-            case 2:
-                hint = "未登录";
-                break;
-            case -1:
-                hint = "密码错误";
-                break;
-            case -2:
-                hint = "网络错误";
-                break;
-            case -3:
-                hint = "登录失效(点击重试)";
-                break;
-            case 91:
-                hint = "尝试同步";
-                break;
-            case 92:
-                hint = "正在登录";
-                break;
-            case 93:
-                hint = "正在同步";
-                break;
-            case 5:
-                hint = "同步成功";
-                break;
-            default:
-                hint = "未知错误";
-                break;
-        }
+        String hint = switch (state) {
+            case 2 -> "未登录";
+            case -1 -> "密码错误";
+            case -2 -> "网络错误";
+            case -3 -> "登录失效(点击重试)";
+            case 91 -> "尝试同步";
+            case 92 -> "正在登录";
+            case 93 -> "正在同步";
+            case 5 -> "同步成功";
+            default -> "未知错误";
+        };
         activity.runOnUiThread(() -> iMoreFun.updateView(hint, state));
     }
 }

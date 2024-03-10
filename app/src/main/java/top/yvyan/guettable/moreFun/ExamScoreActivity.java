@@ -15,6 +15,7 @@ import top.yvyan.guettable.bean.ExamScoreBean;
 import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.data.SingleSettingData;
+import top.yvyan.guettable.data.TokenData;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.AppUtil;
 import top.yvyan.guettable.util.CourseUtil;
@@ -80,9 +81,9 @@ public class ExamScoreActivity extends BaseFuncActivity {
     }
 
     @Override
-    public int updateData(String cookie) {
+    public int updateData(TokenData tokenData) {
         List<ExamScoreBean> examScoreBeans;
-        examScoreBeans = StaticService.getExamScore(this, cookie);
+        examScoreBeans = StaticService.getExamScore(this, tokenData.getBkjwCookie());
         if (examScoreBeans != null) {
             CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(examScoreBeans, beanAttributeUtil);
