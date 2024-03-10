@@ -7,12 +7,15 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -156,9 +159,9 @@ public class Get {
                 }
             }
             StringBuilder response_builder = new StringBuilder();
-            char read_char;
-            while ((read_char = (char) in.read()) != (char) -1) {
-                response_builder.append(read_char);
+            char[] buffer = new char[4 * 1024];
+            for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
+                response_builder.append(buffer, 0, numRead);
             }
             response = response_builder.toString();
             if (tail != null) {

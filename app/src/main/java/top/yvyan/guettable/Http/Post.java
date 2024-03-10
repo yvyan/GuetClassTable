@@ -150,9 +150,9 @@ public class Post {
                 }
             }
             StringBuilder response_builder = new StringBuilder();
-            char read_char;
-            while ((read_char = (char) in.read()) != (char) -1) {
-                response_builder.append(read_char);
+            char[] buffer = new char[4 * 1024];
+            for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
+                response_builder.append(buffer, 0, numRead);
             }
             response = response_builder.toString();
             if (tail != null) {
