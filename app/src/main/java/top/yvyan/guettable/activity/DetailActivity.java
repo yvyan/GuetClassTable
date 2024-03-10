@@ -56,7 +56,7 @@ public class DetailActivity extends AppCompatActivity {
         addStatus.setLayoutParams(lp);
         //加载时间信息
         Intent thisIntent = getIntent();
-        week = (Integer) thisIntent.getExtras().get("week");
+        week = (Integer) Objects.requireNonNull(thisIntent.getExtras()).get("week");
         TextView detailTitle = findViewById(R.id.title);
         StringBuilder section = new StringBuilder();
         int day = schedules.get(0).getDay();

@@ -171,7 +171,7 @@ public class StaticService {
      */
     public static String loginServerBySSO(Context context, String services, String CasCookie) {
         HttpConnectionAndCode response = Net.loginServerBySSO(context, services, CasCookie);
-        if (response.resp_code / 100 == 3 && response.c!=null) {
+        if (response != null && response.resp_code / 100 == 3 && response.c != null) {
             String Location = response.c.getHeaderField("location");
             if (Location.contains("reAuthCheck")) {
                 return "ERRORNeedlogin";
@@ -181,7 +181,7 @@ public class StaticService {
             }
             return Location;
         }
-        if (response.resp_code / 100 == 2) {
+        if (response != null && response.resp_code / 100 == 2) {
             return "ERRORNeedlogin";
         }
         return "ERRORNetwork";
@@ -370,7 +370,7 @@ public class StaticService {
         if (classTableIndex.resp_code == 200) {
             Pattern pattern = Pattern.compile("currentSemester.?=.?([^;]+);");
             Matcher matcher = pattern.matcher(classTableIndex.content);
-            if (matcher.find()) {
+            if (matcher.find() && matcher.groupCount() >= 1) {
                 String currentSemesters = matcher.group(1).replace("'", "\"");
                 return new Gson().fromJson(currentSemesters, CurrentSemester.class);
             }

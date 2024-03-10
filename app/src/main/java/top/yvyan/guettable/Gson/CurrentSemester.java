@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class CurrentSemester {
     public String schoolYear;
@@ -20,7 +21,7 @@ public class CurrentSemester {
         public Long getTime() {
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                return formatter.parse(toString()).getTime();
+                return Objects.requireNonNull(formatter.parse(toString())).getTime();
             } catch (Exception e) {
                 return 0L;
             }

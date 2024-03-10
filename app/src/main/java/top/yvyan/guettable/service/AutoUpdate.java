@@ -162,7 +162,7 @@ public class AutoUpdate {
         new Thread(() -> {
             try {
                 if (accountData.getIsLogin()) {
-                    boolean state= tokenData.tryUpdate(() -> updateView(92), () -> {
+                    boolean state = tokenData.tryUpdate(() -> updateView(92), () -> {
                         updateView(93);
                         List<CourseBean> getClass = StaticService.getClassNew(
                                 activity,
@@ -212,7 +212,7 @@ public class AutoUpdate {
                         }
                         return true;
                     });
-                    if(state) {
+                    if (state) {
                         updateView(5);
                         activity.runOnUiThread(() -> {
                             fragment.onStart();
@@ -224,7 +224,7 @@ public class AutoUpdate {
                         if (maxWeek > generalData.getMaxWeek()) {
                             generalData.setMaxWeek(maxWeek);
                         }
-                        if (tableFragment != null) {
+                        if (tableFragment != null && tableFragment.getActivity() != null) {
                             tableFragment.getActivity().runOnUiThread(() -> {
                                 try {
                                     tableFragment.updateTable();
