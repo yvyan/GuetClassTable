@@ -85,8 +85,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             etAccount.setText(accountData.getUsername());
             etPwd.setText(accountData.getPwd());
         }
-        //特殊时期强制提示
-        GuideTipsDialog.showTips(this, UMRemoteConfig.getInstance().getConfigValue("loginOpenShowUrl"));
     }
 
     /**
@@ -295,7 +293,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     public void showHelp(View view) {
         //DialogUtil.showTextDialog(this, getContext().getResources().getString(R.string.login_help));
-        GuideTipsDialog.showTips(this, UMRemoteConfig.getInstance().getConfigValue("loginHelpUrl"));
     }
 
     public void activateAccount(View view) {
