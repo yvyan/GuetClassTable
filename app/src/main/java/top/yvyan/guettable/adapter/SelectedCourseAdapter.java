@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import top.yvyan.guettable.Gson.ExamScoreNew;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.SelectedCourseBean;
 
@@ -31,10 +32,17 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
 
     @Override
     public void onBindViewHolder(@NonNull SelectedCourseViewHolder holder, int position) {
-        holder.courseCredit.setText(String.valueOf(dataList.get(position).getCourseCredit()));
-        holder.courseName.setText(dataList.get(position).getCourseName());
-        holder.courseType.setText(dataList.get(position).getSelectType());
-        holder.courseQuality.setText(dataList.get(position).getCourseQuality());
+        SelectedCourseBean now = dataList.get(position);
+        if (position == 0 || now.semesterId != dataList.get(position - 1).semesterId) {
+            holder.headerTerm.setText(now.getSemester());
+            holder.headerTerm.setVisibility(View.VISIBLE);
+        } else {
+            holder.headerTerm.setVisibility(View.GONE);
+        }
+        holder.courseCredit.setText(String.valueOf(now.getCourseCredit()));
+        holder.courseName.setText(now.getCourseName());
+        holder.courseType.setText(now.getSelectType());
+        holder.courseQuality.setText(now.getCourseQuality());
     }
 
     @Override
@@ -48,9 +56,10 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
         private final TextView courseName;
         private final TextView courseType;
         private final TextView courseQuality;
-
+        private final TextView headerTerm;
         public SelectedCourseViewHolder(@NonNull View itemView) {
             super(itemView);
+            headerTerm = itemView.findViewById(R.id.header_term);
             courseCredit = itemView.findViewById(R.id.selected_courseCredit);
             courseName = itemView.findViewById(R.id.selected_courseName);
             courseType = itemView.findViewById(R.id.selected_selectType);

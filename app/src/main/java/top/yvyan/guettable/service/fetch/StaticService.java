@@ -29,7 +29,7 @@ import top.yvyan.guettable.Gson.LabTableNew;
 import top.yvyan.guettable.Gson.NeedCaptcha;
 import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
-import top.yvyan.guettable.Gson.Semsters;
+import top.yvyan.guettable.Gson.Semester;
 import top.yvyan.guettable.Gson.StudentInfo;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.bean.CETBean;
@@ -332,26 +332,41 @@ public class StaticService {
         return null;
     }
 
+    public static List<Semester> getAllSemester(Context context, String cookie) {
+        HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
+        return getAllSemester(classTableIndex);
+    }
+
+    public static List<Semester> getAllSemester(HttpConnectionAndCode classTableIndex) {
+        if (classTableIndex.resp_code == 200) {
+            Pattern pattern = Pattern.compile("var.?semesters.?=.?JSON\\.parse\\([.\n]?[^']*?'([^']*)'");
+            Matcher matcher = pattern.matcher(classTableIndex.content);
+            if (matcher.find()) {
+                String semesters = "\"" + matcher.group(1) + "\"";
+                semesters = new Gson().fromJson(semesters, String.class);
+                return new Gson().fromJson(semesters, new TypeToken<List<Semester>>() {
+                }.getType());
+            }
+        }
+        return null;
+    }
+
     public static int getSemesterIdNew(Context context, String cookie, String term, boolean isAutoTerm) {
         HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
         if (classTableIndex.resp_code == 200) {
             if (!isAutoTerm) {
-                Pattern pattern = Pattern.compile("var.?semesters.?=.?JSON\\.parse\\([.\n]?[^']*?'([^']*)'");
-                Matcher matcher = pattern.matcher(classTableIndex.content);
-                if (matcher.find()) {
-                    String semesters = "\"" + matcher.group(1) + "\"";
-                    semesters = new Gson().fromJson(semesters, String.class);
-                    List<Semsters> semsterList = new Gson().fromJson(semesters, new TypeToken<List<Semsters>>() {
-                    }.getType());
+                    List<Semester> semesterList = getAllSemester(classTableIndex);
+                    if(semesterList ==null) {
+                        return -1;
+                    }
                     int semesterId;
-                    for (Semsters s : semsterList) {
+                    for (Semester s : semesterList) {
                         if (s.toString().equals(term)) {
                             semesterId = s.id;
                             return semesterId;
                         }
                     }
                     return -1;
-                }
             } else {
                 CurrentSemester semester = getSemesterJson(classTableIndex);
                 if (semester != null) {
@@ -746,22 +761,18 @@ public class StaticService {
     public static List<SelectedCourseBean> getSelectedCourse(Context context, String cookie, String term) {
         List<SelectedCourseBean> courseBeans = new ArrayList<>();
         try {
-            int semesterId = getSemesterIdNew(context, cookie, term, false);
-            if (semesterId == -1) {
-                return null;
-            }
-            HttpConnectionAndCode classTable = Net.getClassList(context, semesterId, cookie, TokenData.isVPN());
-            if (classTable.resp_code == 200) {
-                ClassList table = new Gson().fromJson(classTable.content, ClassList.class);
-                List<ClassList.ClassInfo> maintable = table.lessons;
-                for (ClassList.ClassInfo lession : maintable) {
-                    courseBeans.add(lession.toSelectedCourseBean());
+            List<Semester> semesters = getAllSemester(context, cookie);
+            for(Semester semester : semesters) {
+                HttpConnectionAndCode classTable = Net.getClassList(context, semester.id, cookie, TokenData.isVPN());
+                if (classTable.resp_code == 200) {
+                    ClassList table = new Gson().fromJson(classTable.content, ClassList.class);
+                    List<ClassList.ClassInfo> maintable = table.lessons;
+                    for (ClassList.ClassInfo lesson : maintable) {
+                        courseBeans.add(lesson.toSelectedCourseBean());
+                    }
                 }
-                if (courseBeans.isEmpty()) {
-                    return null;
-                }
-                return courseBeans;
             }
+            return courseBeans;
         } catch (Exception e) {
 
         }

@@ -11,6 +11,7 @@ public class ClassList {
         public String lessonKindText;
         public CourseInfo course;
         public CourseType courseType;
+        public Semester semester;
         private static class CourseInfo {
             public double credits;
             public String nameZh;
@@ -20,7 +21,7 @@ public class ClassList {
             public String name;
         }
         public SelectedCourseBean toSelectedCourseBean() {
-            return new SelectedCourseBean(course.credits, course.nameZh,lessonKindText,courseType.name);
+            return new SelectedCourseBean(course.credits, course.nameZh,lessonKindText,courseType.name, semester.id, semester.nameZh);
         }
     }
 }

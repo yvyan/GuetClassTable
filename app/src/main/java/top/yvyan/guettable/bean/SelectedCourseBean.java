@@ -9,17 +9,21 @@ public class SelectedCourseBean implements Serializable, CourseUtil.BeanAttribut
 
     private static final long serialVersionUID = -1665366365756246306L;
 
-    private final double courseCredit;
+    public final double courseCredit;
     private String courseName;
     private String selectType;
     private String courseQuality;
 
+    public int semesterId;
+    private String semester;
 
-    public SelectedCourseBean(Double courseCredit, String courseName, String selectType, String courseQuality) {
+    public SelectedCourseBean(Double courseCredit, String courseName, String selectType, String courseQuality, int semesterId, String semester) {
         this.courseCredit = courseCredit;
         this.courseName = courseName;
         this.selectType = selectType;
         this.courseQuality = courseQuality;
+        this.semesterId = semesterId;
+        this.semester = semester;
     }
 
     public SelectedCourseBean(SelectedCourse selectedCourse) {
@@ -54,6 +58,13 @@ public class SelectedCourseBean implements Serializable, CourseUtil.BeanAttribut
         return courseQuality;
     }
 
+    public String getSemester() {
+        if (semester == null) {
+            semester = "";
+        }
+        return semester;
+    }
+
     @Override
     public String getTerm() {
         return null;
@@ -61,6 +72,6 @@ public class SelectedCourseBean implements Serializable, CourseUtil.BeanAttribut
 
     @Override
     public long getOrder() {
-        return (int) (courseCredit * 100);
+        return (int) (this.semesterId*100000+courseCredit * 100);
     }
 }

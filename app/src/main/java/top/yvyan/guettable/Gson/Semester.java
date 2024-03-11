@@ -1,12 +1,14 @@
 package top.yvyan.guettable.Gson;
 
-public class Semsters {
+public class Semester {
     private String schoolYear;
     private String season;
 
     public String startDate;
 
     public String endDate;
+
+    public String nameZh;
 
     public int id;
 

@@ -50,8 +50,13 @@ public class SelectedCourseActivity extends BaseFuncActivity implements IMoreFun
         List<SelectedCourseBean> selectedCourseBeans;
         selectedCourseBeans = StaticService.getSelectedCourse(this,tokenData.getbkjwTestCookie() , generalData.getTerm());
         if (selectedCourseBeans != null) {
-            CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
-            Collections.sort(selectedCourseBeans, beanAttributeUtil);
+            Collections.sort(selectedCourseBeans, (a, b) -> {
+                if (a.semesterId == b.semesterId) {
+                    return ((int)(a.courseCredit*100)-(int)(b.courseCredit*100));
+                } else {
+                    return b.semesterId - a.semesterId;
+                }
+            });
             MoreData.setSelectedCoursesBeans(selectedCourseBeans);
             update = true;
             return 5;
