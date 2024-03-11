@@ -43,7 +43,7 @@ public class AutoUpdate {
         this.activity = fragment.getActivity();
         accountData = AccountData.newInstance(activity);
         generalData = GeneralData.newInstance(activity);
-        tokenData = TokenData.newInstance(activity, this);
+        tokenData = TokenData.newInstance(activity);
         settingData = SettingData.newInstance(activity);
         init();
     }

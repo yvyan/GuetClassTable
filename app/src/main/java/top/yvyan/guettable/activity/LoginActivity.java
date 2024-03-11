@@ -137,16 +137,19 @@ public class LoginActivity extends Activity implements View.OnClickListener {
      */
     private void testCAS(String account, String password) {
         new Thread(() -> {
-            TokenData tokenData = TokenData.newInstance(this, this);
+            TokenData tokenData = TokenData.newInstance(this);
             runOnUiThread(() -> {
                 button.setText("正在认证");
                 setUnClick();
             });
             accountData.setUser(account, password, cbRememberPwd.isChecked());
-            int authState = tokenData.refreshTGT();
+            int authState = tokenData.refreshTGT(()->{
+                getInfo();
+                return null;
+            });
             switch (authState) {
                 case 0:
-                    update();
+                    getInfo();
                     break;
                 case -1:
                     showErrorToast(-4);
@@ -161,10 +164,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     });
             }
         }).start();
-    }
-
-    public void update() {
-        getInfo();
     }
 
     /**

@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.util.Consumer;
 import androidx.core.util.Supplier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -41,9 +42,6 @@ public class TokenData {
     private static TokenData tokenData;
     private final SharedPreferences.Editor editor;
     private Context context;
-
-    private Object Caller;
-
     private static final String SHP_NAME = "tokenData";
 
     private static final String CAS_TGTToken = "TGTToken";
@@ -76,7 +74,7 @@ public class TokenData {
      * @param updateFunction 同步路径函数，返回是否同步成功
      * @return
      */
-    public final boolean tryUpdate(Supplier<Boolean>... updateFunction) {
+    public synchronized final boolean tryUpdate(Supplier<Boolean>... updateFunction) {
         return tryUpdate(null,updateFunction);
     }
 
@@ -87,7 +85,7 @@ public class TokenData {
      * @return
      */
     @SafeVarargs
-    public final boolean tryUpdate(Runnable reloginHint, @NonNull Supplier<Boolean>... updateFunction) {
+    public synchronized final boolean tryUpdate(Runnable reloginHint, @NonNull Supplier<Boolean>... updateFunction) {
         boolean relogined = false;
         for(int i=0; i<updateFunction.length; i++) {
             Supplier<Boolean> updateMethod = updateFunction[i];
@@ -103,7 +101,13 @@ public class TokenData {
                     if(reloginHint != null) {
                         reloginHint.run();
                     }
-                    refresh();
+                    if(refresh()==-3) {
+                        try {
+                            this.wait();
+                        } catch (Exception ignore) {
+                        }
+                        loginBySmart(); // auth Services
+                    }
                     i--;
                 } else {
                     return false;
@@ -173,18 +177,9 @@ public class TokenData {
             tokenData = new TokenData(context);
         }
         tokenData.context = context; // Update Context
-        //  tokenData.Caller = null;
         return tokenData;
     }
 
-    public static TokenData newInstance(Context context, Object Caller) {
-        if (tokenData == null) {
-            tokenData = new TokenData(context);
-        }
-        tokenData.context = context; // Update Context
-        tokenData.Caller = Caller;
-        return tokenData;
-    }
 
     /**
      * 刷新登录凭证
@@ -272,7 +267,19 @@ public class TokenData {
         }
     }
 
+    private Supplier<Void> tgtCallback;
+
     public int refreshTGT() {
+        return refreshTGT(null);
+    }
+
+    /**
+     *
+     * @param Callback 当存在二步验证等需用户交互的流程完成时调用的函数;
+     * @return
+     */
+    public final int refreshTGT(Supplier<Void> Callback) {
+        tgtCallback=Callback;
         boolean checkCaptcha = StaticService.checkNeedCaptcha(context, accountData.getUsername());
         if (checkCaptcha) {
             Activity activity = this.getActivity(context);
@@ -288,7 +295,7 @@ public class TokenData {
      *
      * @return 操作结果
      */
-    public int refreshTGTWithCaptcha(String Captcha, String SessionCookie) {
+    public synchronized int refreshTGTWithCaptcha(String Captcha, String SessionCookie) {
         String TGTTokenStr = StaticService.SSOLogin(context, accountData.getUsername(), accountData.getPwd(), Captcha, TGTToken, MFACookie, SessionCookie);
         if (TGTTokenStr.equals("ERROR2") || TGTTokenStr.equals("ERROR0")) {
             return -2;
@@ -298,7 +305,7 @@ public class TokenData {
                 String CASCookie = TGTTokenStr.substring(TGTTokenStr.indexOf(";") + 1);
                 setTGTToken(CASCookie);
                 Activity activity = this.getActivity(context);
-                if (activity == null) return -3;
+                if (activity == null) return -5;
                 String phoneNumber = StaticService.reAuth_sendSMSCode(context, accountData.getUsername(), CASCookie);
                 if (!phoneNumber.contains("ERROR")) {
                     reAuth_showSMSCodeDialog(activity, phoneNumber, CASCookie);
@@ -316,9 +323,20 @@ public class TokenData {
                 return -3;
             } else {
                 setTGTToken(TGTTokenStr);
-            }
-            if (Captcha != null && !Captcha.isEmpty()) {
-                runCallback();
+                if (Captcha != null && !Captcha.isEmpty()) {
+                    if(tgtCallback!=null) {
+                        try {
+                            new Thread(()->{
+                                tgtCallback.get();
+                            }).start();
+                        } catch (Exception ignored) {
+
+                        }
+                    }
+                    try {
+                        this.notify();
+                    } catch (Exception ignored) {}
+                }
             }
             return 0;
         } else {
@@ -414,7 +432,7 @@ public class TokenData {
         });
     }
 
-    private void reAuth_showSMSCodeDialog(Activity activity, String phoneNumber, String CasCookie) {
+    private synchronized void reAuth_showSMSCodeDialog(Activity activity, String phoneNumber, String CasCookie) {
         activity.runOnUiThread(() -> {
             try {
                 AlertDialog dialog;
@@ -460,29 +478,26 @@ public class TokenData {
         });
     }
 
-    private void runCallback() {
-        if (Caller != null) {
-            try {
-                // 反射尝试调用Update方法 (如果有)
-                Class ContextClass = Caller.getClass();
-                Method Update = ContextClass.getMethod("update");
-                if (Update != null) {
-                    Update.invoke(Caller);
-                }
-            } catch (Exception ignore) {
-
-            }
-        }
-    }
-
-    private int reAuth_SMSCode(String SMSCode, String CASCookie) {
+    private synchronized int reAuth_SMSCode(String SMSCode, String CASCookie) {
         try {
             String MultiFactorAuth = StaticService.reAuth_SMSCode(context, SMSCode, CASCookie);
             if (MultiFactorAuth.contains("ERROR")) {
                 return -1;
             } else {
                 setMFACookie(MultiFactorAuth);
-                runCallback();
+                try {
+                    this.notify();
+                } catch (Exception ignore) {
+                }
+                if(tgtCallback!=null) {
+                    try {
+                        new Thread(()->{
+                            tgtCallback.get();
+                        }).start();
+                    } catch (Exception ignored) {
+
+                    }
+                }
                 return 0;
             }
         } catch (Exception ignore) {

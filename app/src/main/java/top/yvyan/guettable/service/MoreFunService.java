@@ -16,7 +16,7 @@ public class MoreFunService {
         this.activity = activity;
         this.iMoreFun = iMoreFun;
         accountData = AccountData.newInstance(activity);
-        tokenData = TokenData.newInstance(activity,this);
+        tokenData = TokenData.newInstance(activity);
     }
 
     public void update() {
