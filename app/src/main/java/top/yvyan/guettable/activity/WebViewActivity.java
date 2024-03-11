@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
+import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -27,6 +28,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+
+import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -163,15 +166,66 @@ public class WebViewActivity extends AppCompatActivity {
         //不支持js的alert弹窗，需要自己监听然后通过dialog弹窗
         @Override
         public boolean onJsAlert(WebView webView, String url, String message, JsResult result) {
-            AlertDialog.Builder localBuilder = new AlertDialog.Builder(webView.getContext());
-            localBuilder.setMessage(message).setPositiveButton("确定", null);
-            localBuilder.setCancelable(false);
-            localBuilder.create().show();
+            MaterialDialog.Builder localBuilder = new MaterialDialog.Builder(webView.getContext());
+            localBuilder
+                    .content(message)
+                    .positiveText("确定")
+                    .onPositive((dialog, which) -> {
+                        result.confirm();
+                    })
+                    .cancelable(false)
+                    .show();
+            return true;
+        }
 
-            //必须要这一句代码:result.confirm()表示:
-            //处理结果为确定状态同时唤醒WebCore线程
-            //否则不能继续点击按钮
-            result.confirm();
+        @Override
+        public boolean onJsConfirm(WebView webView, String url, String message, JsResult result) {
+            MaterialDialog.Builder localBuilder = new MaterialDialog.Builder(webView.getContext());
+            localBuilder
+                    .content(message)
+                    .positiveText("确定")
+                    .negativeText("取消")
+                    .onPositive((dialog, which) -> {
+                        result.confirm();
+                    })
+                    .onNegative((dialog,which)->{
+                        result.cancel();
+                    })
+                    .cancelable(false)
+                    .show();
+            return true;
+        }
+
+        @Override
+        public boolean onJsPrompt(WebView view, String url, String message,
+                                  String defaultValue, JsPromptResult result) {
+            MaterialDialog.Builder localBuilder = new MaterialDialog.Builder(webView.getContext());
+            localBuilder
+                    .title(message)
+                    .input("",defaultValue,(dialog, input)->{})
+                    .positiveText("确定")
+                    .negativeText("取消")
+                    .onPositive((dialog, which) -> {
+                        result.confirm(dialog.getInputEditText().getText().toString());
+                    })
+                    .onNegative((dialog,which)->{
+                        result.cancel();
+                    })
+                    .cancelable(false)
+                    .show();
+            return true;
+        }
+
+        @Override
+        public boolean onJsBeforeUnload(WebView view, String url, String message, JsResult result) {
+            MaterialDialog.Builder localBuilder = new MaterialDialog.Builder(webView.getContext());
+            localBuilder.title("离开此页面").content(message)
+                    .positiveText("离开")
+                    .onPositive((dialog, which) -> {
+                        result.confirm();
+                    })
+                    .cancelable(false)
+                    .show();
             return true;
         }
 
