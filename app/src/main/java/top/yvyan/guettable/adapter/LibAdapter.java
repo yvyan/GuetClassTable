@@ -41,7 +41,7 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
     public void onBindViewHolder(@NonNull LibViewHolder holder, int position) {
         CourseBean courseBean = new CourseBean();
         courseBean.setFromSchedule(schedules.get(position));
-        if (position == 0 || !schedules.get(position - 1).getName().equals(schedules.get(position).getName())) {
+        if (true) {
             holder.textView1.setVisibility(View.VISIBLE);
             holder.textView1.setText(courseBean.getName());
             if (courseBean.getTeacher().isEmpty()) {
