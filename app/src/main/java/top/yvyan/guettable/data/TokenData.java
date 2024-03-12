@@ -180,7 +180,9 @@ public class TokenData {
         return tokenData;
     }
 
-
+    public int refresh() {
+        return refresh(null);
+    }
     /**
      * 刷新登录凭证
      *
@@ -190,7 +192,8 @@ public class TokenData {
      * -2 : 网络错误/未知错误
      * 2 : 未登录
      */
-    public int refresh() {
+    public int refresh(Supplier<Void> callback) {
+        this.tgtCallback=callback;
         if (isDevelop) { //调试模式不刷新凭证
             return 0;
         }
@@ -328,6 +331,7 @@ public class TokenData {
                         try {
                             new Thread(()->{
                                 tgtCallback.get();
+                                tgtCallback=null;
                             }).start();
                         } catch (Exception ignored) {
 
@@ -493,6 +497,7 @@ public class TokenData {
                     try {
                         new Thread(()->{
                             tgtCallback.get();
+                            tgtCallback=null;
                         }).start();
                     } catch (Exception ignored) {
 
