@@ -145,7 +145,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             accountData.setUser(account, password, cbRememberPwd.isChecked());
             int authState = tokenData.refreshTGT(()->{
                 getInfo();
-                return null;
             });
             switch (authState) {
                 case 0:

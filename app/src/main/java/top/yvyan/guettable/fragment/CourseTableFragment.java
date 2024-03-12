@@ -316,8 +316,8 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     popup.getMenu().findItem(R.id.course_tab_top1).setTitle("显示非本周课程");
                 }
                 mTimetableView
-                        .isShowNotCurWeek(!singleSettingData.isHideOtherWeek())
-                        .updateView();
+                        .isShowNotCurWeek(!singleSettingData.isHideOtherWeek());
+                mTimetableView.changeWeekOnly(target);
             }
             return true;
         });

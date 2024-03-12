@@ -205,5 +205,4 @@
     <string name="codeUse_hint">开源引用</string>
     <string name="privacy_hint">隐私政策</string>
     <string name="statement_hint">声明</string>
-    <string name="debug_clear_MFACookie">清除多因子登录可信设备状态</string>
 </resources>

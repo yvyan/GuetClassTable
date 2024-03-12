@@ -5,6 +5,7 @@ import static com.xuexiang.xui.XUI.getContext;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,10 +35,8 @@ public class AboutActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.title);
         title.setText(getString(R.string.person_about));
         TextView profileVersion = findViewById(R.id.about_version);
-        LinearLayout debug_ClearMFACookie= findViewById(R.id.clear_mfa_cookie);
-        debug_ClearMFACookie.setVisibility(Settings.isDevelopMode() ? LinearLayout.VISIBLE : LinearLayout.GONE);
-        View debug_ClearMFACookie_spliter= findViewById(R.id.clear_mfa_cookie_spliter);
-        debug_ClearMFACookie_spliter.setVisibility(Settings.isDevelopMode() ? View.VISIBLE : View.GONE);
+        LinearLayout debug_tools= findViewById(R.id.debug_tools);
+        debug_tools.setVisibility(Settings.isDevelopMode() ? LinearLayout.VISIBLE : LinearLayout.GONE);
         profileVersion.setText(AppUtil.getAppVersionName(getContext()));
 
         TextView qqNumber = findViewById(R.id.qq_number);
@@ -76,10 +75,29 @@ public class AboutActivity extends AppCompatActivity {
         DialogUtil.showTextDialog(this, getResources().getString(R.string.first_about));
     }
 
+    public void clearCASCookie(View view) {
+        TokenData tokenData = TokenData.newInstance(getContext());
+        tokenData.setTGTToken(null);
+        ToastUtil.showToast(getContext(),"清除成功");
+    }
     public void clearMFACookie(View view) {
         TokenData tokenData = TokenData.newInstance(getContext());
         tokenData.setMFACookie(null);
+        ToastUtil.showToast(getContext(),"清除成功");
+    }
+    public void clearBkjwCookie(View view) {
+        TokenData tokenData = TokenData.newInstance(getContext());
         tokenData.setBkjwCookie(null);
+        ToastUtil.showToast(getContext(),"清除成功");
+    }
+    public void clearBkjwTestCookie(View view) {
+        TokenData tokenData = TokenData.newInstance(getContext());
+        tokenData.setBkjwTestCookie(null);
+        ToastUtil.showToast(getContext(),"清除成功");
+    }
+    public void clearVPNCookie(View view) {
+        TokenData tokenData = TokenData.newInstance(getContext());
+        tokenData.setVPNToken(null);
         ToastUtil.showToast(getContext(),"清除成功");
     }
 

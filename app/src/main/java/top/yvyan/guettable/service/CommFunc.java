@@ -109,7 +109,6 @@ public class CommFunc {
 
             int LoginState = tokenData.refresh(()->{
                 noLoginWebBKJW(activity);
-                return null;
             });
             if (LoginState == -3) {
                 activity.runOnUiThread(() -> {
@@ -171,7 +170,6 @@ public class CommFunc {
 
             int LoginState = tokenData.refresh(() -> {
                 noLoginWebBKJWTest(activity, url);
-                return null;
             });
             if (LoginState == -3) {
                 activity.runOnUiThread(() -> {
@@ -227,7 +225,6 @@ public class CommFunc {
 
             int LoginState = tokenData.refresh(() -> {
                 noLoginWebICampus(activity);
-                return null;
             });
             if (LoginState == -3) {
                 activity.runOnUiThread(() -> {
@@ -293,7 +290,6 @@ public class CommFunc {
             activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动建立连接中...(最长需要15s)", "跳过", iDialogService, true));
             int LoginState = tokenData.refresh(() -> {
                 noLoginWebVPN(activity);
-                return null;
             });
             if (LoginState == -3) {
                 activity.runOnUiThread(() -> {
@@ -373,7 +369,6 @@ public class CommFunc {
                 activity.runOnUiThread(() -> dialog[0] = DialogUtil.setTextDialog(activity, "自动建立连接中...(最长需要15s)", "跳过", iDialogService, true));
                 int LoginState = tokenData.refresh(() -> {
                     noLoginWebVPN(activity, web, vpnWeb);
-                    return null;
                 });
                 if (LoginState == -3) {
                     activity.runOnUiThread(() -> {

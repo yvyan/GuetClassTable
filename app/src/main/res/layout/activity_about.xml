@@ -50,11 +50,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/about_picture"
                     android:layout_centerInParent="true"
-                    android:textStyle="bold"
                     android:letterSpacing="0.2"
                     android:text="@string/app_name"
                     android:textColor="@color/app_black"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -65,10 +65,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
@@ -102,11 +102,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="join_us"
-                android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="join_us"
+                android:orientation="vertical"
                 tools:ignore="UsingOnClickInXml">
 
                 <View
@@ -135,11 +135,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="addQQ"
-                android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="addQQ"
+                android:orientation="vertical"
                 tools:ignore="UsingOnClickInXml">
 
                 <View
@@ -155,10 +155,10 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/qq_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:id="@+id/qq_number" />
+                    android:layout_marginStart="5dp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -174,10 +174,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
@@ -211,10 +211,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
@@ -248,11 +248,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="devSay"
-                android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="devSay"
+                android:orientation="vertical"
                 tools:ignore="UsingOnClickInXml">
 
                 <View
@@ -281,11 +281,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="myGit"
-                android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="myGit"
+                android:orientation="vertical"
                 tools:ignore="UsingOnClickInXml">
 
                 <View
@@ -314,11 +314,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="open"
-                android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="open"
+                android:orientation="vertical"
                 tools:ignore="UsingOnClickInXml">
 
                 <View
@@ -347,11 +347,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="privacy"
-                android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="privacy"
+                android:orientation="vertical"
                 tools:ignore="UsingOnClickInXml">
 
                 <View
@@ -380,11 +380,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="statement"
-                android:orientation="vertical"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="statement"
+                android:orientation="vertical"
                 tools:ignore="UsingOnClickInXml">
 
                 <View
@@ -411,42 +411,185 @@
                 android:background="@color/xui_config_color_gray_9" />
 
             <LinearLayout
-                android:id="@+id/clear_mfa_cookie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="clearMFACookie"
-                android:visibility="gone"
-                android:orientation="vertical"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                tools:ignore="UsingOnClickInXml">
+                android:id="@+id/debug_tools"
+                android:visibility="visible"
+                android:orientation="vertical">
 
-                <View
+                <LinearLayout
+                    android:id="@+id/clear_cas_cookie"
                     android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/debug_clear_MFACookie"
-                    android:textColor="@color/app_black"
-                    android:textSize="16sp" />
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="clearCASCookie"
+                    android:orientation="vertical"
+                    tools:ignore="UsingOnClickInXml">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="清除 CAS Cookie"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="10dp" />
+                    android:layout_height="0.1dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+
+                <LinearLayout
+                    android:id="@+id/clear_mfa_cookie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="clearMFACookie"
+                    android:orientation="vertical"
+                    tools:ignore="UsingOnClickInXml">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="清除多因子身份认证Cookie"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+
+                <LinearLayout
+                    android:id="@+id/clear_bkjw_cookie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="clearBkjwCookie"
+                    android:orientation="vertical"
+                    tools:ignore="UsingOnClickInXml">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="清除旧版本科教务Cookie"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+                <LinearLayout
+                    android:id="@+id/clear_bkjwtest_cookie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="clearBkjwTestCookie"
+                    android:orientation="vertical"
+                    tools:ignore="UsingOnClickInXml">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="清除新版本科教务Cookie"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/xui_config_color_gray_9" />
+
+                <LinearLayout
+                    android:id="@+id/clear_vpn_cookie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="clearVPNCookie"
+                    android:orientation="vertical"
+                    tools:ignore="UsingOnClickInXml">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="清除VPN Cookie"
+                        android:textColor="@color/app_black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/xui_config_color_gray_9" />
 
             </LinearLayout>
-
-            <View
-                android:id="@+id/clear_mfa_cookie_spliter"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/xui_config_color_gray_9" />
-
 
             <View
                 android:layout_width="match_parent"

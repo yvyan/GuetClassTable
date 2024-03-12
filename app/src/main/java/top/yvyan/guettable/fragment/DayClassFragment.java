@@ -362,16 +362,16 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                 current = 3;
                 break;
             case 3:
-                current = 5;
+                current = 6;
                 break;
             case 4:
-                current = 7;
+                current = 8;
                 break;
             case 5:
-                current = 9;
+                current = 10;
                 break;
             case 6:
-                current = 11;
+                current = 12;
                 break;
             default:
         }

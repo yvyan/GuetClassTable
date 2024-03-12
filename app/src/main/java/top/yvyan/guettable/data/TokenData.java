@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.util.Consumer;
 import androidx.core.util.Supplier;
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -75,33 +76,34 @@ public class TokenData {
      * @return
      */
     public synchronized final boolean tryUpdate(Supplier<Boolean>... updateFunction) {
-        return tryUpdate(null,updateFunction);
+        return tryUpdate(null, updateFunction);
     }
 
     /**
      * tryUpdate 方法，顺序执行需要账户认证的同步流程并自动处理登录失效后的重新登录
-     * @param reloginHint 重新登录的提示
+     *
+     * @param reloginHint    重新登录的提示
      * @param updateFunction 同步路径函数，返回是否同步成功
      * @return
      */
     @SafeVarargs
     public synchronized final boolean tryUpdate(Runnable reloginHint, @NonNull Supplier<Boolean>... updateFunction) {
         boolean relogined = false;
-        for(int i=0; i<updateFunction.length; i++) {
+        for (int i = 0; i < updateFunction.length; i++) {
             Supplier<Boolean> updateMethod = updateFunction[i];
             boolean success;
             try {
-                success=updateMethod.get();
+                success = updateMethod.get();
             } catch (Exception setRelogin) {
-                success=false;
+                success = false;
             }
-            if(!success) {
-                if(!relogined) {
-                    relogined=true;
-                    if(reloginHint != null) {
+            if (!success) {
+                if (!relogined) {
+                    relogined = true;
+                    if (reloginHint != null) {
                         reloginHint.run();
                     }
-                    if(refresh()==-3) {
+                    if (refresh() == -3) {
                         try {
                             this.wait();
                         } catch (Exception ignore) {
@@ -153,7 +155,7 @@ public class TokenData {
     }
 
     public String getCASCookie() {
-        return TGTToken + (MFACookie==null || MFACookie.isEmpty() ? "" : "; " + MFACookie);
+        return TGTToken + (MFACookie == null || MFACookie.isEmpty() ? "" : "; " + MFACookie);
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -183,6 +185,7 @@ public class TokenData {
     public int refresh() {
         return refresh(null);
     }
+
     /**
      * 刷新登录凭证
      *
@@ -192,8 +195,8 @@ public class TokenData {
      * -2 : 网络错误/未知错误
      * 2 : 未登录
      */
-    public int refresh(Supplier<Void> callback) {
-        this.tgtCallback=callback;
+    public int refresh(Runnable callback) {
+        this.tgtCallback = callback;
         if (isDevelop) { //调试模式不刷新凭证
             return 0;
         }
@@ -219,14 +222,14 @@ public class TokenData {
         //尝试获取教务系统ST
         if (isVPN) { //外网
             //获取VPN的token
-            String VPNTokenStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
+            String VPNTokenStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", false);
             if (VPNTokenStr.startsWith("ERROR")) {
                 if (VPNTokenStr.equals("ERRORNeedlogin")) {
                     int n;
                     if ((n = refreshTGT()) != 0) {
                         return n;
                     }
-                    VPNTokenStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", isVPN);
+                    VPNTokenStr = StaticService.authServiceByCas(context, "https://v.guet.edu.cn/login?cas_login=true", getCASCookie(), "", false);
                     if (VPNTokenStr.startsWith("ERROR")) {
                         return -2;
                     }
@@ -270,19 +273,18 @@ public class TokenData {
         }
     }
 
-    private Supplier<Void> tgtCallback;
+    private Runnable tgtCallback;
 
     public int refreshTGT() {
         return refreshTGT(null);
     }
 
     /**
-     *
      * @param Callback 当存在二步验证等需用户交互的流程完成时调用的函数;
      * @return
      */
-    public final int refreshTGT(Supplier<Void> Callback) {
-        tgtCallback=Callback;
+    public final int refreshTGT(Runnable Callback) {
+        tgtCallback = Callback;
         boolean checkCaptcha = StaticService.checkNeedCaptcha(context, accountData.getUsername());
         if (checkCaptcha) {
             Activity activity = this.getActivity(context);
@@ -327,11 +329,11 @@ public class TokenData {
             } else {
                 setTGTToken(TGTTokenStr);
                 if (Captcha != null && !Captcha.isEmpty()) {
-                    if(tgtCallback!=null) {
+                    if (tgtCallback != null) {
                         try {
-                            new Thread(()->{
-                                tgtCallback.get();
-                                tgtCallback=null;
+                            new Thread(() -> {
+                                tgtCallback.run();
+                                tgtCallback = null;
                             }).start();
                         } catch (Exception ignored) {
 
@@ -339,7 +341,8 @@ public class TokenData {
                     }
                     try {
                         this.notify();
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
             }
             return 0;
@@ -493,11 +496,11 @@ public class TokenData {
                     this.notify();
                 } catch (Exception ignore) {
                 }
-                if(tgtCallback!=null) {
+                if (tgtCallback != null) {
                     try {
-                        new Thread(()->{
-                            tgtCallback.get();
-                            tgtCallback=null;
+                        new Thread(() -> {
+                            tgtCallback.run();
+                            tgtCallback = null;
                         }).start();
                     } catch (Exception ignored) {
 
@@ -540,7 +543,9 @@ public class TokenData {
     }
 
     public void setTGTToken(String CASCookie) {
-        TGTToken = extractCookie(CASCookie, "CASTGC");
+        if (CASCookie != null) {
+            TGTToken = extractCookie(CASCookie, "CASTGC");
+        }
         editor.putString(CAS_TGTToken, TGTToken);
         editor.apply();
     }
