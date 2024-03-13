@@ -12,7 +12,11 @@ public class ClassList {
         public CourseInfo course;
         public CourseType courseType;
         public Semester semester;
+        public String code; // 课号
+        public String teacherAssignmentString;
+
         private static class CourseInfo {
+            public String code; // 课程代码
             public double credits;
             public String nameZh;
         }
@@ -21,7 +25,7 @@ public class ClassList {
             public String name;
         }
         public SelectedCourseBean toSelectedCourseBean() {
-            return new SelectedCourseBean(course.credits, course.nameZh,lessonKindText,courseType.name, semester.id, semester.nameZh);
+            return new SelectedCourseBean(course.credits, course.nameZh,teacherAssignmentString,lessonKindText,courseType.name,course.code,code, semester.id, semester.nameZh);
         }
     }
 }

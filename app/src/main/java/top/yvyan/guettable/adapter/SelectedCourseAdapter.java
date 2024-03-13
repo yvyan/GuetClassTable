@@ -43,6 +43,9 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
         holder.courseName.setText(now.getCourseName());
         holder.courseType.setText(now.getSelectType());
         holder.courseQuality.setText(now.getCourseQuality());
+        holder.courseCode.setText(now.courseCode);
+        String lessonCode = (now.teacher != null && !now.teacher.isEmpty() ? now.teacher + "-" : "") + now.code;
+        holder.courseTea.setText(lessonCode);
     }
 
     @Override
@@ -57,11 +60,18 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
         private final TextView courseType;
         private final TextView courseQuality;
         private final TextView headerTerm;
+
+        private final TextView courseCode;
+
+        private final TextView courseTea;
+
         public SelectedCourseViewHolder(@NonNull View itemView) {
             super(itemView);
             headerTerm = itemView.findViewById(R.id.header_term);
             courseCredit = itemView.findViewById(R.id.selected_courseCredit);
-            courseName = itemView.findViewById(R.id.selected_courseName);
+            courseName = itemView.findViewById(R.id.course_name);
+            courseCode = itemView.findViewById(R.id.course_no);
+            courseTea = itemView.findViewById(R.id.course_tea);
             courseType = itemView.findViewById(R.id.selected_selectType);
             courseQuality = itemView.findViewById(R.id.selected_courseQuality);
         }

@@ -17,11 +17,20 @@ public class SelectedCourseBean implements Serializable, CourseUtil.BeanAttribut
     public int semesterId;
     private String semester;
 
-    public SelectedCourseBean(Double courseCredit, String courseName, String selectType, String courseQuality, int semesterId, String semester) {
+    public String code;
+
+    public String courseCode;
+
+    public String teacher;
+
+    public SelectedCourseBean(Double courseCredit, String courseName, String teacher, String selectType, String courseQuality, String CourseCode, String Code, int semesterId, String semester) {
         this.courseCredit = courseCredit;
+        this.teacher=teacher;
         this.courseName = courseName;
         this.selectType = selectType;
         this.courseQuality = courseQuality;
+        this.code = Code;
+        this.courseCode = CourseCode;
         this.semesterId = semesterId;
         this.semester = semester;
     }
@@ -72,6 +81,6 @@ public class SelectedCourseBean implements Serializable, CourseUtil.BeanAttribut
 
     @Override
     public long getOrder() {
-        return (int) (this.semesterId*100000+courseCredit * 100);
+        return (int) (this.semesterId * 100000 + courseCredit * 100);
     }
 }
