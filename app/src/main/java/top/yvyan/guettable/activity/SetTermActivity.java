@@ -201,12 +201,14 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                 int year = Integer.parseInt(generalData.getGrade()) + (int) spinnerYear.getSelectedItemId();
                 int num = (int) spinnerTerm.getSelectedItemId() + 1;
                 String term_1 = formatTerm(year, num, MoreData.getTermBeans());
+                /*
                 if (num == 2 && cb_addTerm.isChecked()) { //关联小学期
                     String term_2 = formatTerm(year, num + 1, MoreData.getTermBeans());
                     generalData.setAddTerm(term_2);
                 } else {
                     generalData.setAddTerm("");
                 }
+                */
                 generalData.setTerm(term_1);
                 ScheduleData.deleteInputCourse();
                 if (ScheduleData.getUserCourseBeans().size() != 0) {

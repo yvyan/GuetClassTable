@@ -31,6 +31,7 @@ import top.yvyan.guettable.Gson.PlannedCourse;
 import top.yvyan.guettable.Gson.Resit;
 import top.yvyan.guettable.Gson.Semester;
 import top.yvyan.guettable.Gson.StudentInfo;
+import top.yvyan.guettable.Gson.StudentInfoNew;
 import top.yvyan.guettable.Http.HttpConnectionAndCode;
 import top.yvyan.guettable.bean.CETBean;
 import top.yvyan.guettable.bean.CourseBean;
@@ -53,7 +54,8 @@ public class StaticService {
                 NeedCaptcha isNeed = new Gson().fromJson(checkCaptcha.content, NeedCaptcha.class);
                 return isNeed.isNeed;
             }
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
         return false;
     }
 
@@ -129,7 +131,7 @@ public class StaticService {
      * ERROR2 : 需要使用外网网址进行访问
      * ERROR5 : 2FA Needed
      */
-    public static String SSOLogin(Context context, String account, String password,String captcha, String TGTToken, String MFACookie, String SessionCookie) {
+    public static String SSOLogin(Context context, String account, String password, String captcha, String TGTToken, String MFACookie, String SessionCookie) {
         HttpConnectionAndCode response = Net.getCASToken(context, account, password, captcha, TGTToken, MFACookie, SessionCookie);
         if (response.code != 0) {
             if (response.code == 1) {
@@ -283,6 +285,29 @@ public class StaticService {
      * @param cookie  登录后的cookie
      * @return 基本学生信息
      */
+    public static StudentInfoNew getStudentInfoNew(Context context, String cookie) {
+        try {
+            HttpConnectionAndCode studentInfo = Net.studentInfoNew(context, cookie, TokenData.isVPN());
+            if (studentInfo.resp_code == 200) {
+                Pattern pattern = Pattern.compile("var ?student ?= ?([^;]+);?\n");
+                Matcher matcher = pattern.matcher(studentInfo.content);
+                if (matcher.find() && matcher.groupCount() >= 1) {
+                    String studentInfotext = matcher.group(1).replace("'", "\"");
+                    return new Gson().fromJson(studentInfotext, StudentInfoNew.class);
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+    /**
+     * 获取基本的学生信息
+     *
+     * @param context context
+     * @param cookie  登录后的cookie
+     * @return 基本学生信息
+     */
     public static StudentInfo getStudentInfo(Context context, String cookie) {
         HttpConnectionAndCode studentInfo = Net.studentInfo(context, cookie, TokenData.isVPN());
         if (studentInfo.code == 0) {
@@ -355,18 +380,18 @@ public class StaticService {
         HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
         if (classTableIndex.resp_code == 200) {
             if (!isAutoTerm) {
-                    List<Semester> semesterList = getAllSemester(classTableIndex);
-                    if(semesterList ==null) {
-                        return -1;
-                    }
-                    int semesterId;
-                    for (Semester s : semesterList) {
-                        if (s.toString().equals(term)) {
-                            semesterId = s.id;
-                            return semesterId;
-                        }
-                    }
+                List<Semester> semesterList = getAllSemester(classTableIndex);
+                if (semesterList == null) {
                     return -1;
+                }
+                int semesterId;
+                for (Semester s : semesterList) {
+                    if (s.toString().equals(term)) {
+                        semesterId = s.id;
+                        return semesterId;
+                    }
+                }
+                return -1;
             } else {
                 CurrentSemester semester = getSemesterJson(classTableIndex);
                 if (semester != null) {
@@ -488,10 +513,10 @@ public class StaticService {
     public static String getExamScoreNewUrl(Context context, String cookie) {
         try {
             HttpConnectionAndCode examScoreUrlInfo = Net.getExamScoreUrlNew(context, cookie, TokenData.isVPN());
-            if(examScoreUrlInfo.resp_code / 100 == 3) {
+            if (examScoreUrlInfo.resp_code / 100 == 3) {
                 String Location = examScoreUrlInfo.c.getHeaderField("location");
                 String[] subPath = Location.split("/");
-                return subPath[max(0,subPath.length-1)];
+                return subPath[max(0, subPath.length - 1)];
             }
         } catch (Exception ignored) {
 
@@ -501,9 +526,9 @@ public class StaticService {
 
     public static ExamScoreNew getExamScoreNew(Context context, String cookie) {
         try {
-            String ExamScoreEndpointId = getExamScoreNewUrl(context,cookie);
-            HttpConnectionAndCode examScoreInfo = Net.getExamScoreNew(context,cookie,ExamScoreEndpointId,TokenData.isVPN());
-            if(examScoreInfo.resp_code == 200) {
+            String ExamScoreEndpointId = getExamScoreNewUrl(context, cookie);
+            HttpConnectionAndCode examScoreInfo = Net.getExamScoreNew(context, cookie, ExamScoreEndpointId, TokenData.isVPN());
+            if (examScoreInfo.resp_code == 200) {
                 return new Gson().fromJson(examScoreInfo.content, ExamScoreNew.class);
             }
         } catch (Exception ignored) {
@@ -762,7 +787,7 @@ public class StaticService {
         List<SelectedCourseBean> courseBeans = new ArrayList<>();
         try {
             List<Semester> semesters = getAllSemester(context, cookie);
-            for(Semester semester : semesters) {
+            for (Semester semester : semesters) {
                 HttpConnectionAndCode classTable = Net.getClassList(context, semester.id, cookie, TokenData.isVPN());
                 if (classTable.resp_code == 200) {
                     ClassList table = new Gson().fromJson(classTable.content, ClassList.class);

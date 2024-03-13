@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 import top.yvyan.guettable.Gson.StudentInfo;
+import top.yvyan.guettable.Gson.StudentInfoNew;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.AccountData;
@@ -199,9 +200,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         runOnUiThread(() -> button.setText("正在登录"));
         tokenData.refresh();
         runOnUiThread(() -> button.setText("获取个人信息"));
-        StudentInfo studentInfo = null;
+        StudentInfoNew studentInfo = null;
         try {
-            studentInfo = StaticService.getStudentInfo(this, tokenData.getBkjwCookie());
+            studentInfo = StaticService.getStudentInfoNew(this, tokenData.getbkjwTestCookie());
 
             List<TermBean> allTerm = StaticService.getTerms(this, tokenData.getBkjwCookie());
             if (allTerm != null) {
@@ -213,10 +214,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         if (studentInfo != null) {
             //保存个人基础信息
             GeneralData generalData = GeneralData.newInstance(this);
-            generalData.setNumber(studentInfo.getStid());
-            generalData.setName(studentInfo.getName());
-            generalData.setTerm(studentInfo.getTerm());
-            generalData.setGrade(studentInfo.getGrade());
+            generalData.setNumber(studentInfo.code);
+            generalData.setName(studentInfo.person.nameZh);
+            generalData.setGrade(studentInfo.grade);
             Intent intent = new Intent(this, SetTermActivity.class);
             //保存自动学期设定的状态
             if (cbAutoTerm.isChecked()) {
