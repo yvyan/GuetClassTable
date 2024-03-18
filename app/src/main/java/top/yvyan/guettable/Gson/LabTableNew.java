@@ -2,27 +2,30 @@ package top.yvyan.guettable.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import top.yvyan.guettable.bean.CourseBean;
 
 public class LabTableNew {
     public boolean success;
     public List<Result> result;
-    public List<CourseBean> toCourseBeans() {
-        if (!success){
+
+    public List<CourseBean> toCourseBeans(Map<String, String> getLessonCode) {
+        if (!success) {
             return null;
         }
-        List<CourseBean> CourseBeanList=new ArrayList<>();
-        for (Result res:result) {
+        List<CourseBean> CourseBeanList = new ArrayList<>();
+        for (Result res : result) {
             for (Result.DayVos day : res.dayVos) {
                 for (Result.DayVos.ScheduleItem lab : day.scheduleItemList) {
-                    CourseBean labBean = lab.toCourseBean();
+                    CourseBean labBean = lab.toCourseBean(getLessonCode);
                     CourseBeanList.add(labBean);
                 }
             }
         }
         return CourseBeanList;
     }
+
     public static class Result {
         public int lessonBegin;
         public int lessonEnd;
@@ -32,6 +35,7 @@ public class LabTableNew {
         public static class DayVos {
             public String date;
             public List<ScheduleItem> scheduleItemList;
+
             public static class ScheduleItem {
                 public String id;
                 public String schoolTime;
@@ -63,10 +67,20 @@ public class LabTableNew {
                 public boolean isLinkTheory;
                 public String sameLessonFlag;
                 public boolean scheduleModifyFlag;
+                public String courseId;
+                public String taskNum;
+                public String taskName;
 
-                public CourseBean toCourseBean() {
+                public CourseBean toCourseBean(Map<String, String> getLessonCode) {
+                    String LessonCode = "课号获取失败";
+                    if (getLessonCode != null) {
+                        LessonCode = getLessonCode.get(courseId);
+                        if (LessonCode == null) {
+                            LessonCode = "课号获取失败";
+                        }
+                    }
                     CourseBean courseBean = new CourseBean();
-                    courseBean.setLab(subjectName,labNames,weekNum,weekDay,(lessonBegin>=5?lessonBegin+1:lessonBegin),(lessonEnd>=5?lessonEnd+1:lessonEnd),teacherName);
+                    courseBean.setLab(LessonCode, taskName, subjectName, labNames, weekNum, weekDay, (lessonBegin >= 5 ? lessonBegin + 1 : lessonBegin), (lessonEnd >= 5 ? lessonEnd + 1 : lessonEnd), teacherName);
                     return courseBean;
                 }
             }

@@ -433,7 +433,37 @@ public class Net {
     }
 
     /**
-     * 获取课内实验安排
+     * 获取实验列表
+     *
+     * @param context  context
+     * @param jwtToken jwt令牌
+     * @param isVPN    是否为外网
+     * @return
+     */
+    public static HttpConnectionAndCode getLabIndex(Context context, String jwtToken, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        Map<String, String> headers = new HashMap<>();
+        headers.put("x-access-token", jwtToken);
+        return Get.get(
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/guet-lab-system/experiment/mesTeachTask/queryListByStuId?column=createTime&order=desc&field=id,,courseName,courseProcess&pageNo=1&pageSize=1000", isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                30000,
+                null,
+                headers
+        );
+    }
+
+    /**
+     * 获取实验安排
      *
      * @param context  context
      * @param jwtToken jwt令牌

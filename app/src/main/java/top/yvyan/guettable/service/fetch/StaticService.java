@@ -9,7 +9,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +26,7 @@ import top.yvyan.guettable.Gson.ExamScore;
 import top.yvyan.guettable.Gson.ExamScoreNew;
 import top.yvyan.guettable.Gson.ExperimentScore;
 import top.yvyan.guettable.Gson.Grades;
+import top.yvyan.guettable.Gson.LabList;
 import top.yvyan.guettable.Gson.LabTableJWT;
 import top.yvyan.guettable.Gson.LabTableNew;
 import top.yvyan.guettable.Gson.NeedCaptcha;
@@ -446,6 +449,18 @@ public class StaticService {
         return null;
     }
 
+    public static Map<String, String> getLabLessonCode(Context context, String jwtToken, String cookie) {
+        try {
+            HttpConnectionAndCode labIndexRes = Net.getLabIndex(context, jwtToken, cookie, TokenData.isVPN());
+            if (labIndexRes.resp_code == 200) {
+                LabList labIndex = new Gson().fromJson(labIndexRes.content, LabList.class);
+                return labIndex.toMap();
+            }
+        } catch (Exception ignore) {
+
+        }
+        return null;
+    }
 
     public static List<CourseBean> getLabTableNew(Context context, String cookie, String startDate, String endDate) {
         try {
@@ -453,10 +468,11 @@ public class StaticService {
             if (jwtToken == null) {
                 return null;
             }
+            Map<String, String> labIndex = getLabLessonCode(context, jwtToken, cookie);
             HttpConnectionAndCode labTableRes = Net.getLabTableNew(context, jwtToken, cookie, startDate, endDate, TokenData.isVPN());
             if (labTableRes.resp_code == 200) {
                 LabTableNew labTable = new Gson().fromJson(labTableRes.content, LabTableNew.class);
-                return labTable.toCourseBeans();
+                return labTable.toCourseBeans(labIndex);
             } else {
                 return null;
             }

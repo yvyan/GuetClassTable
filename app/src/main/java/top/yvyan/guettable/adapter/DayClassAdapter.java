@@ -191,6 +191,8 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
 
                 if (courseBean.isLab()) { //课内实验
                     holder.textView2.setText("名称：" + courseBean.getLabName());
+                    holder.lablessonCode.setVisibility(View.VISIBLE);
+                    holder.lablessonCode.setText("课号：" + courseBean.getNumber());
                 } else { //理论课
                     if (courseBean.getNumber().isEmpty()) {
                         holder.textView2.setVisibility(View.GONE);
@@ -209,17 +211,19 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
     }
 
     static class ClassDetailViewHolder extends RecyclerView.ViewHolder {
-        TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
+        TextView textView1, textView2,lablessonCode, textView3, textView4, textView5, textView6, textView7;
 
         public ClassDetailViewHolder(@NonNull View itemView) {
             super(itemView);
             textView1 = itemView.findViewById(R.id.detail_text_1);
             textView2 = itemView.findViewById(R.id.detail_text_2);
-            textView3 = itemView.findViewById(R.id.detail_text_3);
-            textView4 = itemView.findViewById(R.id.detail_text_4);
-            textView5 = itemView.findViewById(R.id.detail_text_5);
-            textView6 = itemView.findViewById(R.id.detail_text_6);
-            textView7 = itemView.findViewById(R.id.detail_text_7);
+            lablessonCode = itemView.findViewById(R.id.detail_text_3);
+            lablessonCode.setVisibility(View.GONE);
+            textView3 = itemView.findViewById(R.id.detail_text_4);
+            textView4 = itemView.findViewById(R.id.detail_text_5);
+            textView5 = itemView.findViewById(R.id.detail_text_6);
+            textView6 = itemView.findViewById(R.id.detail_text_7);
+            textView7 = itemView.findViewById(R.id.detail_text_8);
         }
     }
 }

@@ -44,6 +44,8 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
         if (position == 0 || !schedules.get(position - 1).getName().equals(schedules.get(position).getName())) {
             holder.textView1.setVisibility(View.VISIBLE);
             holder.textView1.setText(courseBean.getName());
+            holder.lessonCode.setText("课号："+courseBean.getNumber());
+            holder.lessonCode.setVisibility(View.VISIBLE);
             if (courseBean.getTeacher().isEmpty()) {
                 holder.textView3.setVisibility(View.GONE);
             } else {
@@ -56,9 +58,9 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
                 holder.textView4.setVisibility(View.VISIBLE);
                 holder.textView4.setText("教室：" + courseBean.getRoom());
             }
-            holder.textView2.setTextColor(0x8a000000);
         } else {
             holder.textView2.setTextColor(0xff000000);
+            holder.lessonCode.setVisibility(View.GONE);
             holder.textView1.setVisibility(View.GONE);
             holder.textView3.setVisibility(View.GONE);
             holder.textView4.setVisibility(View.GONE);
@@ -82,7 +84,7 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
                 }
             }
         }
-        holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section.substring(0, max(0,section.length()-2)) + "大节");
+        holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section.substring(0, max(0, section.length() - 2)) + "大节");
         holder.textView2.setText("名称：" + courseBean.getLabName());
         if ("".equals(courseBean.getRemarks())) {
             holder.textView6.setVisibility(View.GONE);
@@ -107,18 +109,19 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
 
     static class LibViewHolder extends RecyclerView.ViewHolder {
         View card;
-        TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
+        TextView textView1, lessonCode, textView2, textView3, textView4, textView5, textView6, textView7;
 
         public LibViewHolder(@NonNull View itemView) {
             super(itemView);
             card = itemView.findViewById(R.id.detail_card);
             textView1 = itemView.findViewById(R.id.detail_text_1);
             textView2 = itemView.findViewById(R.id.detail_text_2);
-            textView3 = itemView.findViewById(R.id.detail_text_3);
-            textView4 = itemView.findViewById(R.id.detail_text_4);
-            textView5 = itemView.findViewById(R.id.detail_text_5);
-            textView6 = itemView.findViewById(R.id.detail_text_6);
-            textView7 = itemView.findViewById(R.id.detail_text_7);
+            lessonCode = itemView.findViewById(R.id.detail_text_3);
+            textView3 = itemView.findViewById(R.id.detail_text_4);
+            textView4 = itemView.findViewById(R.id.detail_text_5);
+            textView5 = itemView.findViewById(R.id.detail_text_6);
+            textView6 = itemView.findViewById(R.id.detail_text_7);
+            textView7 = itemView.findViewById(R.id.detail_text_8);
         }
     }
 }

@@ -52,15 +52,13 @@ public class CourseBean implements ScheduleEnable, Serializable {
     private String teacher;
     //备注
     private String remarks;
-    //实验id
-    private long labId;
 
     public CourseBean() {
     }
 
     //用户添加课程
     public void userAdd(String number, String name, String room, int weekStart, int weekEnd, int day, int start, int end, String teacher, String remarks, long id) {
-        setCourse(number, name, room, weekStart, weekEnd, day,start, end, teacher, remarks);
+        setCourse(number, name, room, weekStart, weekEnd, day, start, end, teacher, remarks);
         setId(id);
     }
 
@@ -107,11 +105,10 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     //设置为实验课
-    public void setLab(String name, String room, int week, int day, int start,int end, String teacher) {
-        setCourse("暂无简易获取方式", "(实验)" + name,room,week,week,day,start,end,teacher,"");
-        this.labName = name;
-        this.isLab=true;
-        this.labId = 0;
+    public void setLab(String lessonCode,String name, String labName, String room, int week, int day, int start, int end, String teacher) {
+        setCourse(lessonCode, "(实验)" + name, room, week, week, day, start, end, teacher, "");
+        this.labName = labName;
+        this.isLab = true;
     }
 
     //设置为实验课
@@ -140,7 +137,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         this.time = time;
         this.teacher = teacher;
         this.remarks = remarks;
-        this.labId = labId;
+      //  this.labId = labId;
     }
 
     public void setFromSchedule(Schedule schedule) {
@@ -286,7 +283,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     public long getLabId() {
-        return labId;
+        return (name != null ? name.hashCode() : 10000000);
     }
 
     public void setDay(int day) {

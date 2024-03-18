@@ -51,7 +51,6 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ClassDetailViewHolder holder, int position) {
-
         if ((int) schedules.get(position).getExtras().get(ExamBean.TYPE) == 2) { //考试安排
             ExamBean examBean = new ExamBean();
             examBean.setFromSchedule(schedules.get(position));
@@ -102,7 +101,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
                     }
                 }
             }
-            holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section.toString().substring(0,  max(0,section.length() - 2)) + "大节");
+            holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section.toString().substring(0, max(0, section.length() - 2)) + "大节");
 
             if (courseBean.getRemarks().isEmpty()) {
                 holder.textView6.setVisibility(View.GONE);
@@ -115,6 +114,8 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
 
             if (courseBean.isLab()) { //课内实验
                 holder.textView2.setText("名称：" + courseBean.getLabName());
+                holder.labLessonCode.setVisibility(View.VISIBLE);
+                holder.labLessonCode.setText("课号：" + courseBean.getNumber());
             } else { //理论课
                 if (courseBean.getNumber().isEmpty()) {
                     holder.textView2.setVisibility(View.GONE);
@@ -154,7 +155,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
 
     static class ClassDetailViewHolder extends RecyclerView.ViewHolder {
         View card;
-        TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
+        TextView textView1, textView2, labLessonCode, textView3, textView4, textView5, textView6, textView7;
         ImageView imageView;
 
         public ClassDetailViewHolder(@NonNull View itemView) {
@@ -162,11 +163,13 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
             card = itemView.findViewById(R.id.detail_card);
             textView1 = itemView.findViewById(R.id.detail_text_1);
             textView2 = itemView.findViewById(R.id.detail_text_2);
-            textView3 = itemView.findViewById(R.id.detail_text_3);
-            textView4 = itemView.findViewById(R.id.detail_text_4);
-            textView5 = itemView.findViewById(R.id.detail_text_5);
-            textView6 = itemView.findViewById(R.id.detail_text_6);
-            textView7 = itemView.findViewById(R.id.detail_text_7);
+            labLessonCode = itemView.findViewById(R.id.detail_text_3);
+            labLessonCode.setVisibility(View.GONE);
+            textView3 = itemView.findViewById(R.id.detail_text_4);
+            textView4 = itemView.findViewById(R.id.detail_text_5);
+            textView5 = itemView.findViewById(R.id.detail_text_6);
+            textView6 = itemView.findViewById(R.id.detail_text_7);
+            textView7 = itemView.findViewById(R.id.detail_text_8);
             imageView = itemView.findViewById(R.id.detail_imageView);
         }
     }
