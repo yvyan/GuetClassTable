@@ -130,21 +130,29 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         } catch (Exception ignored) {
         }
         setYearSpinner(num);
-        //自动选择年度
-        int nowYear = Integer.parseInt(term.substring(0, 4));
-        nowYear = nowYear - num;
-        spinnerYear.setSelection(nowYear);
-        //自动选择学期
-        int nowTerm;
-        nowTerm = Integer.parseInt(term.substring(10, 11));
-        spinnerTerm.setSelection(nowTerm - 1);
-        //自动选择星期
-        int week = generalData.getWeek();
-        week_text.setText("第" + week + "周");
-        seekBar.setMax(generalData.getMaxWeek() * 10);
-        seekBar.setDefaultValue(week * 10);
-        seekBar.setOnSeekBarListener((seekBar, newValue) -> week_text.setText("第" + (newValue / 10) + "周")
-        );
+
+        try {
+            if (term != null && !term.isEmpty()) {
+                //自动选择年度
+                int nowYear = Integer.parseInt(term.substring(0, 4));
+                nowYear = nowYear - num;
+                spinnerYear.setSelection(nowYear);
+                //自动选择学期
+                int nowTerm;
+                nowTerm = Integer.parseInt(term.substring(10, 11));
+                spinnerTerm.setSelection(nowTerm - 1);
+            }
+            //自动选择星期
+            int week = generalData.getWeek();
+            week_text.setText("第" + week + "周");
+            seekBar.setMax(generalData.getMaxWeek() * 10);
+            seekBar.setDefaultValue(week * 10);
+            seekBar.setOnSeekBarListener((seekBar, newValue) -> week_text.setText("第" + (newValue / 10) + "周")
+            );
+        } catch (Exception ignored) {
+
+        }
+
     }
 
     private void setYearSpinner(int num) {

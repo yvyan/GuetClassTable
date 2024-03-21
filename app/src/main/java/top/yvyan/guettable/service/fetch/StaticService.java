@@ -142,7 +142,7 @@ public class StaticService {
                 if (Location.contains("reAuthCheck")) {
                     return "ERROR5;" + TGTToken + "; " + response.cookie;
                 }
-                if (!MFACookie.isEmpty()) {
+                if (MFACookie!=null && !MFACookie.isEmpty()) {
                     return MFACookie + "; " + TGTToken;
                 } else {
                     return TGTToken;
