@@ -17,16 +17,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.util.Supplier;
+
 import java.io.InputStream;
-import java.lang.reflect.*;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.util.Consumer;
-import androidx.core.util.Supplier;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -183,7 +181,7 @@ public class TokenData {
     }
 
     public int refresh() {
-        return refresh(null);
+        return refresh(this.tgtCallback);
     }
 
     /**
@@ -276,7 +274,7 @@ public class TokenData {
     private Runnable tgtCallback;
 
     public int refreshTGT() {
-        return refreshTGT(null);
+        return refreshTGT(this.tgtCallback);
     }
 
     /**

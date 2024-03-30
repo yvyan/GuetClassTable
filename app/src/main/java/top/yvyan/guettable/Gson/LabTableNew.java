@@ -71,6 +71,8 @@ public class LabTableNew {
                 public String taskNum;
                 public String taskName;
 
+                public String description;
+
                 public CourseBean toCourseBean(Map<String, String> getLessonCode) {
                     String LessonCode = "课号获取失败";
                     if (getLessonCode != null) {
@@ -80,7 +82,7 @@ public class LabTableNew {
                         }
                     }
                     CourseBean courseBean = new CourseBean();
-                    courseBean.setLab(LessonCode, taskName, subjectName, labNames, weekNum, weekDay, (lessonBegin >= 5 ? lessonBegin + 1 : lessonBegin), (lessonEnd >= 5 ? lessonEnd + 1 : lessonEnd), teacherName);
+                    courseBean.setLab(LessonCode, taskName, subjectName, labNames, weekNum, weekDay, (lessonBegin >= 5 ? lessonBegin + 1 : lessonBegin), (lessonEnd >= 5 ? lessonEnd + 1 : lessonEnd), teacherName, description);
                     return courseBean;
                 }
             }
