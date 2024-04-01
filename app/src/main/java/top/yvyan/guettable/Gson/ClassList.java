@@ -7,8 +7,11 @@ import top.yvyan.guettable.bean.SelectedCourseBean;
 
 public class ClassList {
     public List<ClassInfo> lessons;
+
     public static class ClassInfo {
         public String lessonKindText;
+
+        public String remark;
         public CourseInfo course;
         public CourseType courseType;
         public Semester semester;
@@ -24,8 +27,9 @@ public class ClassList {
         private static class CourseType {
             public String name;
         }
+
         public SelectedCourseBean toSelectedCourseBean() {
-            return new SelectedCourseBean(course.credits, course.nameZh,teacherAssignmentString,lessonKindText,courseType.name,course.code,code, semester.id, semester.nameZh);
+            return new SelectedCourseBean(course.credits, course.nameZh, teacherAssignmentString, lessonKindText, courseType.name, course.code, code, semester.id, semester.nameZh, remark);
         }
     }
 }

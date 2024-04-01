@@ -23,9 +23,11 @@ public class SelectedCourseBean implements Serializable, CourseUtil.BeanAttribut
 
     public String teacher;
 
-    public SelectedCourseBean(Double courseCredit, String courseName, String teacher, String selectType, String courseQuality, String CourseCode, String Code, int semesterId, String semester) {
+    public String remark;
+
+    public SelectedCourseBean(Double courseCredit, String courseName, String teacher, String selectType, String courseQuality, String CourseCode, String Code, int semesterId, String semester, String remark) {
         this.courseCredit = courseCredit;
-        this.teacher=teacher;
+        this.teacher = teacher;
         this.courseName = courseName;
         this.selectType = selectType;
         this.courseQuality = courseQuality;
@@ -33,6 +35,7 @@ public class SelectedCourseBean implements Serializable, CourseUtil.BeanAttribut
         this.courseCode = CourseCode;
         this.semesterId = semesterId;
         this.semester = semester;
+        this.remark = remark;
     }
 
     public SelectedCourseBean(SelectedCourse selectedCourse) {

@@ -1,5 +1,11 @@
 package top.yvyan.guettable.adapter;
 
+import android.content.Context;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +24,8 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
 
     List<SelectedCourseBean> dataList;
 
+    private Context context;
+
     public SelectedCourseAdapter(List<SelectedCourseBean> dataList) {
         this.dataList = dataList;
     }
@@ -25,7 +33,8 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
     @NonNull
     @Override
     public SelectedCourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        context = parent.getContext();
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
         View itemView = layoutInflater.inflate(R.layout.selected_course_cardview, parent, false);
         return new SelectedCourseViewHolder(itemView);
     }
@@ -46,6 +55,15 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
         holder.courseCode.setText(now.courseCode);
         String lessonCode = (now.teacher != null && !now.teacher.isEmpty() ? now.teacher + "-" : "") + now.code;
         holder.courseTea.setText(lessonCode);
+        if(now.remark!=null && !now.remark.isEmpty()) {
+            holder.comment.setVisibility(View.VISIBLE);
+            SpannableString spannableString = new SpannableString("备注信息：\n" + now.remark);
+            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0,6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.comment.setText(spannableString);
+        } else {
+            holder.comment.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -65,6 +83,8 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
 
         private final TextView courseTea;
 
+        private final TextView comment;
+
         public SelectedCourseViewHolder(@NonNull View itemView) {
             super(itemView);
             headerTerm = itemView.findViewById(R.id.header_term);
@@ -74,6 +94,7 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
             courseTea = itemView.findViewById(R.id.course_tea);
             courseType = itemView.findViewById(R.id.selected_selectType);
             courseQuality = itemView.findViewById(R.id.selected_courseQuality);
+            comment = itemView.findViewById(R.id.comment);
         }
     }
 }

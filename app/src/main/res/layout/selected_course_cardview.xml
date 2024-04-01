@@ -14,111 +14,130 @@
         android:textSize="18sp"
         android:visibility="gone" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:background="@color/app_white"
         android:orientation="vertical">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toTopOf="@+id/course_info"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/course_info"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@id/selected_courseQuality"
-            app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/course_name"
-                android:layout_width="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toTopOf="@+id/course_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <LinearLayout
+                android:id="@+id/course_info"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="serif"
-                android:letterSpacing="0.1"
-                android:text="名称"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@id/selected_courseQuality"
+                app:layout_constraintHorizontal_weight="3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/course_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="serif"
+                    android:letterSpacing="0.1"
+                    android:text="名称"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/course_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="1dp"
+                    android:textColor="@color/color_time"
+                    android:text="课程代码"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/course_name" />
+
+                <TextView
+                    android:id="@+id/course_tea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="2dp"
+                    android:textColor="@color/color_room"
+                    android:text="教师-课号"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/course_name" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/selected_courseQuality"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="性质"
                 android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="#AA000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/selected_courseCredit"
+                app:layout_constraintHorizontal_weight="1.8"
+                app:layout_constraintStart_toEndOf="@id/course_info"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/course_no"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="1dp"
-                android:text="课程代码-课号"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@+id/course_name" />
+                android:id="@+id/selected_courseCredit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="学分"
+                android:textAlignment="center"
+                android:textColor="#AA000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/selected_selectType"
+                app:layout_constraintHorizontal_weight="0.8"
+                app:layout_constraintStart_toEndOf="@id/selected_courseQuality"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
-                android:id="@+id/course_tea"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginBottom="2dp"
-                android:text="课程代码-课号"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@+id/course_name" />
-        </LinearLayout>
+                android:id="@+id/selected_selectType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="类别"
+                android:textAlignment="center"
+                android:textColor="#AA000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="0.8"
+                app:layout_constraintStart_toEndOf="@id/selected_courseCredit"
+                app:layout_constraintTop_toTopOf="parent" />
 
-
-        <TextView
-            android:id="@+id/selected_courseQuality"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="性质"
-            android:textAlignment="center"
-            android:textColor="#AA000000"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/selected_courseCredit"
-            app:layout_constraintHorizontal_weight="1.8"
-            app:layout_constraintStart_toEndOf="@id/course_info"
-            app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/selected_courseCredit"
-            android:layout_width="0dp"
+            android:id="@+id/comment"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="学分"
-            android:textAlignment="center"
-            android:textColor="#AA000000"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/selected_selectType"
-            app:layout_constraintHorizontal_weight="0.8"
-            app:layout_constraintStart_toEndOf="@id/selected_courseQuality"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/selected_selectType"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="类别"
-            android:textAlignment="center"
-            android:textColor="#AA000000"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="0.8"
-            app:layout_constraintStart_toEndOf="@id/selected_courseCredit"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+            android:layout_marginStart="10dp"
+            android:text="备注信息"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="5dp" />
+    </LinearLayout>
 
 </LinearLayout>
