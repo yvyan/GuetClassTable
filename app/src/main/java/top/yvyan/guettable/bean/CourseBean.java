@@ -69,8 +69,8 @@ public class CourseBean implements ScheduleEnable, Serializable {
     public void setCourse(String number, String name, String room, int weekStart, int weekEnd, int day, int start, int end, String courseTime, String teacher, String remarks) {
         this.setCourse(number, name, room, weekStart, weekEnd, day, -1, teacher, remarks);
         this.courseRangeVersion = 2;
-        this.start = start;
-        this.end = end;
+        this.start = Math.max(start,1);
+        this.end = Math.max(end,1);
         this.courseTime = courseTime;
     }
 

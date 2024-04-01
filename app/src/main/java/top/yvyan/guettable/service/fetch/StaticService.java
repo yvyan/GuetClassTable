@@ -341,13 +341,8 @@ public class StaticService {
                 ClassTableNew.studentTableVms maintable = table.studentTableVms.get(0);
                 List<ClassTableNew.ClassTable> lessions = maintable.activities;
                 for (ClassTableNew.ClassTable lession : lessions) {
-                    try {
                         List<CourseBean> coursebeans = lession.toCourseBean();
                         courseBeans.addAll(coursebeans);
-                    } catch (Exception e) {
-
-                    }
-
                 }
                 if (courseBeans.isEmpty()) {
                     return null;

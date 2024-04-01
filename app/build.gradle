@@ -52,7 +52,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-           // shrinkResources false
+            //shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             if (appStoreFile) {
                 signingConfig signingConfigs.sign
