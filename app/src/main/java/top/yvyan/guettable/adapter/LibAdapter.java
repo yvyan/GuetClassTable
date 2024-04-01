@@ -3,6 +3,11 @@ package top.yvyan.guettable.adapter;
 import static java.lang.Math.max;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zhuangfei.timetable.model.Schedule;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import top.yvyan.guettable.R;
@@ -60,7 +67,10 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
             holder.textView4.setVisibility(View.GONE);
         } else {
             holder.textView4.setVisibility(View.VISIBLE);
-            holder.textView4.setText("教室：" + courseBean.getRoom());
+            SpannableString spannableString = new SpannableString("教室：" + courseBean.getRoom());
+            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_room)), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.textView4.setText(spannableString);
         }
         /*} else {
             holder.textView2.setTextColor(0xff000000);
@@ -88,15 +98,69 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
                 }
             }
         }
-        holder.textView5.setText("时间：" + TimeUtil.whichDay(courseBean.getDay()) + " 第" + section.substring(0, max(0, section.length() - 2)) + "大节");
+        List<String> FragmentstartText = new ArrayList<>(Arrays.asList("时间：", TimeUtil.whichDay(courseBean.getDay()), " 第" + section.toString().substring(0, max(0, section.length() - 2)) + "大节 "));
+        if (courseBean.getCourseTime() != null) {
+            FragmentstartText.add("(" + courseBean.getCourseTime() + ")");
+        }
+        SpannableString spannableString = new SpannableString(String.join("", FragmentstartText));
+        spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)),
+                FragmentstartText.get(0).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                FragmentstartText.get(0).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (courseBean.getCourseTime() != null) {
+            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_clock)),
+                    FragmentstartText.get(0).length() +
+                            FragmentstartText.get(1).length() +
+                            FragmentstartText.get(2).length(),
+                    FragmentstartText.get(0).length() +
+                            FragmentstartText.get(1).length() +
+                            FragmentstartText.get(2).length() +
+                            FragmentstartText.get(3).length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                    FragmentstartText.get(0).length() +
+                            FragmentstartText.get(1).length() +
+                            FragmentstartText.get(2).length(),
+                    FragmentstartText.get(0).length() +
+                            FragmentstartText.get(1).length() +
+                            FragmentstartText.get(2).length() +
+                            FragmentstartText.get(3).length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        holder.textView5.setText(spannableString);
         holder.textView2.setText("名称：" + courseBean.getLabName());
-        if ("".equals(courseBean.getRemarks())) {
-            holder.textView6.setVisibility(View.GONE);
-            holder.textView7.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
-        } else {
+        if (courseBean.getRemarks() != null && !courseBean.getRemarks().isEmpty()) {
             holder.textView6.setVisibility(View.VISIBLE);
             holder.textView6.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
-            holder.textView7.setText(courseBean.getRemarks());
+            spannableString = new SpannableString("备注信息：\n" + courseBean.getRemarks());
+            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.textView7.setText(spannableString);
+
+        } else {
+            holder.textView6.setVisibility(View.GONE);
+            holder.textView7.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
         }
 
         if (schedules.get(position).getWeekList().contains(week)) {
