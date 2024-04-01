@@ -232,7 +232,10 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
                 } else {
                     holder.textView6.setVisibility(View.VISIBLE);
                     holder.textView6.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
-                    holder.textView7.setText(courseBean.getRemarks());
+                    spannableString = new SpannableString("备注信息：\n" + courseBean.getRemarks());
+                    spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0,6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    holder.textView7.setText(spannableString);
                 }
 
                 if (courseBean.isLab()) { //课内实验
