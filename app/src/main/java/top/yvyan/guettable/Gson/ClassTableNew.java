@@ -42,7 +42,8 @@ public class ClassTableNew {
         private String courseName;
         private String room;
         private List<String> teachers;
-        private String weeksStr;
+        private String startTime;
+        private String endTime;
         private int[] weekIndexes;
         private Integer startUnit;
         private Integer endUnit;
@@ -50,7 +51,18 @@ public class ClassTableNew {
         private Integer weekday;
         private String lessonRemark;
 
+        public String getCourseTime() {
+            if (startTime != null && !startTime.isEmpty() &&
+                    endTime != null && !endTime.isEmpty()) {
+                return startTime + "~" + endTime;
+            }
+            return null;
+        }
+
         public List<CourseBean> toCourseBean() {
+            if (lessonRemark == null) {
+                lessonRemark = "";
+            }
             List<CourseBean> courseBeans = new ArrayList<>();
             Arrays.sort(weekIndexes);
             int lastWeekIndex = weekIndexes[0];
@@ -58,14 +70,14 @@ public class ClassTableNew {
             for (int week : weekIndexes) {
                 if (week - lastWeekIndex > 1) {
                     CourseBean courseBean = new CourseBean();
-                    courseBean.setCourse(lessonCode, courseName, room, startWeek, lastWeekIndex, weekday, startUnit, endUnit, String.join(" ", teachers), lessonRemark);
+                    courseBean.setCourse(lessonCode, courseName, room, startWeek, lastWeekIndex, weekday, startUnit, endUnit, this.getCourseTime(), String.join(" ", teachers), lessonRemark);
                     courseBeans.add(courseBean);
                     startWeek = week;
                 }
                 lastWeekIndex = week;
             }
             CourseBean courseBean = new CourseBean();
-            courseBean.setCourse(lessonCode, courseName, room, startWeek, lastWeekIndex, weekday, startUnit, endUnit, String.join(" ", teachers), lessonRemark);
+            courseBean.setCourse(lessonCode, courseName, room, startWeek, lastWeekIndex, weekday, startUnit, endUnit, this.getCourseTime(), String.join(" ", teachers), lessonRemark);
             courseBeans.add(courseBean);
             return courseBeans;
         }

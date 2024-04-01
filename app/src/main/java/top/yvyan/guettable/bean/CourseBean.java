@@ -18,6 +18,8 @@ public class CourseBean implements ScheduleEnable, Serializable {
     public static String WEEK_START = "weekStart";
     public static String WEEK_END = "weekEnd";
     public static String COURSE_RANGE_VERSION = "rangeVersion";
+
+    public static String COURSE_TIME = "courseTime";
     public static String TYPE = "type";
     public static String ID = "id";
 
@@ -53,20 +55,23 @@ public class CourseBean implements ScheduleEnable, Serializable {
     //备注
     private String remarks;
 
+    private String courseTime;
+
     public CourseBean() {
     }
 
     //用户添加课程
     public void userAdd(String number, String name, String room, int weekStart, int weekEnd, int day, int start, int end, String teacher, String remarks, long id) {
-        setCourse(number, name, room, weekStart, weekEnd, day, start, end, teacher, remarks);
+        setCourse(number, name, room, weekStart, weekEnd, day, start, end, null, teacher, remarks);
         setId(id);
     }
 
-    public void setCourse(String number, String name, String room, int weekStart, int weekEnd, int day, int start, int end, String teacher, String remarks) {
+    public void setCourse(String number, String name, String room, int weekStart, int weekEnd, int day, int start, int end, String courseTime, String teacher, String remarks) {
         this.setCourse(number, name, room, weekStart, weekEnd, day, -1, teacher, remarks);
         this.courseRangeVersion = 2;
         this.start = start;
         this.end = end;
+        this.courseTime = courseTime;
     }
 
     //设置为理论课
@@ -105,8 +110,8 @@ public class CourseBean implements ScheduleEnable, Serializable {
     }
 
     //设置为实验课
-    public void setLab(String lessonCode,String name, String labName, String room, int week, int day, int start, int end, String teacher,String remarks) {
-        setCourse(lessonCode, "(实验)" + name, room, week, week, day, start, end, teacher, remarks);
+    public void setLab(String lessonCode, String name, String labName, String room, int week, int day, int start, int end, String teacher, String remarks) {
+        setCourse(lessonCode, "(实验)" + name, room, week, week, day, start, end,null, teacher, remarks);
         this.labName = labName;
         this.isLab = true;
     }
@@ -137,7 +142,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         this.time = time;
         this.teacher = teacher;
         this.remarks = remarks;
-      //  this.labId = labId;
+        //  this.labId = labId;
     }
 
     public void setFromSchedule(Schedule schedule) {
@@ -147,6 +152,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         weekEnd = (int) extras.get(WEEK_END);
         remarks = (String) extras.get(REMARKS);
         courseRangeVersion = (int) extras.get(COURSE_RANGE_VERSION);
+        courseTime = (String) extras.get(COURSE_TIME);
         if (isLab) {
             labName = (String) extras.get(LIB_NAME);
         }
@@ -189,10 +195,19 @@ public class CourseBean implements ScheduleEnable, Serializable {
         schedule.putExtras(NUMBER, number);
         schedule.putExtras(WEEK_START, weekStart);
         schedule.putExtras(WEEK_END, weekEnd);
+        schedule.putExtras(COURSE_TIME, courseTime);
         //类型: 0:理论课; 1:实验课; 2:考试安排
         schedule.putExtras(TYPE, isLab ? 1 : 0);
         schedule.putExtras(ID, id);
         return schedule;
+    }
+
+    public String getCourseTime(){
+        return courseTime;
+    }
+
+    public void setCourseTime(String courseTime) {
+        this.courseTime=courseTime;
     }
 
     public long getId() {

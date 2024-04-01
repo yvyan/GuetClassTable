@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zhuangfei.timetable.model.Schedule;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import top.yvyan.guettable.R;
@@ -27,7 +29,6 @@ import top.yvyan.guettable.bean.CourseBean;
 import top.yvyan.guettable.bean.ExamBean;
 import top.yvyan.guettable.util.TimeUtil;
 
-@SuppressWarnings("ALL")
 public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassDetailViewHolder> {
     private final List<Schedule> todayList;
     private final List<Schedule> tomorrowList;
@@ -174,10 +175,55 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
                         }
                     }
                 }
-                String startText = "时间：" + TimeUtil.whichDay(courseBean.getDay());
-                SpannableString spannableString = new SpannableString(startText + " 第" + section.toString().substring(0,  max(0,section.length() - 2)) + "大节");
-                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)), startText.length(), spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannableString.setSpan(new StyleSpan(Typeface.BOLD), startText.length(), spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                List<String> FragmentstartText = new ArrayList<>(Arrays.asList("时间：", TimeUtil.whichDay(courseBean.getDay()), " 第" + section.toString().substring(0, max(0, section.length() - 2)) + "大节 "));
+                if (courseBean.getCourseTime() != null) {
+                    FragmentstartText.add("(" + courseBean.getCourseTime() + ")");
+                }
+                SpannableString spannableString = new SpannableString(String.join("", FragmentstartText));
+                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)),
+                        FragmentstartText.get(0).length(),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                        FragmentstartText.get(0).length(),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length(),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length() +
+                                FragmentstartText.get(2).length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length(),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length() +
+                                FragmentstartText.get(2).length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if (courseBean.getCourseTime() != null) {
+                    spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_clock)),
+                            FragmentstartText.get(0).length() +
+                                    FragmentstartText.get(1).length() +
+                                    FragmentstartText.get(2).length(),
+                            FragmentstartText.get(0).length() +
+                                    FragmentstartText.get(1).length() +
+                                    FragmentstartText.get(2).length() +
+                                    FragmentstartText.get(3).length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                            FragmentstartText.get(0).length() +
+                                    FragmentstartText.get(1).length() +
+                                    FragmentstartText.get(2).length(),
+                            FragmentstartText.get(0).length() +
+                                    FragmentstartText.get(1).length() +
+                                    FragmentstartText.get(2).length() +
+                                    FragmentstartText.get(3).length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
                 holder.textView5.setText(spannableString);
 
                 if (courseBean.getRemarks().isEmpty()) {
@@ -211,7 +257,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
     }
 
     static class ClassDetailViewHolder extends RecyclerView.ViewHolder {
-        TextView textView1, textView2,lablessonCode, textView3, textView4, textView5, textView6, textView7;
+        TextView textView1, textView2, lablessonCode, textView3, textView4, textView5, textView6, textView7;
 
         public ClassDetailViewHolder(@NonNull View itemView) {
             super(itemView);
