@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.content.Context;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,8 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
     private final List<Schedule> schedules;
     private final int week;
 
+    private Context context;
+
     public LibAdapter(List<Schedule> schedules, int week) {
         this.schedules = schedules;
         this.week = week;
@@ -31,7 +34,8 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
     @NonNull
     @Override
     public LibViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        context = parent.getContext();
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
         View itemView = layoutInflater.inflate(R.layout.detail_cardview, parent, false);
         return new LibViewHolder(itemView);
     }
@@ -41,30 +45,30 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
     public void onBindViewHolder(@NonNull LibViewHolder holder, int position) {
         CourseBean courseBean = new CourseBean();
         courseBean.setFromSchedule(schedules.get(position));
-        if (position == 0 || !schedules.get(position - 1).getName().equals(schedules.get(position).getName())) {
-            holder.textView1.setVisibility(View.VISIBLE);
-            holder.textView1.setText(courseBean.getName());
-            holder.lessonCode.setText("课号："+courseBean.getNumber());
-            holder.lessonCode.setVisibility(View.VISIBLE);
-            if (courseBean.getTeacher().isEmpty()) {
-                holder.textView3.setVisibility(View.GONE);
-            } else {
-                holder.textView3.setVisibility(View.VISIBLE);
-                holder.textView3.setText("教师：" + courseBean.getTeacher());
-            }
-            if (courseBean.getRoom().isEmpty()) {
-                holder.textView4.setVisibility(View.GONE);
-            } else {
-                holder.textView4.setVisibility(View.VISIBLE);
-                holder.textView4.setText("教室：" + courseBean.getRoom());
-            }
+        // if (position == 0 || !schedules.get(position - 1).getName().equals(schedules.get(position).getName())) {
+        holder.textView1.setVisibility(View.VISIBLE);
+        holder.textView1.setText(courseBean.getName());
+        holder.lessonCode.setText("课号：" + courseBean.getNumber());
+        holder.lessonCode.setVisibility(View.VISIBLE);
+        if (courseBean.getTeacher().isEmpty()) {
+            holder.textView3.setVisibility(View.GONE);
         } else {
+            holder.textView3.setVisibility(View.VISIBLE);
+            holder.textView3.setText("教师：" + courseBean.getTeacher());
+        }
+        if (courseBean.getRoom().isEmpty()) {
+            holder.textView4.setVisibility(View.GONE);
+        } else {
+            holder.textView4.setVisibility(View.VISIBLE);
+            holder.textView4.setText("教室：" + courseBean.getRoom());
+        }
+        /*} else {
             holder.textView2.setTextColor(0xff000000);
             holder.lessonCode.setVisibility(View.GONE);
             holder.textView1.setVisibility(View.GONE);
             holder.textView3.setVisibility(View.GONE);
             holder.textView4.setVisibility(View.GONE);
-        }
+        }*/
         StringBuilder section = new StringBuilder();
         if (courseBean.courseRangeVersion == 1) {
             int n = courseBean.getTime();
