@@ -82,7 +82,11 @@ public class LabTableNew {
                         }
                     }
                     CourseBean courseBean = new CourseBean();
-                    courseBean.setLab(LessonCode, taskName, subjectName, labNames, weekNum, weekDay, (lessonBegin >= 5 ? lessonBegin + 1 : lessonBegin), (lessonEnd >= 5 ? lessonEnd + 1 : lessonEnd), teacherName, description);
+                    if (lessonBegin >= 13 || lessonEnd >=13) {
+                        courseBean.setLab(LessonCode, taskName, subjectName, labNames, weekNum, weekDay, 5, 5, teacherName, description);
+                    } else {
+                        courseBean.setLab(LessonCode, taskName, subjectName, labNames, weekNum, weekDay, (lessonBegin >= 5 ? lessonBegin + 1 : lessonBegin), (lessonEnd >= 5 ? lessonEnd + 1 : lessonEnd), teacherName, description);
+                    }
                     return courseBean;
                 }
             }
