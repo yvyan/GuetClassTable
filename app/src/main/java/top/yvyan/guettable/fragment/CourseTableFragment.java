@@ -237,12 +237,6 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
 
     public void updateTable() {
         List<Schedule> schedules = new ArrayList<>();
-        for (CourseBean courseBean : ScheduleData.getCourseBeans()) {
-            schedules.add(courseBean.getSchedule());
-        }
-        for (CourseBean courseBean : ScheduleData.getUserCourseBeans()) {
-            schedules.add(courseBean.getSchedule());
-        }
         if (settingData.getShowLibOnTable()) {
             for (CourseBean courseBean : ScheduleData.getLibBeans()) {
                 schedules.add(courseBean.getSchedule());
@@ -254,6 +248,12 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
                     schedules.add(examBean.getSchedule());
                 }
             }
+        }
+        for (CourseBean courseBean : ScheduleData.getCourseBeans()) {
+            schedules.add(courseBean.getSchedule());
+        }
+        for (CourseBean courseBean : ScheduleData.getUserCourseBeans()) {
+            schedules.add(courseBean.getSchedule());
         }
         mWeekView.data(schedules).showView();
         try {

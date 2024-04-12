@@ -268,18 +268,9 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
      * @return List<Schedule>类型的课表数据
      */
     private List<Schedule> getData() {
-        List<Schedule> list;
-        if (!ScheduleData.getCourseBeans().isEmpty()) {
-            list = ScheduleSupport.transform(ScheduleData.getCourseBeans());
-        } else {
-            list = new ArrayList<>();
-        }
-        for (CourseBean courseBean : ScheduleData.getUserCourseBeans()) {
-            list.add(courseBean.getSchedule());
-        }
+        List<Schedule> list = new ArrayList<>();
         if (settingData.getShowLibOnTable()) {
-            List<Schedule> labList = ScheduleSupport.transform(ScheduleData.getLibBeans());
-            list.addAll(labList);
+            list = ScheduleSupport.transform(ScheduleData.getLibBeans());
         }
         if (settingData.getShowExamOnTable()) {
             for (ExamBean examBean : CourseUtil.combineExam(ScheduleData.getExamBeans())) {
@@ -287,6 +278,15 @@ public class DayClassFragment extends Fragment implements View.OnClickListener {
                     list.add(examBean.getSchedule());
                 }
             }
+        }
+        if (!ScheduleData.getCourseBeans().isEmpty()) {
+            List<Schedule> courseList = ScheduleSupport.transform(ScheduleData.getCourseBeans());
+            list.addAll(courseList);
+        } else {
+            list = new ArrayList<>();
+        }
+        for (CourseBean courseBean : ScheduleData.getUserCourseBeans()) {
+            list.add(courseBean.getSchedule());
         }
         return list;
     }

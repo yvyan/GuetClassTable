@@ -804,13 +804,20 @@ public class StaticService {
                     ClassList table = new Gson().fromJson(classTable.content, ClassList.class);
                     List<ClassList.ClassInfo> maintable = table.lessons;
                     for (ClassList.ClassInfo lesson : maintable) {
-                        courseBeans.add(lesson.toSelectedCourseBean());
+                        try {
+                            SelectedCourseBean course = lesson.toSelectedCourseBean();
+                            if (course != null) {
+                                courseBeans.add(course);
+                            }
+                        } catch (Exception ignore){
+
+                        }
                     }
                 }
             }
             return courseBeans;
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return null;
     }

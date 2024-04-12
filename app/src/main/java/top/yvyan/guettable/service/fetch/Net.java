@@ -824,7 +824,7 @@ public class Net {
     public static HttpConnectionAndCode getLabBridgeJWT(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(
-                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/extra-system/newcapec-experiment/mesMySchedule", isVPN),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/extra-system/newcapec-experiment/course/stu", isVPN),
                 null,
                 resources.getString(R.string.user_agent),
                 VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn", isVPN),
