@@ -46,7 +46,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ExamViewHolder holder, int position) {
-         ExamBean nowExam = examBeans.get(position);
+        ExamBean nowExam = examBeans.get(position);
         holder.textView1.setText(nowExam.getName());
         holder.textView2.setText("课号：" + nowExam.getNumber());
         holder.textView3.setText("教师：" + nowExam.getTeacher());
