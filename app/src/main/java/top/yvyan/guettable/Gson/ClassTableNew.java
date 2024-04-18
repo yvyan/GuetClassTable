@@ -37,7 +37,7 @@ public class ClassTableNew {
         public static class CourseType {
             public String name;
         }
-
+        private Integer lessonId;
         private String lessonCode;
         private String courseName;
         private String room;
@@ -62,6 +62,9 @@ public class ClassTableNew {
         public List<CourseBean> toCourseBean() {
             if (lessonRemark == null) {
                 lessonRemark = "";
+            }
+            if(lessonId < 0) {
+                lessonRemark+=(lessonRemark.isEmpty() ? "" : "\n") + "课程表开发者备注：该显示课程可能为学校教务系统理论课系统中所同步的实验课课程，显示的上课时间段仅供参考。请以实验课程教师安排为准。";
             }
             List<CourseBean> courseBeans = new ArrayList<>();
             Arrays.sort(weekIndexes);
