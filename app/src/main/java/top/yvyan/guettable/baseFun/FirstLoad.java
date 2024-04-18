@@ -28,11 +28,13 @@ public class FirstLoad {
     public int versionCode;
     public int nowVersionCode;
 
+    private boolean termMigrateFlag;
+
     @SuppressLint("CommitPrefEdits")
     public FirstLoad(Activity context) {
         this.context = context;
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHP_NAME, Context.MODE_PRIVATE);
-        nowVersionCode =  AppUtil.getAppVersionCode(context);
+        nowVersionCode = AppUtil.getAppVersionCode(context);
         versionCode = sharedPreferences.getInt(VERSION_CODE, nowVersionCode);
         editor = sharedPreferences.edit();
 
@@ -40,9 +42,10 @@ public class FirstLoad {
 
     public int check(int start) {
         for (int i = start; i < nowVersionCode; i++) {
-            if(migrateData(i)) {
+            if (migrateData(i)) {
                 return i;
-            };
+            }
+            ;
         }
         openUpdate();
         editor.putInt(VERSION_CODE, nowVersionCode);
@@ -92,18 +95,27 @@ public class FirstLoad {
     }
 
     private Boolean update_62() {
-        if(GeneralData.isAutoTerm()) {
+        if (GeneralData.isAutoTerm() && !termMigrateFlag) {
+            termMigrateFlag = true;
             Intent intent = new Intent(this.context, SetTermActivity.class);
-            intent.putExtra("auto",true);
-            this.context.startActivityForResult(intent,SetTermActivity.REQUEST_CODE);
+            intent.putExtra("auto", true);
+            this.context.startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
             return true;
         }
         return false;
     }
 
     private Boolean update_75() {
-        return update_62();
+        if (!termMigrateFlag) {
+            termMigrateFlag = true;
+            Intent intent = new Intent(this.context, SetTermActivity.class);
+            intent.putExtra("auto", GeneralData.isAutoTerm());
+            this.context.startActivityForResult(intent, SetTermActivity.REQUEST_CODE);
+            return true;
+        }
+        return false;
     }
+
     private Boolean update_76() {
         return update_75();
     }
