@@ -76,6 +76,8 @@ public class FirstLoad {
                 return update_62();
             case 75:
                 return update_75();
+            case 76:
+                return update_76();
             default:
                 break;
         }
@@ -101,6 +103,9 @@ public class FirstLoad {
 
     private Boolean update_75() {
         return update_62();
+    }
+    private Boolean update_76() {
+        return update_75();
     }
 
     /**

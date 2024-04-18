@@ -129,7 +129,7 @@ public class GeneralData {
     }
 
     public void setWeek(int week) {
-        this.time = System.currentTimeMillis() - (week-1) * 7*86400000;
+        this.time = System.currentTimeMillis();
         this.week = week;
         editor.putLong(TIME, time);
         editor.putInt(WEEK, week);
@@ -241,7 +241,7 @@ public class GeneralData {
             long time = mmkv.getLong(AUTO_TERM_START_TIME, 0);
             return new Date(time);
         } else {
-            return new Date(time);
+            return new Date(time - ((week-1) * 7L * 86400L * 1000L));
         }
     }
 
