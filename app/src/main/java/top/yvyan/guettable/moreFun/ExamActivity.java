@@ -110,7 +110,7 @@ public class ExamActivity extends BaseFuncActivity {
     @Override
     public int updateData(TokenData tokenData) {
         List<ExamBean> examBeans;
-        examBeans = StaticService.getExam(this, tokenData.getBkjwCookie(), generalData.getTerm());
+        examBeans = StaticService.getExamNewDirty(this, tokenData.getbkjwTestCookie());
         if (examBeans != null) {
             CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();
             Collections.sort(examBeans, beanAttributeUtil);

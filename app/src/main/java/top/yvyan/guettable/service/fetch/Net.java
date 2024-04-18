@@ -511,6 +511,25 @@ public class Net {
         );
     }
 
+    public static HttpConnectionAndCode getExamDelayList(Context context, String cookie, boolean isVPN) {
+        Resources resources = context.getResources();
+        return Get.get(
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn/student/for-std/exam-delay-apply", isVPN),
+                null,
+                resources.getString(R.string.user_agent),
+                VPNUrlUtil.getVPNUrl("https://bkjwtest.guet.edu.cn", isVPN),
+                cookie,
+                null,
+                null,
+                null,
+                null,
+                true,
+                null,
+                30000,
+                null
+        );
+    }
+
     public static HttpConnectionAndCode getExamScoreUrlNew(Context context, String cookie, boolean isVPN) {
         Resources resources = context.getResources();
         return Get.get(

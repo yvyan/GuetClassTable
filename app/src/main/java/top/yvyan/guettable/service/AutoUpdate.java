@@ -195,10 +195,9 @@ public class AutoUpdate {
                     }, () -> {
                         //获取考试安排
                         updateView(94);
-                        List<ExamBean> examBeans = StaticService.getExam(
+                        List<ExamBean> examBeans = StaticService.getExamNewDirty(
                                 activity,
-                                tokenData.getBkjwCookie(),
-                                generalData.getTerm()
+                                tokenData.getbkjwTestCookie()
                         );
                         if (examBeans != null) {
                             CourseUtil.BeanAttributeUtil beanAttributeUtil = new CourseUtil.BeanAttributeUtil();

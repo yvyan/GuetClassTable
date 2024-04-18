@@ -1,6 +1,14 @@
 package top.yvyan.guettable.adapter;
 
+import static java.lang.Math.max;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +17,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import top.yvyan.guettable.R;
@@ -19,6 +29,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
 
     List<ExamBean> examBeans;
 
+    private Context context;
     public ExamAdapter(List<ExamBean> examBeans) {
         this.examBeans = examBeans;
     }
@@ -26,6 +37,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
     @NonNull
     @Override
     public ExamViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.detail_cardview,parent,false);
         return new ExamViewHolder(itemView);
@@ -34,22 +46,73 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ExamViewHolder holder, int position) {
-        holder.textView1.setText(examBeans.get(position).getName());
-        holder.textView2.setText("课号：" + examBeans.get(position).getNumber());
-        holder.textView3.setText("教师：" + examBeans.get(position).getTeacher());
-        holder.textView4.setText("教室：" + (examBeans.get(position).getRoom().isEmpty() ? "未公布" : examBeans.get(position).getRoom()));
-        holder.textView5.setText("时间：" + examBeans.get(position).getTime());
-        String date = "日期："
-                + (examBeans.get(position).getDate() == null ? examBeans.get(position).getDateString() : TimeUtil.timeFormat(examBeans.get(position).getDate()))
-                + "(第" + examBeans.get(position).getWeek() + "周 "
-                + TimeUtil.whichDay(examBeans.get(position).getDay()) + ")";
-        if (examBeans.get(position).getComm().isEmpty()) {
+         ExamBean nowExam = examBeans.get(position);
+        holder.textView1.setText(nowExam.getName());
+        holder.textView2.setText("课号：" + nowExam.getNumber());
+        holder.textView3.setText("教师：" + nowExam.getTeacher());
+        SpannableString spannableString = new SpannableString("教室：" + (nowExam.getRoom().isEmpty() ? "未公布" : nowExam.getRoom()));
+        spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_room)), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        holder.textView4.setText(spannableString);
+        spannableString = new SpannableString("时间：" + nowExam.getTime());
+        spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_clock)), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        holder.textView5.setText(spannableString);
+        List<String> FragmentstartText = new ArrayList<>(Arrays.asList("日期：", (nowExam.getDate() == null ? nowExam.getDateString() : TimeUtil.timeFormat(nowExam.getDate())), " 第" + nowExam.getWeek() + "周 ",
+                TimeUtil.whichDay(nowExam.getDay())));
+        spannableString = new SpannableString(String.join("", FragmentstartText));
+        spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_date)),
+                FragmentstartText.get(0).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                FragmentstartText.get(0).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)),
+                    FragmentstartText.get(0).length() +
+                            FragmentstartText.get(1).length() +
+                            FragmentstartText.get(2).length(),
+                    FragmentstartText.get(0).length() +
+                            FragmentstartText.get(1).length() +
+                            FragmentstartText.get(2).length() +
+                            FragmentstartText.get(3).length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                    FragmentstartText.get(0).length() +
+                            FragmentstartText.get(1).length() +
+                            FragmentstartText.get(2).length(),
+                    FragmentstartText.get(0).length() +
+                            FragmentstartText.get(1).length() +
+                            FragmentstartText.get(2).length() +
+                            FragmentstartText.get(3).length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (nowExam.getComm().isEmpty()) {
             holder.textView6.setVisibility(View.GONE);
-            holder.textView7.setText(date);
+            holder.textView7.setText(spannableString);
         } else {
             holder.textView6.setVisibility(View.VISIBLE);
-            holder.textView6.setText(date);
-            holder.textView7.setText(examBeans.get(position).getComm());
+            holder.textView6.setText(spannableString);
+            spannableString = new SpannableString("备注信息：\n" + nowExam.getComm());
+            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0,6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.textView7.setText(spannableString);
         }
     }
 

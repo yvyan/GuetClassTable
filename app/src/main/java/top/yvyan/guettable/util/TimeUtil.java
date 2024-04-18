@@ -14,7 +14,7 @@ public class TimeUtil {
      *
      * @param date1 减日期
      * @param date2 被减日期
-     * @return      天数差
+     * @return 天数差
      */
     public static int calcDayOffset(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
@@ -23,12 +23,44 @@ public class TimeUtil {
         cal1.set(Calendar.MINUTE, 0);
         cal1.set(Calendar.SECOND, 0);
         cal1.set(Calendar.MILLISECOND, 0);
-        long stamp1=cal1.getTime().getTime();
-        return (int)((date2.getTime()-stamp1)/(86400*1000));
+        long stamp1 = cal1.getTime().getTime();
+        return (int) ((date2.getTime() - stamp1) / (86400 * 1000));
+    }
+
+    public static int getCourseIndexByHour(int hour) {
+        switch (hour) {
+            case 8:
+                return 1;
+            case 9:
+                return 2;
+            case 10:
+                return 3;
+            case 11:
+                return 4;
+            case 12:
+            case 13:
+                return 5;
+            case 14:
+                return 6;
+            case 15:
+                return 7;
+            case 16:
+                return 8;
+            case 17:
+                return 9;
+            case 19:
+                return 10;
+            case 20:
+                return 11;
+            case 21:
+                return 12;
+        }
+        return 5;
     }
 
     /**
      * 计算相差周数，以周一作为一周的开始日
+     *
      * @param startTime
      * @param endTime
      * @return weekOffset
@@ -41,12 +73,13 @@ public class TimeUtil {
         cal1.set(Calendar.SECOND, 0);
         cal1.set(Calendar.MILLISECOND, 0);
         int weekday = cal1.get(Calendar.DAY_OF_WEEK) - 1;
-        long stamp1=cal1.getTime().getTime() - ((weekday + 6) % 7) * 86400000;
-        return (int)((endTime.getTime()-stamp1)/(86400*1000*7));
+        long stamp1 = cal1.getTime().getTime() - ((weekday + 6) % 7) * 86400000;
+        return (int) ((endTime.getTime() - stamp1) / (86400 * 1000 * 7));
     }
 
     /**
      * 返回今天周几
+     *
      * @return 星期几，0：周一，1：周二，依次类推..周日：6
      */
     public static int getDay() {
@@ -61,6 +94,7 @@ public class TimeUtil {
 
     /**
      * 返回明天周几
+     *
      * @return 星期几，0：周一，1：周二，依次类推..周日：6
      */
     public static int getNextDay() {
@@ -70,8 +104,9 @@ public class TimeUtil {
 
     /**
      * 返回明天是第几周
+     *
      * @param week 今天的周数
-     * @return     明天的周数
+     * @return 明天的周数
      */
     public static int getNextDayWeek(int week) {
         int n = getDay();
@@ -83,12 +118,13 @@ public class TimeUtil {
 
     /**
      * 数字转汉字
+     *
      * @param number 星期几 数字
-     * @return       "星期几"
+     * @return "星期几"
      */
-    public static String whichDay(int number){
+    public static String whichDay(int number) {
         String s = "";
-        switch (number){
+        switch (number) {
             case 1:
                 s = "星期一";
                 break;

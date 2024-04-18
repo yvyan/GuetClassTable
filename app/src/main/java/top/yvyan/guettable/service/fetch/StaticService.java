@@ -1,5 +1,6 @@
 package top.yvyan.guettable.service.fetch;
 
+import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 
 import android.content.Context;
@@ -7,8 +8,11 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +49,9 @@ import top.yvyan.guettable.bean.PlannedCourseBean;
 import top.yvyan.guettable.bean.ResitBean;
 import top.yvyan.guettable.bean.SelectedCourseBean;
 import top.yvyan.guettable.bean.TermBean;
+import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.util.TimeUtil;
 import top.yvyan.guettable.util.VPNUrlUtil;
 
 public class StaticService {
@@ -142,7 +148,7 @@ public class StaticService {
                 if (Location.contains("reAuthCheck")) {
                     return "ERROR5;" + TGTToken + "; " + response.cookie;
                 }
-                if (MFACookie!=null && !MFACookie.isEmpty()) {
+                if (MFACookie != null && !MFACookie.isEmpty()) {
                     return MFACookie + "; " + TGTToken;
                 } else {
                     return TGTToken;
@@ -336,8 +342,8 @@ public class StaticService {
                 ClassTableNew.studentTableVms maintable = table.studentTableVms.get(0);
                 List<ClassTableNew.ClassTable> lessions = maintable.activities;
                 for (ClassTableNew.ClassTable lession : lessions) {
-                        List<CourseBean> coursebeans = lession.toCourseBean();
-                        courseBeans.addAll(coursebeans);
+                    List<CourseBean> coursebeans = lession.toCourseBean();
+                    courseBeans.addAll(coursebeans);
                 }
                 if (courseBeans.isEmpty()) {
                     return null;
@@ -368,6 +374,7 @@ public class StaticService {
         }
         return null;
     }
+
     public static CurrentSemester getSemester(Context context, String cookie) {
         HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
         return getSemesterJson(classTableIndex);
@@ -489,7 +496,45 @@ public class StaticService {
         }
     }
 
-    public static List<ExamBean> getExamNewDirty(Context context, String cookie, String term) {
+    public static List<ExamBean> getExamNewDirty(Context context, String cookie) {
+        GeneralData generalData = GeneralData.newInstance(context);
+        HttpConnectionAndCode examDelay = Net.getExamDelayList(context, cookie, TokenData.isVPN());
+        if (examDelay.resp_code == 200) {
+            Pattern pattern = Pattern.compile("<tbody>(.*?)</tbody>", Pattern.DOTALL);
+            Matcher matcher = pattern.matcher(examDelay.content);
+            if (matcher.find()) {
+                String mainTable = matcher.group(1);
+                pattern = Pattern.compile("<tr>.*?<td>([^<]+?)<.*?</td>.*?<td>.*?</td>.*?<td>([^<]+?)</td>.*?<td>([^<]+?)</td>.*?</tr>", Pattern.DOTALL);
+                matcher = pattern.matcher(mainTable);
+                List<ExamBean> examList = new ArrayList<>();
+                while (matcher.find()) {
+                    try {
+                        String courseName = matcher.group(1).trim();
+                        String rawexamTime = matcher.group(2).trim();
+                        String[] examDateTime = rawexamTime.split(" ");
+                        if (examDateTime.length != 2) {
+                            continue;
+                        }
+                        String examDate = examDateTime[0];
+                        String examTime = examDateTime[1].replace("~", "-");
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date = format.parse(examDate);
+                        int week = TimeUtil.calcWeekOffset(generalData.getStartTime(), date) + 1;
+                        Calendar cal1 = Calendar.getInstance();
+                        cal1.setTime(date);
+                        int day = cal1.get(Calendar.DAY_OF_WEEK);
+                        String startTime = examTime.split("-")[0];
+                        String endTime = examTime.split("-")[1];
+                        int startHour = parseInt(startTime.split(":")[0]);
+                        int endHour = parseInt(endTime.split(":")[0]);
+                        String examRoom = matcher.group(3).trim();
+                        examList.add(new ExamBean("无法获取", courseName, "无法获取", week, day, TimeUtil.getCourseIndexByHour(startHour), TimeUtil.getCourseIndexByHour(endHour), examTime, examDate, examRoom, "课程表开发者备注：目前相关教务系统功能仍未完善，该信息仅供参考，请以教务系统或老师安排为准。"));
+                    } catch (Exception ignored) {
+                    }
+                }
+                return examList;
+            }
+        }
         return null;
     }
 
@@ -781,7 +826,7 @@ public class StaticService {
                             if (course != null) {
                                 courseBeans.add(course);
                             }
-                        } catch (Exception ignore){
+                        } catch (Exception ignore) {
 
                         }
                     }

@@ -129,7 +129,7 @@ public class GeneralData {
     }
 
     public void setWeek(int week) {
-        this.time = System.currentTimeMillis();
+        this.time = System.currentTimeMillis() - (week-1) * 7*86400000;
         this.week = week;
         editor.putLong(TIME, time);
         editor.putInt(WEEK, week);
