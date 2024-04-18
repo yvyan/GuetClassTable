@@ -22,6 +22,7 @@ public class GeneralData {
     private static final String TERM = "term";
 
     private static final String NEW_TERM = "new_term";
+    private static final String SEMESTER_ID="SemesterId";
 
     private static final String ADD_TERM = "addTerm";
     private static final String LAST_UPDATE_TIME = "lastUpdateTime";
@@ -45,6 +46,7 @@ public class GeneralData {
     private String term;
     private String addTerm;
 
+    private Integer semesterId;
     private String bkjwTestTerm;
 
     private long lastUpdateTime;
@@ -71,6 +73,7 @@ public class GeneralData {
         time = sharedPreferences.getLong(TIME, System.currentTimeMillis());
         grade = sharedPreferences.getString(GRADE, null);
         term = sharedPreferences.getString(TERM, null);
+        semesterId = sharedPreferences.getInt(SEMESTER_ID, 65);
        // addTerm = sharedPreferences.getString(ADD_TERM, "");
         lastUpdateTime = sharedPreferences.getLong(LAST_UPDATE_TIME, -1);
         applyPrivacy = sharedPreferences.getBoolean(APPLY_PRIVACY, false);
@@ -140,6 +143,16 @@ public class GeneralData {
     public void setGrade(String grade) {
         this.grade = grade;
         editor.putString(GRADE, grade);
+        editor.apply();
+    }
+
+    public int getSemesterId() {
+        return semesterId;
+    }
+
+    public void setSemesterId(int SemesterId) {
+        this.semesterId = SemesterId;
+        editor.putInt(SEMESTER_ID, SemesterId);
         editor.apply();
     }
 

@@ -325,16 +325,11 @@ public class StaticService {
      *
      * @param context context
      * @param cookie  登录后的cookie
-     * @param term    学期
      * @return 理论课程列表
      */
-    public static List<CourseBean> getClassNew(Context context, String cookie, String term, boolean isAutoTerm) {
+    public static List<CourseBean> getClassNew(Context context, String cookie, int semesterId) {
         try {
             List<CourseBean> courseBeans = new ArrayList<>();
-            int semesterId = getSemesterIdNew(context, cookie, term, isAutoTerm);
-            if (semesterId == -1) {
-                return null;
-            }
             HttpConnectionAndCode classTable = Net.getClassTableNew(context, semesterId, cookie, TokenData.isVPN());
             if (classTable.resp_code == 200) {
                 ClassTableNew table = new Gson().fromJson(classTable.content, ClassTableNew.class);
@@ -373,33 +368,6 @@ public class StaticService {
         }
         return null;
     }
-
-    public static int getSemesterIdNew(Context context, String cookie, String term, boolean isAutoTerm) {
-        HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
-        if (classTableIndex.resp_code == 200) {
-            if (!isAutoTerm) {
-                List<Semester> semesterList = getAllSemester(classTableIndex);
-                if (semesterList == null) {
-                    return -1;
-                }
-                int semesterId;
-                for (Semester s : semesterList) {
-                    if (s.toString().equals(term)) {
-                        semesterId = s.id;
-                        return semesterId;
-                    }
-                }
-                return -1;
-            } else {
-                CurrentSemester semester = getSemesterJson(classTableIndex);
-                if (semester != null) {
-                    return semester.id;
-                }
-            }
-        }
-        return -1;
-    }
-
     public static CurrentSemester getSemester(Context context, String cookie) {
         HttpConnectionAndCode classTableIndex = Net.getClassTableIndex(context, cookie, TokenData.isVPN());
         return getSemesterJson(classTableIndex);
@@ -519,6 +487,10 @@ public class StaticService {
         } else {
             return null;
         }
+    }
+
+    public static List<ExamBean> getExamNewDirty(Context context, String cookie, String term) {
+        return null;
     }
 
     public static String getExamScoreNewUrl(Context context, String cookie) {

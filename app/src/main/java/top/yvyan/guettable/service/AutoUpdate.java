@@ -167,8 +167,7 @@ public class AutoUpdate {
                         List<CourseBean> getClass = StaticService.getClassNew(
                                 activity,
                                 tokenData.getbkjwTestCookie(),
-                                generalData.getTerm(),
-                                GeneralData.isAutoTerm()
+                                generalData.getSemesterId()
                         );
                         if (getClass != null) {
                             ScheduleData.setCourseBeans(getClass);

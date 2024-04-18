@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 import top.yvyan.guettable.Gson.CurrentSemester;
+import top.yvyan.guettable.Gson.Semester;
 import top.yvyan.guettable.R;
 import top.yvyan.guettable.bean.TermBean;
 import top.yvyan.guettable.data.AccountData;
@@ -217,25 +218,47 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
                     generalData.setAddTerm("");
                 }
                 */
-                generalData.setTerm(term_1);
-                ScheduleData.deleteInputCourse();
-                if (ScheduleData.getUserCourseBeans().size() != 0) {
-                    DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
-                        @Override
-                        public void onClickYes() {
-                            importCourse();
-                        }
+                //显示loading
 
-                        @Override
-                        public void onClickBack() {
-                            ScheduleData.deleteUserCourse();
-                            importCourse();
+                input.setClickable(false);
+                mMiniLoadingDialog.updateMessage("正在设置学期...");
+                mMiniLoadingDialog.show();
+                new Thread(() -> {
+                    //设置
+                    try {
+                        int n = parseAndSetTerm(term_1);
+                        if (n != 0) {
+                            runOnUiThread(() -> {
+                                ToastUtil.showToast(getApplicationContext(), "学期选择失败，请确认该学期在教务系统中存在");
+                                mMiniLoadingDialog.dismiss();
+                                input.setClickable(true);
+                            });
+                            return;
                         }
-                    };
-                    DialogUtil.showDialog(this, "提示", false, "保留", "删除", "您修改了学期/账号，是否保留手动添加的课程？\r\n\r\nTip:若您只是临时切换，建议保留。", service);
-                } else {
-                    importCourse();
-                }
+                        runOnUiThread(() -> {
+                            mMiniLoadingDialog.dismiss();
+                            ScheduleData.deleteInputCourse();
+                            if (ScheduleData.getUserCourseBeans().size() != 0) {
+                                DialogUtil.IDialogService service = new DialogUtil.IDialogService() {
+                                    @Override
+                                    public void onClickYes() {
+                                        importCourse();
+                                    }
+
+                                    @Override
+                                    public void onClickBack() {
+                                        ScheduleData.deleteUserCourse();
+                                        importCourse();
+                                    }
+                                };
+                                DialogUtil.showDialog(this, "提示", false, "保留", "删除", "您修改了学期/账号，是否保留手动添加的课程？\r\n\r\nTip:若您只是临时切换，建议保留。", service);
+                            } else {
+                                importCourse();
+                            }
+                        });
+                    } catch (Exception ignore) {
+                    }
+                }).start();
                 break;
         }
     }
@@ -302,12 +325,30 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
         TokenData tokenData = TokenData.newInstance(this);
         CurrentSemester semester = StaticService.getSemester(this, tokenData.getbkjwTestCookie());
         if (semester == null) return -1;
+        generalData.setSemesterId(semester.id);
         generalData.setTerm(semester.toString());
         generalData.setStartTime(semester.startDate.getTime());
         generalData.setEndTime(semester.endDate.getTime());
         return 0;
     }
 
+    private int parseAndSetTerm(String term) {
+        TokenData tokenData = TokenData.newInstance(this);
+        List<Semester> semester = StaticService.getAllSemester(this, tokenData.getbkjwTestCookie());
+        if (semester == null) {
+            return -1;
+        }
+        for (Semester s : semester) {
+            if (s.toString().equals(term)) {
+                generalData.setSemesterId(s.id);
+                generalData.setTerm(term);
+                generalData.setStartTime(s.getStartDateTime());
+                generalData.setEndTime(s.getEndDateTime());
+                return 0;
+            }
+        }
+        return -1;
+    }
 
     /**
      * 关联小学期的提示
