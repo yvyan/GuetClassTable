@@ -122,7 +122,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
     }
 
     static class ExamViewHolder extends RecyclerView.ViewHolder {
-        TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7;
+        TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7,textView8;
         public ExamViewHolder(@NonNull View itemView) {
             super(itemView);
             textView1 = itemView.findViewById(R.id.detail_text_1);
@@ -132,6 +132,8 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
             textView5 = itemView.findViewById(R.id.detail_text_5);
             textView6 = itemView.findViewById(R.id.detail_text_6);
             textView7 = itemView.findViewById(R.id.detail_text_7);
+            textView8 = itemView.findViewById(R.id.detail_text_8);
+            textView8.setVisibility(View.GONE);
         }
     }
 }

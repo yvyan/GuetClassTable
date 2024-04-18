@@ -35,6 +35,7 @@ import top.yvyan.guettable.data.GeneralData;
 import top.yvyan.guettable.data.MoreData;
 import top.yvyan.guettable.data.ScheduleData;
 import top.yvyan.guettable.data.TokenData;
+import top.yvyan.guettable.service.AutoUpdate;
 import top.yvyan.guettable.service.fetch.StaticService;
 import top.yvyan.guettable.util.DialogUtil;
 import top.yvyan.guettable.util.ToastUtil;
@@ -323,31 +324,39 @@ public class SetTermActivity extends AppCompatActivity implements View.OnClickLi
      */
     private int setDate() {
         TokenData tokenData = TokenData.newInstance(this);
-        CurrentSemester semester = StaticService.getSemester(this, tokenData.getbkjwTestCookie());
-        if (semester == null) return -1;
-        generalData.setSemesterId(semester.id);
-        generalData.setTerm(semester.toString());
-        generalData.setStartTime(semester.startDate.getTime());
-        generalData.setEndTime(semester.endDate.getTime());
+        Boolean state = tokenData.tryUpdate(() -> {
+            CurrentSemester semester = StaticService.getSemester(this, tokenData.getbkjwTestCookie());
+            if (semester == null) return false;
+            generalData.setSemesterId(semester.id);
+            generalData.setTerm(semester.toString());
+            generalData.setStartTime(semester.startDate.getTime());
+            generalData.setEndTime(semester.endDate.getTime());
+            return true;
+        });
+        if (!state) return -1;
         return 0;
     }
 
     private int parseAndSetTerm(String term) {
         TokenData tokenData = TokenData.newInstance(this);
-        List<Semester> semester = StaticService.getAllSemester(this, tokenData.getbkjwTestCookie());
-        if (semester == null) {
-            return -1;
-        }
-        for (Semester s : semester) {
-            if (s.toString().equals(term)) {
-                generalData.setSemesterId(s.id);
-                generalData.setTerm(term);
-                generalData.setStartTime(s.getStartDateTime());
-                generalData.setEndTime(s.getEndDateTime());
-                return 0;
+        Boolean state = tokenData.tryUpdate(() -> {
+            List<Semester> semester = StaticService.getAllSemester(this, tokenData.getbkjwTestCookie());
+            if (semester == null) {
+                return false;
             }
-        }
-        return -1;
+            for (Semester s : semester) {
+                if (s.toString().equals(term)) {
+                    generalData.setSemesterId(s.id);
+                    generalData.setTerm(term);
+                    generalData.setStartTime(s.getStartDateTime());
+                    generalData.setEndTime(s.getEndDateTime());
+                    return true;
+                }
+            }
+            return false;
+        });
+        if (!state) return -1;
+        return 0;
     }
 
     /**
