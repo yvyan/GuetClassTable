@@ -522,7 +522,10 @@ public class StaticService {
                         int week = TimeUtil.calcWeekOffset(generalData.getStartTime(), date) + 1;
                         Calendar cal1 = Calendar.getInstance();
                         cal1.setTime(date);
-                        int day = cal1.get(Calendar.DAY_OF_WEEK);
+                        int day = cal1.get(Calendar.DAY_OF_WEEK) - 1;
+                        if (day == 0) {
+                            day = 7;
+                        }
                         String startTime = examTime.split("-")[0];
                         String endTime = examTime.split("-")[1];
                         int startHour = parseInt(startTime.split(":")[0]);
