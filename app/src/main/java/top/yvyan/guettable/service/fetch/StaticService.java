@@ -26,6 +26,7 @@ import top.yvyan.guettable.Gson.ClassTableNew;
 import top.yvyan.guettable.Gson.CurrentSemester;
 import top.yvyan.guettable.Gson.EffectiveCredit;
 import top.yvyan.guettable.Gson.ExamInfo;
+import top.yvyan.guettable.Gson.ExamInfoNew;
 import top.yvyan.guettable.Gson.ExamScore;
 import top.yvyan.guettable.Gson.ExamScoreNew;
 import top.yvyan.guettable.Gson.ExperimentScore;
@@ -382,7 +383,7 @@ public class StaticService {
 
     private static CurrentSemester getSemesterJson(HttpConnectionAndCode classTableIndex) {
         if (classTableIndex.resp_code == 200) {
-            Pattern pattern = Pattern.compile("currentSemester.?=.?([^;]+);");
+            Pattern pattern = Pattern.compile("currentSemester.?=.?(.+);$",Pattern.MULTILINE);
             Matcher matcher = pattern.matcher(classTableIndex.content);
             if (matcher.find() && matcher.groupCount() >= 1) {
                 String currentSemesters = matcher.group(1).replace("'", "\"");
@@ -496,6 +497,26 @@ public class StaticService {
         }
     }
 
+    public static List<ExamBean> getExamNew(Context context, String cookie) {
+        GeneralData generalData = GeneralData.newInstance(context);
+        HttpConnectionAndCode examArrange = Net.getExamArrange(context, cookie, TokenData.isVPN());
+        if (examArrange.resp_code == 200) {
+            Pattern pattern = Pattern.compile("studentExamInfoVms.?=.?(.+);$",Pattern.MULTILINE);
+            Matcher matcher = pattern.matcher(examArrange.content);
+            if (matcher.find()) {
+                List<ExamBean> examBeanList = new ArrayList<>();
+                String examInfoStr = matcher.group(1).replace("'", "\"");
+                List<ExamInfoNew> examInfoList = new Gson().fromJson(examInfoStr, new TypeToken<List<ExamInfoNew>>() {
+                }.getType());
+                for (ExamInfoNew exam : examInfoList) {
+                    examBeanList.add(exam.toExamBean(generalData));
+                }
+                return examBeanList;
+            }
+        }
+        return null;
+    }
+
     public static List<ExamBean> getExamNewDirty(Context context, String cookie) {
         GeneralData generalData = GeneralData.newInstance(context);
         HttpConnectionAndCode examDelay = Net.getExamDelayList(context, cookie, TokenData.isVPN());
@@ -531,7 +552,7 @@ public class StaticService {
                         int startHour = parseInt(startTime.split(":")[0]);
                         int endHour = parseInt(endTime.split(":")[0]);
                         String examRoom = matcher.group(3).trim();
-                        examList.add(new ExamBean("无法获取", courseName, "无法获取", week, day, TimeUtil.getCourseIndexByHour(startHour), TimeUtil.getCourseIndexByHour(endHour), examTime, examDate, examRoom, "课程表开发者备注：目前相关教务系统功能仍未完善，该信息仅供参考，请以教务系统或老师安排为准。"));
+                        examList.add(new ExamBean("无法获取", courseName, "无法获取", week, day, TimeUtil.getCourseIndexByHour(startHour), TimeUtil.getCourseIndexByHour(endHour), examTime, examDate, examRoom,"", "课程表开发者备注：目前相关教务系统功能仍未完善，该信息仅供参考，请以教务系统或老师安排为准。"));
                     } catch (Exception ignored) {
                     }
                 }

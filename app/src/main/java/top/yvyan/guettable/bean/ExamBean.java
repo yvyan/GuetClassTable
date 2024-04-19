@@ -26,6 +26,8 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
     public static String DATE_STRING = "dateString";
     public static String EXAM_VERSION = "examVersion";
 
+    public static String EXAM_TYPE = "examType";
+
     //课号
     private String number;
     //课程名称
@@ -54,6 +56,8 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
 
     public int examVersion;
 
+    public String examType;
+
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj == null)
@@ -74,7 +78,7 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
 
 
     @SuppressLint("SimpleDateFormat")
-    public ExamBean(String number, String name, String teacher, int week, int day, int start, int end, String time, String examDate, String room, String comm) {
+    public ExamBean(String number, String name, String teacher, int week, int day, int start, int end, String time, String examDate, String room, String examType, String comm) {
         this.number = number;
         this.name = name;
         this.teacher = teacher;
@@ -93,6 +97,7 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
         this.time = time;
         this.room = room;
         this.comm = comm;
+        this.examType = examType;
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -155,6 +160,7 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
         date = (Date) schedule.getExtras().get(DATE);
         dateString = (String) schedule.getExtras().get(DATE_STRING);
         comm = (String) schedule.getExtras().get(COMM);
+        examType =(String) schedule.getExtras().get(EXAM_TYPE);
     }
 
     @Override
@@ -175,6 +181,7 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
         weekList.add(getWeek());
         schedule.setWeekList(weekList);
         schedule.setColorRandom(2);
+        schedule.putExtras(EXAM_TYPE, examType);
         schedule.putExtras(EXAM_VERSION, examVersion);
         schedule.putExtras(TIME, time);
         schedule.putExtras(DATE, date);

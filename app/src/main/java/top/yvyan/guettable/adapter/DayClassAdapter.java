@@ -111,18 +111,48 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
             if ((int) schedule.getExtras().get(ExamBean.TYPE) == 2) { //考试安排
                 ExamBean nowExam = new ExamBean();
                 nowExam.setFromSchedule(schedule);
-                holder.textView1.setText(nowExam.getName());
+                holder.textView1.setText((nowExam.examType != null && nowExam.examType.isEmpty()) ? "（考试）" : "(" + nowExam.examType + ")" + nowExam.getName());
                 holder.textView2.setText("课号：" + nowExam.getNumber());
                 holder.textView3.setText("教师：" + nowExam.getTeacher());
-                SpannableString spannableString = new SpannableString("教室：" + (nowExam.getRoom().isEmpty() ? "未公布" : nowExam.getRoom()));
-                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_room)), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                String roomPart[] = (nowExam.getRoom().isEmpty() ? "未公布-座位未公布" : nowExam.getRoom()).split("-");
+                String examRoom = roomPart[0];
+                String examSeat = roomPart.length == 2 ? roomPart[1] : "座位未公布";
+                List<String> FragmentstartText = new ArrayList<>(Arrays.asList("教室：", examRoom, "-", examSeat));
+                SpannableString spannableString = new SpannableString(String.join("", FragmentstartText));
+                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_room)),
+                        FragmentstartText.get(0).length(),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                        FragmentstartText.get(0).length(),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_seat)),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length() +
+                                FragmentstartText.get(2).length(),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length() +
+                                FragmentstartText.get(2).length() +
+                                FragmentstartText.get(3).length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length() +
+                                FragmentstartText.get(2).length(),
+                        FragmentstartText.get(0).length() +
+                                FragmentstartText.get(1).length() +
+                                FragmentstartText.get(2).length() +
+                                FragmentstartText.get(3).length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.textView4.setText(spannableString);
                 spannableString = new SpannableString("时间：" + nowExam.getTime());
                 spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_clock)), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.textView5.setText(spannableString);
-                List<String> FragmentstartText = new ArrayList<>(Arrays.asList("日期：", (nowExam.getDate() == null ? nowExam.getDateString() : TimeUtil.timeFormat(nowExam.getDate())), " 第" + nowExam.getWeek() + "周 ",
+                FragmentstartText = new ArrayList<>(Arrays.asList("日期：", (nowExam.getDate() == null ? nowExam.getDateString() : TimeUtil.timeFormat(nowExam.getDate())), " 第" + nowExam.getWeek() + "周 ",
                         TimeUtil.whichDay(nowExam.getDay())));
                 spannableString = new SpannableString(String.join("", FragmentstartText));
                 spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_date)),
@@ -175,7 +205,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
                     holder.textView6.setText(spannableString);
                     spannableString = new SpannableString("备注信息：\n" + nowExam.getComm());
                     spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0,6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder.textView7.setText(spannableString);
                 }
             } else { //理论课和课内实验
@@ -279,7 +309,7 @@ public class DayClassAdapter extends RecyclerView.Adapter<DayClassAdapter.ClassD
                     holder.textView6.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
                     spannableString = new SpannableString("备注信息：\n" + courseBean.getRemarks());
                     spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0,6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder.textView7.setText(spannableString);
                 }
 

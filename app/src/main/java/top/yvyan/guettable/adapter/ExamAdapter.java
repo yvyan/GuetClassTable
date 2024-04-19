@@ -30,6 +30,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
     List<ExamBean> examBeans;
 
     private Context context;
+
     public ExamAdapter(List<ExamBean> examBeans) {
         this.examBeans = examBeans;
     }
@@ -39,7 +40,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
     public ExamViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.detail_cardview,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.detail_cardview, parent, false);
         return new ExamViewHolder(itemView);
     }
 
@@ -47,18 +48,48 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
     @Override
     public void onBindViewHolder(@NonNull ExamViewHolder holder, int position) {
         ExamBean nowExam = examBeans.get(position);
-        holder.textView1.setText(nowExam.getName());
+        holder.textView1.setText((nowExam.examType!=null && nowExam.examType.isEmpty()) ? "（考试）" : "(" + nowExam.examType + ")" + nowExam.getName());
         holder.textView2.setText("课号：" + nowExam.getNumber());
         holder.textView3.setText("教师：" + nowExam.getTeacher());
-        SpannableString spannableString = new SpannableString("教室：" + (nowExam.getRoom().isEmpty() ? "未公布" : nowExam.getRoom()));
-        spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_room)), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        String roomPart[] = (nowExam.getRoom().isEmpty() ? "未公布-座位未公布" : nowExam.getRoom()).split("-");
+        String examRoom = roomPart[0];
+        String examSeat = roomPart.length ==2 ? roomPart[1] : "座位未公布";
+        List<String> FragmentstartText = new ArrayList<>(Arrays.asList("教室：",examRoom,"-",examSeat));
+        SpannableString spannableString = new SpannableString(String.join("", FragmentstartText));
+        spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_room)),
+                FragmentstartText.get(0).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                FragmentstartText.get(0).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_seat)),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length() +
+                        FragmentstartText.get(3).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length() +
+                        FragmentstartText.get(3).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         holder.textView4.setText(spannableString);
         spannableString = new SpannableString("时间：" + nowExam.getTime());
         spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_clock)), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         holder.textView5.setText(spannableString);
-        List<String> FragmentstartText = new ArrayList<>(Arrays.asList("日期：", (nowExam.getDate() == null ? nowExam.getDateString() : TimeUtil.timeFormat(nowExam.getDate())), " 第" + nowExam.getWeek() + "周 ",
+        FragmentstartText = new ArrayList<>(Arrays.asList("日期：", (nowExam.getDate() == null ? nowExam.getDateString() : TimeUtil.timeFormat(nowExam.getDate())), " 第" + nowExam.getWeek() + "周 ",
                 TimeUtil.whichDay(nowExam.getDay())));
         spannableString = new SpannableString(String.join("", FragmentstartText));
         spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_date)),
@@ -85,24 +116,24 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
                         FragmentstartText.get(1).length() +
                         FragmentstartText.get(2).length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)),
-                    FragmentstartText.get(0).length() +
-                            FragmentstartText.get(1).length() +
-                            FragmentstartText.get(2).length(),
-                    FragmentstartText.get(0).length() +
-                            FragmentstartText.get(1).length() +
-                            FragmentstartText.get(2).length() +
-                            FragmentstartText.get(3).length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new StyleSpan(Typeface.BOLD),
-                    FragmentstartText.get(0).length() +
-                            FragmentstartText.get(1).length() +
-                            FragmentstartText.get(2).length(),
-                    FragmentstartText.get(0).length() +
-                            FragmentstartText.get(1).length() +
-                            FragmentstartText.get(2).length() +
-                            FragmentstartText.get(3).length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length() +
+                        FragmentstartText.get(3).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length(),
+                FragmentstartText.get(0).length() +
+                        FragmentstartText.get(1).length() +
+                        FragmentstartText.get(2).length() +
+                        FragmentstartText.get(3).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         if (nowExam.getComm().isEmpty()) {
             holder.textView6.setVisibility(View.GONE);
             holder.textView7.setText(spannableString);
@@ -111,7 +142,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
             holder.textView6.setText(spannableString);
             spannableString = new SpannableString("备注信息：\n" + nowExam.getComm());
             spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0,6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.textView7.setText(spannableString);
         }
     }
@@ -122,7 +153,8 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
     }
 
     static class ExamViewHolder extends RecyclerView.ViewHolder {
-        TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7,textView8;
+        TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8;
+
         public ExamViewHolder(@NonNull View itemView) {
             super(itemView);
             textView1 = itemView.findViewById(R.id.detail_text_1);
