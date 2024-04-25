@@ -125,20 +125,16 @@ public class AddCourseActivity extends AppCompatActivity {
         courseStartSeekBar = findViewById(R.id.seekBar_course_start);
         courseStartTextView = findViewById(R.id.textView_course_start);
         if (start == 7) {
-            start = 1;
+            start = 0;
         }
         courseStartSeekBar.setProgress(start);
         courseStartSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean human) {
-                if(human && i==0) {
-                    seekBar.setProgress(i+1);
-                    return;
-                }
-                if (i==3) {
+                if (i == 2) {
                     courseStartTextView.setText("中午");
                 } else {
-                    courseStartTextView.setText((i > 3 ? i - 1 : i) + "大节");
+                    courseStartTextView.setText( (i < 2 ? i + 1 : i) + "大节");
                 }
             }
 
@@ -150,10 +146,10 @@ public class AddCourseActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        if (start==3) {
+        if (start == 2) {
             courseStartTextView.setText("中午");
         } else {
-            courseStartTextView.setText((start > 3 ? start - 1 : start) + "大节");
+            courseStartTextView.setText( (start < 2 ? start + 1 : start) + "大节");
         }
     }
 
@@ -195,14 +191,14 @@ public class AddCourseActivity extends AppCompatActivity {
         if (courseName.isEmpty()) {
             ToastUtil.showToast(getApplicationContext(), "课程名称不能为空！");
         } else {
-            int start,end;
+            int start, end;
             int time = courseStartSeekBar.getProgress();
-            if (time == 3) {
-                start=5;
-                end=5;
+            if (time == 2) {
+                start = 5;
+                end = 5;
             } else {
-                start=(time>3?time-1:time)*2;
-                end=start+1;
+                start = (time) * 2 + (time < 2 ? 1 : 0);
+                end = start + 1;
             }
             List<CourseBean> courseBeans = ScheduleData.getUserCourseBeans();
             CourseBean courseBean = new CourseBean();
@@ -224,7 +220,7 @@ public class AddCourseActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
             ScheduleData.setUserCourseBeans(courseBeans);
             WidgetUtil.notifyWidgetUpdate(this);
             ToastUtil.showToast(getApplicationContext(), "添加成功！");

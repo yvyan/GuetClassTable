@@ -151,7 +151,7 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
         if (examVersion < 2) {
             classNum = (schedule.getStart() + 1) / 2;
         } else {
-            start = schedule.getStart();
+            start = Math.max(schedule.getStart(), 1);
             end = start + schedule.getStep() - 1;
         }
         teacher = schedule.getTeacher();
@@ -160,7 +160,7 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
         date = (Date) schedule.getExtras().get(DATE);
         dateString = (String) schedule.getExtras().get(DATE_STRING);
         comm = (String) schedule.getExtras().get(COMM);
-        examType =(String) schedule.getExtras().get(EXAM_TYPE);
+        examType = (String) schedule.getExtras().get(EXAM_TYPE);
     }
 
     @Override
@@ -173,8 +173,8 @@ public class ExamBean implements Serializable, ScheduleEnable, CourseUtil.BeanAt
             schedule.setStart(getClassNum() * 2 - 1);
             schedule.setStep(2);
         } else {
-            schedule.setStart(start);
-            schedule.setStep(end - start + 1);
+            schedule.setStart(Math.max(start, 1));
+            schedule.setStep(end - Math.max(start, 1) + 1);
         }
         schedule.setTeacher(getTeacher());
         List<Integer> weekList = new ArrayList<>();

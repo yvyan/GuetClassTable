@@ -69,8 +69,8 @@ public class CourseBean implements ScheduleEnable, Serializable {
     public void setCourse(String number, String name, String room, int weekStart, int weekEnd, int day, int start, int end, String courseTime, String teacher, String remarks) {
         this.setCourse(number, name, room, weekStart, weekEnd, day, -1, teacher, remarks);
         this.courseRangeVersion = 2;
-        this.start = Math.max(start,1);
-        this.end = Math.max(end,1);
+        this.start = Math.max(start, 1);
+        this.end = Math.max(end, 1);
         this.courseTime = courseTime;
     }
 
@@ -111,7 +111,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
 
     //设置为实验课
     public void setLab(String lessonCode, String name, String labName, String room, int week, int day, int start, int end, String teacher, String remarks) {
-        setCourse(lessonCode, "(实验)" + name, room, week, week, day, start, end,null, teacher, remarks);
+        setCourse(lessonCode, "(实验)" + name, room, week, week, day, start, end, null, teacher, remarks);
         this.labName = labName;
         this.isLab = true;
     }
@@ -165,7 +165,7 @@ public class CourseBean implements ScheduleEnable, Serializable {
         if (courseRangeVersion == 1) {
             time = (schedule.getStart() + 1) / 2;
         } else {
-            start = schedule.getStart();
+            start = Math.max(schedule.getStart(), 1);
             end = start + (schedule.getStep() - 1);
         }
         teacher = schedule.getTeacher();
@@ -179,11 +179,11 @@ public class CourseBean implements ScheduleEnable, Serializable {
         schedule.setName(getName());
         schedule.setRoom(getRoom());
         if (courseRangeVersion == 1) {
-            schedule.setStart(getTime() * 2 - 1);
+            schedule.setStart(Math.max(getTime() * 2 - 1, 1));
             schedule.setStep(2);
         } else {
-            schedule.setStart(start);
-            schedule.setStep(end - start + 1);
+            schedule.setStart(Math.max(start, 1));
+            schedule.setStep(end - Math.max(start, 1) + 1);
         }
         schedule.setTeacher(getTeacher());
         schedule.setWeekList(getWeekList());
@@ -202,12 +202,12 @@ public class CourseBean implements ScheduleEnable, Serializable {
         return schedule;
     }
 
-    public String getCourseTime(){
+    public String getCourseTime() {
         return courseTime;
     }
 
     public void setCourseTime(String courseTime) {
-        this.courseTime=courseTime;
+        this.courseTime = courseTime;
     }
 
     public long getId() {

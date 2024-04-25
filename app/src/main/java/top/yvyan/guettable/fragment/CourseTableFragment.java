@@ -271,6 +271,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
      * @param beans beans
      */
     protected void display(List<Schedule> beans) {
+        if(beans.size() == 0) return;
         DetailClassData.setCourseBeans(beans);
         Intent intent = new Intent(getContext(), DetailActivity.class);
         intent.putExtra("week", target);
@@ -281,7 +282,7 @@ public class CourseTableFragment extends Fragment implements View.OnClickListene
         Intent intent = new Intent(getContext(), AddCourseActivity.class);
         intent.putExtra("week", week);
         intent.putExtra("day", day);
-        intent.putExtra("start", start);
+        intent.putExtra("start", start - 1);
         startActivityForResult(intent, AddCourseActivity.REQUEST_CODE);
     }
 

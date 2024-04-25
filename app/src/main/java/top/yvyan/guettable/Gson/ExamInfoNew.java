@@ -60,8 +60,9 @@ public class ExamInfoNew {
             String endTime = examTime.split("-")[1];
             int startHour = parseInt(startTime.split(":")[0]);
             int endHour = parseInt(endTime.split(":")[0]);
+            int endMinute = parseInt(endTime.split(":")[1]);
             String examRoom = room.trim() + "-" + seatNo;
-            return new ExamBean(lesson.code, course.nameZh, lesson.teacherAssignmentString, week, day, TimeUtil.getCourseIndexByHour(startHour), TimeUtil.getCourseIndexByHour(endHour), examTime, examDate, examRoom, examType.name, "课程表开发者备注：目前相关教务系统功能仍未完善，该信息仅供参考，请以教务系统或老师安排为准。");
+            return new ExamBean(lesson.code, course.nameZh, lesson.teacherAssignmentString, week, day, TimeUtil.getCourseIndexByHour(startHour), TimeUtil.getCourseIndexByHour(endHour) + (endMinute == 0 ? -1 : 0), examTime, examDate, examRoom, examType.name, "课程表开发者备注：目前相关教务系统功能仍未完善，该信息仅供参考，请以教务系统或老师安排为准。");
         } catch (Exception ignored) {
         }
         return null;

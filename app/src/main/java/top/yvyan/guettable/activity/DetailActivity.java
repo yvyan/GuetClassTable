@@ -70,7 +70,7 @@ public class DetailActivity extends AppCompatActivity {
                 section.append((i + (i < 5 ? 1 : 0)) / 2 + ", ");
             }
         }
-        detailTitle.setText("第" + week + "周" + TimeUtil.whichDay(day) + " 第" + section.toString().substring(0,  max(0,section.length() - 2)) + "大节");
+        detailTitle.setText("第" + week + "周" + TimeUtil.whichDay(day) + " 第" + section.toString().substring(0, max(0, section.length() - 2)) + "大节");
         //添加课程控件初始化
         ImageView add = findViewById(R.id.more);
         add.setImageDrawable(getResources().getDrawable(R.drawable.d_add));
@@ -79,7 +79,13 @@ public class DetailActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), AddCourseActivity.class);
             intent.putExtra("week", week);
             intent.putExtra("day", day);
-            intent.putExtra("start", (start == 5 ? 3 : (start > 5 ? start+2 : start+1)/2));
+            if (start == 5) {
+                intent.putExtra("start", 2);
+            } else if (start < 5) {
+                intent.putExtra("start", (start - 1) / 2);
+            } else {
+                intent.putExtra("start", start / 2);
+            }
             startActivityForResult(intent, AddCourseActivity.REQUEST_CODE);
         });
         //自定义背景图
