@@ -58,7 +58,7 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
         if(now.remark!=null && !now.remark.isEmpty()) {
             holder.comment.setVisibility(View.VISIBLE);
             SpannableString spannableString = new SpannableString("备注信息：\n" + now.remark);
-            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_remark)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0,6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.comment.setText(spannableString);
         } else {

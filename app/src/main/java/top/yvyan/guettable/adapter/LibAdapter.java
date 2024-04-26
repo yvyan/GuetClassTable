@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
@@ -55,6 +56,7 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
         // if (position == 0 || !schedules.get(position - 1).getName().equals(schedules.get(position).getName())) {
         holder.textView1.setVisibility(View.VISIBLE);
         holder.textView1.setText(courseBean.getName());
+        holder.textView2.setText("名称：" + courseBean.getLabName());
         holder.lessonCode.setText("课号：" + courseBean.getNumber());
         holder.lessonCode.setVisibility(View.VISIBLE);
         if (courseBean.getTeacher().isEmpty()) {
@@ -98,63 +100,42 @@ public class LibAdapter extends RecyclerView.Adapter<LibAdapter.LibViewHolder> {
                 }
             }
         }
-        List<String> FragmentstartText = new ArrayList<>(Arrays.asList("时间：", TimeUtil.whichDay(courseBean.getDay()), " 第" + section.toString().substring(0, max(0, section.length() - 2)) + "大节 "));
-        if (courseBean.getCourseTime() != null) {
-            FragmentstartText.add("(" + courseBean.getCourseTime() + ")");
-        }
-        SpannableString spannableString = new SpannableString(String.join("", FragmentstartText));
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append("时间：");
+        SpannableString spannableString = new SpannableString(TimeUtil.whichDay(courseBean.getDay()));
         spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)),
-                FragmentstartText.get(0).length(),
-                FragmentstartText.get(0).length() +
-                        FragmentstartText.get(1).length(),
+                0,spannableString.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new StyleSpan(Typeface.BOLD),
-                FragmentstartText.get(0).length(),
-                FragmentstartText.get(0).length() +
-                        FragmentstartText.get(1).length(),
+                0,spannableString.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(spannableString);
+        spannableString = new SpannableString(" 第" + section.toString().substring(0, max(0, section.length() - 2)) + "大节 ");
         spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_time)),
-                FragmentstartText.get(0).length() +
-                        FragmentstartText.get(1).length(),
-                FragmentstartText.get(0).length() +
-                        FragmentstartText.get(1).length() +
-                        FragmentstartText.get(2).length(),
+                0,spannableString.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new StyleSpan(Typeface.BOLD),
-                FragmentstartText.get(0).length() +
-                        FragmentstartText.get(1).length(),
-                FragmentstartText.get(0).length() +
-                        FragmentstartText.get(1).length() +
-                        FragmentstartText.get(2).length(),
+                0,spannableString.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(spannableString);
         if (courseBean.getCourseTime() != null) {
+            spannableString = new SpannableString("(" + courseBean.getCourseTime() + ")");
             spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_clock)),
-                    FragmentstartText.get(0).length() +
-                            FragmentstartText.get(1).length() +
-                            FragmentstartText.get(2).length(),
-                    FragmentstartText.get(0).length() +
-                            FragmentstartText.get(1).length() +
-                            FragmentstartText.get(2).length() +
-                            FragmentstartText.get(3).length(),
+                    0,spannableString.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new StyleSpan(Typeface.BOLD),
-                    FragmentstartText.get(0).length() +
-                            FragmentstartText.get(1).length() +
-                            FragmentstartText.get(2).length(),
-                    FragmentstartText.get(0).length() +
-                            FragmentstartText.get(1).length() +
-                            FragmentstartText.get(2).length() +
-                            FragmentstartText.get(3).length(),
+                    0,spannableString.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.append(spannableString);
         }
 
-        holder.textView5.setText(spannableString);
-        holder.textView2.setText("名称：" + courseBean.getLabName());
+        holder.textView5.setText(builder);
+
         if (courseBean.getRemarks() != null && !courseBean.getRemarks().isEmpty()) {
             holder.textView6.setVisibility(View.VISIBLE);
             holder.textView6.setText("周次：" + courseBean.getWeekStart() + "-" + courseBean.getWeekEnd() + "周");
             spannableString = new SpannableString("备注信息：\n" + courseBean.getRemarks());
-            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_day)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(context.getColor(R.color.color_remark)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.textView7.setText(spannableString);
 

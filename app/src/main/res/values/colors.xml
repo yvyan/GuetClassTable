@@ -19,8 +19,10 @@
     <color name="color_room">#3396D8</color>
     <color name="color_day">#7F4073</color>
     <color name="color_time">#FF5722</color>
-    <color name="color_clock">#4CAF50</color>
+    <color name="color_clock">#009688</color>
     <color name="color_date">#FB7299</color>
     <color name="color_seat">#E040FB</color>
+    <color name="color_remark">#E53935</color>
+
     <color name="config_color_select_bg">#FFF1F1F1</color>
 </resources>
